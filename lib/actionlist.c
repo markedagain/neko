@@ -17,12 +17,13 @@ void al_free(ActionList *actionList) {
   list_free(&actionList->Actions);
 }
 
+/* loop through an action list and execute action functions as needed */
 void al_update(ActionList *actionList, float deltaTime) {
   int i = 0;
   unsigned int lanes = 0;
   int size = list_size(&actionList->Actions);
   int actionsFinished = 0;
-  int* finished = (int *)calloc(size, sizeof(int));
+  int* finished;
   for (i = 0; i < size; ++i) {
     Action *action = (Action *)(list_get(&actionList->Actions, i));
     if (lanes & action->Lanes)
@@ -37,19 +38,22 @@ void al_update(ActionList *actionList, float deltaTime) {
 
     if (action->IsFinished) {
       (*(action->OnEnd))(action);
+      if (!actionsFinished) {
+        actionsFinished = 1;
+        finished = (int *)calloc(size, sizeof(int));
+      }
       finished[i] = 1;
-      actionsFinished = 1;
     }
   }
   if (actionsFinished) {
-    for (i = size - 1; i >= 0; --i) {
+    for (i = size - 1; i >= 0; --i)
       if (finished[i])
         list_pop(&actionList->Actions, i);
-    }
   }
 }
 
 void al_append(ActionList *actionList, Action *action) {
+  action->owner = actionList;
   list_append(&actionList->Actions, (void *)action);
 }
 
@@ -68,4 +72,7 @@ int al_isEmpty(ActionList *actionList) {
 }
 
 float al_timeLeft(ActionList *actionList) {
+}
+
+Action *action_init(Action *action) {
 }
