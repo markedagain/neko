@@ -8,7 +8,7 @@ typedef struct actionList_t {
   float PercentDone;
   int Blocking;
   int Lanes;
-  List Actions;
+  Vector Actions;
 } ActionList;
 
 typedef struct action_t {
