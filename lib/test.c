@@ -7,7 +7,7 @@
 
 void plrShoot_update(struct action_t *action, float dt) {
   printf("Action updating\n");
-  action->IsFinished = 1;
+  action->isFinished = 1;
 }
 
 void plrShoot_onStart(struct action_t *action) {
@@ -20,15 +20,15 @@ void plrShoot_onEnd(struct action_t *action) {
 
 ACTION *makeAction_plrShoot(void) {
   ACTION *a = malloc(sizeof *a);
-  a->Update = plrShoot_update;
-  a->OnStart = plrShoot_onStart;
-  a->OnEnd = plrShoot_onEnd;
-  a->IsFinished = 0;
-  a->IsBlocking = 1;
-  a->Lanes = 0;
-  a->Elapsed = 0.0;
-  a->Duration = 1.0;
-  a->HasStarted = 0;
+  a->update = plrShoot_update;
+  a->onStart = plrShoot_onStart;
+  a->onEnd = plrShoot_onEnd;
+  a->isFinished = 0;
+  a->isBlocking = 1;
+  a->lanes = 0;
+  a->elapsed = 0.0;
+  a->duration = 1.0;
+  a->hasStarted = 0;
   return a;
 }
 
@@ -42,15 +42,14 @@ int node_test2(void *listData, void *searchData) {
 }
 
 int main(void) {
-  /*ACTIONLIST al;
+  ALIST al;
   al_init(&al);
   al_append(&al, makeAction_plrShoot());
-  printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
+  printf("Action list contains %i items.\n", (int)vector_size(&(al.actions)));
   al_update(&al, 0.1f);
-  printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
+  printf("Action list contains %i items.\n", (int)vector_size(&(al.actions)));
   al_update(&al, 0.1f);
-  printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
-  return 0;*/
+  printf("Action list contains %i items.\n", (int)vector_size(&(al.actions)));
   
   LIST *l;
   LIST_NODE *node;
@@ -84,5 +83,6 @@ int main(void) {
   printf("SEARCH RESULT: %s\n", (char *)node->data);
   
   list_destroy(l);
+  return 0;
   
 }

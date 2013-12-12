@@ -21,35 +21,15 @@ LIST_NODE *list_create_node(void *data) {
   return node;
 }
 
-LIST_NODE *list_insert_end(LIST *list, void *data) {
-  LIST_NODE *node;
-  if (list == NULL)
-    return NULL;
-  if (!(node = list_create_node(data)))
-    return NULL;
-  if (list->count == 0)
-    list->first = node;
-  else {
-    list->last->next = node;
-    node->prev = list->last;
-  }
-  list->last = node;
-  list->count++;
-  return node;
-}
-
-LIST_NODE *list_insert_after(LIST *list, LIST_NODE *node, void *data) {
+LIST_NODE *list_insert_beginning(LIST *list, void *data) {
   LIST_NODE *newNode;
   if (list == NULL)
     return NULL;
   newNode = list_create_node(data);
-  newNode->next = node->next;
-  newNode->prev = node;
-  if (node->next == NULL)
-    list->last = newNode;
-  else
-    node->next->prev = newNode;
-  node->next = newNode;
+  newNode->next = list->first;
+  if (list->first != NULL)
+    list->first->prev = newNode;
+  list->first = newNode;
   list->count++;
   return newNode;
 }
@@ -70,17 +50,37 @@ LIST_NODE *list_insert_before(LIST *list, LIST_NODE *node, void *data) {
   return newNode;
 }
 
-LIST_NODE *list_insert_beginning(LIST *list, void *data) {
+LIST_NODE *list_insert_after(LIST *list, LIST_NODE *node, void *data) {
   LIST_NODE *newNode;
   if (list == NULL)
     return NULL;
   newNode = list_create_node(data);
-  newNode->next = list->first;
-  if (list->first != NULL)
-    list->first->prev = newNode;
-  list->first = newNode;
+  newNode->next = node->next;
+  newNode->prev = node;
+  if (node->next == NULL)
+    list->last = newNode;
+  else
+    node->next->prev = newNode;
+  node->next = newNode;
   list->count++;
   return newNode;
+}
+
+LIST_NODE *list_insert_end(LIST *list, void *data) {
+  LIST_NODE *node;
+  if (list == NULL)
+    return NULL;
+  if (!(node = list_create_node(data)))
+    return NULL;
+  if (list->count == 0)
+    list->first = node;
+  else {
+    list->last->next = node;
+    node->prev = list->last;
+  }
+  list->last = node;
+  list->count++;
+  return node;
 }
 
 void *list_remove(LIST *list, LIST_NODE *node) {
@@ -128,7 +128,7 @@ void list_destroy(LIST *list) {
   list = NULL;
 }
 
-int list_foreach(LIST *list, int(*func)(void *)) {
+int list_foreach(LIST *list, int(* func)(void *)) {
   LIST_NODE *node;
   if (list == NULL)
     return -1;
@@ -141,7 +141,7 @@ int list_foreach(LIST *list, int(*func)(void *)) {
   return 0;
 }
 
-LIST_NODE *list_find(LIST *list, int(*func)(void *, void *), void *data) {
+LIST_NODE *list_find(LIST *list, int(* func)(void *, void *), void *data) {
   LIST_NODE *node;
   if (list == NULL)
     return NULL;

@@ -2,23 +2,22 @@
 #define __VECTOR_H__
 
 typedef struct vector_t {
-  /* private */
-  void** data;
+  void **data;
   size_t used_entries;
   size_t capacity;
-} Vector;
+} VECTOR;
 
-void vector_init(Vector *);
-void vector_init_size(Vector *, size_t);
-void vector_free(Vector *);
-size_t vector_size(Vector *);
-size_t vector_capacity(Vector *);
-void vector_grow(Vector *, size_t);
-void vector_append(Vector *, void *);
-void vector_set(Vector *, size_t, void *);
-void *vector_get(Vector *, size_t);
-void *vector_pop(Vector *, size_t);
-int vector_index(Vector *, void *);
-void vector_remove(Vector *, void *);
+void vector_init(VECTOR *);
+void vector_init_size(VECTOR *, size_t);
+void vector_free(VECTOR *);
+size_t vector_size(VECTOR *);
+size_t vector_capacity(VECTOR *);
+void vector_grow(VECTOR *, size_t);
+void vector_append(VECTOR *, void *);
+void vector_set(VECTOR *, size_t, void *);
+void *vector_get(VECTOR *, size_t);
+void *vector_pop(VECTOR *, size_t);
+int vector_index(VECTOR *, void *);
+void vector_remove(VECTOR *, void *);
 
 #endif

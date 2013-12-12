@@ -2,28 +2,24 @@
 #define __ALIST_H__
 
 typedef struct actionList_t {
-  /* public */
-  float Duration;
-  float TimeElapsed;
-  float PercentDone;
-  int Blocking;
-  int Lanes;
-  Vector Actions;
+  float duration;
+  float timeElapsed;
+  float percentDone;
+  int blocking;
+  int lanes;
+  VECTOR actions;
 } ALIST;
 
 typedef struct action_t {
-  /* public */
-  void (* Update)(struct action_t *, float);
-  void (* OnStart)(struct action_t *);
-  void (* OnEnd)(struct action_t *);
-  int IsFinished;
-  int IsBlocking;
-  unsigned int Lanes;
-  float Elapsed;
-  float Duration;
-  int HasStarted;
-
-  /* private */
+  void (* update)(struct action_t *, float);
+  void (* onStart)(struct action_t *);
+  void (* onEnd)(struct action_t *);
+  int isFinished;
+  int isBlocking;
+  unsigned int lanes;
+  float elapsed;
+  float duration;
+  int hasStarted;
   ALIST *owner;
 } ACTION;
 
