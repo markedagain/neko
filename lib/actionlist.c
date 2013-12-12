@@ -1,10 +1,9 @@
 #include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "vector.h"
 #include "actionlist.h"
 
-void al_init(ActionList *actionList) {
+void al_init(ALIST *actionList) {
   actionList->Duration = 0;
   actionList->TimeElapsed = 0.0;
   actionList->PercentDone = 0.0;
@@ -13,19 +12,19 @@ void al_init(ActionList *actionList) {
   vector_init(&actionList->Actions);
 }
 
-void al_free(ActionList *actionList) {
+void al_free(ALIST *actionList) {
   vector_free(&actionList->Actions);
 }
 
 /* loop through an action list and execute action functions as needed */
-void al_update(ActionList *actionList, float deltaTime) {
+void al_update(ALIST *actionList, float deltaTime) {
   int i = 0;
   unsigned int lanes = 0;
   int size = vector_size(&actionList->Actions);
   int actionsFinished = 0;
   int* finished;
   for (i = 0; i < size; ++i) {
-    Action *action = (Action *)(vector_get(&actionList->Actions, i));
+    ACTION *action = (ACTION *)(vector_get(&actionList->Actions, i));
     if (lanes & action->Lanes)
       continue;
     if (!action->HasStarted) {
@@ -52,27 +51,27 @@ void al_update(ActionList *actionList, float deltaTime) {
   }
 }
 
-void al_append(ActionList *actionList, Action *action) {
+void al_append(ALIST *actionList, ACTION *action) {
   action->owner = actionList;
   vector_append(&actionList->Actions, (void *)action);
 }
 
-Action *al_remove(ActionList *actionList, Action *action) {
+ACTION *al_remove(ALIST *actionList, ACTION *action) {
   vector_pop(&actionList->Actions, vector_index(&actionList->Actions, (void *)action));
   return NULL; /* needed? */
 }
 
-Action *al_begin(ActionList *actionList) {
+ACTION *al_begin(ALIST *actionList) {
 }
 
-Action *al_end(ActionList *actionList) {
+ACTION *al_end(ALIST *actionList) {
 }
 
-int al_isEmpty(ActionList *actionList) {
+int al_isEmpty(ALIST *actionList) {
 }
 
-float al_timeLeft(ActionList *actionList) {
+float al_timeLeft(ALIST *actionList) {
 }
 
-Action *action_init(Action *action) {
+ACTION *action_init(ACTION *action) {
 }

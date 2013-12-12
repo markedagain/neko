@@ -1,5 +1,5 @@
-#ifndef __ACTIONLIST_H__
-#define __ACTIONLIST_H__
+#ifndef __ALIST_H__
+#define __ALIST_H__
 
 typedef struct actionList_t {
   /* public */
@@ -9,7 +9,7 @@ typedef struct actionList_t {
   int Blocking;
   int Lanes;
   Vector Actions;
-} ActionList;
+} ALIST;
 
 typedef struct action_t {
   /* public */
@@ -24,16 +24,16 @@ typedef struct action_t {
   int HasStarted;
 
   /* private */
-  ActionList *owner;
-} Action;
+  ALIST *owner;
+} ACTION;
 
-void al_init(ActionList *);
-void al_free(ActionList *);
-void al_append(ActionList *, Action *);
-Action *al_remove(ActionList *, Action *);
-Action *al_begin(ActionList *);
-Action *al_end(ActionList *);
-int al_isEmpty(ActionList *);
-float al_timeLeft(ActionList *);
+void al_init(ALIST *);
+void al_free(ALIST *);
+void al_append(ALIST *, ACTION *);
+ACTION *al_remove(ALIST *, ACTION *);
+ACTION *al_begin(ALIST *);
+ACTION *al_end(ALIST *);
+int al_isEmpty(ALIST *);
+float al_timeLeft(ALIST *);
 
 #endif

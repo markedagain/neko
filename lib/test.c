@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "vector.h"
 #include "actionlist.h"
+#include "linkedlist.h"
 
 void plrShoot_update(struct action_t *action, float dt) {
   printf("Action updating\n");
@@ -16,8 +17,8 @@ void plrShoot_onEnd(struct action_t *action) {
   printf("Action ending\n");
 }
 
-Action *makeAction_plrShoot(void) {
-  Action *a = malloc(sizeof *a);
+ACTION *makeAction_plrShoot(void) {
+  ACTION *a = malloc(sizeof *a);
   a->Update = plrShoot_update;
   a->OnStart = plrShoot_onStart;
   a->OnEnd = plrShoot_onEnd;
@@ -31,18 +32,42 @@ Action *makeAction_plrShoot(void) {
 }
 
 int main(void) {
-  ActionList al;
+  /*ACTIONLIST al;
   al_init(&al);
   al_append(&al, makeAction_plrShoot());
-  al_append(&al, makeAction_plrShoot());
-  al_append(&al, makeAction_plrShoot());
-  al_append(&al, makeAction_plrShoot());
-  /*al_append(&al, makeAction_plrShoot());
-  */
   printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
   al_update(&al, 0.1f);
   printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
   al_update(&al, 0.1f);
   printf("Action list contains %i items.\n", (int)vector_size(&(al.Actions)));
-  return 0;
+  return 0;*/
+  
+  LIST *l;
+  LIST_NODE *node;
+  void *data;
+  l = list_create();
+  list_insert_end(l, (void *)"first");
+  node = list_insert_beginning(l, (void *)"begin");
+  node = list_insert_after(l, node, (void *)"after");
+  list_insert_before(l, node, (void *)"before");
+  list_insert_end(l, (void *)"end");
+  data = list_remove(l, node);
+  
+  printf("%s\n\n", (char *)data);
+  
+  printf("%s\t\t", (l->first) ? (char *)(l->first->data) : "NULL");
+  printf("\t\t%s", (l->last) ? (char *)(l->last->data) : "NULL");
+  printf("\t\t%i\n", l->count);
+  
+  node = l->first;
+  while (node) {
+    printf("%s\t\t", (node->prev) ? (char *)(node->prev->data) : "NULL");
+    printf("%s", (char *)(node->data));
+    printf("\t\t%s", (node->next) ? (char *)(node->next->data) : "NULL");
+    printf("\n");
+    node = node->next;
+  }
+  
+  list_destroy(l);
+  
 }

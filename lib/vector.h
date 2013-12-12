@@ -1,7 +1,7 @@
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __VECTOR_H__
+#define __VECTOR_H__
 
-typedef struct {
+typedef struct vector_t {
   /* private */
   void** data;
   size_t used_entries;
