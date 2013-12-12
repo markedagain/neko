@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "vector.h"
 #include "actionlist.h"
 #include "linkedlist.h"
@@ -31,6 +32,15 @@ ACTION *makeAction_plrShoot(void) {
   return a;
 }
 
+int node_test(void *data) {
+  printf("### (%s) ###\n", (char *)data);
+  return 0;
+}
+
+int node_test2(void *listData, void *searchData) {
+  return strcmp((char *)listData, (char *)searchData) ? 0 : 1;
+}
+
 int main(void) {
   /*ACTIONLIST al;
   al_init(&al);
@@ -53,7 +63,7 @@ int main(void) {
   list_insert_end(l, (void *)"end");
   data = list_remove(l, node);
   
-  printf("%s\n\n", (char *)data);
+  printf("This was removed from the list, but the data was saved: %s\n\n", (char *)data);
   
   printf("%s\t\t", (l->first) ? (char *)(l->first->data) : "NULL");
   printf("\t\t%s", (l->last) ? (char *)(l->last->data) : "NULL");
@@ -67,6 +77,11 @@ int main(void) {
     printf("\n");
     node = node->next;
   }
+  
+  list_foreach(l, node_test);
+  
+  node = list_find(l, node_test2, (void *)"before");
+  printf("SEARCH RESULT: %s\n", (char *)node->data);
   
   list_destroy(l);
   

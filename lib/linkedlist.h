@@ -20,7 +20,10 @@ LIST_NODE *list_insert_after(LIST *, LIST_NODE *, void *);
 LIST_NODE *list_insert_before(LIST *list, LIST_NODE *node, void *data);
 LIST_NODE *list_insert_beginning(LIST *, void *);
 void *list_remove(LIST *, LIST_NODE *);
+void list_remove_free(LIST *, LIST_NODE *);
 void list_empty(LIST *);
 void list_destroy(LIST *);
+int list_foreach(LIST *list, int(*func)(void *));
+LIST_NODE *list_find(LIST *list, int(*func)(void *, void *), void *data);
 
 #endif

@@ -103,6 +103,10 @@ void *list_remove(LIST *list, LIST_NODE *node) {
   return data;
 }
 
+void list_remove_free(LIST *list, LIST_NODE *node) {
+  free(list_remove(list, node));
+}
+
 void list_empty(LIST *list) {
   LIST_NODE *node;
   if (list == NULL)
@@ -124,7 +128,11 @@ void list_destroy(LIST *list) {
   list = NULL;
 }
 
-int list_foreach(LIST_NODE *node, int(*func)(void *)) {
+int list_foreach(LIST *list, int(*func)(void *)) {
+  LIST_NODE *node;
+  if (list == NULL)
+    return -1;
+  node = list->first;
   while (node) {
     if (func(node->data) != 0)
       return -1;
@@ -133,7 +141,11 @@ int list_foreach(LIST_NODE *node, int(*func)(void *)) {
   return 0;
 }
 
-LIST_NODE *list_find(LIST_NODE *node, int(*func)(void *, void *), void *data) {
+LIST_NODE *list_find(LIST *list, int(*func)(void *, void *), void *data) {
+  LIST_NODE *node;
+  if (list == NULL)
+    return NULL;
+  node = list->first;
   while (node) {
     if (func(node->data, data) > 0)
       return node;
