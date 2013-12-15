@@ -3,6 +3,9 @@ Team Neko Means Cat Style Guide
 
 Writing good code is cool and all, but it's kind of useless if nobody else on your team can make sense of it, or if you're a horrible person and use stupid bullshit brace formatting or dumb indentations. This is why I, Adam Rezich, technical lead of Team Neko Means Cat, present the official **Team Neko Means Cat Style Guide**!
 
+This is going to be a document that evolves over time and stuff, but it's actually pretty solid as of now, I think. Pretty much all of the basics are covered, but let me know if there's anything I missed and I'll clarify it and add it in.
+
+
 Source code formatting
 ----------------------
 
@@ -23,6 +26,8 @@ Braces are not necessary for one-line blocks, and in fact should not have them i
 Opening braces belong on the same line as the block declaration.
 
 Closing braces belong on their own line.
+
+Never do something dumb like put a closing brace and another opening brace on the same line, like this: `} else {`
 
 
 ###Spacing###
@@ -55,7 +60,7 @@ There should be a space between operators when appropriate. The exceptions to th
 
 All source code files should begin with the following, as per DigiPen policy:
 
-    /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved */
+    /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 All source code files should contain a Doxygen header following the above DigiPen copyright notice, with one blank line in between, formatted as such:
 
