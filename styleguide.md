@@ -36,6 +36,19 @@ There should not be a space between the contents of parenthesis and the closing 
 There should be a space between operators when appropriate. The exceptions to this are cases such as the dereference operator (unary *), address-of operator (unary &), and a few other cases. For example, dereferencing a pointer p should be `*p` and not `* p`, but addition should be expressed as `1 + foo + 3` and not `1+foo+3`.
 
 
+###Example of proper tabs, braces, indentation, and spacing###
+
+    int foo(int bar, float baz) {
+      int quux = 1;
+      int i;
+      for (i = 0; i < bar; ++i) {
+        baz += pow(quux * bar, 2) / i;
+        quux *= i % 2;
+      }
+      return bar;
+    }
+
+
 ###Documentation###
 
 **This section is a work-in-progress, as I'm still figuring out how to use doxygen myself.**
@@ -78,6 +91,8 @@ If (when) you start working on something but don't finish some key aspect of it,
 File contents **should** be restricted to 80 characters per line, ideally, but this is a nice ideal and not a strict requirement. However, stupidly long lines should be avoided.
 
 The ternary operator is super rad and should be used when applicable, but if you nest more than one ternary operator in a single statement that's basically the worst thing ever and you should feel bad about yourself.
+
+As a matter of good practice, pre-increment and pre-decrement should be used instead of post-increment and post-decrement, respectively, whenever casually incrementing or decrementing things.
 
 
 Commit messages
