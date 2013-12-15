@@ -1,7 +1,7 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 /** @file   linkedlist.c
- *  @brief  File containing functions for linked lists
+ *  @brief  Contains functions for manipulating linked lists and list nodes.
  */
 
 #include <stdlib.h>
