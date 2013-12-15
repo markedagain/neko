@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #ifndef __VECTOR_H__
 #define __VECTOR_H__
 

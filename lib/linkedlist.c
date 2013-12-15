@@ -1,6 +1,16 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
+/** @file   linkedlist.c
+ *  @brief  File containing functions for linked lists
+ */
+
 #include <stdlib.h>
 #include "linkedlist.h"
 
+/**
+ *  @brief  Creates a new linked list.
+ *  @return Pointer to the newly-created list.
+ */
 LIST *list_create(void) {
   LIST *list;
   if (!(list = malloc(sizeof(LIST))))
@@ -11,6 +21,11 @@ LIST *list_create(void) {
   return list;
 }
 
+/**
+ *  @brief  Create a new linked list node. Should probably not be called outside of linkedlist.c.
+ *  @param  data Void pointer to the data the node should contain.
+ *  @return Pointer to the newly-created list node.
+ */
 LIST_NODE *list_create_node(void *data) {
   LIST_NODE *node;
   if (!(node = malloc(sizeof(LIST_NODE))))
@@ -21,6 +36,12 @@ LIST_NODE *list_create_node(void *data) {
   return node;
 }
 
+/**
+ *  @brief  Insert a new node at the beginning of a list.
+ *  @param  list Pointer to the list to insert the node into.
+ *  @param  data Void pointer to the data the node should contain.
+ *  @return Pointer to the newly-created list node.
+ */
 LIST_NODE *list_insert_beginning(LIST *list, void *data) {
   LIST_NODE *newNode;
   if (list == NULL)
@@ -34,6 +55,13 @@ LIST_NODE *list_insert_beginning(LIST *list, void *data) {
   return newNode;
 }
 
+/**
+ *  @brief  Insert a new node before a given node in a list.
+ *  @param  list Pointer to the list to insert the node into.
+ *  @param  node Pointer to the node to insert the node before.
+ *  @param  data Void pointer to the data the node should contain.
+ *  @return Pointer to the newly-created list node.
+ */
 LIST_NODE *list_insert_before(LIST *list, LIST_NODE *node, void *data) {
   LIST_NODE *newNode;
   if (list == NULL)
@@ -50,6 +78,13 @@ LIST_NODE *list_insert_before(LIST *list, LIST_NODE *node, void *data) {
   return newNode;
 }
 
+/**
+ *  @brief  Insert a new node after a given node in a list.
+ *  @param  list Pointer to the list to insert the node into.
+ *  @param  node Pointer to the node to insert the node after.
+ *  @param  data Void pointer to the data the node should contain.
+ *  @return Pointer to the newly-created list node.
+ */
 LIST_NODE *list_insert_after(LIST *list, LIST_NODE *node, void *data) {
   LIST_NODE *newNode;
   if (list == NULL)
@@ -66,6 +101,12 @@ LIST_NODE *list_insert_after(LIST *list, LIST_NODE *node, void *data) {
   return newNode;
 }
 
+/**
+ *  @brief  Insert a new node to the end of a given list.
+ *  @param  list Pointer to the list to insert the node into.
+ *  @param  data Void pointer to the data the node should contain.
+ *  @return Pointer to the newly-created list node.
+ */
 LIST_NODE *list_insert_end(LIST *list, void *data) {
   LIST_NODE *node;
   if (list == NULL)
@@ -83,11 +124,17 @@ LIST_NODE *list_insert_end(LIST *list, void *data) {
   return node;
 }
 
+/**
+ *  @brief  Remove a node from a given list.
+ *  @param  list Pointer to the list to remove the node from.
+ *  @param  node List node to remove.
+ *  @return Void pointer to the data that the removed node contained.
+ */
 void *list_remove(LIST *list, LIST_NODE *node) {
   void *data;
   if (node == NULL)
     return NULL;
-  
+
   if (node->prev == NULL)
     list->first = node->next;
   else
@@ -96,7 +143,7 @@ void *list_remove(LIST *list, LIST_NODE *node) {
     list->last = node->prev;
   else
     node->next->prev = node->prev;
-  
+
   data = node->data;
   free(node);
   list->count--;
@@ -107,6 +154,10 @@ void list_remove_free(LIST *list, LIST_NODE *node) {
   free(list_remove(list, node));
 }
 
+/**
+ *  @brief  Remove all nodes from a given list. Does not free the contents of the nodes.
+ *  @param  list Pointer to the list to empty.
+ */
 void list_empty(LIST *list) {
   LIST_NODE *node;
   if (list == NULL)
@@ -120,6 +171,10 @@ void list_empty(LIST *list) {
   list->first = NULL;
 }
 
+/**
+ *  @brief  Free the given list from memory.
+ *  @param  list Pointer to the list to destroy.
+ */
 void list_destroy(LIST *list) {
   if (list == NULL)
     return;
@@ -128,6 +183,12 @@ void list_destroy(LIST *list) {
   list = NULL;
 }
 
+/**
+ *  @brief  Execute a function on each node in a list.
+ *  @param  list Pointer to the list to execute functions on.
+ *  @param  func Pointer to a function to run on each element in the list. Takes a void pointer (the node data) and returns an int. If at any point during execution the function returns a non-zero value, the loop will break.
+ *  @return -1 if the list was @c NULL or if a function call returned a non-zero number, otherwise 0.
+ */
 int list_foreach(LIST *list, int(* func)(void *)) {
   LIST_NODE *node;
   if (list == NULL)
@@ -141,6 +202,13 @@ int list_foreach(LIST *list, int(* func)(void *)) {
   return 0;
 }
 
+/**
+ *  @brief  Find a node in a list using a given search function.
+ *  @param  list Pointer to the list to search through.
+ *  @param  func Pointer to a function to run on each element in the list. Takes two void pointers, the first being the node data and the second being the @p data param passed to this function. Returns greater than zero if the data is a match, any other value otherwise.
+ *  @param  data Void pointer to any additional data that should be passed to the search function.
+ *  @return Pointer to the first node whose data matches the search function's criteria, or @c NULL if no such node exists.
+ */
 LIST_NODE *list_find(LIST *list, int(* func)(void *, void *), void *data) {
   LIST_NODE *node;
   if (list == NULL)

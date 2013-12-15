@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include <stddef.h>
 #include <stdlib.h>
 #include "vector.h"
