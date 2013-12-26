@@ -17,3 +17,4 @@ Features
 * Doubly-linked lists (of void pointers) (LIST, LIST_NODE)
 * Action lists (ALIST, ACTION)
 * Vectors (dynamically-size arrays of void pointers) (VECTOR)
+* Style guide
