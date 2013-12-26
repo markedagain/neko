@@ -3,6 +3,9 @@
 #ifndef __SPACE_H__
 #define __SPACE_H__
 
+#include "vector.h"
+#include "game.h"
+
 typedef struct space_t {
   char[32] name;
   VECTOR tags;

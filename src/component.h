@@ -3,6 +3,8 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include "entity.h"
+
 typedef struct component_t {
   void *data;
   void (* update)(struct component_t *, float, float);

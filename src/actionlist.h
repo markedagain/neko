@@ -3,6 +3,8 @@
 #ifndef __ALIST_H__
 #define __ALIST_H__
 
+#include "vector.h"
+
 typedef struct actionList_t {
   float duration;
   float timeElapsed;

@@ -23,7 +23,7 @@ VEC2 vec2_mul(VEC2 *a, VEC2 *b) {
   return c;
 }
 
-VEC3 vec2_div(VEC2 *a, VEC2 *b) {
+VEC2 vec2_div(VEC2 *a, VEC2 *b) {
   VEC2 c = {0};
   c.x = a->x / b->x;
   c.y = a->y / b->y;

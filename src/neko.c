@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "actionlist.h"
 
 int main(void) {
   printf("Hello world\n");

@@ -65,16 +65,21 @@ ACTION *al_remove(ALIST *actionList, ACTION *action) {
 }
 
 ACTION *al_begin(ALIST *actionList) {
+  return NULL;
 }
 
 ACTION *al_end(ALIST *actionList) {
+  return NULL;
 }
 
 int al_isEmpty(ALIST *actionList) {
+  return 0;
 }
 
 float al_timeLeft(ALIST *actionList) {
+  return 0;
 }
 
 ACTION *action_init(ACTION *action) {
+  return NULL;
 }

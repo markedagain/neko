@@ -3,10 +3,13 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
+#include "vector.h"
+#include "space.h"
+
 typedef struct entity_t {
   unsigned int id;
   unsigned int type;
-  ENTITY *owner;
+  struct entity_t *owner;
   SPACE *space;
   char[80] name;
   VECTOR tags;
