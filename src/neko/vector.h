@@ -3,6 +3,8 @@
 #ifndef __VECTOR_H__
 #define __VECTOR_H__
 
+#include <stdlib.h>
+
 typedef struct vector_t {
   void **data;
   size_t used_entries;

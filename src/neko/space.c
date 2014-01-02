@@ -4,11 +4,11 @@
 #include <string.h>
 #include "space.h"
 #include "game.h"
-#include "vector.h"
+#include "linkedlist.h"
 
 SPACE *space_create(GAME *game, char *name) {
   SPACE *space = malloc(sizeof(SPACE));
-  vector_init(&space->entities);
+  space->entities = list_create();
   space->game = game;
   strcpy(space->name, name);
   space->active = 1;

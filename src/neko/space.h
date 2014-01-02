@@ -3,17 +3,19 @@
 #ifndef __SPACE_H__
 #define __SPACE_H__
 
-#include "vector.h"
+#include "linkedlist.h"
 #include "game.h"
+#include "space.h"
 
 typedef struct space_t {
-  char[32] name;
-  VECTOR tags;
-  VECTOR entities;
-  GAME game;
+  char name[32];
+  LIST *entities;
+  GAME *game;
   unsigned char active;
   unsigned char visible;
-  unsigned char shouldDestroy;
+  unsigned char destroying;
 } SPACE;
+
+SPACE *space_create(GAME *, char *);
 
 #endif

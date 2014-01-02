@@ -11,11 +11,15 @@ typedef struct entity_t {
   unsigned int type;
   struct entity_t *owner;
   SPACE *space;
-  char[80] name;
+  char name[80];
   VECTOR tags;
   VECTOR components;
   VECTOR children;
-  unsigned char shouldDestroy;
+  unsigned char destroying;
 } ENTITY;
+
+typedef void (*entity_callback)(ENTITY *);
+
+ENTITY *entity_create(SPACE *, entity_callback, char *);
 
 #endif

@@ -13,5 +13,5 @@ GAME *game_create(void) {
 }
 
 SPACE *game_addSpace(GAME *game, char *name) {
-  return (SPACE *)(list_insert_beginning(game->spaces, space_create(game, name)));
+  return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
 }

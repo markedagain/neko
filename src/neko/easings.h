@@ -37,12 +37,33 @@ typedef enum {
 	BOUNCE_INOUT
 } easing;
 
-float e_linear(float p);
+float e_linear(float, float, float, float);
+float e_quad_in(float, float, float, float);
+float e_quad_out(float, float, float, float);
+float e_quad_inout(float, float, float, float);
+float e_cubic_in(float, float, float, float);
+float e_cubic_out(float, float, float, float);
+float e_cubic_inout(float, float, float, float);
+float e_quartic_in(float, float, float, float);
+float e_quartic_out(float, float, float, float);
+float e_quartic_inout(float, float, float, float);
+float e_quintic_in(float, float, float, float);
+float e_quintic_out(float, float, float, float);
+float e_quintic_inout(float, float, float, float);
+float e_sine_in(float, float, float, float);
+float e_sine_out(float, float, float, float);
+float e_sine_inout(float, float, float, float);
+float e_exponential_in(float, float, float, float);
+float e_exponential_out(float, float, float, float);
+float e_exponential_inout(float, float, float, float);
+float e_circular_in(float, float, float, float);
+float e_circular_out(float, float, float, float);
+float e_circular_inout(float, float, float, float);
 
-typedef int (* easing_function)(int, int);
+/*typedef int (* easing_function)(int, int);
 easing_function easings[] = {
   e_linear,
-  e_quad_in/*,
+  e_quad_in,
   e_quad_out,
   e_quad_inout,
   e_cubic_in,
@@ -62,7 +83,7 @@ easing_function easings[] = {
   e_back_inout,
   e_bounce_in,
   e_bounce_out,
-  e_bounce_inout*/
-}
+  e_bounce_inout
+}*/
 
 #endif
