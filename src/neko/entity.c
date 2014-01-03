@@ -6,8 +6,9 @@
 #include "string.h"
 #include "linkedlist.h"
 #include "vector.h"
+#include "component.h"
 
-ENTITY *entity_create(SPACE *space, void(*makeFunction)(ENTITY *), char *name) {
+ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *name) {
   ENTITY *entity = malloc(sizeof(ENTITY));
   entity->id = 0;
   entity->type = 0;
@@ -18,7 +19,7 @@ ENTITY *entity_create(SPACE *space, void(*makeFunction)(ENTITY *), char *name) {
   vector_init(&entity->components);
   vector_init(&entity->children);
   entity->destroying = 0;
-  makeFunction(entity);
+  archetypeFunction(entity);
   list_insert_end(space->entities, (void *)entity);
   return entity;
 }
@@ -26,4 +27,12 @@ ENTITY *entity_create(SPACE *space, void(*makeFunction)(ENTITY *), char *name) {
 void entity_attach(ENTITY *child, ENTITY *parent) {
   child->parent = parent;
   vector_append(&parent->children, child);
+}
+
+void entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *), void *data) {
+  COMPONENT *component = malloc(sizeof(COMPONENT));
+  component->owner = entity;
+  componentFunction(component);
+  component->data = data;
+  vector_append(&entity->components, component);
 }

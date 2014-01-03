@@ -5,12 +5,15 @@
 
 #include "entity.h"
 
+typedef struct entity_t ENTITY;
+
 typedef struct component_t {
   void *data;
+  ENTITY *owner;
   void (* update)(struct component_t *, float, float);
   void (* create)(struct component_t *);
   void (* destroy)(struct component_t *);
-  ENTITY *owner;
+  
 } COMPONENT;
 
 #endif

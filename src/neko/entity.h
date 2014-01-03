@@ -5,6 +5,7 @@
 
 #include "vector.h"
 #include "space.h"
+#include "component.h"
 
 typedef struct entity_t {
   unsigned int id;
@@ -19,8 +20,10 @@ typedef struct entity_t {
 } ENTITY;
 
 typedef void (*entity_callback)(ENTITY *);
+typedef void (*component_callback)(COMPONENT *);
 
 ENTITY *entity_create(SPACE *, entity_callback, char *);
 void entity_attach(ENTITY *, ENTITY *);
+void entity_connect(ENTITY *, component_callback, void *);
 
 #endif
