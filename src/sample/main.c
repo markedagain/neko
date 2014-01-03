@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
   printf("Entity ID: %i\n", player->id);
   printf("Number of spaces in game: %i\n", game->spaces->count);
   printf("Number of entities: %i\n", space->entities->count);
-  printf("%s's parent: %s", weapon->name, player->parent->name);
+  printf("NAME: %s\n", weapon->name);
+  printf("%s's parent: %s\n", weapon->name, weapon->parent->name);
   return 0;
 }
