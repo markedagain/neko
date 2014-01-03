@@ -5,19 +5,25 @@
 #include "space.h"
 #include "string.h"
 #include "linkedlist.h"
+#include "vector.h"
 
 ENTITY *entity_create(SPACE *space, void(*makeFunction)(ENTITY *), char *name) {
   ENTITY *entity = malloc(sizeof(ENTITY));
   entity->id = 0;
   entity->type = 0;
-  entity->owner = NULL;
+  entity->parent = NULL;
   entity->space = space;
-  strcpy(entity->name, name);/*
+  strcpy(entity->name, name);
   vector_init(&entity->tags);
   vector_init(&entity->components);
-  vector_init(&entity->children);*/
+  vector_init(&entity->children);
   entity->destroying = 0;
   makeFunction(entity);
   list_insert_end(space->entities, (void *)entity);
   return entity;
+}
+
+void entity_attach(ENTITY *child, ENTITY *parent) {
+  child->parent = parent;
+  vector_append(&parent->children, child);
 }

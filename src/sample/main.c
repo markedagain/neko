@@ -15,16 +15,19 @@ void ent_test(ENTITY *entity) {
 int main(int argc, char *argv[]) {
   GAME *game;
   ENTITY *player;
+  ENTITY *weapon;
   SPACE *space;
   game = game_create();
   space = game_addSpace(game, "main");
   /*player = entity_create((SPACE *)(*(game->spaces->last)), ent_test, "test");
   */
   printf("Number of entities: %i\n", space->entities->count);
-  player = entity_create(space, ent_test, "test");
+  player = entity_create(space, ent_test, "player");
+  weapon = entity_create(space, ent_test, "weapon");
+  entity_attach(weapon, player);
   printf("Entity ID: %i\n", player->id);
   printf("Number of spaces in game: %i\n", game->spaces->count);
   printf("Number of entities: %i\n", space->entities->count);
-  /*printf("Number of entities in current space: %i\n", (int)vector_size(&((SPACE *)(game->spaces->last))->entities));
-  */return 0;
+  printf("%s's parent: %s", weapon->name, player->parent->name);
+  return 0;
 }

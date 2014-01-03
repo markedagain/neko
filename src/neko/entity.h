@@ -9,7 +9,7 @@
 typedef struct entity_t {
   unsigned int id;
   unsigned int type;
-  struct entity_t *owner;
+  struct entity_t *parent;
   SPACE *space;
   char name[80];
   VECTOR tags;
@@ -21,5 +21,6 @@ typedef struct entity_t {
 typedef void (*entity_callback)(ENTITY *);
 
 ENTITY *entity_create(SPACE *, entity_callback, char *);
+void entity_attach(ENTITY *, ENTITY *);
 
 #endif
