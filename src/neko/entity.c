@@ -16,7 +16,6 @@ ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *na
   entity->parent = NULL;
   entity->space = space;
   strcpy(entity->name, name);
-  vector_init(&entity->tags);
   vector_init(&entity->components);
   vector_init(&entity->children);
   entity->destroying = 0;
@@ -31,9 +30,14 @@ void entity_attach(ENTITY *child, ENTITY *parent) {
 }
 
 void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
-  COMPONENT *component = malloc(sizeof(COMPONENT));
+  COMPONENT *component;
+
+  component = malloc(sizeof(COMPONENT));
   component->owner = entity;
   componentFunction(component);
+
+  /* TODO: dependency check */
+
   vector_append(&entity->components, component);
   return component->data;
 }

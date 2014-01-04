@@ -15,7 +15,6 @@ typedef struct entity_t {
   struct entity_t *parent;
   SPACE *space;
   char name[80];
-  VECTOR tags;
   VECTOR components;
   VECTOR children;
   unsigned char destroying;

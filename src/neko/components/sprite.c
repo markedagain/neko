@@ -5,10 +5,10 @@
 #include "sprite.h"
 #include "../component.h"
 #include "../entity.h"
+#include "transform.h"
 
 void comp_sprite(COMPONENT *self) {
-  self->id = COMP_SPRITE;
   CDATA_SPRITE initData = {};
-  self->data = malloc(sizeof(CDATA_SPRITE));
-  memcpy(self->data, &initData, sizeof(CDATA_SPRITE));
+  COMPONENT_INIT(self, COMP_SPRITE, initData);
+  component_depend(self, COMP_TRANSFORM);
 }

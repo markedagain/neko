@@ -3,19 +3,28 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include <stdlib.h>
 #include "entity.h"
+
+#define MAX_DEPENDS 8
+#define COMPONENT_INIT(a, b, c) component_initialize(a, b, &c, sizeof(c))
 
 typedef struct entity_t ENTITY;
 
 typedef struct component_t {
   void *data;
-  int id;
+  unsigned int id;
   ENTITY *owner;
+  unsigned int depends[MAX_DEPENDS];
+  /*
   void (* update)(struct component_t *, float, float);
   void (* create)(struct component_t *);
   void (* destroy)(struct component_t *);
-
+  */
 } COMPONENT;
+
+void component_initialize(COMPONENT *, unsigned int, void *, size_t);
+void component_depend(COMPONENT *, unsigned int);
 
 #endif
 
