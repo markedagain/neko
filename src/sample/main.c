@@ -10,6 +10,7 @@
 #include "archetypes/player.h"
 #include "../neko/components/transform.h"
 #include "../neko/components/sprite.h"
+#include "../neko/hash.h"
 
 int main(int argc, char *argv[]) {
   GAME *game;
@@ -22,11 +23,13 @@ int main(int argc, char *argv[]) {
   player = entity_create(space, arch_player, "player");
   weapon = entity_create(space, arch_player, "weapon");
   entity_attach(weapon, player);
-  printf("Entity ID: %i\n", player->id);
+  printf("COMP_TRANSFORM's id: %u\n", COMP_TRANSFORM);
+  printf("COMP_SPRITE:'s id %u\n", COMP_SPRITE);
+  printf("Entity ID: %u\n", player->id);
   printf("Number of spaces in game: %i\n", game->spaces->count);
   printf("Number of entities: %i\n", space->entities->count);
   printf("%s's parent: %s\n", weapon->name, weapon->parent->name);
-  printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponent(player, "transform"))->translation.x);
-  printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponent(player, "sprite"))->source);
+  printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponent(player, COMP_TRANSFORM))->translation.x);
+  printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponent(player, COMP_SPRITE))->source);
   return 0;
 }

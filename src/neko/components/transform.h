@@ -5,8 +5,9 @@
 
 #include "../component.h"
 #include "../vectormath.h"
+#include "../hash.h"
 
-extern int COMP_TRANSFORM;
+#define COMP_TRANSFORM HASH("COMP_TRANSFORM")
 
 typedef struct cdata_transform_t {
   VEC3 translation;

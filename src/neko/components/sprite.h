@@ -4,8 +4,9 @@
 #define __COMP_SPRITE_H__
 
 #include "../component.h"
+#include "../hash.h"
 
-extern int COMP_SPRITE;
+#define COMP_SPRITE HASH("COMP_SPRITE")
 
 typedef struct cdata_sprite_t {
   char *source;

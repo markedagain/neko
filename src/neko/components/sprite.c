@@ -6,11 +6,6 @@
 #include "../component.h"
 #include "../entity.h"
 
-#ifndef __COMP_SPRITE__
-#define __COMP_SPRITE__
-int COMP_SPRITE = __COUNTER__;
-#endif
-
 void comp_sprite(COMPONENT *self) {
   self->id = COMP_SPRITE;
   CDATA_SPRITE initData = {};
