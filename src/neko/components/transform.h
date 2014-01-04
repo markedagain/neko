@@ -1,12 +1,19 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#ifndef __COM_TRANSFORM_H__
-#define __COM_TRANSFORM_H__
+#ifndef __COMP_TRANSFORM_H__
+#define __COMP_TRANSFORM_H__
 
-typedef struct com_transform_t {
+#include "../component.h"
+#include "../vectormath.h"
+
+extern int COMP_TRANSFORM;
+
+typedef struct cdata_transform_t {
   VEC3 translation;
   VEC3 scale;
   float rotation;
-} COM_TRANSFORM;
+} CDATA_TRANSFORM;
+
+void comp_transform(COMPONENT *);
 
 #endif

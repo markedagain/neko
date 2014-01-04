@@ -5,9 +5,11 @@
 #include "../neko/game.h"
 #include "../neko/space.h"
 #include "../neko/entity.h"
-#include "../neko/vector.h"
 #include "../neko/linkedlist.h"
+#include "../neko/vector.h"
 #include "archetypes/player.h"
+#include "../neko/components/transform.h"
+#include "../neko/components/sprite.h"
 
 int main(int argc, char *argv[]) {
   GAME *game;
@@ -24,5 +26,7 @@ int main(int argc, char *argv[]) {
   printf("Number of spaces in game: %i\n", game->spaces->count);
   printf("Number of entities: %i\n", space->entities->count);
   printf("%s's parent: %s\n", weapon->name, weapon->parent->name);
+  printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponent(player, "transform"))->translation.x);
+  printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponent(player, "sprite"))->source);
   return 0;
 }

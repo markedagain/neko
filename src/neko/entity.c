@@ -1,6 +1,7 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "entity.h"
 #include "space.h"
 #include "string.h"
@@ -29,10 +30,20 @@ void entity_attach(ENTITY *child, ENTITY *parent) {
   vector_append(&parent->children, child);
 }
 
-void entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *), void *data) {
+void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
   COMPONENT *component = malloc(sizeof(COMPONENT));
   component->owner = entity;
   componentFunction(component);
-  component->data = data;
   vector_append(&entity->components, component);
+  return component->data;
+}
+
+void *entity_getComponent(ENTITY *entity, char *name) {
+  unsigned int i;
+  for (i = 0; i < (int)vector_size(&entity->components); ++i) {
+    COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+    if (strcmp(component->name, name) == 0)
+      return component->data;
+  }
+  return NULL;
 }
