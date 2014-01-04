@@ -38,11 +38,11 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
   return component->data;
 }
 
-void *entity_getComponent(ENTITY *entity, char *name) {
+void *entity_getComponent(ENTITY *entity, char *componentId) {
   unsigned int i;
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
-    if (strcmp(component->name, name) == 0)
+    if (component->id == componentId)
       return component->data;
   }
   return NULL;

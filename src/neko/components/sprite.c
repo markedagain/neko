@@ -12,8 +12,8 @@ int COMP_SPRITE = __COUNTER__;
 #endif
 
 void comp_sprite(COMPONENT *self) {
+  self->id = COMP_SPRITE;
   CDATA_SPRITE initData = {};
   self->data = malloc(sizeof(CDATA_SPRITE));
   memcpy(self->data, &initData, sizeof(CDATA_SPRITE));
-  strcpy(self->name, "sprite");
 }
