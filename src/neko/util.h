@@ -3,6 +3,6 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-#define TALLOC(n,typ) malloc(n*sizeof(typ))
+#define TALLOC(typ,n) malloc(n*sizeof(typ))
 
 #endif

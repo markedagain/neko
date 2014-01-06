@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "component.h"
+#include "event.h"
 
 void component_initialize(COMPONENT *component, unsigned int id, void *data, size_t dataSize) {
   int i;
@@ -10,6 +11,7 @@ void component_initialize(COMPONENT *component, unsigned int id, void *data, siz
     component->depends[i] = 0;
   component->id = id;
   component->data = malloc(dataSize);
+  eventcontainer_initialize(&component->events);
   memcpy(component->data, data, dataSize);
 }
 

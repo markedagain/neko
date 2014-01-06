@@ -7,22 +7,23 @@ typedef enum eventType_t {
   EV_NONE,
   EV_INITIALIZE,
   EV_DESTROY,
-  EV_LOGICUPDATE_BEFORE,
   EV_LOGICUPDATE,
-  EV_LOGICUPDATE_AFTER,
-  EV_FRAMEUPDATE_BEFORE,
   EV_FRAMEUPDATE,
-  EV_FRAMEUPDATE_AFTER,
   EV_COUNT
 } EVENT_TYPE;
 
-typedef struct updateEvent_t {
+typedef struct edata_update_t {
   float dt;
   float elapsedTime;
-} EVENT_UPDATE;
+} EDATA_UPDATE;
 
-typedef struct event_t {
+typedef struct eventcontainer_t {
+  void (*initialize)(void);
+  void (*destroy)(void);
+  void (*logicUpdate)(EDATA_UPDATE *);
+  void (*frameUpdate)(EDATA_UPDATE *);
+} EVENTCONTAINER;
 
-} EVENT;
+void eventcontainer_initialize(EVENTCONTAINER *);
 
 #endif

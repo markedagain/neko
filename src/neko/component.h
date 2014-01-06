@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include "entity.h"
+#include "event.h"
 
 #define MAX_DEPENDS 8
 #define COMPONENT_INIT(a, b, c) component_initialize(a, b, &c, sizeof(c))
@@ -16,29 +17,10 @@ typedef struct component_t {
   unsigned int id;
   ENTITY *owner;
   unsigned int depends[MAX_DEPENDS];
-  /*
-  void (* update)(struct component_t *, float, float);
-  void (* create)(struct component_t *);
-  void (* destroy)(struct component_t *);
-  */
+  EVENTCONTAINER events;
 } COMPONENT;
 
 void component_initialize(COMPONENT *, unsigned int, void *, size_t);
 void component_depend(COMPONENT *, unsigned int);
 
 #endif
-
-/*
-
-typedef struct com_sprite_t {
-  char[80] spriteSource;
-  unsigned char currentFrame;
-  unsigned char isVisible;
-} COM_SPRITE;
-
-function com_sprite_update(COMPONENT *self, float dt, float elapsedTime) {
-  ((COM_SPRITE *)(*self))->currentFrame++;
-  self->owner->shouldDestroy = 1;
-}
-
-*/
