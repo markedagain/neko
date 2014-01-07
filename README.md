@@ -1,8 +1,7 @@
 NEKO ENGINE
 ===========
 
-This is the NEKO ENGINE, a game engine written in C, intended for use with
-DigiPen Institute of Technology's "Alpha Engine."
+This is the NEKO ENGINE, a game engine written in C, intended for use with DigiPen Institute of Technology's "Alpha Engine."
 
 
 Etymology
@@ -14,7 +13,9 @@ Etymology
 Features
 --------
 
-* Doubly-linked lists (of void pointers) (LIST, LIST_NODE)
-* Action lists (ALIST, ACTION)
-* Vectors (dynamically-size arrays of void pointers) (VECTOR)
+* Component-based engine architecture to facilitate rapid development
+* Incredibly basic vector math
+* Doubly-linked lists (of void pointers)
+* Action lists
+* Vectors (dynamically-size arrays of void pointers)
 * Style guide
