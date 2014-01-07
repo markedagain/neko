@@ -73,6 +73,7 @@ void entity_destroy(ENTITY *entity) {
     if (component->events.destroy == NULL)
       break;
     (component->events.destroy)(component, NULL);
+    free(component->data);
   }
   node = list_find(entity->space->entities, __entity_idEquals, &entity->id);
   list_remove(entity->space->entities, node);
