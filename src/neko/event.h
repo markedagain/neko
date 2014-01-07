@@ -7,12 +7,11 @@ typedef struct entity_t ENTITY;
 typedef struct component_t COMPONENT;
 
 typedef enum eventType_t {
-  EV_NONE,
   EV_INITIALIZE,
   EV_DESTROY,
   EV_LOGICUPDATE,
   EV_FRAMEUPDATE,
-  EV_COUNT
+  EV_LAST
 } EVENT_TYPE;
 
 typedef struct edata_update_t {
@@ -21,11 +20,19 @@ typedef struct edata_update_t {
 } EDATA_UPDATE;
 
 typedef struct eventcontainer_t {
-  void (*initialize)(COMPONENT *);
-  void (*destroy)(COMPONENT *);
-  void (*logicUpdate)(COMPONENT *, EDATA_UPDATE *);
-  void (*frameUpdate)(COMPONENT *, EDATA_UPDATE *);
+  union {
+    struct {
+      void (*initialize)(COMPONENT *);
+      void (*destroy)(COMPONENT *);
+      void (*logicUpdate)(COMPONENT *, EDATA_UPDATE *);
+      void (*frameUpdate)(COMPONENT *, EDATA_UPDATE *);
+    };
+    void *ids[EV_LAST];
+  };
 } EVENTCONTAINER;
+
+typedef void (*EVFN_GENERIC)(void);
+typedef void (*EVFN_UPDATE)(COMPONENT *, EDATA_UPDATE *);
 
 void eventcontainer_initialize(EVENTCONTAINER *);
 

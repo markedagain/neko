@@ -53,6 +53,7 @@ void game_update(GAME *game) {
           continue;
 
         component->events.logicUpdate(component, &updateEvent);
+        //((EVFN_UPDATE)component->events.ids[EV_LOGICUPDATE])(component, &updateEvent);
 
         ++i;
       }
