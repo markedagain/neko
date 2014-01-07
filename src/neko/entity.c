@@ -12,7 +12,6 @@
 ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *name) {
   ENTITY *entity = malloc(sizeof(ENTITY));
   entity->id = 0;
-  entity->type = 0;
   entity->parent = NULL;
   entity->space = space;
   strcpy(entity->name, name);
@@ -58,4 +57,24 @@ void *entity_getComponentData(ENTITY *entity, unsigned int componentId) {
   if (component == NULL)
     return NULL;
   return component->data;
+}
+
+int __entity_idEquals(void *entity, void *id) {
+  return ((ENTITY *)(entity))->id == *((int *)id);
+}
+
+void entity_destroy(ENTITY *entity) {
+  unsigned int i;
+  LIST_NODE *node;
+  for (i = 0; i < (int)vector_size(&entity->components); ++i) {
+    COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+    if (component == NULL)
+      break;
+    if (component->events.destroy == NULL)
+      break;
+    (component->events.destroy)(component, NULL);
+  }
+  node = list_find(entity->space->entities, __entity_idEquals, &entity->id);
+  list_remove(entity->space->entities, node);
+  free(node->data);
 }

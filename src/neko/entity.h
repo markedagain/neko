@@ -11,7 +11,6 @@ typedef struct component_t COMPONENT;
 
 typedef struct entity_t {
   unsigned int id;
-  unsigned int type;
   struct entity_t *parent;
   SPACE *space;
   char name[80];
@@ -28,5 +27,6 @@ void entity_attach(ENTITY *, ENTITY *);
 void *entity_connect(ENTITY *, component_callback);
 COMPONENT *entity_getComponent(ENTITY *, unsigned int);
 void *entity_getComponentData(ENTITY *, unsigned int);
+void entity_destroy(ENTITY *);
 
 #endif
