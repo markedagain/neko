@@ -42,12 +42,20 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
   return component->data;
 }
 
-void *entity_getComponent(ENTITY *entity, unsigned int componentId) {
+COMPONENT *entity_getComponent(ENTITY *entity, unsigned int componentId) {
   unsigned int i;
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
     if (component->id == componentId)
-      return component->data;
+      return component;
   }
   return NULL;
+}
+
+void *entity_getComponentData(ENTITY *entity, unsigned int componentId) {
+  COMPONENT *component;
+  component = entity_getComponent(entity, componentId);
+  if (component == NULL)
+    return NULL;
+  return component->data;
 }

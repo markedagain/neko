@@ -26,6 +26,7 @@ typedef void (*component_callback)(COMPONENT *);
 ENTITY *entity_create(SPACE *, entity_callback, char *);
 void entity_attach(ENTITY *, ENTITY *);
 void *entity_connect(ENTITY *, component_callback);
-void *entity_getComponent(ENTITY *, unsigned int);
+COMPONENT *entity_getComponent(ENTITY *, unsigned int);
+void *entity_getComponentData(ENTITY *, unsigned int);
 
 #endif

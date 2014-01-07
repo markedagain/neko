@@ -4,8 +4,8 @@
 #define __COMPONENT_H__
 
 #include <stdlib.h>
-#include "entity.h"
 #include "event.h"
+#include "entity.h"
 
 #define MAX_DEPENDS 8
 #define COMPONENT_INIT(a, b, c) component_initialize(a, b, &c, sizeof(c))

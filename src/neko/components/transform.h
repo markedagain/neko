@@ -6,6 +6,7 @@
 #include "../component.h"
 #include "../vectormath.h"
 #include "../hash.h"
+#include "../event.h"
 
 #define COMP_TRANSFORM HASH("COMP_TRANSFORM")
 
@@ -15,6 +16,8 @@ typedef struct cdata_transform_t {
   float rotation;
 } CDATA_TRANSFORM;
 
+
+void comp_transform_logicUpdate(COMPONENT *, EDATA_UPDATE *);
 void comp_transform(COMPONENT *);
 
 #endif

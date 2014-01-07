@@ -3,6 +3,9 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
+typedef struct entity_t ENTITY;
+typedef struct component_t COMPONENT;
+
 typedef enum eventType_t {
   EV_NONE,
   EV_INITIALIZE,
@@ -18,10 +21,10 @@ typedef struct edata_update_t {
 } EDATA_UPDATE;
 
 typedef struct eventcontainer_t {
-  void (*initialize)(void);
-  void (*destroy)(void);
-  void (*logicUpdate)(EDATA_UPDATE *);
-  void (*frameUpdate)(EDATA_UPDATE *);
+  void (*initialize)(COMPONENT *);
+  void (*destroy)(COMPONENT *);
+  void (*logicUpdate)(COMPONENT *, EDATA_UPDATE *);
+  void (*frameUpdate)(COMPONENT *, EDATA_UPDATE *);
 } EVENTCONTAINER;
 
 void eventcontainer_initialize(EVENTCONTAINER *);
