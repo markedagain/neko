@@ -16,5 +16,6 @@ typedef struct game_t {
 GAME *game_create(void);
 void game_destroy(GAME *);
 SPACE *game_addSpace(GAME *, char *);
+void game_update(GAME *);
 
 #endif

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I./src -Wall -ansi
+CFLAGS=-I./src -Wall
 
 NEKO_SOURCEDIR = src/neko
 NEKO_SRCS = $(shell find $(NEKO_SOURCEDIR) -name '*.c')

@@ -18,8 +18,6 @@ int main(int argc, char *argv[]) {
   ENTITY *player;
   ENTITY *weapon;
   SPACE *space;
-  EDATA_UPDATE update = {};
-  COMPONENT *comp;
   game = game_create();
   space = game_addSpace(game, "main");
   printf("Number of entities: %i\n", space->entities->count);
@@ -34,7 +32,6 @@ int main(int argc, char *argv[]) {
   printf("%s's parent: %s\n", weapon->name, weapon->parent->name);
   printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponentData(player, COMP_TRANSFORM))->translation.x);
   printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponentData(player, COMP_SPRITE))->source);
-  comp = entity_getComponent(player, COMP_TRANSFORM);
-  comp->events.logicUpdate(comp, &update);
+  game_update(game);
   return 0;
 }
