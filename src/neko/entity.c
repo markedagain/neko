@@ -24,8 +24,15 @@ ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *na
 }
 
 void entity_attach(ENTITY *child, ENTITY *parent) {
+  if (child->destroying || parent->destroying)
+    return;
   child->parent = parent;
   vector_append(&parent->children, child);
+}
+
+void entity_detach(ENTITY *child, ENTITY *parent) {
+  child->parent = NULL;
+  vector_remove(&parent->children, child);
 }
 
 void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
@@ -66,12 +73,23 @@ int __entity_idEquals(void *entity, void *id) {
 void entity_destroy(ENTITY *entity) {
   entity->destroying = 1;
   list_insert_end(entity->space->game->destroyingEntities, entity);
-  //__entity_destroy(entity);
 }
 
 void __entity_destroy(ENTITY *entity) {
   unsigned int i;
   LIST_NODE *node;
+  
+  if (entity->parent != NULL) {
+    entity_detach(entity, entity->parent);
+  }
+  if (vector_size(entity->children) > 0) {
+    unsigned int j;
+    unsigned int childrenCount = vector_size(entity->children);
+    for (j = 0; j < childrenCount; ++j) {
+      entity_detach(vector_get(entity->children, j), entity);
+    }
+  }
+  
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
     if (component == NULL)

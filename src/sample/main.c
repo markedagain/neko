@@ -20,22 +20,23 @@ int main(int argc, char *argv[]) {
   SPACE *space;
   game = game_create();
   space = game_addSpace(game, "main");
-  printf("Number of entities: %i\n", space->entities->count);
+  //printf("Number of entities: %i\n", space->entities->count);
   player = entity_create(space, arch_player, "player");
   weapon = entity_create(space, arch_player, "weapon");
   entity_attach(weapon, player);
-  printf("COMP_TRANSFORM's id: %u\n", COMP_TRANSFORM);
+  /*printf("COMP_TRANSFORM's id: %u\n", COMP_TRANSFORM);
   printf("COMP_SPRITE:'s id %u\n", COMP_SPRITE);
   printf("Entity ID: %u\n", player->id);
   printf("Number of spaces in game: %i\n", game->spaces->count);
   printf("Number of entities: %i\n", space->entities->count);
   printf("%s's parent: %s\n", weapon->name, weapon->parent->name);
   printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponentData(player, COMP_TRANSFORM))->translation.x);
-  printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponentData(player, COMP_SPRITE))->source);
+  printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponentData(player, COMP_SPRITE))->source);*/
   printf("---- FRAME 0 ----\n");
   printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
   printf("---- FRAME 1 ----\n");
+  printf("Destroying weapon!\n");
   entity_destroy(weapon);
   printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
