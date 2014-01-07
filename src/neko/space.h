@@ -5,7 +5,6 @@
 
 #include "linkedlist.h"
 #include "game.h"
-#include "space.h"
 
 typedef struct space_t {
   char name[32];

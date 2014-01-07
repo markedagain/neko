@@ -20,8 +20,7 @@ SPACE *game_addSpace(GAME *game, char *name) {
   return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
 }
 
-void game_update(GAME *game) {
-  EDATA_UPDATE updateEvent = {};
+void game_forEachActiveComponent(GAME * game, EVENT_TYPE event, void *data) {
   LIST_NODE *spaceNode;
 
   if (game->spaces->count == 0)
@@ -52,8 +51,9 @@ void game_update(GAME *game) {
         if (component->events.logicUpdate == NULL)
           continue;
 
-        component->events.logicUpdate(component, &updateEvent);
+        //component->events.logicUpdate(component, &updateEvent);
         //((EVFN_UPDATE)component->events.ids[EV_LOGICUPDATE])(component, &updateEvent);
+        component_doEvent(component, event, data);
 
         ++i;
       }
@@ -66,4 +66,9 @@ void game_update(GAME *game) {
     spaceNode = spaceNode->next;
   }
   while (spaceNode != NULL);
+}
+
+void game_update(GAME *game) {
+  EDATA_UPDATE updateEvent = {};
+  game_forEachActiveComponent(game, EV_LOGICUPDATE, &updateEvent);
 }

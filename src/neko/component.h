@@ -22,5 +22,6 @@ typedef struct component_t {
 
 void component_initialize(COMPONENT *, unsigned int, void *, size_t);
 void component_depend(COMPONENT *, unsigned int);
+void component_doEvent(COMPONENT *, EVENT_TYPE, void *);
 
 #endif

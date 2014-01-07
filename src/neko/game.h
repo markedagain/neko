@@ -5,8 +5,10 @@
 
 #include "linkedlist.h"
 #include "util.h"
+#include "event.h"
 
 typedef struct space_t SPACE;
+typedef struct component_t COMPONENT;
 
 typedef struct game_t {
   LIST *spaces;
@@ -16,6 +18,7 @@ typedef struct game_t {
 GAME *game_create(void);
 void game_destroy(GAME *);
 SPACE *game_addSpace(GAME *, char *);
+void game_forEachActiveComponent(GAME *, EVENT_TYPE, void *);
 void game_update(GAME *);
 
 #endif

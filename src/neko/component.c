@@ -25,3 +25,9 @@ void component_depend(COMPONENT *component, unsigned int dependId) {
   }
   /* THROW ERROR */
 }
+
+void component_doEvent(COMPONENT *component, EVENT_TYPE event, void *data) {
+  if (component->events.ids[event] == NULL)
+    return;
+  (component->events.ids[event])(component, data);
+}

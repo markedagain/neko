@@ -7,8 +7,13 @@
 #include "../entity.h"
 #include "../event.h"
 
-void comp_transform_logicUpdate(COMPONENT *self, EDATA_UPDATE *event) {
-  printf("THE TRANSFORM COMPONENT FROM %s IS UPDATING!\n", self->owner->name);
+void comp_transform_logicUpdate(COMPONENT *self, void *data) {
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)data;
+  printf("THE TRANSFORM COMPONENT FROM %s IS UPDATING! DELTATIME IS %f\n", self->owner->name, updateEvent->dt);
+}
+
+void comp_transform_destroy(COMPONENT *self, void *data) {
+  free(self->data);
 }
 
 void comp_transform(COMPONENT *self) {

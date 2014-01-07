@@ -22,17 +22,14 @@ typedef struct edata_update_t {
 typedef struct eventcontainer_t {
   union {
     struct {
-      void (*initialize)(COMPONENT *);
-      void (*destroy)(COMPONENT *);
-      void (*logicUpdate)(COMPONENT *, EDATA_UPDATE *);
-      void (*frameUpdate)(COMPONENT *, EDATA_UPDATE *);
+      void (*initialize)(COMPONENT *, void *);
+      void (*destroy)(COMPONENT *, void *);
+      void (*logicUpdate)(COMPONENT *, void *);
+      void (*frameUpdate)(COMPONENT *, void *);
     };
-    void *ids[EV_LAST];
+    void (*ids[EV_LAST])(COMPONENT *, void *);
   };
 } EVENTCONTAINER;
-
-typedef void (*EVFN_GENERIC)(void);
-typedef void (*EVFN_UPDATE)(COMPONENT *, EDATA_UPDATE *);
 
 void eventcontainer_initialize(EVENTCONTAINER *);
 
