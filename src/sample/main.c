@@ -33,11 +33,14 @@ int main(int argc, char *argv[]) {
   printf("%s's x-position: %f\n", player->name, ((CDATA_TRANSFORM *)entity_getComponentData(player, COMP_TRANSFORM))->translation.x);
   printf("%s's sprite source: %s\n", player->name, ((CDATA_SPRITE *)entity_getComponentData(player, COMP_SPRITE))->source);
   printf("---- FRAME 0 ----\n");
-  printf("Number of entities: %i\n", space->entities->count);
+  printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
   printf("---- FRAME 1 ----\n");
   entity_destroy(weapon);
-  printf("Number of entities: %i\n", space->entities->count);
+  printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
+  game_update(game);
+  printf("---- FRAME 2 ----\n");
+  printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
   return 0;
 }

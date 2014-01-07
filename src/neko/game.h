@@ -12,13 +12,15 @@ typedef struct component_t COMPONENT;
 
 typedef struct game_t {
   LIST *spaces;
+  LIST *destroyingEntities;
   unsigned char destroying;
 } GAME;
 
 GAME *game_create(void);
 void game_destroy(GAME *);
 SPACE *game_addSpace(GAME *, char *);
-void game_forEachActiveComponent(GAME *, EVENT_TYPE, void *);
+void game_invokeEvent(GAME *, EVENT_TYPE, void *);
 void game_update(GAME *);
+void game_cleanup(GAME *);
 
 #endif

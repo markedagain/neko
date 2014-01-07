@@ -64,6 +64,12 @@ int __entity_idEquals(void *entity, void *id) {
 }
 
 void entity_destroy(ENTITY *entity) {
+  entity->destroying = 1;
+  list_insert_end(entity->space->game->destroyingEntities, entity);
+  //__entity_destroy(entity);
+}
+
+void __entity_destroy(ENTITY *entity) {
   unsigned int i;
   LIST_NODE *node;
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {

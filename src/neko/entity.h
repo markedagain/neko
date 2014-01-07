@@ -28,5 +28,6 @@ void *entity_connect(ENTITY *, component_callback);
 COMPONENT *entity_getComponent(ENTITY *, unsigned int);
 void *entity_getComponentData(ENTITY *, unsigned int);
 void entity_destroy(ENTITY *);
+void __entity_destroy(ENTITY *);
 
 #endif

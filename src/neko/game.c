@@ -12,6 +12,7 @@
 GAME *game_create(void) {
   GAME *game = malloc(sizeof(GAME));
   game->spaces = list_create();
+  game->destroyingEntities = list_create();
   game->destroying = 0;
   return game;
 }
@@ -20,7 +21,7 @@ SPACE *game_addSpace(GAME *game, char *name) {
   return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
 }
 
-void game_forEachActiveComponent(GAME * game, EVENT_TYPE event, void *data) {
+void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   LIST_NODE *spaceNode;
 
   if (game->spaces->count == 0)
@@ -32,32 +33,36 @@ void game_forEachActiveComponent(GAME * game, EVENT_TYPE event, void *data) {
     SPACE *space = (SPACE *)(spaceNode->data);
     LIST_NODE *entityNode;
 
-    if (space->entities->count == 0)
+    if (space->entities->count == 0 || !space->active || space->destroying) {
+      spaceNode = spaceNode->next;
       continue;
+    }
 
     entityNode = space->entities->first;
 
     do {
       ENTITY *entity = (ENTITY *)(entityNode->data);
       unsigned int i = 0;
-      unsigned int entityCount = vector_size(&entity->components);
+      unsigned int componentCount = vector_size(&entity->components);
 
-      if (entityCount == 0)
+      if (componentCount == 0 || entity->destroying) {
+        entityNode = entityNode->next;
         continue;
+      }
 
       do {
         COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
 
-        if (component->events.logicUpdate == NULL)
+        if (component->events.logicUpdate == NULL) {
+          ++i;
           continue;
-
-        //component->events.logicUpdate(component, &updateEvent);
-        //((EVFN_UPDATE)component->events.ids[EV_LOGICUPDATE])(component, &updateEvent);
+        }
+        
         component_doEvent(component, event, data);
 
         ++i;
       }
-      while (i < entityCount - 1);
+      while (i < componentCount - 1);
 
       entityNode = entityNode->next;
     }
@@ -70,5 +75,14 @@ void game_forEachActiveComponent(GAME * game, EVENT_TYPE event, void *data) {
 
 void game_update(GAME *game) {
   EDATA_UPDATE updateEvent = {};
-  game_forEachActiveComponent(game, EV_LOGICUPDATE, &updateEvent);
+  game_invokeEvent(game, EV_LOGICUPDATE, &updateEvent);
+  game_cleanup(game);
+}
+
+void game_cleanup(GAME *game) {
+  while (game->destroyingEntities->count > 0) {
+    ENTITY *entity = (ENTITY *)(game->destroyingEntities->last->data);
+    __entity_destroy(entity);
+    list_remove(game->destroyingEntities, game->destroyingEntities->last);
+  }
 }
