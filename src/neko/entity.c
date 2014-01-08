@@ -19,7 +19,7 @@ ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *na
   vector_init(&entity->children);
   entity->destroying = 0;
   archetypeFunction(entity);
-  list_insert_end(space->entities, (void *)entity);
+  entity->node = list_insert_end(space->entities, (void *)entity);
   return entity;
 }
 
@@ -66,10 +66,6 @@ void *entity_getComponentData(ENTITY *entity, unsigned int componentId) {
   return component->data;
 }
 
-int __entity_idEquals(void *entity, void *id) {
-  return ((ENTITY *)(entity))->id == *((int *)id);
-}
-
 void entity_destroy(ENTITY *entity) {
   unsigned int childrenCount;
   unsigned int i;
@@ -89,8 +85,6 @@ void entity_destroy(ENTITY *entity) {
 
 void __entity_destroy(ENTITY *entity) {
   unsigned int i;
-  LIST_NODE *node;
-  void *final;
 
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
@@ -100,13 +94,8 @@ void __entity_destroy(ENTITY *entity) {
       (component->events.destroy)(component, NULL);
     free(component->data);
   }
-  node = list_find(entity->space->entities, __entity_idEquals, &entity->id);
   vector_free(&entity->components);
   vector_free(&entity->children);
 
-  // I'm pretty sure you need this line to avoid memory leaks
-  // but I can't for the life of me get it to work -Adam
-  //free(node->data);
-
-  list_remove_free(entity->space->entities, node);
+  list_remove_free(entity->space->entities, entity->node);
 }

@@ -6,6 +6,7 @@
 #include "vector.h"
 #include "space.h"
 #include "component.h"
+#include "linkedlist.h"
 
 typedef struct component_t COMPONENT;
 
@@ -16,6 +17,7 @@ typedef struct entity_t {
   char name[80];
   VECTOR components;
   VECTOR children;
+  LIST_NODE *node;
   unsigned char destroying;
 } ENTITY;
 
