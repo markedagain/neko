@@ -71,35 +71,42 @@ int __entity_idEquals(void *entity, void *id) {
 }
 
 void entity_destroy(ENTITY *entity) {
+  unsigned int childrenCount;
+  unsigned int i;
   entity->destroying = 1;
   list_insert_end(entity->space->game->destroyingEntities, entity);
+  childrenCount = vector_size(&entity->children);
+  for (i = 0; i < childrenCount; ++i) {
+    ENTITY *child;
+    child = (ENTITY *)vector_get(&entity->children, i);
+    entity_detach(child, entity);
+    child->destroying = 1;
+    list_insert_end(entity->space->game->destroyingEntities, child);
+  }
+  if (entity->parent != NULL)
+    entity_detach(entity, entity->parent);
 }
 
 void __entity_destroy(ENTITY *entity) {
   unsigned int i;
   LIST_NODE *node;
-  
-  if (entity->parent != NULL) {
-    entity_detach(entity, entity->parent);
-  }
-  if (vector_size(entity->children) > 0) {
-    unsigned int j;
-    unsigned int childrenCount = vector_size(entity->children);
-    for (j = 0; j < childrenCount; ++j) {
-      entity_detach(vector_get(entity->children, j), entity);
-    }
-  }
-  
+  void *final;
+
   for (i = 0; i < (int)vector_size(&entity->components); ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
     if (component == NULL)
       break;
-    if (component->events.destroy == NULL)
-      break;
-    (component->events.destroy)(component, NULL);
+    if (component->events.destroy != NULL)
+      (component->events.destroy)(component, NULL);
     free(component->data);
   }
   node = list_find(entity->space->entities, __entity_idEquals, &entity->id);
+  vector_free(&entity->components);
+  vector_free(&entity->children);
+
+  // I'm pretty sure you need this line to avoid memory leaks
+  // but I can't for the life of me get it to work -Adam
+  //free(node->data);
+
   list_remove(entity->space->entities, node);
-  free(node->data);
 }

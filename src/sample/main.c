@@ -37,10 +37,13 @@ int main(int argc, char *argv[]) {
   game_update(game);
   printf("---- FRAME 1 ----\n");
   printf("Destroying weapon!\n");
-  entity_destroy(weapon);
+  entity_destroy(player);
   printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
   printf("---- FRAME 2 ----\n");
+  printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
+  game_update(game);
+  printf("---- FRAME 3 ----\n");
   printf("Number of entities: %i (%i destroying)\n", space->entities->count, space->game->destroyingEntities->count);
   game_update(game);
   return 0;

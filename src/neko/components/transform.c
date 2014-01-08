@@ -13,7 +13,6 @@ void comp_transform_logicUpdate(COMPONENT *self, void *data) {
 }
 
 void comp_transform_destroy(COMPONENT *self, void *data) {
-  free(self->data);
 }
 
 void comp_transform(COMPONENT *self) {
