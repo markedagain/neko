@@ -11,6 +11,7 @@ typedef enum eventType_t {
   EV_DESTROY,
   EV_LOGICUPDATE,
   EV_FRAMEUPDATE,
+  EV_DRAW,
   EV_LAST
 } EVENT_TYPE;
 
@@ -26,6 +27,7 @@ typedef struct eventcontainer_t {
       void (*destroy)(COMPONENT *, void *);
       void (*logicUpdate)(COMPONENT *, void *);
       void (*frameUpdate)(COMPONENT *, void *);
+      void (*draw)(COMPONENT *, void *);
     };
     void (*ids[EV_LAST])(COMPONENT *, void *);
   };

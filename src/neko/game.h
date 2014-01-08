@@ -20,6 +20,7 @@ typedef struct game_t {
 GAME *game_create(void);
 void game_destroy(GAME *);
 SPACE *game_addSpace(GAME *, char *);
+SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
 void game_update(GAME *);
 void game_cleanup(GAME *);

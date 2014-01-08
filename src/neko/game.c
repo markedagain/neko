@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "game.h"
 #include "linkedlist.h"
 #include "space.h"
@@ -22,7 +23,22 @@ SPACE *game_addSpace(GAME *game, char *name) {
   SPACE *space = space_create(game, name);
   space->node = list_insert_end(game->spaces, space);
   return space;
-  //return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
+}
+
+SPACE *game_getSpace(GAME *game, char *name) {
+  LIST_NODE *node;
+
+  if (game->spaces->count == 0)
+    return NULL;
+  node = game->spaces->first;
+  while (node != NULL) {
+    SPACE *space;
+    space = (SPACE *)node->data;
+    if (strcmp(name, space->name) == 0)
+      return space;
+    node = node->next;
+  }
+  return NULL;
 }
 
 void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
@@ -37,7 +53,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
     SPACE *space = (SPACE *)(spaceNode->data);
     LIST_NODE *entityNode;
 
-    if (space->entities->count == 0 || !space->active || space->destroying) {
+    if (space->entities->count == 0 || !space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
       spaceNode = spaceNode->next;
       continue;
     }
