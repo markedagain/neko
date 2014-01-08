@@ -13,6 +13,7 @@ typedef struct component_t COMPONENT;
 typedef struct game_t {
   LIST *spaces;
   LIST *destroyingEntities;
+  LIST *destroyingSpaces;
   unsigned char destroying;
 } GAME;
 

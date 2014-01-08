@@ -12,9 +12,12 @@ typedef struct space_t {
   GAME *game;
   unsigned char active;
   unsigned char visible;
+  LIST_NODE *node;
   unsigned char destroying;
 } SPACE;
 
 SPACE *space_create(GAME *, char *);
+void space_destroy(SPACE *);
+void __space_destroy(SPACE *);
 
 #endif

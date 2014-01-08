@@ -13,12 +13,16 @@ GAME *game_create(void) {
   GAME *game = malloc(sizeof(GAME));
   game->spaces = list_create();
   game->destroyingEntities = list_create();
+  game->destroyingSpaces = list_create();
   game->destroying = 0;
   return game;
 }
 
 SPACE *game_addSpace(GAME *game, char *name) {
-  return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
+  SPACE *space = space_create(game, name);
+  space->node = list_insert_end(game->spaces, space);
+  return space;
+  //return (SPACE *)(list_insert_end(game->spaces, space_create(game, name))->data);
 }
 
 void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
@@ -57,7 +61,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
           ++i;
           continue;
         }
-        
+
         component_doEvent(component, event, data);
 
         ++i;
@@ -84,5 +88,10 @@ void game_cleanup(GAME *game) {
     ENTITY *entity = (ENTITY *)(game->destroyingEntities->last->data);
     __entity_destroy(entity);
     list_remove(game->destroyingEntities, game->destroyingEntities->last);
+  }
+  while (game->destroyingSpaces->count > 0) {
+    SPACE *space = (SPACE *)(game->destroyingSpaces->last->data);
+    __space_destroy(space);
+    list_remove(game->destroyingSpaces, game->destroyingSpaces->last);
   }
 }
