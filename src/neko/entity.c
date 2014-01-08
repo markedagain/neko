@@ -77,7 +77,8 @@ void entity_destroy(ENTITY *entity) {
     child = (ENTITY *)vector_get(&entity->children, i);
     entity_detach(child, entity);
     child->destroying = 1;
-    list_insert_end(entity->space->game->destroyingEntities, child);
+    if (entity->space != NULL)
+      list_insert_end(entity->space->game->destroyingEntities, child);
   }
   if (entity->parent != NULL)
     entity_detach(entity, entity->parent);

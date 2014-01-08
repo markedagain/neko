@@ -20,15 +20,24 @@ SPACE *space_create(GAME *game, char *name) {
 }
 
 void space_destroy(SPACE *space) {
+  LIST_NODE *node;
   space->destroying = 1;
   list_insert_end(space->game->destroyingSpaces, space);
-  while (space->entities->count > 0) {
-    ENTITY *entity = (ENTITY *)space->entities->last->data;
-    if (entity->destroying)
+  if (space->entities->count == 0)
+    return;
+  node = space->entities->first;
+  while (node != NULL) {
+    LIST_NODE *next;
+    ENTITY *entity = (ENTITY *)node->data;
+    if (entity->destroying) {
+      node = node->next;
       continue;
+    }
     entity->space = NULL;
     entity_destroy(entity);
-    list_remove(space->entities, space->entities->last);
+    next = node->next;
+    list_remove(space->entities, node);
+    node = next;
   }
 }
 
