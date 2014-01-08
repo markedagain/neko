@@ -9,7 +9,7 @@
 #include "vector.h"
 #include "component.h"
 
-ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *name) {
+/*ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *name) {
   ENTITY *entity = malloc(sizeof(ENTITY));
   entity->id = 0;
   entity->parent = NULL;
@@ -21,7 +21,7 @@ ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *na
   archetypeFunction(entity);
   entity->node = list_insert_end(space->entities, (void *)entity);
   return entity;
-}
+}*/
 
 void entity_attach(ENTITY *child, ENTITY *parent) {
   if (child->destroying || parent->destroying)

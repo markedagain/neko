@@ -5,6 +5,7 @@
 
 #include "linkedlist.h"
 #include "game.h"
+#include "entity.h"
 
 typedef struct space_t {
   char name[32];
@@ -16,7 +17,9 @@ typedef struct space_t {
   unsigned char destroying;
 } SPACE;
 
-SPACE *space_create(GAME *, char *);
+//SPACE *space_create(GAME *, char *);
+ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
+ENTITY *space_getEntity(SPACE *, char *);
 void space_destroy(SPACE *);
 void __space_destroy(SPACE *);
 

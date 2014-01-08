@@ -24,7 +24,7 @@ typedef struct entity_t {
 typedef void (*entity_callback)(ENTITY *);
 typedef void (*component_callback)(COMPONENT *);
 
-ENTITY *entity_create(SPACE *, entity_callback, char *);
+//ENTITY *entity_create(SPACE *, entity_callback, char *);
 void entity_attach(ENTITY *, ENTITY *);
 void *entity_connect(ENTITY *, component_callback);
 COMPONENT *entity_getComponent(ENTITY *, unsigned int);

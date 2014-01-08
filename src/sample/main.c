@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) {
   game = game_create();
   space = game_addSpace(game, "main");
   //printf("Number of entities: %i\n", space->entities->count);
-  player = entity_create(space, arch_player, "player");
-  weapon = entity_create(space, arch_weapon, "weapon");
-  weapon2 = entity_create(space, arch_weapon, "weapon");
+  player = space_addEntity(space, arch_player, "player");
+  weapon = space_addEntity(space, arch_weapon, "weapon");
+  weapon2 = space_addEntity(space, arch_weapon, "weapon");
   entity_attach(weapon2, player);
   /*printf("COMP_TRANSFORM's id: %u\n", COMP_TRANSFORM);
   printf("COMP_SPRITE:'s id %u\n", COMP_SPRITE);
