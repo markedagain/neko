@@ -8,6 +8,7 @@
 #include "../neko/linkedlist.h"
 #include "../neko/vector.h"
 #include "archetypes/player.h"
+#include "archetypes/weapon.h"
 #include "../neko/components/transform.h"
 #include "../neko/components/sprite.h"
 #include "../neko/hash.h"
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
   space = game_addSpace(game, "main");
   //printf("Number of entities: %i\n", space->entities->count);
   player = entity_create(space, arch_player, "player");
-  weapon = entity_create(space, arch_player, "weapon");
+  weapon = entity_create(space, arch_weapon, "weapon");
   entity_attach(weapon, player);
   /*printf("COMP_TRANSFORM's id: %u\n", COMP_TRANSFORM);
   printf("COMP_SPRITE:'s id %u\n", COMP_SPRITE);

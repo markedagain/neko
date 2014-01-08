@@ -108,5 +108,5 @@ void __entity_destroy(ENTITY *entity) {
   // but I can't for the life of me get it to work -Adam
   //free(node->data);
 
-  list_remove(entity->space->entities, node);
+  list_remove_free(entity->space->entities, node);
 }
