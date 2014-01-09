@@ -19,9 +19,6 @@
     <ClCompile Include="src\neko\linkedlist.c">
       <Filter>Neko Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\main.c">
-      <Filter>Neko Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\neko\space.c">
       <Filter>Neko Engine</Filter>
     </ClCompile>
@@ -36,6 +33,10 @@
     </ClCompile>
     <ClCompile Include="src\neko\components\transform.c">
       <Filter>Neko Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gss\main.c" />
+    <ClCompile Include="src\gss\archetypes\test.c">
+      <Filter>Archetypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +127,9 @@
     <ClInclude Include="src\neko\components\transform.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\gss\archetypes\test.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AlphaEngine">
@@ -136,6 +140,12 @@
     </Filter>
     <Filter Include="Neko Engine\Components">
       <UniqueIdentifier>{b2c88b49-6281-45de-8035-a7414925fb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{37179502-06a0-4071-96d1-63839d82c670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archetypes">
+      <UniqueIdentifier>{034f99f8-5ff8-49f3-9566-a8a4950bc7d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

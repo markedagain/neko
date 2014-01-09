@@ -3,12 +3,15 @@
 #include "AEEngine.h"
 #include "../neko/game.h"
 #include "../neko/space.h"
+#include "archetypes/test.h"
 
 #pragma comment (lib, "lib/Alpha_Engine.lib")
 
 int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
 	GAME *game;
+  SPACE *space;
+  ENTITY *player;
 
 	// Variable declaration
 	unsigned char colors[16];				// 2x2 image
@@ -37,6 +40,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 	AESysInit (&sysInitInfo);
 
 	game = game_create();
+  space = game_addSpace(game, "main");
+  player = space_addEntity(space, arch_test, "player");
 	
 	// reset the system modules
 	AESysReset();
@@ -177,7 +182,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 		AEGfxSetBlendColor(0.0f, 0.0f, 0.0, 0.0f);
 		AEGfxMeshDraw(pMeshLine, AE_GFX_MDM_LINES_STRIP);
 
-
+    game_draw(game);
+#if 0
 		// Drawing object 1
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		// Set position for object 1
@@ -225,7 +231,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 		AEGfxSetBlendColor(0.5f, 0.0f, 0.0, 0.75f);
 		// Drawing the mesh (list of triangles)
 		AEGfxMeshDraw(pMesh2, AE_GFX_MDM_TRIANGLES);
-
+#endif
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();

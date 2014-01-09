@@ -21,7 +21,8 @@
 }*/
 
 ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name) {
-  ENTITY *entity = malloc(sizeof(ENTITY));
+  ENTITY *entity = (ENTITY *)malloc(sizeof(ENTITY));
+  int componentCount;
   entity->id = 0;
   entity->parent = NULL;
   entity->space = space;
@@ -31,6 +32,15 @@ ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char 
   entity->destroying = 0;
   if (archetypeFunction != NULL)
     archetypeFunction(entity);
+  componentCount = vector_size(&entity->components);
+  if (componentCount > 0) {
+    int i;
+    for (i = 0; i < componentCount; ++i) {
+      COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+      if (component->events.initialize != NULL)
+        component->events.initialize(component, NULL);
+    }
+  }
   entity->node = list_insert_end(space->entities, (void *)entity);
   return entity;
 }

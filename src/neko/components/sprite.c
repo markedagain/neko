@@ -10,9 +10,6 @@
 
 void comp_sprite_initialize(COMPONENT *self, void *data) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
-  EDATA_SPRITE *initData = (EDATA_SPRITE *)data;
-
-  comData->source = initData->source;
 
   comData->texture = AEGfxTextureLoad(comData->source);
   AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
@@ -38,7 +35,7 @@ void comp_sprite_destroy(COMPONENT *self, void *data) {
 }
 
 void comp_sprite_draw(COMPONENT *self, void *data) {
-  CDATA_SPRITE* comData = (CDATA_SPRITE *)malloc(sizeof(CDATA_SPRITE));
+  CDATA_SPRITE* comData = (CDATA_SPRITE *)data;
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxSetPosition(100.0f, -60.0f);
 	// Set texture for object 2
