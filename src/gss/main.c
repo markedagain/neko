@@ -2,7 +2,7 @@
 
 #include "AEEngine.h"
 
-#pragma comment (lib, "Alpha_Engine.lib")
+#pragma comment (lib, "lib/Alpha_Engine.lib")
 
 int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
@@ -85,7 +85,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
 
 	// Texture 1: From file
-	pTex1 = AEGfxTextureLoad("PlanetTexture.png");
+	pTex1 = AEGfxTextureLoad("data/textures/PlanetTexture.png");
 	AE_ASSERT_MESG(pTex1, "Failed to create texture1!!");
 
 	// Texture 2: From memory
