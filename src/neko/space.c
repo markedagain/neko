@@ -29,7 +29,8 @@ ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char 
   vector_init(&entity->components);
   vector_init(&entity->children);
   entity->destroying = 0;
-  archetypeFunction(entity);
+  if (archetypeFunction != NULL)
+    archetypeFunction(entity);
   entity->node = list_insert_end(space->entities, (void *)entity);
   return entity;
 }

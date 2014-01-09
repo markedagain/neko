@@ -100,7 +100,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 }
 
 void game_update(GAME *game) {
-  EDATA_UPDATE updateEvent = {};
+  EDATA_UPDATE updateEvent = { 0 };
   game_invokeEvent(game, EV_LOGICUPDATE, &updateEvent);
   game_cleanup(game);
 }

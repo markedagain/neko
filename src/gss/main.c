@@ -1,11 +1,15 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "AEEngine.h"
+#include "../neko/game.h"
+#include "../neko/space.h"
 
 #pragma comment (lib, "lib/Alpha_Engine.lib")
 
 int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
+	GAME *game;
+
 	// Variable declaration
 	unsigned char colors[16];				// 2x2 image
 	float obj1X = 0.0f, obj1Y = 0.0f;		// Position variables for object 1
@@ -17,6 +21,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 	AEGfxTexture *pTex2;					// Pointer to Texture (Image)
 	float camX, camY;						// Used to temporary store camera position
 	float alpha = 1.0f;
+
 
 	// Initialize the system
 	AESysInitInfo sysInitInfo;
@@ -31,9 +36,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 	sysInitInfo.mWindowStyle		= WS_OVERLAPPEDWINDOW;//WS_POPUP | WS_VISIBLE | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;;
 	AESysInit (&sysInitInfo);
 
+	game = game_create();
+	
 	// reset the system modules
 	AESysReset();
-
 
 	// Informing the library that we're about to start adding triangles
 	AEGfxMeshStart();
@@ -106,6 +112,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 	// Game Loop
 	while(gGameRunning)
 	{
+		game_update(game);
 		// Informing the system about the loop's start
 		AESysFrameStart();
 
@@ -226,6 +233,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(VK_ESCAPE) || 0 == AESysDoesWindowExist())
 			gGameRunning = 0;
+		//OutputDebugString("Hello World\n");
 	}
 
 	// Freeing the objects and textures

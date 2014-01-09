@@ -112,6 +112,17 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\gss\main.c" />
+    <ClCompile Include="src\neko\actionlist.c" />
+    <ClCompile Include="src\neko\component.c" />
+    <ClCompile Include="src\neko\components\sprite.c" />
+    <ClCompile Include="src\neko\components\transform.c" />
+    <ClCompile Include="src\neko\entity.c" />
+    <ClCompile Include="src\neko\event.c" />
+    <ClCompile Include="src\neko\game.c" />
+    <ClCompile Include="src\neko\linkedlist.c" />
+    <ClCompile Include="src\neko\space.c" />
+    <ClCompile Include="src\neko\vector.c" />
+    <ClCompile Include="src\neko\vectormath.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\alpha\3DPipelineTools.h" />
@@ -129,6 +140,23 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\alpha\AETypes.h" />
     <ClInclude Include="src\alpha\AEUtil.h" />
     <ClInclude Include="src\alpha\AEVec2.h" />
+    <ClInclude Include="src\neko\actionlist.h" />
+    <ClInclude Include="src\neko\component.h" />
+    <ClInclude Include="src\neko\components\sprite.h" />
+    <ClInclude Include="src\neko\components\transform.h" />
+    <ClInclude Include="src\neko\easings.h" />
+    <ClInclude Include="src\neko\entity.h" />
+    <ClInclude Include="src\neko\event.h" />
+    <ClInclude Include="src\neko\game.h" />
+    <ClInclude Include="src\neko\hash.h" />
+    <ClInclude Include="src\neko\linkedlist.h" />
+    <ClInclude Include="src\neko\space.h" />
+    <ClInclude Include="src\neko\util.h" />
+    <ClInclude Include="src\neko\vector.h" />
+    <ClInclude Include="src\neko\vectormath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\neko\easings.c.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

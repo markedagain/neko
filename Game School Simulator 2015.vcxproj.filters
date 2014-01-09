@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\neko\actionlist.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\component.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\entity.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\event.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\game.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\linkedlist.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gss\main.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\space.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\vector.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\vectormath.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\components\sprite.c">
+      <Filter>Neko Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\components\transform.c">
+      <Filter>Neko Engine\Components</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\alpha\AECollision.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEEngine.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEExport.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEFrameRateController.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEGameStateMgr.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEGraphics.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEInput.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AELineSegment2.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEMath.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEMtx33.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AESystem.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AETypes.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEUtil.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\AEVec2.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\alpha\3DPipelineTools.h">
+      <Filter>AlphaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\actionlist.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\component.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\easings.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\entity.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\event.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\game.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\hash.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\linkedlist.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\space.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\util.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\vector.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\vectormath.h">
+      <Filter>Neko Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\components\sprite.h">
+      <Filter>Neko Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\components\transform.h">
+      <Filter>Neko Engine\Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="AlphaEngine">
+      <UniqueIdentifier>{41172261-efb2-4b05-a78e-b06e3e15f505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neko Engine">
+      <UniqueIdentifier>{7362df64-ca25-4640-8160-03570d108033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neko Engine\Components">
+      <UniqueIdentifier>{b2c88b49-6281-45de-8035-a7414925fb03}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\neko\easings.c.txt">
+      <Filter>Neko Engine</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
