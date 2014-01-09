@@ -105,6 +105,10 @@ void game_update(GAME *game) {
   game_cleanup(game);
 }
 
+void game_draw(GAME *game) {
+  game_invokeEvent(game, EV_DRAW, NULL);
+}
+
 void game_cleanup(GAME *game) {
   while (game->destroyingEntities->count > 0) {
     ENTITY *entity = (ENTITY *)(game->destroyingEntities->last->data);
