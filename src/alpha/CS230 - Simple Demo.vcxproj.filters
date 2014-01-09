@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main_CS230.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="AE Engine Header Files">
+      <UniqueIdentifier>{c8a63676-9499-4ccf-a092-a3e8da975038}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AECollision.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEEngine.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEExport.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEFrameRateController.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEGameStateMgr.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEGraphics.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEInput.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AELineSegment2.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEMath.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEMtx33.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AESystem.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AETypes.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEUtil.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AEVec2.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3DPipelineTools.h">
+      <Filter>AE Engine Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
