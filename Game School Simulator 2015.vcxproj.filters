@@ -2,47 +2,47 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\neko\actionlist.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\component.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\entity.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\event.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\game.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\linkedlist.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\space.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\vector.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\vectormath.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\gss2015\main.c" />
     <ClCompile Include="src\neko\sprite.c">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\transform.c">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\gss2015\test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\util.c">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\soundemitter.c">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\gss2015\playerlogic.c">
       <Filter>Components</Filter>
@@ -93,52 +93,52 @@
       <Filter>AlphaEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\actionlist.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\component.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\easings.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\entity.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\event.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\game.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\hash.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\linkedlist.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\space.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\util.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\vector.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\vectormath.h">
-      <Filter>Neko Engine</Filter>
+      <Filter>Neko Engine %28BACKUP%29</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\sprite.h">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\transform.h">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\gss2015\test.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\soundemitter.h">
-      <Filter>Neko Engine\Components</Filter>
+      <Filter>Neko Engine %28BACKUP%29\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\gss2015\playerlogic.h">
       <Filter>Components</Filter>
@@ -148,17 +148,17 @@
     <Filter Include="AlphaEngine">
       <UniqueIdentifier>{41172261-efb2-4b05-a78e-b06e3e15f505}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Neko Engine">
-      <UniqueIdentifier>{7362df64-ca25-4640-8160-03570d108033}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neko Engine\Components">
-      <UniqueIdentifier>{b2c88b49-6281-45de-8035-a7414925fb03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{37179502-06a0-4071-96d1-63839d82c670}</UniqueIdentifier>
     </Filter>
     <Filter Include="Archetypes">
       <UniqueIdentifier>{034f99f8-5ff8-49f3-9566-a8a4950bc7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neko Engine %28BACKUP%29">
+      <UniqueIdentifier>{7362df64-ca25-4640-8160-03570d108033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neko Engine %28BACKUP%29\Components">
+      <UniqueIdentifier>{b2c88b49-6281-45de-8035-a7414925fb03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

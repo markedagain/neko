@@ -4,6 +4,7 @@
 #include "../neko/game.h"
 #include "../neko/space.h"
 #include "test.h"
+#include "NekoEngine.h"
 
 #pragma comment (lib, "lib/Alpha_Engine.lib")
 

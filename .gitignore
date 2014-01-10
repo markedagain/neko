@@ -4,3 +4,4 @@ tmp
 *.suo
 *.sdf
 *.vcxproj.user
+*.exp
