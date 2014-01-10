@@ -14,18 +14,20 @@ void comp_sprite_initialize(COMPONENT *self, void *event) {
   float w = comData->size.x / 2;
   float h = comData->size.y / 2;
 
-  comData->texture = AEGfxTextureLoad(comData->source);
-  AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
-
   AEGfxMeshStart();
-  AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
-               w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
-               -h, w, 0xFFFFFFFF, 0.0f, 0.0f);
+	AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
+              w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
+              -h, w, 0xFFFFFFFF, 0.0f, 0.0f);
   AEGfxTriAdd( w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
-               w,  h, 0xFFFFFFFF, 1.0f, 0.0f,
-               -w, h, 0xFFFFFFFF, 0.0f, 0.0f);
-  comData->mesh = AEGfxMeshEnd();
+              w,  h, 0xFFFFFFFF, 1.0f, 0.0f,
+              -w, h, 0xFFFFFFFF, 0.0f, 0.0f);
+	comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
+
+  if (comData->source != NULL) {
+    comData->texture = AEGfxTextureLoad(comData->source);
+    AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
+  }
 }
 
 void comp_sprite_logicUpdate(COMPONENT *self, void *event) {
@@ -43,18 +45,20 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   MATRIX3 transform = { 0 };
   if (!comData->visible)
     return;
-  AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
   matrix3_identity(&transform);
-  
   matrix3_rotate(&transform, trans->rotation);
   matrix3_scale(&transform, &trans->scale);
   matrix3_translate(&transform, &trans->translation);
-  AEGfxSetTransform(transform.m);
   
-
-  AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
+  if (comData->texture == NULL)
+    AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+  else
+    AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
+  AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
+  AEGfxSetTransform(transform.m);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 

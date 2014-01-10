@@ -39,9 +39,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -73,9 +73,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)\lib\*.dll" "$(OutDir)"
-mkdir "$(OutDir)\data"
-xcopy /y "$(SolutionDir)\data\*" "$(OutDir)\data\" /e</Command>
+      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
+mkdir "$(OutDir)data"
+xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,9 +103,9 @@ xcopy /y "$(SolutionDir)\data\*" "$(OutDir)\data\" /e</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)\lib\*.dll" "$(OutDir)"
-mkdir "$(OutDir)\data"
-xcopy /y "$(SolutionDir)\data\*" "$(OutDir)\data\" /e</Command>
+      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
+mkdir "$(OutDir)data"
+xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>

@@ -14,8 +14,8 @@ void arch_test(ENTITY *entity) {
   entity->id = ARCH_TEST;
 
   transform = (CDATA_TRANSFORM *)entity_connect(entity, comp_transform);
-  transform->translation.x = 100.0f;
-  transform->translation.y = -60.0f;
+  transform->translation.x = 0.0f;
+  transform->translation.y = 0.0f;
 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   sprite->source = "data/textures/PlanetTexture.png";

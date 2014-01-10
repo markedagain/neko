@@ -5,7 +5,6 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
-#include "../AlphaEngine/AEEngine.h"
 
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 
