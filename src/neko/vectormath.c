@@ -77,3 +77,39 @@ VEC3 vec3_cross(VEC3 *a, VEC3 *b) {
   c.z = a->x * b->y - a->y * b->x;
   return c;
 }
+
+VEC4 vec4_add(VEC4 *a, VEC4 *b) {
+  VEC4 c = {0};
+  c.x = a->x + b->x;
+  c.y = a->y + b->y;
+  c.z = a->z + b->z;
+  c.w = a->w + b->w;
+  return c;
+}
+
+VEC4 vec4_sub(VEC4 *a, VEC4 *b) {
+  VEC4 c = {0};
+  c.x = a->x - b->x;
+  c.y = a->y - b->y;
+  c.z = a->z - b->z;
+  c.w = a->w - b->w;
+  return c;
+}
+
+VEC4 vec4_mul(VEC4 *a, VEC4 *b) {
+  VEC4 c = {0};
+  c.x = a->x * b->x;
+  c.y = a->y * b->y;
+  c.z = a->z * b->z;
+  c.w = a->w * b->w;
+  return c;
+}
+
+VEC4 vec4_div(VEC4 *a, VEC4 *b) {
+  VEC4 c = {0};
+  c.x = a->x / b->x;
+  c.y = a->y / b->y;
+  c.z = a->z / b->z;
+  c.w = a->w / b->w;
+  return c;
+}

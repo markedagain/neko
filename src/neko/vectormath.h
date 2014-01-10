@@ -14,6 +14,18 @@ typedef struct vec3_t {
   float z;
 } VEC3;
 
+typedef struct vec4_t {
+  union {
+    struct {
+      float x, y, z, w;
+    };
+    struct {
+      float r, g, b, a;
+    };
+    float v[4];
+  };
+} VEC4;
+
 VEC2 vec2_add(VEC2 *, VEC2 *);
 VEC2 vec2_sub(VEC2 *, VEC2 *);
 VEC2 vec2_mul(VEC2 *, VEC2 *);
@@ -26,5 +38,10 @@ VEC3 vec3_mul(VEC3 *, VEC3 *);
 VEC3 vec3_div(VEC3 *, VEC3 *);
 float vec3_dot(VEC3 *, VEC3 *);
 VEC3 vec3_cross(VEC3 *, VEC3 *);
+
+VEC4 vec4_add(VEC4 *, VEC4 *);
+VEC4 vec4_sub(VEC4 *, VEC4 *);
+VEC4 vec4_mul(VEC4 *, VEC4 *);
+VEC4 vec4_div(VEC4 *, VEC4 *);
 
 #endif

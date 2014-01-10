@@ -16,21 +16,12 @@ void comp_sprite_initialize(COMPONENT *self, void *data) {
   AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
 
   AEGfxMeshStart();
-  /*AEGfxTriAdd(-32.0f, -32.0f, 0xFFFFFFFF, 0.0f, 1.0f,
+  AEGfxTriAdd(-32.0f, -32.0f, 0xFFFFFFFF, 0.0f, 1.0f,
                32.0f, -32.0f, 0xFFFFFFFF, 1.0f, 1.0f,
                -32.0f, 32.0f, 0xFFFFFFFF, 0.0f, 0.0f);
   AEGfxTriAdd( 32.0f, -32.0f, 0xFFFFFFFF, 1.0f, 1.0f,
                32.0f,  32.0f, 0xFFFFFFFF, 1.0f, 0.0f,
-               -32.0f, 32.0f, 0xFFFFFFFF, 0.0f, 0.0f);*/
-  AEGfxTriAdd(
-    -30.0f, -30.0f, 0x00FF00FF, 0.0f, 1.0f,
-    30.0f,  -30.0f, 0x00FFFF00, 1.0f, 1.0f,
-    -30.0f,  30.0f, 0x00F00FFF, 0.0f, 0.0f);
-
-  AEGfxTriAdd(
-    30.0f, -30.0f, 0x00FFFFFF, 1.0f, 1.0f,
-    30.0f,  30.0f, 0x00FFFFFF, 1.0f, 0.0f,
-    -30.0f,  30.0f, 0x00FFFFFF, 0.0f, 0.0f);
+               -32.0f, 32.0f, 0xFFFFFFFF, 0.0f, 0.0f);
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }
@@ -49,11 +40,9 @@ void comp_sprite_draw(COMPONENT *self, void *data) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetPosition(trans->translation.x, trans->translation.y);
-  //AEGfxSetPosition(100.0f, -60.0f);
   AEGfxTextureSet(comData->texture, 0.0f, 0.0f);
-  //AEGfxSetTransparency(1.0f);
-  //AEGfxSetBlendColor(0.0f, 0.0f, 0.0, 0.0f);
-  // Drawing the mesh (list of triangles)
+  AEGfxSetTransparency(comData->color.a);
+  AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 
@@ -62,6 +51,12 @@ void comp_sprite(COMPONENT *self) {
   data.mesh = NULL;
   data.source = NULL;
   data.texture = NULL;
+  data.color.r = 1;
+  data.color.g = 1;
+  data.color.b = 1;
+  data.color.a = 1;
+  data.offset.x = 0;
+  data.offset.y = 0;
 
   COMPONENT_INIT(self, COMP_SPRITE, data);
   component_depend(self, COMP_TRANSFORM);
