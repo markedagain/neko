@@ -24,14 +24,9 @@ GAME *game_create(void) {
 }
 
 SPACE *game_addSpace(GAME *game, char *name) {
-  SPACE *space = (SPACE *)malloc(sizeof(SPACE));
-  space->entities = list_create();
+  SPACE *space = space_create(name);
   space->game = game;
-  strcpy(space->name, name);
-  space->active = 1;
-  space->visible = 1;
   space->node = list_insert_end(game->spaces, space);
-  space->destroying = 0;
   return space;
 }
 

@@ -5,7 +5,7 @@
 #include "../neko/component.h"
 #include "../neko/transform.h"
 #include "../neko/sprite.h"
-#include "playerLogic.h"
+#include "playerlogic.h"
 
 void arch_test(ENTITY *entity) {
   CDATA_TRANSFORM *transform;

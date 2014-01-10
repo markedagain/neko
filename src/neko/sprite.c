@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include "sprite.h"
 #include "component.h"
 #include "entity.h"
@@ -10,7 +9,7 @@
 #include "../alpha/AEEngine.h"
 #include "util.h"
 
-void comp_sprite_initialize(COMPONENT *self, void *data) {
+void comp_sprite_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
   float w = comData->size.x / 2;
   float h = comData->size.y / 2;
@@ -29,16 +28,16 @@ void comp_sprite_initialize(COMPONENT *self, void *data) {
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }
 
-void comp_sprite_logicUpdate(COMPONENT *self, void *data) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)data;
+void comp_sprite_logicUpdate(COMPONENT *self, void *event) {
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 }
 
-void comp_sprite_destroy(COMPONENT *self, void *data) {
+void comp_sprite_destroy(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
   AEGfxMeshFree(comData->mesh);
 }
 
-void comp_sprite_draw(COMPONENT *self, void *data) {
+void comp_sprite_draw(COMPONENT *self, void *event) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   MATRIX3 transform = { 0 };

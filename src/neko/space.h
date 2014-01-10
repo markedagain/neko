@@ -3,13 +3,43 @@
 #ifndef __SPACE_H__
 #define __SPACE_H__
 
+#define DEFAULT_FRAMERATE 60
+
 #include "linkedlist.h"
 #include "game.h"
 #include "entity.h"
+#include "util.h"
+#include "vectormath.h"
+
+typedef struct sysTime_t {
+  float dt;
+  float framerate;
+  float timeScale;
+  bool paused;
+  double currentTime;
+} SYS_TIME;
+
+typedef struct sysCamera_t {
+  struct {
+    VEC3 translation;
+    VEC2 scale;
+    float rotation;
+  } transform;
+} SYS_CAMERA;
+
+typedef struct sysSound_t {
+  bool positional;
+  float volume;
+} SYS_SOUND;
 
 typedef struct space_t {
   char name[32];
   LIST *entities;
+  struct {
+    SYS_TIME time;
+    SYS_CAMERA camera;
+    SYS_SOUND sound;
+  } systems;
   GAME *game;
   unsigned char active;
   unsigned char visible;
@@ -17,7 +47,7 @@ typedef struct space_t {
   unsigned char destroying;
 } SPACE;
 
-//SPACE *space_create(GAME *, char *);
+SPACE *space_create(char *);
 ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
 ENTITY *space_getEntity(SPACE *, char *);
 void space_destroy(SPACE *);

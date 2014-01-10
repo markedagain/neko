@@ -63,7 +63,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
@@ -91,7 +91,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
@@ -114,7 +114,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\gss\main.c" />
-    <ClCompile Include="src\gss\playerLogic.c" />
+    <ClCompile Include="src\gss\playerlogic.c" />
     <ClCompile Include="src\gss\test.c" />
     <ClCompile Include="src\neko\actionlist.c" />
     <ClCompile Include="src\neko\component.c" />
@@ -122,6 +122,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClCompile Include="src\neko\event.c" />
     <ClCompile Include="src\neko\game.c" />
     <ClCompile Include="src\neko\linkedlist.c" />
+    <ClCompile Include="src\neko\soundemitter.c" />
     <ClCompile Include="src\neko\space.c" />
     <ClCompile Include="src\neko\sprite.c" />
     <ClCompile Include="src\neko\transform.c" />
@@ -145,7 +146,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\alpha\AETypes.h" />
     <ClInclude Include="src\alpha\AEUtil.h" />
     <ClInclude Include="src\alpha\AEVec2.h" />
-    <ClInclude Include="src\gss\playerLogic.h" />
+    <ClInclude Include="src\gss\playerlogic.h" />
     <ClInclude Include="src\gss\test.h" />
     <ClInclude Include="src\neko\actionlist.h" />
     <ClInclude Include="src\neko\component.h" />
@@ -155,6 +156,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\neko\game.h" />
     <ClInclude Include="src\neko\hash.h" />
     <ClInclude Include="src\neko\linkedlist.h" />
+    <ClInclude Include="src\neko\soundemitter.h" />
     <ClInclude Include="src\neko\space.h" />
     <ClInclude Include="src\neko\sprite.h" />
     <ClInclude Include="src\neko\transform.h" />

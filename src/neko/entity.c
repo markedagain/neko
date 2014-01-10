@@ -1,5 +1,9 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "entity.h"
@@ -9,19 +13,20 @@
 #include "vector.h"
 #include "component.h"
 
-/*ENTITY *entity_create(SPACE *space, void(*archetypeFunction)(ENTITY *), char *name) {
-  ENTITY *entity = malloc(sizeof(ENTITY));
+ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name) {
+  ENTITY *entity = (ENTITY *)malloc(sizeof(ENTITY));
   entity->id = 0;
   entity->parent = NULL;
-  entity->space = space;
+  entity->space = NULL;
   strcpy(entity->name, name);
   vector_init(&entity->components);
   vector_init(&entity->children);
   entity->destroying = 0;
-  archetypeFunction(entity);
-  entity->node = list_insert_end(space->entities, (void *)entity);
+  if (archetypeFunction != NULL)
+    archetypeFunction(entity);
+  entity->node = NULL;
   return entity;
-}*/
+}
 
 void entity_attach(ENTITY *child, ENTITY *parent) {
   if (child->destroying || parent->destroying)

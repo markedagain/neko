@@ -11,31 +11,36 @@
 #include "linkedlist.h"
 #include "vector.h"
 #include "entity.h"
+#include "util.h"
 
-/*SPACE *space_create(GAME *game, char *name) {
-  SPACE *space = malloc(sizeof(SPACE));
+SPACE *space_create(char *name) {
+  SPACE *space = (SPACE *)malloc(sizeof(SPACE));
   space->entities = list_create();
-  space->game = game;
+  space->systems.time.dt = 1.0f / (float)DEFAULT_FRAMERATE;
+  space->systems.time.framerate = DEFAULT_FRAMERATE;
+  space->systems.time.timeScale = 1.0f;
+  space->systems.time.paused = false;
+  space->systems.time.currentTime = 0;
+  space->systems.camera.transform.translation.x = 0.0f;
+  space->systems.camera.transform.translation.y = 0.0f;
+  space->systems.camera.transform.translation.z = 0.0f;
+  space->systems.camera.transform.scale.x = 1.0f;
+  space->systems.camera.transform.scale.y = 1.0f;
+  space->systems.camera.transform.rotation = 0.0f;
+  space->systems.sound.positional = false;
+  space->systems.sound.volume = 1.0f;
+  space->game = NULL;
   strcpy(space->name, name);
   space->active = 1;
   space->visible = 1;
   space->node = NULL;
   space->destroying = 0;
   return space;
-}*/
+}
 
 ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name) {
-  ENTITY *entity = (ENTITY *)malloc(sizeof(ENTITY));
+  ENTITY *entity = entity_create(archetypeFunction, name);
   int componentCount;
-  entity->id = 0;
-  entity->parent = NULL;
-  entity->space = space;
-  strcpy(entity->name, name);
-  vector_init(&entity->components);
-  vector_init(&entity->children);
-  entity->destroying = 0;
-  if (archetypeFunction != NULL)
-    archetypeFunction(entity);
   componentCount = vector_size(&entity->components);
   if (componentCount > 0) {
     int i;

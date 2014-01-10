@@ -1,7 +1,5 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
-
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -9,16 +7,17 @@
 #include "component.h"
 #include "entity.h"
 #include "event.h"
+#include "util.h"
 
-void comp_transform_logicUpdate(COMPONENT *self, void *data) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)data;
+void comp_transform_logicUpdate(COMPONENT *self, void *event) {
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *comData = (CDATA_TRANSFORM *)self->data;
-  comData->rotation = (float)fmod(comData->rotation, 2.0f * (float)PI);
+  comData->rotation = (float)fmod(comData->rotation, 2.0f * (float)M_PI);
   if (comData->rotation < 0)
-    comData->rotation += 2.0f * (float)PI;
+    comData->rotation += 2.0f * (float)M_PI;
 }
 
-void comp_transform_destroy(COMPONENT *self, void *data) {
+void comp_transform_destroy(COMPONENT *self, void *event) {
 }
 
 void comp_transform(COMPONENT *self) {

@@ -35,14 +35,17 @@
     <ClCompile Include="src\neko\transform.c">
       <Filter>Neko Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\playerLogic.c">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="src\gss\test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\util.c">
       <Filter>Neko Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\neko\soundemitter.c">
+      <Filter>Neko Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gss\playerlogic.c">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,11 +136,14 @@
     <ClInclude Include="src\neko\transform.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gss\playerLogic.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\gss\test.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\neko\soundemitter.h">
+      <Filter>Neko Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gss\playerlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
