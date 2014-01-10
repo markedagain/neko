@@ -16,6 +16,9 @@
     <Filter Include="Archetypes">
       <UniqueIdentifier>{034f99f8-5ff8-49f3-9566-a8a4950bc7d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data Files">
+      <UniqueIdentifier>{026bb7bd-bc62-45ad-a064-8e0c658fb14b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="playerlogic.h">
@@ -24,5 +27,16 @@
     <ClInclude Include="test.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\names_first_female.txt">
+      <Filter>Data Files</Filter>
+    </Text>
+    <Text Include="data\names_first_male.txt">
+      <Filter>Data Files</Filter>
+    </Text>
+    <Text Include="data\names_last.txt">
+      <Filter>Data Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -124,6 +124,11 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
       <Project>{353979bc-6423-4b9a-ba28-53924cbc7a01}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\names_first_female.txt" />
+    <Text Include="data\names_first_male.txt" />
+    <Text Include="data\names_last.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
