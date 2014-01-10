@@ -159,9 +159,6 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\neko\vector.h" />
     <ClInclude Include="src\neko\vectormath.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\neko\easings.c.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

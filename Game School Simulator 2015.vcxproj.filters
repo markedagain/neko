@@ -154,7 +154,4 @@
       <UniqueIdentifier>{034f99f8-5ff8-49f3-9566-a8a4950bc7d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\neko\easings.c.txt" />
-  </ItemGroup>
 </Project>

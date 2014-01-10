@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
-// Project Name		:	Alpha Engine
-// File Name		:	AEInput.h
-// Author			:	Sun Tjen Fam
-// Creation Date	:	2008/01/31
-// Purpose			:	declaration for input stuff
-// History			:
-// - 2008/01/31		:	- initial implementation
+// Project Name    :  Alpha Engine
+// File Name    :  AEInput.h
+// Author      :  Sun Tjen Fam
+// Creation Date  :  2008/01/31
+// Purpose      :  declaration for input stuff
+// History      :
+// - 2008/01/31    :  - initial implementation
 // ---------------------------------------------------------------------------
 
 #ifndef AE_INPUT_H
@@ -39,10 +39,10 @@ AE_API void AEInputReset();
 AE_API void AEInputUpdate();
 AE_API void AEInputExit();
 
-AE_API u8 AEInputCheckCurr		(u8 key);
-AE_API u8 AEInputCheckPrev		(u8 key);
+AE_API u8 AEInputCheckCurr    (u8 key);
+AE_API u8 AEInputCheckPrev    (u8 key);
 AE_API u8 AEInputCheckTriggered (u8 key);
-AE_API u8 AEInputCheckReleased	(u8 key);
+AE_API u8 AEInputCheckReleased  (u8 key);
 
 
 AE_API void AEInputGetCursorPosition(s32 *pX, s32 *pY);

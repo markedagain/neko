@@ -6,5 +6,5 @@
 void eventcontainer_initialize(EVENTCONTAINER *container) {
   int i;
   for (i = 0; i < EV_LAST; ++i)
-	  container->ids[i] = NULL;
+    container->ids[i] = NULL;
 }

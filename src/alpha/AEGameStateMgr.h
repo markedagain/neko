@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
-// Project Name		:	Alpha Engine
-// File Name		:	AEGameStateMgr.h
-// Author			:	Sun Tjen Fam
-// Creation Date	:	2007/10/26
-// Purpose			:	header file for the game state manager
-// History			:
-// - 2007/10/26		:	- initial implementation
+// Project Name    :  Alpha Engine
+// File Name    :  AEGameStateMgr.h
+// Author      :  Sun Tjen Fam
+// Creation Date  :  2007/10/26
+// Purpose      :  header file for the game state manager
+// History      :
+// - 2007/10/26    :  - initial implementation
 // ---------------------------------------------------------------------------
 
 #ifndef AE_GAME_STATE_MGR_H
@@ -17,17 +17,17 @@
 // ---------------------------------------------------------------------------
 // defines and enums
 
-#define AE_GS_RESTART	0xFFFFFFFE
-#define AE_GS_QUIT		0xFFFFFFFF
+#define AE_GS_RESTART  0xFFFFFFFE
+#define AE_GS_QUIT    0xFFFFFFFF
 
 
 // ---------------------------------------------------------------------------
 // externs
 
-extern AE_API u32	gAEGameStateInit;
-extern AE_API u32	gAEGameStateCurr;
-extern AE_API u32	gAEGameStatePrev;
-extern AE_API u32	gAEGameStateNext;
+extern AE_API u32  gAEGameStateInit;
+extern AE_API u32  gAEGameStateCurr;
+extern AE_API u32  gAEGameStatePrev;
+extern AE_API u32  gAEGameStateNext;
 
 // ---------------------------------------------------------------------------
 
