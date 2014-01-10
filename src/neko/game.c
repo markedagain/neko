@@ -78,7 +78,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 
       do {
         COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
-
+        //printf("%u - %i\n", component->id, event);
         if (component->events.logicUpdate == NULL) {
           ++i;
           continue;
@@ -101,6 +101,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 
 void game_update(GAME *game) {
   EDATA_UPDATE updateEvent = { 0 };
+  game_invokeEvent(game, EV_FRAMEUPDATE, &updateEvent);
   game_invokeEvent(game, EV_LOGICUPDATE, &updateEvent);
   game_cleanup(game);
 }

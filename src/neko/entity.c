@@ -38,7 +38,7 @@ void entity_detach(ENTITY *child, ENTITY *parent) {
 void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
   COMPONENT *component;
 
-  component = malloc(sizeof(COMPONENT));
+  component = (COMPONENT *)malloc(sizeof(COMPONENT));
   component->owner = entity;
   componentFunction(component);
 

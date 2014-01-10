@@ -4,8 +4,7 @@
 #include "event.h"
 
 void eventcontainer_initialize(EVENTCONTAINER *container) {
-  container->initialize = NULL;
-  container->destroy = NULL;
-  container->logicUpdate = NULL;
-  container->frameUpdate = NULL;
+  int i;
+  for (i = 0; i < EV_LAST; ++i)
+	  container->ids[i] = NULL;
 }
