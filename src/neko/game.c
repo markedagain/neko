@@ -1,5 +1,9 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +15,7 @@
 #include "event.h"
 
 GAME *game_create(void) {
-  GAME *game = malloc(sizeof(GAME));
+  GAME *game = (GAME *)malloc(sizeof(GAME));
   game->spaces = list_create();
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
@@ -20,7 +24,7 @@ GAME *game_create(void) {
 }
 
 SPACE *game_addSpace(GAME *game, char *name) {
-  SPACE *space = malloc(sizeof(SPACE));
+  SPACE *space = (SPACE *)malloc(sizeof(SPACE));
   space->entities = list_create();
   space->game = game;
   strcpy(space->name, name);

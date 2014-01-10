@@ -92,7 +92,7 @@ void *vector_pop(VECTOR *v, size_t index) {
 
 /* get the index of the given void pointer in the vector (returns -1 if not in the vector) */
 int vector_index(VECTOR *v, void *e) {
-  int i;
+  unsigned int i;
   for (i = 0; i < vector_size(v); ++i)
     if (vector_get(v, i) == e)
       return i;
