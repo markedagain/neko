@@ -3,6 +3,8 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
+#include "neko.h"
+
 typedef struct entity_t ENTITY;
 typedef struct component_t COMPONENT;
 
@@ -33,6 +35,6 @@ typedef struct eventcontainer_t {
   };
 } EVENTCONTAINER;
 
-void eventcontainer_initialize(EVENTCONTAINER *);
+NEKO_API void eventcontainer_initialize(EVENTCONTAINER *);
 
 #endif

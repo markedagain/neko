@@ -7,7 +7,7 @@
 #include "transform.h"
 #include "vectormath.h"
 #include "util.h"
-#include "../alpha/AEEngine.h"
+#include "../AlphaEngine/AEEngine.h"
 
 void comp_soundEmitter_initialize(COMPONENT *self, void *event) {
 }

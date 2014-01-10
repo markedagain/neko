@@ -24,7 +24,7 @@ void al_update(ALIST *actionList, float deltaTime) {
   unsigned int lanes = 0;
   int size = vector_size(&actionList->actions);
   int actionsFinished = 0;
-  int* finished;
+  int* finished = NULL;
   for (i = 0; i < size; ++i) {
     ACTION *action = (ACTION *)(vector_get(&actionList->actions, i));
     if (lanes & action->lanes)

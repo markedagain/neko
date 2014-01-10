@@ -3,9 +3,10 @@
 #ifndef __COMP_SPRITE_H__
 #define __COMP_SPRITE_H__
 
+#include "neko.h"
 #include "component.h"
 #include "hash.h"
-#include "../alpha/AEEngine.h"
+#include "../AlphaEngine/AEEngine.h"
 #include "vectormath.h"
 #include "util.h"
 
@@ -21,11 +22,11 @@ typedef struct cdata_sprite_t {
   bool visible;
 } CDATA_SPRITE;
 
-void comp_sprite_initialize(COMPONENT *, void *);
-void comp_sprite_frameUpdate(COMPONENT *, void *);
-void comp_sprite_destroy(COMPONENT *, void *);
-void comp_sprite_draw(COMPONENT *, void *);
+NEKO_API void comp_sprite_initialize(COMPONENT *, void *);
+NEKO_API void comp_sprite_frameUpdate(COMPONENT *, void *);
+NEKO_API void comp_sprite_destroy(COMPONENT *, void *);
+NEKO_API void comp_sprite_draw(COMPONENT *, void *);
 
-void comp_sprite(COMPONENT *);
+NEKO_API void comp_sprite(COMPONENT *);
 
 #endif

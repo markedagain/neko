@@ -5,6 +5,7 @@
 
 #define DEFAULT_FRAMERATE 60
 
+#include "neko.h"
 #include "linkedlist.h"
 #include "game.h"
 #include "entity.h"
@@ -47,10 +48,10 @@ typedef struct space_t {
   unsigned char destroying;
 } SPACE;
 
-SPACE *space_create(char *);
-ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
-ENTITY *space_getEntity(SPACE *, char *);
-void space_destroy(SPACE *);
-void __space_destroy(SPACE *);
+NEKO_API SPACE *space_create(char *);
+NEKO_API ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
+NEKO_API ENTITY *space_getEntity(SPACE *, char *);
+NEKO_API void space_destroy(SPACE *);
+NEKO_API void __space_destroy(SPACE *);
 
 #endif

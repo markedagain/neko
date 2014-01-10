@@ -3,11 +3,13 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#include "neko.h"
+
 #define TALLOC(typ,n) malloc(n*sizeof(typ))
 
 #define M_PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
-unsigned long GraphicsColor(unsigned char, unsigned char, unsigned char, unsigned char);
+NEKO_API unsigned long GraphicsColor(unsigned char, unsigned char, unsigned char, unsigned char);
 
 #ifndef __INTELLISENSE__
 typedef enum { false, true } bool;

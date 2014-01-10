@@ -60,6 +60,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,6 +78,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,10 +88,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NekoEngine.h" />
+    <ClInclude Include="actionlist.h" />
+    <ClInclude Include="component.h" />
+    <ClInclude Include="easings.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="event.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="hash.h" />
+    <ClInclude Include="linkedlist.h" />
+    <ClInclude Include="neko.h" />
+    <ClInclude Include="soundemitter.h" />
+    <ClInclude Include="space.h" />
+    <ClInclude Include="sprite.h" />
+    <ClInclude Include="transform.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="vector.h" />
+    <ClInclude Include="vectormath.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NekoEngine.c" />
+    <ClCompile Include="actionlist.c" />
+    <ClCompile Include="component.c" />
+    <ClCompile Include="entity.c" />
+    <ClCompile Include="event.c" />
+    <ClCompile Include="game.c" />
+    <ClCompile Include="linkedlist.c" />
+    <ClCompile Include="neko.c" />
+    <ClCompile Include="soundemitter.c" />
+    <ClCompile Include="space.c" />
+    <ClCompile Include="sprite.c" />
+    <ClCompile Include="transform.c" />
+    <ClCompile Include="util.c" />
+    <ClCompile Include="vector.c" />
+    <ClCompile Include="vectormath.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,7 @@
 #ifndef __COMP_TRANSFORM_H__
 #define __COMP_TRANSFORM_H__
 
+#include "neko.h"
 #include "component.h"
 #include "vectormath.h"
 #include "hash.h"
@@ -17,8 +18,9 @@ typedef struct cdata_transform_t {
 } CDATA_TRANSFORM;
 
 
-void comp_transform_logicUpdate(COMPONENT *, void *);
-void comp_transform_destroy(COMPONENT *, void *);
-void comp_transform(COMPONENT *);
+NEKO_API void comp_transform_logicUpdate(COMPONENT *, void *);
+NEKO_API void comp_transform_destroy(COMPONENT *, void *);
+
+NEKO_API void comp_transform(COMPONENT *);
 
 #endif

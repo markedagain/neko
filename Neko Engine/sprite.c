@@ -6,7 +6,7 @@
 #include "component.h"
 #include "entity.h"
 #include "transform.h"
-#include "../alpha/AEEngine.h"
+#include "../AlphaEngine/AEEngine.h"
 #include "util.h"
 
 void comp_sprite_initialize(COMPONENT *self, void *event) {

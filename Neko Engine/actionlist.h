@@ -3,6 +3,7 @@
 #ifndef __ALIST_H__
 #define __ALIST_H__
 
+#include "neko.h"
 #include "vector.h"
 
 typedef struct actionList_t {
@@ -27,13 +28,13 @@ typedef struct action_t {
   ALIST *owner;
 } ACTION;
 
-void al_init(ALIST *);
-void al_free(ALIST *);
-void al_append(ALIST *, ACTION *);
-ACTION *al_remove(ALIST *, ACTION *);
-ACTION *al_begin(ALIST *);
-ACTION *al_end(ALIST *);
-int al_isEmpty(ALIST *);
-float al_timeLeft(ALIST *);
+NEKO_API void al_init(ALIST *);
+NEKO_API void al_free(ALIST *);
+NEKO_API void al_append(ALIST *, ACTION *);
+NEKO_API ACTION *al_remove(ALIST *, ACTION *);
+NEKO_API ACTION *al_begin(ALIST *);
+NEKO_API ACTION *al_end(ALIST *);
+NEKO_API int al_isEmpty(ALIST *);
+NEKO_API float al_timeLeft(ALIST *);
 
 #endif

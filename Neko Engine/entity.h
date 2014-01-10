@@ -3,6 +3,7 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
+#include "neko.h"
 #include "vector.h"
 #include "space.h"
 #include "component.h"
@@ -24,12 +25,12 @@ typedef struct entity_t {
 typedef void (*entity_callback)(ENTITY *);
 typedef void (*component_callback)(COMPONENT *);
 
-ENTITY *entity_create(entity_callback, char *);
-void entity_attach(ENTITY *, ENTITY *);
-void *entity_connect(ENTITY *, component_callback);
-COMPONENT *entity_getComponent(ENTITY *, unsigned int);
-void *entity_getComponentData(ENTITY *, unsigned int);
-void entity_destroy(ENTITY *);
-void __entity_destroy(ENTITY *);
+NEKO_API ENTITY *entity_create(entity_callback, char *);
+NEKO_API void entity_attach(ENTITY *, ENTITY *);
+NEKO_API void *entity_connect(ENTITY *, component_callback);
+NEKO_API COMPONENT *entity_getComponent(ENTITY *, unsigned int);
+NEKO_API void *entity_getComponentData(ENTITY *, unsigned int);
+NEKO_API void entity_destroy(ENTITY *);
+NEKO_API void __entity_destroy(ENTITY *);
 
 #endif

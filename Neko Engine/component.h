@@ -4,6 +4,7 @@
 #define __COMPONENT_H__
 
 #include <stdlib.h>
+#include "neko.h"
 #include "event.h"
 #include "entity.h"
 
@@ -21,8 +22,8 @@ typedef struct component_t {
   EVENTCONTAINER events;
 } COMPONENT;
 
-void component_initialize(COMPONENT *, unsigned int, void *, size_t);
-void component_depend(COMPONENT *, unsigned int);
-void component_doEvent(COMPONENT *, EVENT_TYPE, void *);
+NEKO_API void component_initialize(COMPONENT *, unsigned int, void *, size_t);
+NEKO_API void component_depend(COMPONENT *, unsigned int);
+NEKO_API void component_doEvent(COMPONENT *, EVENT_TYPE, void *);
 
 #endif
