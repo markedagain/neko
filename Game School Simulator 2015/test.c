@@ -1,10 +1,10 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "test.h"
-#include "../neko/entity.h"
-#include "../neko/component.h"
-#include "../neko/transform.h"
-#include "../neko/sprite.h"
+#include "../NekoEngine/entity.h"
+#include "../NekoEngine/component.h"
+#include "../NekoEngine/transform.h"
+#include "../NekoEngine/sprite.h"
 #include "playerlogic.h"
 
 void arch_test(ENTITY *entity) {

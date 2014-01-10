@@ -3,8 +3,8 @@
 #ifndef __ARCH_TEST_H__
 #define __ARCH_TEST_H__
 
-#include "../neko/entity.h"
-#include "../neko/hash.h"
+#include "../NekoEngine/entity.h"
+#include "../NekoEngine/hash.h"
 
 #define ARCH_TEST HASH("ARCH_TEST")
 

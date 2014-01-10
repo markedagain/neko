@@ -1,10 +1,10 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "playerLogic.h"
-#include "../neko/component.h"
-#include "../neko/entity.h"
-#include "../neko/transform.h"
-#include "../alpha/AEEngine.h"
+#include "../NekoEngine/component.h"
+#include "../NekoEngine/entity.h"
+#include "../NekoEngine/transform.h"
+#include "../AlphaEngine/AEEngine.h"
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;

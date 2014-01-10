@@ -1,12 +1,13 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#include "../alpha/AEEngine.h"
-#include "../neko/game.h"
-#include "../neko/space.h"
+#include "../AlphaEngine/AEEngine.h"
+#include "../NekoEngine/game.h"
+#include "../NekoEngine/space.h"
 #include "test.h"
-#include "NekoEngine.h"
+#include "../NekoEngine/neko.h"
 
-#pragma comment (lib, "lib/Alpha_Engine.lib")
+#pragma comment (lib, "../lib/Alpha_Engine.lib")
+#pragma comment (lib, "../lib/neko.lib")
 
 int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {

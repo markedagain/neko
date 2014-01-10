@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="neko.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="actionlist.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
     <ClCompile Include="space.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sprite.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="transform.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,6 +49,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vectormath.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="neko.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

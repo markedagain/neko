@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.c" />
+    <ClCompile Include="playerlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="test.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Components">
+      <UniqueIdentifier>{37179502-06a0-4071-96d1-63839d82c670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archetypes">
+      <UniqueIdentifier>{034f99f8-5ff8-49f3-9566-a8a4950bc7d7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="playerlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

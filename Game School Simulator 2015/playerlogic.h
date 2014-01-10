@@ -3,9 +3,9 @@
 #ifndef __COMP_PLAYERLOGIC_H__
 #define __COMP_PLAYERLOGIC_H__
 
-#include "../neko/component.h"
-#include "../neko/hash.h"
-#include "../alpha/AEEngine.h"
+#include "../NekoEngine/component.h"
+#include "../NekoEngine/hash.h"
+#include "../AlphaEngine/AEEngine.h"
 
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 

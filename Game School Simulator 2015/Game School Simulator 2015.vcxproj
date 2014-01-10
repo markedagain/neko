@@ -53,7 +53,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\Alpha_Engine;.\Neko Engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Alpha_Engine;..\NekoEngine</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -73,16 +73,16 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)\lib\*.dll" "$(OutDir)"
+      <Command>xcopy /y "$(SolutionDir)\lib\*.dll" "$(OutDir)"
 mkdir "$(OutDir)\data"
-xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
+xcopy /y "$(SolutionDir)\data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\Alpha_Engine;.\Neko Engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Alpha_Engine;..\NekoEngine</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -103,9 +103,9 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)\lib\*.dll" "$(OutDir)"
+      <Command>xcopy /y "$(SolutionDir)\lib\*.dll" "$(OutDir)"
 mkdir "$(OutDir)\data"
-xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
+xcopy /y "$(SolutionDir)\data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>
@@ -113,57 +113,14 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\gss2015\main.c" />
-    <ClCompile Include="src\gss2015\playerlogic.c" />
-    <ClCompile Include="src\gss2015\test.c" />
-    <ClCompile Include="src\neko\actionlist.c" />
-    <ClCompile Include="src\neko\component.c" />
-    <ClCompile Include="src\neko\entity.c" />
-    <ClCompile Include="src\neko\event.c" />
-    <ClCompile Include="src\neko\game.c" />
-    <ClCompile Include="src\neko\linkedlist.c" />
-    <ClCompile Include="src\neko\soundemitter.c" />
-    <ClCompile Include="src\neko\space.c" />
-    <ClCompile Include="src\neko\sprite.c" />
-    <ClCompile Include="src\neko\transform.c" />
-    <ClCompile Include="src\neko\util.c" />
-    <ClCompile Include="src\neko\vector.c" />
-    <ClCompile Include="src\neko\vectormath.c" />
-    <ClInclude Include="src\alpha\3DPipelineTools.h" />
-    <ClInclude Include="src\alpha\AECollision.h" />
-    <ClInclude Include="src\alpha\AEEngine.h" />
-    <ClInclude Include="src\alpha\AEExport.h" />
-    <ClInclude Include="src\alpha\AEFrameRateController.h" />
-    <ClInclude Include="src\alpha\AEGameStateMgr.h" />
-    <ClInclude Include="src\alpha\AEGraphics.h" />
-    <ClInclude Include="src\alpha\AEInput.h" />
-    <ClInclude Include="src\alpha\AELineSegment2.h" />
-    <ClInclude Include="src\alpha\AEMath.h" />
-    <ClInclude Include="src\alpha\AEMtx33.h" />
-    <ClInclude Include="src\alpha\AESystem.h" />
-    <ClInclude Include="src\alpha\AETypes.h" />
-    <ClInclude Include="src\alpha\AEUtil.h" />
-    <ClInclude Include="src\alpha\AEVec2.h" />
-    <ClInclude Include="src\gss2015\playerlogic.h" />
-    <ClInclude Include="src\gss2015\test.h" />
-    <ClInclude Include="src\neko\actionlist.h" />
-    <ClInclude Include="src\neko\component.h" />
-    <ClInclude Include="src\neko\easings.h" />
-    <ClInclude Include="src\neko\entity.h" />
-    <ClInclude Include="src\neko\event.h" />
-    <ClInclude Include="src\neko\game.h" />
-    <ClInclude Include="src\neko\hash.h" />
-    <ClInclude Include="src\neko\linkedlist.h" />
-    <ClInclude Include="src\neko\soundemitter.h" />
-    <ClInclude Include="src\neko\space.h" />
-    <ClInclude Include="src\neko\sprite.h" />
-    <ClInclude Include="src\neko\transform.h" />
-    <ClInclude Include="src\neko\util.h" />
-    <ClInclude Include="src\neko\vector.h" />
-    <ClInclude Include="src\neko\vectormath.h" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="playerlogic.c" />
+    <ClCompile Include="test.c" />
+    <ClInclude Include="playerlogic.h" />
+    <ClInclude Include="test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Neko Engine\Neko Engine.vcxproj">
+    <ProjectReference Include="..\NekoEngine\NekoEngine.vcxproj">
       <Project>{353979bc-6423-4b9a-ba28-53924cbc7a01}</Project>
     </ProjectReference>
   </ItemGroup>
