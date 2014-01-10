@@ -28,14 +28,14 @@
     <ClCompile Include="src\neko\vectormath.c">
       <Filter>Neko Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\main.c" />
+    <ClCompile Include="src\gss2015\main.c" />
     <ClCompile Include="src\neko\sprite.c">
       <Filter>Neko Engine\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\transform.c">
       <Filter>Neko Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\test.c">
+    <ClCompile Include="src\gss2015\test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
     <ClCompile Include="src\neko\util.c">
@@ -44,11 +44,9 @@
     <ClCompile Include="src\neko\soundemitter.c">
       <Filter>Neko Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\playerlogic.c">
+    <ClCompile Include="src\gss2015\playerlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\alpha\AECollision.h">
       <Filter>AlphaEngine</Filter>
     </ClInclude>
@@ -136,13 +134,13 @@
     <ClInclude Include="src\neko\transform.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gss\test.h">
+    <ClInclude Include="src\gss2015\test.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="src\neko\soundemitter.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gss\playerlogic.h">
+    <ClInclude Include="src\gss2015\playerlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -113,9 +113,9 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\gss\main.c" />
-    <ClCompile Include="src\gss\playerlogic.c" />
-    <ClCompile Include="src\gss\test.c" />
+    <ClCompile Include="src\gss2015\main.c" />
+    <ClCompile Include="src\gss2015\playerlogic.c" />
+    <ClCompile Include="src\gss2015\test.c" />
     <ClCompile Include="src\neko\actionlist.c" />
     <ClCompile Include="src\neko\component.c" />
     <ClCompile Include="src\neko\entity.c" />
@@ -129,8 +129,6 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClCompile Include="src\neko\util.c" />
     <ClCompile Include="src\neko\vector.c" />
     <ClCompile Include="src\neko\vectormath.c" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\alpha\3DPipelineTools.h" />
     <ClInclude Include="src\alpha\AECollision.h" />
     <ClInclude Include="src\alpha\AEEngine.h" />
@@ -146,8 +144,8 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\alpha\AETypes.h" />
     <ClInclude Include="src\alpha\AEUtil.h" />
     <ClInclude Include="src\alpha\AEVec2.h" />
-    <ClInclude Include="src\gss\playerlogic.h" />
-    <ClInclude Include="src\gss\test.h" />
+    <ClInclude Include="src\gss2015\playerlogic.h" />
+    <ClInclude Include="src\gss2015\test.h" />
     <ClInclude Include="src\neko\actionlist.h" />
     <ClInclude Include="src\neko\component.h" />
     <ClInclude Include="src\neko\easings.h" />
