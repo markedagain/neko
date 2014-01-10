@@ -41,10 +41,14 @@ void comp_sprite_destroy(COMPONENT *self, void *data) {
 void comp_sprite_draw(COMPONENT *self, void *data) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  MATRIX3 transform = { 0 };
   if (!comData->visible)
     return;
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-  //AEGfxSetTransform(
+  /*matrix3_identity(&transform);
+  matrix3_scale(&transform, vec2_fromVec3(trans->scale));
+  matrix3_rotate(&transform, trans->rotation);
+  AEGfxSetTransform(transform);*/
   AEGfxSetPosition(trans->translation.x, trans->translation.y);
   AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
   AEGfxSetTransparency(comData->color.a);

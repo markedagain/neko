@@ -43,6 +43,7 @@ VEC2 vec2_sub(VEC2 *, VEC2 *);
 VEC2 vec2_mul(VEC2 *, VEC2 *);
 VEC2 vec2_div(VEC2 *, VEC2 *);
 float vec2_dot(VEC2 *, VEC2 *);
+VEC2 vec2_fromVec3(VEC2 *);
 
 VEC3 vec3_add(VEC3 *, VEC3 *);
 VEC3 vec3_sub(VEC3 *, VEC3 *);
@@ -56,6 +57,8 @@ VEC4 vec4_sub(VEC4 *, VEC4 *);
 VEC4 vec4_mul(VEC4 *, VEC4 *);
 VEC4 vec4_div(VEC4 *, VEC4 *);
 
-
+void matrix3_identity(MATRIX3 *);
+void matrix3_scale(MATRIX3 *, VEC2 *);
+void matrix3_rotate(MATRIX3 *, float);
 
 #endif

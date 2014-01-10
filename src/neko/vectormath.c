@@ -34,6 +34,13 @@ float vec2_dot(VEC2 *a, VEC2 *b) {
   return a->x * b->x + a->y * b->y;
 }
 
+VEC2 vec2_fromVec3(VEC3 *a) {
+  VEC2 b = {0};
+  b.x = a->x;
+  b.y = a->y;
+  return b;
+}
+
 VEC3 vec3_add(VEC3 *a, VEC3 *b) {
   VEC3 c = {0};
   c.x = a->x + b->x;
@@ -112,4 +119,13 @@ VEC4 vec4_div(VEC4 *a, VEC4 *b) {
   c.z = a->z / b->z;
   c.w = a->w / b->w;
   return c;
+}
+
+void matrix3_identity(MATRIX3 *matrix) {
+}
+
+void matrix3_scale(MATRIX3 *matrix, VEC2 *scale) {
+}
+
+void matrix3_rotate(MATRIX3 *matrix, float rotation) {
 }
