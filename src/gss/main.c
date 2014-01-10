@@ -1,9 +1,9 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#include "AEEngine.h"
+#include "../alpha/AEEngine.h"
 #include "../neko/game.h"
 #include "../neko/space.h"
-#include "archetypes/test.h"
+#include "test.h"
 
 #pragma comment (lib, "lib/Alpha_Engine.lib")
 

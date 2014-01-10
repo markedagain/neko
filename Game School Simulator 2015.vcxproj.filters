@@ -28,18 +28,18 @@
     <ClCompile Include="src\neko\vectormath.c">
       <Filter>Neko Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\neko\components\sprite.c">
-      <Filter>Neko Engine\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\neko\components\transform.c">
-      <Filter>Neko Engine\Components</Filter>
-    </ClCompile>
     <ClCompile Include="src\gss\main.c" />
-    <ClCompile Include="src\gss\archetypes\test.c">
-      <Filter>Archetypes</Filter>
+    <ClCompile Include="src\neko\sprite.c">
+      <Filter>Neko Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\gss\components\playerLogic.c">
+    <ClCompile Include="src\neko\transform.c">
+      <Filter>Neko Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gss\playerLogic.c">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gss\test.c">
+      <Filter>Archetypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,17 +124,17 @@
     <ClInclude Include="src\neko\vectormath.h">
       <Filter>Neko Engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\neko\components\sprite.h">
+    <ClInclude Include="src\neko\sprite.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\neko\components\transform.h">
+    <ClInclude Include="src\neko\transform.h">
       <Filter>Neko Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\gss\archetypes\test.h">
-      <Filter>Archetypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gss\components\playerLogic.h">
+    <ClInclude Include="src\gss\playerLogic.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gss\test.h">
+      <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,8 +155,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\neko\easings.c.txt">
-      <Filter>Neko Engine</Filter>
-    </Text>
+    <Text Include="src\neko\easings.c.txt" />
   </ItemGroup>
 </Project>

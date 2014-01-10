@@ -111,18 +111,18 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\gss\archetypes\test.c" />
-    <ClCompile Include="src\gss\components\playerLogic.c" />
     <ClCompile Include="src\gss\main.c" />
+    <ClCompile Include="src\gss\playerLogic.c" />
+    <ClCompile Include="src\gss\test.c" />
     <ClCompile Include="src\neko\actionlist.c" />
     <ClCompile Include="src\neko\component.c" />
-    <ClCompile Include="src\neko\components\sprite.c" />
-    <ClCompile Include="src\neko\components\transform.c" />
     <ClCompile Include="src\neko\entity.c" />
     <ClCompile Include="src\neko\event.c" />
     <ClCompile Include="src\neko\game.c" />
     <ClCompile Include="src\neko\linkedlist.c" />
     <ClCompile Include="src\neko\space.c" />
+    <ClCompile Include="src\neko\sprite.c" />
+    <ClCompile Include="src\neko\transform.c" />
     <ClCompile Include="src\neko\vector.c" />
     <ClCompile Include="src\neko\vectormath.c" />
   </ItemGroup>
@@ -142,12 +142,10 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\alpha\AETypes.h" />
     <ClInclude Include="src\alpha\AEUtil.h" />
     <ClInclude Include="src\alpha\AEVec2.h" />
-    <ClInclude Include="src\gss\archetypes\test.h" />
-    <ClInclude Include="src\gss\components\playerLogic.h" />
+    <ClInclude Include="src\gss\playerLogic.h" />
+    <ClInclude Include="src\gss\test.h" />
     <ClInclude Include="src\neko\actionlist.h" />
     <ClInclude Include="src\neko\component.h" />
-    <ClInclude Include="src\neko\components\sprite.h" />
-    <ClInclude Include="src\neko\components\transform.h" />
     <ClInclude Include="src\neko\easings.h" />
     <ClInclude Include="src\neko\entity.h" />
     <ClInclude Include="src\neko\event.h" />
@@ -155,6 +153,8 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\neko\hash.h" />
     <ClInclude Include="src\neko\linkedlist.h" />
     <ClInclude Include="src\neko\space.h" />
+    <ClInclude Include="src\neko\sprite.h" />
+    <ClInclude Include="src\neko\transform.h" />
     <ClInclude Include="src\neko\util.h" />
     <ClInclude Include="src\neko\vector.h" />
     <ClInclude Include="src\neko\vectormath.h" />
