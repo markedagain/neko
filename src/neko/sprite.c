@@ -8,20 +8,23 @@
 #include "entity.h"
 #include "transform.h"
 #include "../alpha/AEEngine.h"
+#include "util.h"
 
 void comp_sprite_initialize(COMPONENT *self, void *data) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
+  float w = comData->size.x / 2;
+  float h = comData->size.y / 2;
 
   comData->texture = AEGfxTextureLoad(comData->source);
   AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
 
   AEGfxMeshStart();
-  AEGfxTriAdd(-32.0f, -32.0f, 0xFFFFFFFF, 0.0f, 1.0f,
-               32.0f, -32.0f, 0xFFFFFFFF, 1.0f, 1.0f,
-               -32.0f, 32.0f, 0xFFFFFFFF, 0.0f, 0.0f);
-  AEGfxTriAdd( 32.0f, -32.0f, 0xFFFFFFFF, 1.0f, 1.0f,
-               32.0f,  32.0f, 0xFFFFFFFF, 1.0f, 0.0f,
-               -32.0f, 32.0f, 0xFFFFFFFF, 0.0f, 0.0f);
+  AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
+               w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
+               -h, w, 0xFFFFFFFF, 0.0f, 0.0f);
+  AEGfxTriAdd( w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
+               w,  h, 0xFFFFFFFF, 1.0f, 0.0f,
+               -w, h, 0xFFFFFFFF, 0.0f, 0.0f);
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }
@@ -38,9 +41,12 @@ void comp_sprite_destroy(COMPONENT *self, void *data) {
 void comp_sprite_draw(COMPONENT *self, void *data) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  if (!comData->visible)
+    return;
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+  //AEGfxSetTransform(
   AEGfxSetPosition(trans->translation.x, trans->translation.y);
-  AEGfxTextureSet(comData->texture, 0.0f, 0.0f);
+  AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
@@ -57,6 +63,9 @@ void comp_sprite(COMPONENT *self) {
   data.color.a = 1;
   data.offset.x = 0;
   data.offset.y = 0;
+  data.size.x = 32;
+  data.size.y = 32;
+  data.visible = true;
 
   COMPONENT_INIT(self, COMP_SPRITE, data);
   component_depend(self, COMP_TRANSFORM);

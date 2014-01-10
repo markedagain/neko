@@ -5,8 +5,8 @@
 
 #define TALLOC(typ,n) malloc(n*sizeof(typ))
 
-unsigned long GraphicsColor(unsigned char a, unsigned char r, unsigned char g, unsigned char b) {
-  return (a << 24) + (r << 16) + (g << 8) + b;
-}
+unsigned long GraphicsColor(unsigned char, unsigned char, unsigned char, unsigned char);
+
+typedef enum { false, true } bool;
 
 #endif

@@ -26,6 +26,18 @@ typedef struct vec4_t {
   };
 } VEC4;
 
+typedef struct matrix3_t {
+  union {
+    struct {
+      float m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22;
+    };
+    float m[3][3];
+    float v[9];
+  };
+} MATRIX3;
+
 VEC2 vec2_add(VEC2 *, VEC2 *);
 VEC2 vec2_sub(VEC2 *, VEC2 *);
 VEC2 vec2_mul(VEC2 *, VEC2 *);
@@ -43,5 +55,7 @@ VEC4 vec4_add(VEC4 *, VEC4 *);
 VEC4 vec4_sub(VEC4 *, VEC4 *);
 VEC4 vec4_mul(VEC4 *, VEC4 *);
 VEC4 vec4_div(VEC4 *, VEC4 *);
+
+
 
 #endif

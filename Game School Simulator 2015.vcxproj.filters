@@ -41,6 +41,9 @@
     <ClCompile Include="src\gss\test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="src\neko\util.c">
+      <Filter>Neko Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\alpha\AECollision.h">

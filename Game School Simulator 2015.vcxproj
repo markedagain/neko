@@ -123,6 +123,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClCompile Include="src\neko\space.c" />
     <ClCompile Include="src\neko\sprite.c" />
     <ClCompile Include="src\neko\transform.c" />
+    <ClCompile Include="src\neko\util.c" />
     <ClCompile Include="src\neko\vector.c" />
     <ClCompile Include="src\neko\vectormath.c" />
   </ItemGroup>

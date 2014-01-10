@@ -7,6 +7,7 @@
 #include "hash.h"
 #include "../alpha/AEEngine.h"
 #include "vectormath.h"
+#include "util.h"
 
 #define COMP_SPRITE HASH("COMP_SPRITE")
 
@@ -16,6 +17,8 @@ typedef struct cdata_sprite_t {
   AEGfxTexture *texture;
   VEC4 color;
   VEC2 offset;
+  VEC2 size;
+  bool visible;
 } CDATA_SPRITE;
 
 void comp_sprite_initialize(COMPONENT *, void *);
