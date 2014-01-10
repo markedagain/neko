@@ -20,7 +20,7 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *data) {
     if (AEInputCheckCurr(VK_SPACE)) {
       trans->scale.x *= 1.01f;
       trans->scale.y *= 1.01f;
-      trans->rotation += 0.2f;
+      trans->rotation += 0.01f;
     }
 }
 

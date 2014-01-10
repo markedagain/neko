@@ -97,7 +97,8 @@ void __entity_destroy(ENTITY *entity) {
       break;
     if (component->events.destroy != NULL)
       (component->events.destroy)(component, NULL);
-    free(component->data);
+    if (component->data != NULL)
+      free(component->data);
   }
   vector_free(&entity->components);
   vector_free(&entity->children);

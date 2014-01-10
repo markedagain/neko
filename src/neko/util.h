@@ -7,6 +7,8 @@
 
 unsigned long GraphicsColor(unsigned char, unsigned char, unsigned char, unsigned char);
 
+#ifndef __INTELLISENSE__
 typedef enum { false, true } bool;
+#endif
 
 #endif
