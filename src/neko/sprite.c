@@ -45,11 +45,14 @@ void comp_sprite_draw(COMPONENT *self, void *data) {
   if (!comData->visible)
     return;
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-  /*matrix3_identity(&transform);
-  matrix3_scale(&transform, vec2_fromVec3(trans->scale));
+  matrix3_identity(&transform);
+  
   matrix3_rotate(&transform, trans->rotation);
-  AEGfxSetTransform(transform);*/
-  AEGfxSetPosition(trans->translation.x, trans->translation.y);
+  matrix3_scale(&transform, &trans->scale);
+  matrix3_translate(&transform, &trans->translation);
+  AEGfxSetTransform(transform.m);
+  
+
   AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);

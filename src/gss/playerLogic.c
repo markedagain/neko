@@ -20,6 +20,12 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *data) {
     else
     if (AEInputCheckCurr(VK_RIGHT))
       trans->translation.x += 3.0f;
+    else
+    if (AEInputCheckCurr(VK_SPACE)) {
+      trans->scale.x *= 1.01f;
+      trans->scale.y *= 1.01f;
+      trans->rotation += 0.2f;
+    }
 }
 
 void comp_playerLogic(COMPONENT *self) {
