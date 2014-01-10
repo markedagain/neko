@@ -9,6 +9,7 @@
 
 #define MAX_DEPENDS 8
 #define COMPONENT_INIT(a, b, c) component_initialize(a, b, &c, sizeof(c))
+#define COMPONENT_INIT_NULL(a, b) component_initialize(a, b, NULL, sizeof(void *))
 
 typedef struct entity_t ENTITY;
 

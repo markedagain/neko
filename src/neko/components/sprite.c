@@ -33,12 +33,10 @@ void comp_sprite_initialize(COMPONENT *self, void *data) {
 		-30.0f,  30.0f, 0x00FFFFFF, 0.0f, 0.0f);
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
-  printf("Sprite component initialized!\n");
 }
 
 void comp_sprite_logicUpdate(COMPONENT *self, void *data) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)data;
-  printf("THE TRANSFORM COMPONENT FROM %s IS UPDATING! DELTATIME IS %f\n", self->owner->name, updateEvent->dt);
 }
 
 void comp_sprite_destroy(COMPONENT *self, void *data) {
@@ -48,15 +46,15 @@ void comp_sprite_destroy(COMPONENT *self, void *data) {
 
 void comp_sprite_draw(COMPONENT *self, void *data) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
-  printf("DRAWING!\n");
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-  AEGfxSetPosition(100.0f, -60.0f);
+  AEGfxSetPosition(trans->translation.x, trans->translation.y);
+  //AEGfxSetPosition(100.0f, -60.0f);
   AEGfxTextureSet(comData->texture, 0.0f, 0.0f);
   //AEGfxSetTransparency(1.0f);
   //AEGfxSetBlendColor(0.0f, 0.0f, 0.0, 0.0f);
   // Drawing the mesh (list of triangles)
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
-  printf("DRAW\n");
 }
 
 void comp_sprite(COMPONENT *self) {

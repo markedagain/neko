@@ -15,10 +15,10 @@ typedef struct cdata_sprite_t {
   AEGfxTexture *texture;
 } CDATA_SPRITE;
 
-void comp_sprite_initialize(COMPONENT *self, void *data);
-void comp_sprite_frameUpdate(COMPONENT *self, void *data);
-void comp_sprite_destroy(COMPONENT *self, void *data);
-void comp_sprite_draw(COMPONENT *self, void *data);
+void comp_sprite_initialize(COMPONENT *, void *);
+void comp_sprite_frameUpdate(COMPONENT *, void *);
+void comp_sprite_destroy(COMPONENT *, void *);
+void comp_sprite_draw(COMPONENT *, void *);
 
 void comp_sprite(COMPONENT *);
 

@@ -112,6 +112,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\gss\archetypes\test.c" />
+    <ClCompile Include="src\gss\components\playerLogic.c" />
     <ClCompile Include="src\gss\main.c" />
     <ClCompile Include="src\neko\actionlist.c" />
     <ClCompile Include="src\neko\component.c" />
@@ -142,6 +143,7 @@ xcopy /y "$(ProjectDir)\data\*" "$(OutDir)\data\" /e</Command>
     <ClInclude Include="src\alpha\AEUtil.h" />
     <ClInclude Include="src\alpha\AEVec2.h" />
     <ClInclude Include="src\gss\archetypes\test.h" />
+    <ClInclude Include="src\gss\components\playerLogic.h" />
     <ClInclude Include="src\neko\actionlist.h" />
     <ClInclude Include="src\neko\component.h" />
     <ClInclude Include="src\neko\components\sprite.h" />

@@ -38,6 +38,9 @@
     <ClCompile Include="src\gss\archetypes\test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="src\gss\components\playerLogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\alpha\AECollision.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="src\gss\archetypes\test.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gss\components\playerLogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

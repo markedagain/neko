@@ -88,7 +88,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 
         ++i;
       }
-      while (i < componentCount - 1);
+      while (i < componentCount);
 
       entityNode = entityNode->next;
     }
