@@ -65,7 +65,7 @@ PAK_ERROR pak_close(PAK_FILE *pak) {
   return PAKERROR_NONE;
 }
 
-PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, const char *nameInPak) {
+PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, char *nameInPak) {
   unsigned int count = 0;
   PAK_SECTION section;
   PAK_SECTION *files;
@@ -85,20 +85,21 @@ PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, const char *nameInPak) {
     return PAKERROR_OPEN;
   while(fread(&c, sizeof(c), 1, fp) > 0)
     ++count;
-  buffer = (char *)malloc(sizeof(char) * count);
+  buffer = (char *)malloc(sizeof(char) * (count);
   if (!buffer) {
     fclose(fp);
     return PAKERROR_MALLOC;
   }
   rewind(fp);
   count = 0;
-  while ((b = fgetc(fp)) != EOF)
-    buffer[count++] = b;
+  while ((b = fgetc(fp)) != EOF) {
+    buffer[count] = b;
+    count++;
+  }
   fclose(fp);
 
   if (pak->header.size == 1) {
-    if (!fseek(pak->handle, 4, SEEK_SET))
-      return PAKERROR_READ;
+    fseek(pak->handle, 4, SEEK_SET);
     pak->header.offset = sizeof(pak->header) + sizeof(char) * count;
     pak->header.size = sizeof(PAK_SECTION);
     fwrite(&pak->header.offset, sizeof(pak->header.offset), 1, pak->handle);
@@ -134,10 +135,6 @@ PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, const char *nameInPak) {
     fwrite(files, sizeof(PAK_SECTION), x + 1, pak->handle);
   }
   free(buffer);
-  return PAKERROR_NONE;
-}
-
-PAK_ERROR pak_insertDirectory(PAK_FILE *pak, const char *directory) {
   return PAKERROR_NONE;
 }
 

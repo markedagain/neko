@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "neko.h"
 
 #define PAK_FILENAME_MAXLENGTH 56
 
@@ -36,13 +37,12 @@ typedef enum {
   PAKERROR_NOT_IMPLEMENTED
 } PAK_ERROR;
 
-void pak_create(const char *);
-PAK_ERROR pak_check(PAK_FILE *);
-PAK_ERROR pak_insert(PAK_FILE *, char *, const char *);
-PAK_ERROR pak_insertDirectory(PAK_FILE *, const char *);
-PAK_ERROR pak_extract(PAK_FILE *, char *, char *);
-PAK_FILE *pak_open(char *);
-PAK_ERROR pak_close(PAK_FILE *);
+NEKO_API void pak_create(const char *);
+NEKO_API PAK_ERROR pak_check(PAK_FILE *);
+NEKO_API PAK_ERROR pak_insert(PAK_FILE *, char *, char *);
+NEKO_API PAK_ERROR pak_extract(PAK_FILE *, char *);
+NEKO_API PAK_FILE *pak_open(char *);
+NEKO_API PAK_ERROR pak_close(PAK_FILE *);
 PAK_SECTION *pak_getSection(PAK_FILE *, const char *);
-char *pak_load(PAK_FILE *, const char *, size_t *);
+NEKO_API void *pak_load(PAK_FILE *, const char *, size_t *);
 void *pak_error(FILE *, PAK_ERROR);

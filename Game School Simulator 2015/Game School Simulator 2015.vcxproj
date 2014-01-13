@@ -75,7 +75,7 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
 mkdir "$(OutDir)data"
-xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
+xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +105,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
 mkdir "$(OutDir)data"
-xcopy /y "$(ProjectDir)data\*" "$(OutDir)\data\" /e</Command>
+xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>

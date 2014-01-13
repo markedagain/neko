@@ -1,0 +1,6 @@
+C:\Users\Adam\Documents\neko\NekoPak\obj\Release\NekoPak.csprojResolveAssemblyReference.cache
+C:\Users\Adam\Documents\neko\NekoPak\obj\Release\nekopak.exe
+C:\Users\Adam\Documents\neko\NekoPak\obj\Release\nekopak.pdb
+C:\Users\Adam\Documents\neko\NekoPak\nekopak.exe.config
+C:\Users\Adam\Documents\neko\NekoPak\nekopak.exe
+C:\Users\Adam\Documents\neko\NekoPak\nekopak.pdb

@@ -3,25 +3,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game School Simulator 2015", "Game School Simulator 2015\Game School Simulator 2015.vcxproj", "{99C44468-B6FA-417A-818E-F61E863B4D40}"
 	ProjectSection(ProjectDependencies) = postProject
+		{965C661E-D6AA-4104-85B8-087BA80A33FF} = {965C661E-D6AA-4104-85B8-087BA80A33FF}
 		{353979BC-6423-4B9A-BA28-53924CBC7A01} = {353979BC-6423-4B9A-BA28-53924CBC7A01}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NekoEngine", "NekoEngine\NekoEngine.vcxproj", "{353979BC-6423-4B9A-BA28-53924CBC7A01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NekoPak", "NekoPak\NekoPak.csproj", "{965C661E-D6AA-4104-85B8-087BA80A33FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{353979BC-6423-4B9A-BA28-53924CBC7A01} = {353979BC-6423-4B9A-BA28-53924CBC7A01}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{99C44468-B6FA-417A-818E-F61E863B4D40}.Debug|Win32.ActiveCfg = Debug|Win32
 		{99C44468-B6FA-417A-818E-F61E863B4D40}.Debug|Win32.Build.0 = Debug|Win32
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Release|Any CPU.ActiveCfg = Release|Win32
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{99C44468-B6FA-417A-818E-F61E863B4D40}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{99C44468-B6FA-417A-818E-F61E863B4D40}.Release|Win32.ActiveCfg = Release|Win32
 		{99C44468-B6FA-417A-818E-F61E863B4D40}.Release|Win32.Build.0 = Release|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Debug|Win32.ActiveCfg = Debug|Win32
 		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Debug|Win32.Build.0 = Debug|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Release|Any CPU.ActiveCfg = Release|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Release|Win32.ActiveCfg = Release|Win32
 		{353979BC-6423-4B9A-BA28-53924CBC7A01}.Release|Win32.Build.0 = Release|Win32
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

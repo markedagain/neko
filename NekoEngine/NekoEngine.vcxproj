@@ -41,14 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\lib\</OutDir>
-    <IntDir>$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>neko</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\lib\</OutDir>
-    <IntDir>$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>neko</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -67,7 +67,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)\bin\$(Configuration)\"</Command>
+      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)bin\$(Configuration)\"
+xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,7 +91,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)\bin\$(Configuration)\"</Command>
+      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)bin\$(Configuration)\"
+xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
