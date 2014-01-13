@@ -82,7 +82,7 @@ void *vector_pop(VECTOR *v, size_t index) {
   for (i = 0, j = 0; i < v->used_entries; ++i) {
     if (i == index)
       continue;
-    new_arr[j] = v->data[i];
+    new_arr[j++] = v->data[i];
   }
   free(v->data);
   v->data = new_arr;
