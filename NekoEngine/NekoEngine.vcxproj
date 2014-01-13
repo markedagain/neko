@@ -57,7 +57,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -78,7 +78,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -96,6 +96,7 @@
   <ItemGroup>
     <ClInclude Include="actionlist.h" />
     <ClInclude Include="component.h" />
+    <ClInclude Include="data.h" />
     <ClInclude Include="easings.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="event.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="hash.h" />
     <ClInclude Include="linkedlist.h" />
     <ClInclude Include="neko.h" />
+    <ClInclude Include="pak.h" />
     <ClInclude Include="soundemitter.h" />
     <ClInclude Include="space.h" />
     <ClInclude Include="sprite.h" />
@@ -114,11 +116,13 @@
   <ItemGroup>
     <ClCompile Include="actionlist.c" />
     <ClCompile Include="component.c" />
+    <ClCompile Include="data.c" />
     <ClCompile Include="entity.c" />
     <ClCompile Include="event.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="linkedlist.c" />
     <ClCompile Include="neko.c" />
+    <ClCompile Include="pak.c" />
     <ClCompile Include="soundemitter.c" />
     <ClCompile Include="space.c" />
     <ClCompile Include="sprite.c" />

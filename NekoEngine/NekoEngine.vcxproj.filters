@@ -57,6 +57,12 @@
     <ClCompile Include="sprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pak.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="neko.h">
@@ -105,6 +111,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vectormath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pak.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

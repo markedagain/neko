@@ -1,9 +1,5 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "entity.h"
