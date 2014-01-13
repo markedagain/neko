@@ -37,7 +37,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInit(&sysInitInfo);
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
-  printf("Neko Engine loaded more or less successfully.\n");
+  printf("Neko Engine loaded more or less successfully!\n");
   
   AESysReset();
 
