@@ -4,22 +4,19 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
+#include "../NekoEngine/game.h"
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  /*if (AEInputCheckCurr(VK_UP))
-      trans->translation.y += 3.0f;
-    if (AEInputCheckCurr(VK_DOWN))
-      trans->translation.y -= 3.0f;
-    if (AEInputCheckCurr(VK_LEFT))
-      trans->translation.x -= 3.0f;
-    if (AEInputCheckCurr(VK_RIGHT))
-      trans->translation.x += 3.0f;
-    if (AEInputCheckCurr(VK_SPACE)) {*/
-      trans->scale.x *= 1.01f;
-      trans->scale.y *= 1.01f;
-      trans->rotation += 0.01f;
+  INPUT_CONTAINER *input = &self->game->input;
+  if (input->mouse.left == ISTATE_PRESSED) {
+  }
+  if (input->mouse.position.x > 100) {
+  }
+  trans->scale.x *= 1.01f;
+  trans->scale.y *= 1.01f;
+  trans->rotation += 0.01f;
 }
 
 void comp_playerLogic(COMPONENT *self) {

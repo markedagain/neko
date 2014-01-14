@@ -9,6 +9,7 @@
 #include "linkedlist.h"
 #include "util.h"
 #include "event.h"
+#include "input.h"
 #include "../AlphaEngine/AEEngine.h"
 
 typedef struct space_t SPACE;
@@ -18,6 +19,7 @@ typedef struct game_t {
   LIST *spaces;
   LIST *destroyingEntities;
   LIST *destroyingSpaces;
+  INPUT_CONTAINER input;
   unsigned char destroying;
 } GAME;
 

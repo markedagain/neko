@@ -5,6 +5,11 @@
 
 #include "neko.h"
 
+typedef struct point_t {
+  int x;
+  int y;
+} POINT2;
+
 typedef struct vec2_t {
   float x;
   float y;

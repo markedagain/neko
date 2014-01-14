@@ -6,6 +6,7 @@
 #include "neko.h"
 #include "vector.h"
 #include "space.h"
+#include "game.h"
 #include "component.h"
 #include "linkedlist.h"
 
@@ -15,6 +16,7 @@ typedef struct entity_t {
   unsigned int id;
   struct entity_t *parent;
   SPACE *space;
+  GAME *game;
   char name[80];
   VECTOR components;
   VECTOR children;

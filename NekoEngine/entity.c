@@ -14,6 +14,7 @@ ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name) {
   entity->id = 0;
   entity->parent = NULL;
   entity->space = NULL;
+  entity->game = NULL;
   strcpy(entity->name, name);
   vector_init(&entity->components);
   vector_init(&entity->children);
@@ -41,6 +42,7 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
 
   component = (COMPONENT *)malloc(sizeof(COMPONENT));
   component->owner = entity;
+  component->game = entity->game;
   componentFunction(component);
 
   /* TODO: dependency check */

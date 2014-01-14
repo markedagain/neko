@@ -17,7 +17,6 @@ typedef struct cdata_transform_t {
   float rotation;
 } CDATA_TRANSFORM;
 
-
 void comp_transform_logicUpdate(COMPONENT *, void *);
 void comp_transform_destroy(COMPONENT *, void *);
 
