@@ -3,8 +3,8 @@
 #include <Windows.h>
 #include "../NekoEngine/game.h"
 #include "../NekoEngine/space.h"
-#include "test.h"
 #include "../NekoEngine/neko.h"
+#include "test.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 

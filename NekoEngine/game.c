@@ -36,7 +36,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   printf("Neko Engine loaded more or less successfully!\n");
   
   AESysReset();
-  srand(time(NULL));
+  srand((unsigned int)time(NULL));
 
   return game;
 }

@@ -35,6 +35,6 @@ typedef struct eventcontainer_t {
   };
 } EVENTCONTAINER;
 
-NEKO_API void eventcontainer_initialize(EVENTCONTAINER *);
+void eventcontainer_initialize(EVENTCONTAINER *);
 
 #endif

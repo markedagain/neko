@@ -31,6 +31,6 @@ NEKO_API void *entity_connect(ENTITY *, component_callback);
 NEKO_API COMPONENT *entity_getComponent(ENTITY *, unsigned int);
 NEKO_API void *entity_getComponentData(ENTITY *, unsigned int);
 NEKO_API void entity_destroy(ENTITY *);
-NEKO_API void __entity_destroy(ENTITY *);
+void __entity_destroy(ENTITY *);
 
 #endif

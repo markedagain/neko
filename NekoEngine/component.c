@@ -11,7 +11,7 @@ void component_initialize(COMPONENT *component, unsigned int id, void *data, siz
     component->depends[i] = 0;
   component->id = id;
   if (data != NULL)
-    component->data = malloc(dataSize);
+    component->data = (void *)malloc(dataSize);
   eventcontainer_initialize(&component->events);
   if (data != NULL)
     memcpy(component->data, data, dataSize);

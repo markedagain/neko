@@ -18,7 +18,7 @@ typedef struct linkedList_t {
 } LIST;
 
 NEKO_API LIST *list_create(void);
-NEKO_API LIST_NODE *list_create_node(void *);
+LIST_NODE *list_create_node(void *);
 NEKO_API LIST_NODE *list_insert_beginning(LIST *, void *);
 NEKO_API LIST_NODE *list_insert_before(LIST *list, LIST_NODE *node, void *data);
 NEKO_API LIST_NODE *list_insert_after(LIST *, LIST_NODE *, void *);

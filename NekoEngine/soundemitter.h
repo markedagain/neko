@@ -18,9 +18,9 @@ typedef struct cdata_soundEmitter_t {
   float volume;
 } CDATA_SOUNDEMITTER;
 
-NEKO_API void comp_soundEmitter_initialize(COMPONENT *, void *);
-NEKO_API void comp_soundEmitter_frameUpdate(COMPONENT *, void *);
-NEKO_API void comp_soundEmitter_destroy(COMPONENT *, void *);
+void comp_soundEmitter_initialize(COMPONENT *, void *);
+void comp_soundEmitter_frameUpdate(COMPONENT *, void *);
+void comp_soundEmitter_destroy(COMPONENT *, void *);
 
 NEKO_API void comp_soundEmitter(COMPONENT *);
 

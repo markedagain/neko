@@ -13,7 +13,7 @@
  */
 LIST *list_create(void) {
   LIST *list;
-  if (!(list = malloc(sizeof(LIST))))
+  if (!(list = (LIST *)malloc(sizeof(LIST))))
     return NULL;
   list->first = NULL;
   list->last = NULL;

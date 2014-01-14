@@ -18,8 +18,8 @@ typedef struct cdata_transform_t {
 } CDATA_TRANSFORM;
 
 
-NEKO_API void comp_transform_logicUpdate(COMPONENT *, void *);
-NEKO_API void comp_transform_destroy(COMPONENT *, void *);
+void comp_transform_logicUpdate(COMPONENT *, void *);
+void comp_transform_destroy(COMPONENT *, void *);
 
 NEKO_API void comp_transform(COMPONENT *);
 

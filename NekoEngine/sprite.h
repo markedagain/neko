@@ -22,10 +22,10 @@ typedef struct cdata_sprite_t {
   bool visible;
 } CDATA_SPRITE;
 
-NEKO_API void comp_sprite_initialize(COMPONENT *, void *);
-NEKO_API void comp_sprite_frameUpdate(COMPONENT *, void *);
-NEKO_API void comp_sprite_destroy(COMPONENT *, void *);
-NEKO_API void comp_sprite_draw(COMPONENT *, void *);
+void comp_sprite_initialize(COMPONENT *, void *);
+void comp_sprite_frameUpdate(COMPONENT *, void *);
+void comp_sprite_destroy(COMPONENT *, void *);
+void comp_sprite_draw(COMPONENT *, void *);
 
 NEKO_API void comp_sprite(COMPONENT *);
 

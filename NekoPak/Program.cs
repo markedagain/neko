@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,11 +54,11 @@ namespace NekoPak {
         File.Delete(path);
       pak_create(pakFilename);
       IntPtr pak = pak_open(Path.GetFullPath(args[1]));
-      Console.WriteLine(pakFilename);
+      Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
         if (pak_insert(pak, file, storeName) == 0)
-          Console.WriteLine("Added " + file + " successfully.");
+          Console.WriteLine("Pak'd " + storeName + " successfully.");
         else
           Console.WriteLine("SOMETHING WENT WRONG!");
       }

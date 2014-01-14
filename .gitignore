@@ -7,3 +7,4 @@ tmp
 *.exp
 lib/neko.*
 tools/
+*/obj/
