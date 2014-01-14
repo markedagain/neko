@@ -16,6 +16,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
+  game_createWindow(game);
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = 1280;
@@ -32,6 +33,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
+
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
@@ -63,6 +65,10 @@ SPACE *game_getSpace(GAME *game, char *name) {
     node = node->next;
   }
   return NULL;
+}
+
+void game_createWindow(GAME *game) {
+  game->window = NULL;
 }
 
 void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {

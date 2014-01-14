@@ -15,6 +15,18 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
     trans->scale.y *= 1.01f;
     trans->rotation += 0.01f;
   }
+  if (input->keyboard.keys[KEY_LEFT]) {
+    trans->translation.x -= 1.0f;
+  }
+  if (input->keyboard.keys[KEY_RIGHT]) {
+    trans->translation.x += 1.0f;
+  }
+  if (input->keyboard.keys[KEY_UP]) {
+    trans->translation.y += 1.0f;
+  }
+  if (input->keyboard.keys[KEY_DOWN]) {
+    trans->translation.y -= 1.0f;
+  }
 }
 
 void comp_playerLogic(COMPONENT *self) {

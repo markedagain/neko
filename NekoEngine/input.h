@@ -5,7 +5,6 @@
 
 #include <Windows.h>
 #include "neko.h"
-#include "vectormath.h"
 
 typedef enum keyboardKey_t {
   KEY_0 = 0x30,
