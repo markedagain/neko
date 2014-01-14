@@ -10,14 +10,14 @@
 void vector_init(VECTOR *v) {
   v->used_entries = 0;
   v->capacity = 8;
-  v->data = calloc(sizeof(void *), v->capacity);
+  v->data = (void *)calloc(v->capacity, sizeof(void *));
 }
 
 /* initialize a vector with a defined size */
 void vector_init_size(VECTOR *v, size_t capacity) {
   v->used_entries = 0;
   v->capacity = capacity;
-  v->data = calloc(sizeof(void *), v->capacity);
+  v->data = (void *)calloc(v->capacity, sizeof(void *));
 }
 
 /* free a vector */

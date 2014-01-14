@@ -39,16 +39,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\tmp\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,8 +73,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
-mkdir "$(OutDir)data"
+      <Command>xcopy /y "$(ProjectDir)lib\*" "$(OutDir)"
+mkdir "$(ProjectDir)data"
+"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)pak0.pak"
 xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -103,9 +104,8 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(OutDir)"
-mkdir "$(OutDir)data"
-xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
+      <Command>xcopy /y "$(ProjectDir)lib\*" "$(OutDir)"
+"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)pak0.pak"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>

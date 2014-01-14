@@ -5,7 +5,6 @@
 #include "../NekoEngine/space.h"
 #include "test.h"
 #include "../NekoEngine/neko.h"
-#include "../NekoEngine/pak.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 

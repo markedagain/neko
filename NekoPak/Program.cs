@@ -24,14 +24,15 @@ namespace NekoPak {
 
     static void Main(string[] args) {
       List<string> files = new List<string>();
+      if (args.Length != 2) {
+        Console.WriteLine("Incorrect parameter count.");
+        return;
+      }
       string path = args[0];
       string pakFilename = args[1];
       path.Replace('/', '\\');
       if (!path.EndsWith("\\"))
         path += "\\";
-      if (args.Length != 2) {
-        Console.WriteLine("Incorrect parameter count.");
-      }
       /*try {
         foreach (string d in Directory.GetDirectories(args[0]))
           foreach (string f in Directory.GetFiles(d))
@@ -58,6 +59,11 @@ namespace NekoPak {
         Console.WriteLine(pak_insert(pak, file, storeName).ToString());
         Thread.Sleep(50);
       }
+      pak_close(pak);
+      pak = pak_open(Path.GetFullPath(args[1]));
+      UInt32 size;
+      string data = pak_load(pak, "a.txt", out size);
+      
       pak_close(pak);
     }
   }

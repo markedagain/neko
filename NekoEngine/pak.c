@@ -17,7 +17,7 @@ void pak_create(const char *filename) {
   pak.header.head[3] = 'K';
   pak.header.offset = sizeof(pak.header.head) + 1;
   pak.header.size = 1;
-  pak.handle = fopen(filename, "wb");
+  pak.handle = fopen(filename, "wb+");
 
   if (!pak.handle) {
     pak_error(NULL, PAKERROR_OPEN);
@@ -44,7 +44,7 @@ PAK_FILE *pak_open(char *filename) {
   PAK_FILE *pak;
   FILE *fp;
 
-  fp = fopen(filename, "r+");
+  fp = fopen(filename, "rb+");
   if (!fp)
     return (PAK_FILE *)pak_error(NULL, PAKERROR_OPEN);
 
@@ -80,12 +80,12 @@ PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, char *nameInPak) {
     return PAKERROR_FILENAME_LENGTH;
 
   // Read the file to pack into memory
-  fp = fopen(filename, "r");
+  fp = fopen(filename, "rb+");
   if (!fp)
     return PAKERROR_OPEN;
   while(fread(&c, sizeof(c), 1, fp) > 0)
     ++count;
-  buffer = (char *)malloc(sizeof(char) * (count);
+  buffer = (char *)malloc(sizeof(char) * (count));
   if (!buffer) {
     fclose(fp);
     return PAKERROR_MALLOC;
