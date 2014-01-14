@@ -107,6 +107,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="linkedlist.h" />
     <ClInclude Include="neko.h" />
     <ClInclude Include="pak.h" />
+    <ClInclude Include="random.h" />
     <ClInclude Include="soundemitter.h" />
     <ClInclude Include="space.h" />
     <ClInclude Include="sprite.h" />
@@ -125,6 +126,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="linkedlist.c" />
     <ClCompile Include="neko.c" />
     <ClCompile Include="pak.c" />
+    <ClCompile Include="random.c" />
     <ClCompile Include="soundemitter.c" />
     <ClCompile Include="space.c" />
     <ClCompile Include="sprite.c" />

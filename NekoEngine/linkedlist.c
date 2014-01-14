@@ -28,7 +28,7 @@ LIST *list_create(void) {
  */
 LIST_NODE *list_create_node(void *data) {
   LIST_NODE *node;
-  if (!(node = malloc(sizeof(LIST_NODE))))
+  if (!(node = (LIST_NODE *)malloc(sizeof(LIST_NODE))))
     return NULL;
   node->data = data;
   node->next = NULL;

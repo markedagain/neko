@@ -33,14 +33,14 @@ namespace NekoPak {
       path.Replace('/', '\\');
       if (!path.EndsWith("\\"))
         path += "\\";
-      /*try {
+      try {
         foreach (string d in Directory.GetDirectories(args[0]))
           foreach (string f in Directory.GetFiles(d))
             files.Add(f);
       }
       catch (System.Exception e) {
         Console.WriteLine(e.Message);
-      }*/
+      }
       try {
         foreach (string f in Directory.GetFiles(args[0]))
           files.Add(f);
@@ -55,15 +55,11 @@ namespace NekoPak {
       Console.WriteLine(pakFilename);
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-        Console.WriteLine(file);
-        Console.WriteLine(pak_insert(pak, file, storeName).ToString());
-        Thread.Sleep(50);
+        if (pak_insert(pak, file, storeName) == 0)
+          Console.WriteLine("Added " + file + " successfully.");
+        else
+          Console.WriteLine("SOMETHING WENT WRONG!");
       }
-      pak_close(pak);
-      pak = pak_open(Path.GetFullPath(args[1]));
-      UInt32 size;
-      string data = pak_load(pak, "a.txt", out size);
-      
       pak_close(pak);
     }
   }

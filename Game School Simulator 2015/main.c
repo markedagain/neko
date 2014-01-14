@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   space = game_addSpace(game, "main");
   space_addEntity(space, arch_test, "player");
 
-  game_loop(game);
+  game_start(game);
 
   return 1;
 }

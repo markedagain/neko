@@ -17,7 +17,7 @@ void *data_load(char *filename, int *filesize) {
   pakExists = file_exists("pak0.pak");
 
   // If there is a pak file present, look up the requested file in it and return it if it exists
-
+  
   // If the file does exist, load it
 
   // If the file doesn't exist in the pak, we're out of options, return

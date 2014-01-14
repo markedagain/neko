@@ -18,8 +18,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   GAME *game = (GAME *)malloc(sizeof(GAME));
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
-  sysInitInfo.mWinWidth      = 800;
-  sysInitInfo.mWinHeight      = 600;
+  sysInitInfo.mWinWidth      = 1280;
+  sysInitInfo.mWinHeight      = 720;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = 60;
   sysInitInfo.mpWinCallBack    = NULL;//MyWinCallBack;
@@ -36,6 +36,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   printf("Neko Engine loaded more or less successfully!\n");
   
   AESysReset();
+  srand(time(NULL));
 
   return game;
 }
@@ -138,13 +139,18 @@ void game_cleanup(GAME *game) {
   }
 }
 
-void game_loop(GAME *game) {
+void game_start(GAME *game) {
   bool gameRunning = true;
 
   AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
   AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-  while(gameRunning)
-  {
+  while(gameRunning) {
+    gameRunning = game_loop(game);
+  }
+
+  AESysExit();
+}
+bool game_loop(GAME *game) {
     AESysFrameStart();
     AEInputUpdate();
 
@@ -153,8 +159,6 @@ void game_loop(GAME *game) {
     AESysFrameEnd();
 
     if (AEInputCheckTriggered(VK_ESCAPE) || 0 == AESysDoesWindowExist())
-      gameRunning = false;
-  }
-
-  AESysExit();
+      return false;
+    return true;
 }
