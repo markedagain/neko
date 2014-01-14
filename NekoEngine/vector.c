@@ -10,14 +10,14 @@
 void vector_init(VECTOR *v) {
   v->used_entries = 0;
   v->capacity = 8;
-  v->data = (void **)calloc(v->capacity, sizeof(void *));
+  v->data = calloc(sizeof(void *), v->capacity);
 }
 
 /* initialize a vector with a defined size */
 void vector_init_size(VECTOR *v, size_t capacity) {
   v->used_entries = 0;
   v->capacity = capacity;
-  v->data = (void **)calloc(v->capacity, sizeof(void *));
+  v->data = calloc(sizeof(void *), v->capacity);
 }
 
 /* free a vector */
@@ -39,7 +39,7 @@ size_t vector_capacity(VECTOR *v) {
 void vector_grow(VECTOR *v, size_t new_size) {
   while (v->capacity < new_size)
     v->capacity *= 2;
-  v->data = (void **)realloc(v->data, sizeof(void *) * v->capacity);
+  v->data = realloc(v->data, sizeof(void *) * v->capacity);
   assert(v->data);
 }
 
@@ -78,7 +78,7 @@ void *vector_pop(VECTOR *v, size_t index) {
     return NULL;
 
   ret = v->data[index];
-  new_arr = (void **)malloc(sizeof(void *) * v->capacity);
+  new_arr = malloc(sizeof(void *) * v->capacity);
   for (i = 0, j = 0; i < v->used_entries; ++i) {
     if (i == index)
       continue;

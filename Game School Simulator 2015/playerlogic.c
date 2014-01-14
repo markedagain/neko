@@ -9,14 +9,12 @@
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  INPUT_CONTAINER *input = &self->game->input;
-  if (input->mouse.left == ISTATE_PRESSED) {
-  }
-  if (input->mouse.position.x > 100) {
-  }
-  trans->scale.x *= 1.01f;
-  trans->scale.y *= 1.01f;
-  trans->rotation += 0.01f;
+  /*INPUT_CONTAINER *input = &self->game->input;
+  if (input->keyboard.keys[KEY_SPACE]) {
+    trans->scale.x *= 1.01f;
+    trans->scale.y *= 1.01f;
+    trans->rotation += 0.01f;
+  }*/
 }
 
 void comp_playerLogic(COMPONENT *self) {
