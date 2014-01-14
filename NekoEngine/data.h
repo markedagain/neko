@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Windows.h>
 #include "neko.h"
+#include "util.h"
 
-void *data_load(char *, int *);
+NEKO_API void *data_load(char *, int *);
+bool file_exists(char *);
+void *file_load(char *);

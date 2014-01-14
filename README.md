@@ -19,3 +19,9 @@ Features
 * Action lists
 * Vectors (dynamically-size arrays of void pointers)
 * Style guide
+
+
+Notes
+-----
+
+Put data files in an organized manner in "Game School Simulator 2015/data," and it'll be *magically* turned into `pak0.pak` when you compile the game!

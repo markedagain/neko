@@ -12,7 +12,6 @@ int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
   GAME *game;
   SPACE *space;
-  ENTITY *player;
 
   game = game_create(instanceH, show);
   space = game_addSpace(game, "main");
