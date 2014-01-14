@@ -7,7 +7,6 @@
 #include "neko.h"
 #include "event.h"
 #include "entity.h"
-#include "game.h"
 
 #define MAX_DEPENDS 8
 #define COMPONENT_INIT(a, b, c) component_initialize(a, b, &c, sizeof(c))
@@ -19,7 +18,6 @@ typedef struct component_t {
   void *data;
   unsigned int id;
   ENTITY *owner;
-  GAME *game;
   unsigned int depends[MAX_DEPENDS];
   EVENTCONTAINER events;
 } COMPONENT;

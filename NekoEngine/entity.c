@@ -42,7 +42,6 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
 
   component = (COMPONENT *)malloc(sizeof(COMPONENT));
   component->owner = entity;
-  //component->game = entity->game;
   componentFunction(component);
 
   /* TODO: dependency check */
@@ -53,7 +52,7 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
 
 COMPONENT *entity_getComponent(ENTITY *entity, unsigned int componentId) {
   unsigned int i;
-  int componentCount = (int)vector_size(&entity->components);
+  size_t componentCount = vector_size(&entity->components);
   for (i = 0; i < componentCount; ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
     if (component->id == componentId)

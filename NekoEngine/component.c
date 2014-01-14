@@ -10,8 +10,6 @@ void component_initialize(COMPONENT *component, unsigned int id, void *data, siz
   for (i = 0; i < MAX_DEPENDS; ++i)
     component->depends[i] = 0;
   component->id = id;
-  component->owner = NULL;
-  //component->game = NULL;
   if (data != NULL)
     component->data = (void *)malloc(dataSize);
   eventcontainer_initialize(&component->events);

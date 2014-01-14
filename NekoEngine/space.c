@@ -37,6 +37,7 @@ SPACE *space_create(char *name) {
 ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name) {
   ENTITY *entity = entity_create(archetypeFunction, name);
   int componentCount;
+  entity->space = space;
   componentCount = vector_size(&entity->components);
   if (componentCount > 0) {
     int i;

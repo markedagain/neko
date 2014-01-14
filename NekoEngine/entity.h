@@ -16,7 +16,6 @@ typedef struct entity_t {
   unsigned int id;
   struct entity_t *parent;
   SPACE *space;
-  GAME *game;
   char name[80];
   VECTOR components;
   VECTOR children;

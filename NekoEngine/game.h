@@ -28,6 +28,7 @@ NEKO_API void game_destroy(GAME *);
 NEKO_API SPACE *game_addSpace(GAME *, char *);
 NEKO_API SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
+void game_getInput(GAME *);
 void game_update(GAME *);
 void game_draw(GAME *);
 void game_cleanup(GAME *);

@@ -29,6 +29,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
+  input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
   AllocConsole();
@@ -69,9 +70,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 
   if (game->spaces->count == 0)
     return;
-
   spaceNode = game->spaces->first;
-
   do {
     SPACE *space = (SPACE *)(spaceNode->data);
     LIST_NODE *entityNode;
@@ -80,9 +79,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
       spaceNode = spaceNode->next;
       continue;
     }
-
     entityNode = space->entities->first;
-
     do {
       ENTITY *entity = (ENTITY *)(entityNode->data);
       unsigned int i = 0;
@@ -92,27 +89,27 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
         entityNode = entityNode->next;
         continue;
       }
-
       do {
         COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+
         if (component->events.logicUpdate == NULL) {
           ++i;
           continue;
         }
-
         component_doEvent(component, event, data);
-
         ++i;
       }
       while (i < componentCount);
-
       entityNode = entityNode->next;
     }
     while (entityNode != NULL);
-
     spaceNode = spaceNode->next;
   }
   while (spaceNode != NULL);
+}
+
+void game_getInput(GAME *game) {
+  input_update(&game->input, NULL);
 }
 
 void game_update(GAME *game) {
@@ -153,7 +150,8 @@ void game_start(GAME *game) {
 bool game_loop(GAME *game) {
     AESysFrameStart();
     AEInputUpdate();
-
+    
+    game_getInput(game);
     game_update(game);
     game_draw(game);
     AESysFrameEnd();
