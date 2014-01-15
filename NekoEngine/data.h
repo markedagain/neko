@@ -6,6 +6,14 @@
 #include <Windows.h>
 #include "neko.h"
 #include "util.h"
+#include "dictionary.h"
+
+typedef struct dataContainer_t {
+  DICT sprites;
+  DICT sounds;
+  DICT textures;
+} DATACONTAINER;
+  
 
 NEKO_API void *data_load(char *, int *);
 bool file_exists(char *);

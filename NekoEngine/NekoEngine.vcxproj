@@ -107,6 +107,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="actionlist.h" />
     <ClInclude Include="component.h" />
     <ClInclude Include="data.h" />
+    <ClInclude Include="dictionary.h" />
     <ClInclude Include="easings.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="event.h" />
@@ -129,6 +130,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="actionlist.c" />
     <ClCompile Include="component.c" />
     <ClCompile Include="data.c" />
+    <ClCompile Include="dictionary.c" />
     <ClCompile Include="entity.c" />
     <ClCompile Include="event.c" />
     <ClCompile Include="game.c" />

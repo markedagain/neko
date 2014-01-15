@@ -12,12 +12,14 @@
 #include "event.h"
 #include "input.h"
 #include "../AlphaEngine/AEEngine.h"
+#include "data.h"
 
 typedef struct space_t SPACE;
 typedef struct component_t COMPONENT;
 
 typedef struct game_t {
   LIST *spaces;
+  DATACONTAINER data;
   LIST *destroyingEntities;
   LIST *destroyingSpaces;
   struct {
