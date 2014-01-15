@@ -12,6 +12,6 @@ void arch_cursor(ENTITY *entity) {
 
   entity_connect(entity, comp_transform);
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "data/textures/PlanetTexture.png";
+  sprite->source = "data/tex/PlanetTexture.png";
   entity_connect(entity, comp_cursorLogic);
 }

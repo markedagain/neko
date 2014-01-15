@@ -76,7 +76,7 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(ProjectDir)lib\*" "$(OutDir)"
 mkdir "$(ProjectDir)data"
-"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)pak0.pak"
+"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)data.pak"
 xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </PostBuildEvent>
     <Bscmake>
@@ -110,7 +110,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(ProjectDir)lib\*" "$(OutDir)"
-"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)pak0.pak"</Command>
+"$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)data.pak"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>
@@ -137,9 +137,9 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\names_first_female.txt" />
-    <Text Include="data\names_first_male.txt" />
-    <Text Include="data\names_last.txt" />
+    <Text Include="data\txt\names_first_female.txt" />
+    <Text Include="data\txt\names_first_male.txt" />
+    <Text Include="data\txt\names_last.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
