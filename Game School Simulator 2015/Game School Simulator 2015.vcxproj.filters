@@ -14,6 +14,15 @@
     <ClCompile Include="cursor.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="gamemanager.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="schoollogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="timemanager.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -38,6 +47,15 @@
     </ClInclude>
     <ClInclude Include="cursor.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="gamemanager.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="schoollogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="timemanager.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

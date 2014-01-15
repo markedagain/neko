@@ -6,6 +6,7 @@
 #include "../NekoEngine/neko.h"
 #include "test.h"
 #include "cursor.h"
+#include "gamemanager.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -14,6 +15,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   GAME *game;
   SPACE *mainSpace;
   SPACE *uiSpace;
+  SPACE *simSpace;
 
   game = game_create(instanceH, show);
   mainSpace = game_addSpace(game, "main");
@@ -21,6 +23,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   uiSpace = game_addSpace(game, "UI");
   space_addEntity(uiSpace, arch_cursor, "cursor");
+
+  simSpace = game_addSpace(game, "simulation");
+  space_addEntity(uiSpace, arch_gameManager, "gameManager");
 
   game_start(game);
 
