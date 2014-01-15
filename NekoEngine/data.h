@@ -13,6 +13,16 @@ typedef struct dataContainer_t {
   DICT sounds;
   DICT textures;
 } DATACONTAINER;
+
+typedef void *TEXTURE;
+
+typedef struct sprite_t {
+  TEXTURE *texture;
+  unsigned int x;
+  unsigned int y;
+  unsigned int width;
+  unsigned int height;
+} SPRITE;
   
 
 NEKO_API void *data_load(char *, int *);
