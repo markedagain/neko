@@ -23,7 +23,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinHeight      = 720;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = 60;
-  sysInitInfo.mpWinCallBack    = NULL;//MyWinCallBack;
+  sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW;//WS_POPUP | WS_VISIBLE | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;;
   game->spaces = list_create();
@@ -69,6 +69,7 @@ SPACE *game_getSpace(GAME *game, char *name) {
 
 void game_createWindow(GAME *game) {
   game->window = NULL;
+
 }
 
 void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
@@ -115,7 +116,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 }
 
 void game_getInput(GAME *game) {
-  input_update(&game->input, NULL);
+  input_update(&game->input, game->window);
 }
 
 void game_update(GAME *game) {

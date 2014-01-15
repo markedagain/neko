@@ -15,18 +15,32 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
     trans->scale.y *= 1.01f;
     trans->rotation += 0.01f;
   }
-  if (input->keyboard.keys[KEY_LEFT]) {
+  if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
     trans->translation.x -= 1.0f;
   }
-  if (input->keyboard.keys[KEY_RIGHT]) {
+  if (input->keyboard.keys[KEY_RIGHT] == ISTATE_DOWN) {
     trans->translation.x += 1.0f;
   }
-  if (input->keyboard.keys[KEY_UP]) {
+  if (input->keyboard.keys[KEY_UP] == ISTATE_DOWN) {
     trans->translation.y += 1.0f;
   }
-  if (input->keyboard.keys[KEY_DOWN]) {
+  if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
     trans->translation.y -= 1.0f;
   }
+  if (input->keyboard.keys[KEY_A] == ISTATE_PRESSED) {
+    trans->translation.x -= 4.0f;
+  }
+  if (input->keyboard.keys[KEY_D] == ISTATE_PRESSED) {
+    trans->translation.x += 4.0f;
+  }
+  if (input->keyboard.keys[KEY_W] == ISTATE_PRESSED) {
+    trans->translation.y += 4.0f;
+  }
+  if (input->keyboard.keys[KEY_S] == ISTATE_PRESSED) {
+    trans->translation.y -= 4.0f;
+  }
+  /*trans->translation.x = input->mouse.position.x;
+  trans->translation.y = input->mouse.position.y;*/
 }
 
 void comp_playerLogic(COMPONENT *self) {
