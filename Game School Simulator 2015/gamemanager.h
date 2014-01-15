@@ -8,4 +8,6 @@
 
 #define ARCH_GAMEMANAGER HASH("ARCH_GAMEMANAGER")
 
+void arch_gameManager(ENTITY *);
+
 #endif

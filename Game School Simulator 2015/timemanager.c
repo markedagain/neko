@@ -17,5 +17,4 @@ void comp_timeManager(COMPONENT *self) {
 
   COMPONENT_INIT(self, COMP_TIMEMANAGER, data);
   self->events.logicUpdate = comp_timeManager_logicUpdate;
-  //Bcomponent_initialize(self, COMP_TIMEMANAGER, &data, sizeof(data));
 }
