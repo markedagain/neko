@@ -40,23 +40,27 @@ typedef struct matrix3_t {
   };
 } MATRIX3;
 
-NEKO_API VEC2 vec2_add(VEC2 *, VEC2 *);
-NEKO_API VEC2 vec2_sub(VEC2 *, VEC2 *);
-NEKO_API VEC2 vec2_mul(VEC2 *, VEC2 *);
-NEKO_API VEC2 vec2_div(VEC2 *, VEC2 *);
+NEKO_API void vec2_add(VEC2 *, VEC2 *, VEC2 *);
+NEKO_API void vec2_sub(VEC2 *, VEC2 *, VEC2 *);
+NEKO_API void vec2_mul(VEC2 *, float, VEC2 *);
+NEKO_API void vec2_div(VEC2 *, float, VEC2 *);
 NEKO_API float vec2_dot(VEC2 *, VEC2 *);
+NEKO_API float vec2_angleBetween(VEC2 *, VEC2 *);
+NEKO_API float vec2_magnitude(VEC2 *);
 
-NEKO_API VEC3 vec3_add(VEC3 *, VEC3 *);
-NEKO_API VEC3 vec3_sub(VEC3 *, VEC3 *);
-NEKO_API VEC3 vec3_mul(VEC3 *, VEC3 *);
-NEKO_API VEC3 vec3_div(VEC3 *, VEC3 *);
+NEKO_API void vec3_add(VEC3 *, VEC3 *, VEC3 *);
+NEKO_API void vec3_sub(VEC3 *, VEC3 *, VEC3 *);
+NEKO_API void vec3_mul(VEC3 *, float, VEC3 *);
+NEKO_API void vec3_div(VEC3 *, float, VEC3 *);
 NEKO_API float vec3_dot(VEC3 *, VEC3 *);
-NEKO_API VEC3 vec3_cross(VEC3 *, VEC3 *);
+NEKO_API void vec3_cross(VEC3 *, VEC3 *, VEC3 *);
+NEKO_API float vec3_angleBetween(VEC3 *, VEC3 *);
+NEKO_API float vec3_magnitude(VEC3 *);
 
-NEKO_API VEC4 vec4_add(VEC4 *, VEC4 *);
-NEKO_API VEC4 vec4_sub(VEC4 *, VEC4 *);
-NEKO_API VEC4 vec4_mul(VEC4 *, VEC4 *);
-NEKO_API VEC4 vec4_div(VEC4 *, VEC4 *);
+NEKO_API void vec4_add(VEC4 *, VEC4 *, VEC4 *);
+NEKO_API void vec4_sub(VEC4 *, VEC4 *, VEC4 *);
+NEKO_API void vec4_mul(VEC4 *, float, VEC4 *);
+NEKO_API void vec4_div(VEC4 *, float, VEC4 *);
 
 NEKO_API void matrix3_identity(MATRIX3 *);
 NEKO_API void matrix3_translate(MATRIX3 *, VEC3 *);

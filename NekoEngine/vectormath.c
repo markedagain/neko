@@ -3,117 +3,110 @@
 #include "vectormath.h"
 #include <math.h>
 
-VEC2 vec2_add(VEC2 *a, VEC2 *b) {
-  VEC2 c = {0};
-  c.x = a->x + b->x;
-  c.y = a->y + b->y;
-  return c;
+void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c) {
+  c->x = a->x + b->x;
+  c->y = a->y + b->y;
 }
 
-VEC2 vec2_sub(VEC2 *a, VEC2 *b) {
-  VEC2 c = {0};
-  c.x = a->x - b->x;
-  c.y = a->y - b->y;
-  return c;
+void vec2_sub(VEC2 *a, VEC2 *b, VEC2 *c) {
+  c->x = a->x - b->x;
+  c->y = a->y - b->y;
 }
 
-VEC2 vec2_mul(VEC2 *a, VEC2 *b) {
-  VEC2 c = {0};
-  c.x = a->x * b->x;
-  c.y = a->y * b->y;
-  return c;
+void vec2_mul(VEC2 *a, float scalar, VEC2 *b) {
+  b->x = scalar * a->x;
+  b->y = scalar * a->y;
 }
 
-VEC2 vec2_div(VEC2 *a, VEC2 *b) {
-  VEC2 c = {0};
-  c.x = a->x / b->x;
-  c.y = a->y / b->y;
-  return c;
+void vec2_div(VEC2 *a, float diviser, VEC2 *b) {
+  b->x = a->x / diviser;
+  b->y = a->y / diviser;
 }
 
 float vec2_dot(VEC2 *a, VEC2 *b) {
   return a->x * b->x + a->y * b->y;
 }
 
-
-VEC3 vec3_add(VEC3 *a, VEC3 *b) {
-  VEC3 c = {0};
-  c.x = a->x + b->x;
-  c.y = a->y + b->y;
-  c.z = a->z + b->z;
-  return c;
+float vec2_angleBetween(VEC2 *a, VEC2 *b) {
+  float dotProduct = vec2_dot(a, b);
+  float totalMagnitude = vec2_magnitude(a) * vec2_magnitude(b);
+  return (acosf(dotProduct / totalMagnitude));
 }
 
-VEC3 vec3_sub(VEC3 *a, VEC3 *b) {
-  VEC3 c = {0};
-  c.x = a->x - b->x;
-  c.y = a->y - b->y;
-  c.z = a->z - b->z;
-  return c;
+float vec2_magnitude(VEC2 *a) {
+  return (float)sqrt(a->x * a->x + a->y * a->y);
 }
 
-VEC3 vec3_mul(VEC3 *a, VEC3 *b) {
-  VEC3 c = {0};
-  c.x = a->x * b->x;
-  c.y = a->y * b->y;
-  c.z = a->z * b->z;
-  return c;
+void vec3_add(VEC3 *a, VEC3 *b, VEC3 *c) {
+  c->x = a->x + b->x;
+  c->y = a->y + b->y;
+  c->z = a->z + b->z;
 }
 
-VEC3 vec3_div(VEC3 *a, VEC3 *b) {
-  VEC3 c = {0};
-  c.x = a->x / b->x;
-  c.y = a->y / b->y;
-  c.z = a->z / b->z;
-  return c;
+void vec3_sub(VEC3 *a, VEC3 *b, VEC3 *c) {
+  c->x = a->x - b->x;
+  c->y = a->y - b->y;
+  c->z = a->z - b->z;
+}
+
+void vec3_mul(VEC3 *a, float scalar, VEC3 *b) {
+  b->x = scalar * a->x;
+  b->y = scalar * a->y;
+  b->z = scalar * a->z;
+}
+
+void vec3_div(VEC3 *a, float diviser, VEC3 *b) {
+  b->x = a->x / diviser;
+  b->y = a->y / diviser;
+  b->z = a->z / diviser;
 }
 
 float vec3_dot(VEC3 *a, VEC3 *b) {
   return a->x * b->x + a->y * b->y + a->z * b->z;
 }
 
-VEC3 vec3_cross(VEC3 *a, VEC3 *b) {
-  VEC3 c = {0};
-  c.x = a->y * b->z - a->z * b->y;
-  c.y = -(b->z * a->x - b->x * a->z);
-  c.z = a->x * b->y - a->y * b->x;
-  return c;
+void vec3_cross(VEC3 *a, VEC3 *b, VEC3 *c) {
+  c->x = a->y * b->z - a->z * b->y;
+  c->y = -(b->z * a->x - b->x * a->z);
+  c->z = a->x * b->y - a->y * b->x;
 }
 
-VEC4 vec4_add(VEC4 *a, VEC4 *b) {
-  VEC4 c = {0};
-  c.x = a->x + b->x;
-  c.y = a->y + b->y;
-  c.z = a->z + b->z;
-  c.w = a->w + b->w;
-  return c;
+float vec3_angleBetween(VEC3 *a, VEC3 *b) {
+  float dotProduct = vec3_dot(a, b);
+  float totalMagnitude = vec3_magnitude(a) * vec3_magnitude(b);
+  return (acosf(dotProduct / totalMagnitude));
 }
 
-VEC4 vec4_sub(VEC4 *a, VEC4 *b) {
-  VEC4 c = {0};
-  c.x = a->x - b->x;
-  c.y = a->y - b->y;
-  c.z = a->z - b->z;
-  c.w = a->w - b->w;
-  return c;
+float vec3_magnitude(VEC3 *a) {
+  return (float)sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
 }
 
-VEC4 vec4_mul(VEC4 *a, VEC4 *b) {
-  VEC4 c = {0};
-  c.x = a->x * b->x;
-  c.y = a->y * b->y;
-  c.z = a->z * b->z;
-  c.w = a->w * b->w;
-  return c;
+void vec4_add(VEC4 *a, VEC4 *b, VEC4 *c) {
+  c->x = a->x + b->x;
+  c->y = a->y + b->y;
+  c->z = a->z + b->z;
+  c->w = a->w + b->w;
 }
 
-VEC4 vec4_div(VEC4 *a, VEC4 *b) {
-  VEC4 c = {0};
-  c.x = a->x / b->x;
-  c.y = a->y / b->y;
-  c.z = a->z / b->z;
-  c.w = a->w / b->w;
-  return c;
+void vec4_sub(VEC4 *a, VEC4 *b, VEC4 *c) {
+  c->x = a->x - b->x;
+  c->y = a->y - b->y;
+  c->z = a->z - b->z;
+  c->w = a->w - b->w;
+}
+
+void vec4_mul(VEC4 *a, float scalar, VEC4 *b) {
+  b->x = scalar * a->x;
+  b->y = scalar * a->y;
+  b->z = scalar * a->z;
+  b->w = scalar * a->w;
+}
+
+void vec4_div(VEC4 *a, float diviser, VEC4 *b) {
+  b->x = a->x / diviser;
+  b->y = a->y / diviser;
+  b->z = a->z / diviser;
+  b->w = a->w / diviser;
 }
 
 // function to multiply two matrixes together, and modify the matrix *mat2 points to
