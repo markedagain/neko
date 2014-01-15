@@ -51,6 +51,7 @@ typedef struct space_t {
 NEKO_API SPACE *space_create(char *);
 NEKO_API ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
 NEKO_API ENTITY *space_getEntity(SPACE *, char *);
+NEKO_API void space_mouseToWorld(SPACE *, POINT *, POINT *);
 NEKO_API void space_destroy(SPACE *);
 void __space_destroy(SPACE *);
 

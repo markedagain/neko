@@ -17,7 +17,6 @@ void input_initialize(INPUT_CONTAINER *input) {
 
 void input_update(INPUT_CONTAINER *input, HWND *window) {
   int i;
-  POINT cursorPos;
   for (i = 0; i < KEY_LAST; ++i) {
     if (GetAsyncKeyState(i))
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_UP || input->keyboard.keys[i] == ISTATE_RELEASED ? ISTATE_PRESSED : ISTATE_DOWN);

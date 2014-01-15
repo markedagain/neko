@@ -8,6 +8,12 @@
     <ClCompile Include="test.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="cursorlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="cursor.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -25,6 +31,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="test.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="cursorlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="cursor.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>

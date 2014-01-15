@@ -5,17 +5,22 @@
 #include "../NekoEngine/space.h"
 #include "../NekoEngine/neko.h"
 #include "test.h"
+#include "cursor.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
 int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
   GAME *game;
-  SPACE *space;
+  SPACE *mainSpace;
+  SPACE *uiSpace;
 
   game = game_create(instanceH, show);
-  space = game_addSpace(game, "main");
-  space_addEntity(space, arch_test, "player");
+  mainSpace = game_addSpace(game, "main");
+  space_addEntity(mainSpace, arch_test, "player");
+
+  uiSpace = game_addSpace(game, "UI");
+  space_addEntity(uiSpace, arch_cursor, "cursor");
 
   game_start(game);
 

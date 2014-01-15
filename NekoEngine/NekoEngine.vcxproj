@@ -87,6 +87,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -98,6 +99,9 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
       <Command>xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)bin\$(Configuration)\"
 xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     </PostBuildEvent>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="actionlist.h" />

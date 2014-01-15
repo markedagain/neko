@@ -97,6 +97,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
@@ -115,11 +116,18 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
       <Message>
       </Message>
     </PostBuildEvent>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cursor.c" />
+    <ClCompile Include="cursorlogic.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="playerlogic.c" />
     <ClCompile Include="test.c" />
+    <ClInclude Include="cursor.h" />
+    <ClInclude Include="cursorlogic.h" />
     <ClInclude Include="playerlogic.h" />
     <ClInclude Include="test.h" />
   </ItemGroup>

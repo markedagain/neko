@@ -43,13 +43,17 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   MATRIX3 transform = { 0 };
+  VEC3 translation = trans->translation;
   if (!comData->visible)
     return;
+
+  translation.x -= self->owner->space->systems.camera.transform.translation.x;
+  translation.y -= self->owner->space->systems.camera.transform.translation.y;
 
   matrix3_identity(&transform);
   matrix3_rotate(&transform, trans->rotation);
   matrix3_scale(&transform, &trans->scale);
-  matrix3_translate(&transform, &trans->translation);
+  matrix3_translate(&transform, &translation);
   
   if (comData->texture == NULL)
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);

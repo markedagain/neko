@@ -16,7 +16,6 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
-  game_createWindow(game);
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = 1280;
@@ -30,6 +29,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
+  game->window.width = 1280;
+  game->window.height = 720;
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
@@ -65,11 +66,6 @@ SPACE *game_getSpace(GAME *game, char *name) {
     node = node->next;
   }
   return NULL;
-}
-
-void game_createWindow(GAME *game) {
-  game->window = NULL;
-
 }
 
 void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
@@ -116,7 +112,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 }
 
 void game_getInput(GAME *game) {
-  input_update(&game->input, game->window);
+  input_update(&game->input, NULL);
 }
 
 void game_update(GAME *game) {
