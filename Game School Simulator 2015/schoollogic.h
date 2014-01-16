@@ -18,6 +18,7 @@ typedef struct cdata_schoolLogic_t {
   int incomingStudents;
   LIST *students;
   int classrooms;
+  int reputation;
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);

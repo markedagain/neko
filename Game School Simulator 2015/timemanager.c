@@ -19,7 +19,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
   printf("Current Months: %i | Current Semester: %i | Year: %i\n\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
 
-  if((comData->currentYear > comData->previousYear) || (input->keyboard.keys[KEY_B] == ISTATE_DOWN)) {
+  if((comData->currentYear > comData->previousYear)
+      || (input->keyboard.keys[KEY_B] == ISTATE_DOWN)) {
     schoolData->classrooms++;
     schoolData->money -= 100000;
   }
