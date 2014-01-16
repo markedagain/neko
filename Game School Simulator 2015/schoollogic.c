@@ -18,6 +18,8 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     variableTest = 0;
   }
 
+  printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
+
   // Calculate studentCapacity
   comData->studentCapacity = comData->classrooms * 25;
 

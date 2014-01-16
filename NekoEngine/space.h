@@ -3,8 +3,6 @@
 #ifndef __SPACE_H__
 #define __SPACE_H__
 
-#define DEFAULT_FRAMERATE 60
-
 #include "neko.h"
 #include "linkedlist.h"
 #include "game.h"
@@ -13,10 +11,9 @@
 #include "vectormath.h"
 
 typedef struct sysTime_t {
-  float dt;
-  float framerate;
-  float timeScale;
-  bool paused;
+  STOPWATCH stopwatch;
+  double dt;
+  float scale;
   double currentTime;
 } SYS_TIME;
 
@@ -53,6 +50,8 @@ NEKO_API ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
 NEKO_API ENTITY *space_getEntity(SPACE *, char *);
 NEKO_API void space_mouseToWorld(SPACE *, POINT *, POINT *);
 NEKO_API void space_destroy(SPACE *);
+void space_invokeEvent(SPACE *, EVENT_TYPE, void *);
+void space_tick(SPACE *, EDATA_UPDATE *);
 void __space_destroy(SPACE *);
 
 #endif

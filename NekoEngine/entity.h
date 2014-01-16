@@ -26,7 +26,7 @@ typedef struct entity_t {
 typedef void (*entity_callback)(ENTITY *);
 typedef void (*component_callback)(COMPONENT *);
 
-NEKO_API ENTITY *entity_create(entity_callback, char *);
+ENTITY *entity_create(entity_callback, char *);
 NEKO_API void entity_attach(ENTITY *, ENTITY *);
 NEKO_API void *entity_connect(ENTITY *, component_callback);
 NEKO_API COMPONENT *entity_getComponent(ENTITY *, unsigned int);
