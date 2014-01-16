@@ -39,6 +39,14 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   if (input->keyboard.keys[KEY_S] == ISTATE_PRESSED) {
     trans->translation.y -= 4.0f;
   }
+  if (input->keyboard.keys[KEY_O] == ISTATE_DOWN) {
+    self->owner->space->systems.camera.transform.scale.x += 0.1f;
+    self->owner->space->systems.camera.transform.scale.y += 0.1f;
+  }
+  if (input->keyboard.keys[KEY_P] == ISTATE_DOWN) {
+    self->owner->space->systems.camera.transform.scale.x -= 0.1f;
+    self->owner->space->systems.camera.transform.scale.y -= 0.1f;
+  }
 }
 
 void comp_playerLogic(COMPONENT *self) {
