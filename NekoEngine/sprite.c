@@ -8,8 +8,7 @@
 #include "transform.h"
 #include "../AlphaEngine/AEEngine.h"
 #include "util.h"
-
-#include <stdio.h>
+#include <math.h>
 
 void comp_sprite_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
@@ -48,7 +47,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   VEC3 camScale = { 0 };
   int screenWidth = self->owner->space->game->window.width;
   int screenHeight = self->owner->space->game->window.height;
-  float screenRadius = (float)(0.5 * sqrt(screenWidth * screenWidth + screenHeight * screenHeight));
+  float screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
+  float spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
   VEC3 translation = trans->translation;
   VEC3 camTranslate = { 0 };
 
@@ -68,8 +68,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   matrix3_scale(&transform, &trans->scale);
   matrix3_translate(&transform, &translation);
 
-  if(vec3_magnitude(&translation) > screenRadius) {
-    printf("i'm off screen");
+  if(vec3_magnitude(&translation) > screenRadius + spriteRadius) {
     return;
   }
 
