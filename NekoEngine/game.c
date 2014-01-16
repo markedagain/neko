@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <Windows.h>
 #include "game.h"
 #include "linkedlist.h"
 #include "space.h"
@@ -14,6 +15,8 @@
 
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
+  HWND hWnd;
+  RECT rc;
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
   sysInitInfo.mAppInstance    = instanceH;
@@ -24,7 +27,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mMaxFrameRate    = 60;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
-  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW;//WS_POPUP | WS_VISIBLE | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;;
+  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
   game->spaces = list_create();
   dict_init(&game->data.sprites);
   dict_init(&game->data.textures);
@@ -37,6 +40,9 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
+  hWnd = AESysGetWindowHandle();
+  GetWindowRect(hWnd, &rc) ;
+  SetWindowPos(hWnd, 0, (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
 
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -47,6 +53,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   return game;
 }
+
 
 SPACE *game_addSpace(GAME *game, char *name) {
   SPACE *space = space_create(name);
@@ -152,7 +159,9 @@ void game_start(GAME *game) {
   }
 
   AESysExit();
+  game_cleanup(game);
 }
+
 bool game_loop(GAME *game) {
     AESysFrameStart();
     AEInputUpdate();
