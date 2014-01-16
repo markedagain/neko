@@ -3,6 +3,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#define DEFAULT_FPS 60
+
 #include <time.h>
 #include <stdlib.h>
 #include <Windows.h>
@@ -13,6 +15,7 @@
 #include "input.h"
 #include "../AlphaEngine/AEEngine.h"
 #include "data.h"
+#include "stopwatch.h"
 
 typedef struct space_t SPACE;
 typedef struct component_t COMPONENT;
@@ -26,6 +29,17 @@ typedef struct game_t {
     unsigned int width;
     unsigned int height;
   } window;
+  struct {
+    struct {
+      STOPWATCH stopwatch;
+      STOPWATCH secondsStopwatch;
+      unsigned char framesPerSecond;
+      unsigned short elapsedFrames;
+      unsigned short currentFramesPerSecond;
+      double frameRate;
+      double dt;
+    } time;
+  } systems;
   INPUT_CONTAINER input;
   unsigned char destroying;
 } GAME;
@@ -36,8 +50,7 @@ NEKO_API SPACE *game_addSpace(GAME *, char *);
 NEKO_API SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
 void game_getInput(GAME *);
-void game_update(GAME *);
-void game_draw(GAME *);
+void game_tick(GAME *);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);

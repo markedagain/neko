@@ -18,8 +18,8 @@ typedef enum eventType_t {
 } EVENT_TYPE;
 
 typedef struct edata_update_t {
-  float dt;
-  float elapsedTime;
+  double dt;
+  double elapsedTime;
 } EDATA_UPDATE;
 
 typedef struct eventcontainer_t {

@@ -7,6 +7,7 @@
 #include "test.h"
 #include "cursor.h"
 #include "gamemanager.h"
+#include "util.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -25,7 +26,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
   simSpace = game_addSpace(game, "simulation");
-  space_addEntity(uiSpace, arch_gameManager, "gameManager");
+  simSpace->visible = false;
+  simSpace->systems.time.scale = 0.0166666666666667;
+  space_addEntity(simSpace, arch_gameManager, "gameManager");
 
   game_start(game);
 

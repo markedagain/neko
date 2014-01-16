@@ -121,6 +121,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="soundemitter.h" />
     <ClInclude Include="space.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="stopwatch.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector.h" />
@@ -142,6 +143,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="soundemitter.c" />
     <ClCompile Include="space.c" />
     <ClCompile Include="sprite.c" />
+    <ClCompile Include="stopwatch.c" />
     <ClCompile Include="transform.c" />
     <ClCompile Include="util.c" />
     <ClCompile Include="vector.c" />
