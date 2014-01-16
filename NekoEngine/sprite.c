@@ -9,6 +9,8 @@
 #include "../AlphaEngine/AEEngine.h"
 #include "util.h"
 
+#include <stdio.h>
+
 void comp_sprite_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
   float w = comData->size.x / 2;
@@ -43,18 +45,34 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   MATRIX3 transform = { 0 };
+  VEC3 camScale = { 0 };
+  int screenWidth = self->owner->space->game->window.width;
+  int screenHeight = self->owner->space->game->window.height;
+  float screenRadius = (float)(0.5 * sqrt(screenWidth * screenWidth + screenHeight * screenHeight));
   VEC3 translation = trans->translation;
+  VEC3 camTranslate = { 0 };
+
   if (!comData->visible)
     return;
 
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
+  camScale.x = self->owner->space->systems.camera.transform.scale.x;
+  camScale.y = self->owner->space->systems.camera.transform.scale.y;
+  translation.x *= camScale.x;
+  translation.y *= camScale.y;
 
   matrix3_identity(&transform);
+  matrix3_scale(&transform, &camScale);
   matrix3_rotate(&transform, trans->rotation);
   matrix3_scale(&transform, &trans->scale);
   matrix3_translate(&transform, &translation);
-  
+
+  if(vec3_magnitude(&translation) > screenRadius) {
+    printf("i'm off screen");
+    return;
+  }
+
   if (comData->texture == NULL)
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
   else
