@@ -20,7 +20,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
-    comData->incomingStudents = 3 + comData->reputation;
+    comData->incomingStudents = 1 + comData->reputation;
     if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents)) {
       comData->incomingStudents = comData->studentCapacity - comData->currentStudents;
     }
@@ -38,7 +38,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     comData->tuition += 1000;
 
   //Add money
-  comData->money += comData->tuition * comData->currentStudents;
+  comData->money += (comData->tuition * comData->currentStudents) / 6;
+  //Lose money
+  comData->money -= (comData->classrooms * 10000) / 6;
 
   printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
   printf("MONEY: $%i\n", comData->money);
@@ -49,13 +51,14 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Tiny Game School";
-  data.money = 0;
-  data.tuition = 1000;
+  data.money = 50000;
+  data.tuition = 3000;
   data.studentCapacity = 0;
   data.currentStudents = 0;
   data.incomingStudents = 0;
   data.students = list_create();
-  data.classrooms = 1;
+  data.classrooms = 0;
+  data.rooms = list_create();
   data.reputation = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);

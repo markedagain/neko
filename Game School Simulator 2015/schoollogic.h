@@ -11,13 +11,14 @@
 
 typedef struct cdata_schoolLogic_t {
   char *schoolName;
-  int money;
+  long int money;
   int tuition;
   int studentCapacity;
   int currentStudents;
   int incomingStudents;
   LIST *students;
   int classrooms;
+  LIST *rooms;
   int reputation;
 } CDATA_SCHOOLLOGIC;
 
