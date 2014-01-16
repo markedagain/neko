@@ -23,6 +23,12 @@
     <ClCompile Include="timemanager.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="room.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="roomlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -55,6 +61,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="timemanager.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="room.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="roomlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
