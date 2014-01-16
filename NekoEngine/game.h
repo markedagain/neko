@@ -32,7 +32,10 @@ typedef struct game_t {
   struct {
     struct {
       STOPWATCH stopwatch;
-      unsigned int framesPerSecond;
+      STOPWATCH secondsStopwatch;
+      unsigned char framesPerSecond;
+      unsigned short elapsedFrames;
+      unsigned short currentFramesPerSecond;
       double frameRate;
       double dt;
     } time;

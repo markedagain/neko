@@ -24,7 +24,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinWidth      = 1280;
   sysInitInfo.mWinHeight      = 720;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = 60;
+  sysInitInfo.mMaxFrameRate    = DEFAULT_FPS;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
@@ -40,6 +40,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->systems.time.framesPerSecond = DEFAULT_FPS;
   game->systems.time.frameRate = (double)1 / (double)DEFAULT_FPS;
   game->systems.time.dt = 0;
+  game->systems.time.currentFramesPerSecond = 0;
+  game->systems.time.elapsedFrames = 0;
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
@@ -144,6 +146,7 @@ void game_start(GAME *game) {
   AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 
   stopwatch_start(&game->systems.time.stopwatch);
+  stopwatch_start(&game->systems.time.secondsStopwatch);
   while(gameRunning) {
     gameRunning = game_loop(game);
   }
@@ -153,12 +156,21 @@ void game_start(GAME *game) {
 }
 
 bool game_loop(GAME *game) {
+  game->systems.time.elapsedFrames++;
+  stopwatch_stop(&game->systems.time.secondsStopwatch);
+  if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {
+    game->systems.time.currentFramesPerSecond = game->systems.time.elapsedFrames;
+    game->systems.time.elapsedFrames = 0;
+    stopwatch_start(&game->systems.time.secondsStopwatch);
+  }
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt < game->systems.time.frameRate)
     return true;
+
   game_getInput(game);
   game_tick(game);
+
   AEGfxStart();
   game_invokeEvent(game, EV_DRAW, NULL);
   AEGfxEnd();
