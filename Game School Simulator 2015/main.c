@@ -27,7 +27,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   simSpace = game_addSpace(game, "simulation");
   simSpace->visible = false;
-  space_addEntity(uiSpace, arch_gameManager, "gameManager");
+  simSpace->systems.time.scale = 0.1;
+  space_addEntity(simSpace, arch_gameManager, "gameManager");
 
   game_start(game);
 

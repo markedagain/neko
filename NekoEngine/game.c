@@ -89,36 +89,11 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   spaceNode = game->spaces->first;
   do {
     SPACE *space = (SPACE *)(spaceNode->data);
-    LIST_NODE *entityNode;
-
     if (space->entities->count == 0 || !space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
       spaceNode = spaceNode->next;
       continue;
     }
-    entityNode = space->entities->first;
-    do {
-      ENTITY *entity = (ENTITY *)(entityNode->data);
-      unsigned int i = 0;
-      unsigned int componentCount = vector_size(&entity->components);
-
-      if (componentCount == 0 || entity->destroying) {
-        entityNode = entityNode->next;
-        continue;
-      }
-      do {
-        COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
-
-        if (component->events.logicUpdate == NULL) {
-          ++i;
-          continue;
-        }
-        component_doEvent(component, event, data);
-        ++i;
-      }
-      while (i < componentCount);
-      entityNode = entityNode->next;
-    }
-    while (entityNode != NULL);
+    space_invokeEvent(space, event, data);
     spaceNode = spaceNode->next;
   }
   while (spaceNode != NULL);
@@ -128,15 +103,24 @@ void game_getInput(GAME *game) {
   input_update(&game->input, NULL);
 }
 
-void game_update(GAME *game) {
+void game_tick(GAME *game) {
   EDATA_UPDATE updateEvent = { 0 };
-  game_invokeEvent(game, EV_FRAMEUPDATE, &updateEvent);
-  game_invokeEvent(game, EV_LOGICUPDATE, &updateEvent);
+  LIST_NODE *spaceNode;
+  if (game->spaces->count == 0)
+    return;
+  spaceNode = game->spaces->first;
+  do {
+    SPACE *space = (SPACE*)spaceNode->data;
+    if (space->entities->count == 0 || !space->active || space->destroying) {
+      spaceNode = spaceNode->next;
+      continue;
+    }
+    space_tick(space, &updateEvent);
+    spaceNode = spaceNode->next;
+  }
+  while (spaceNode != NULL);
+  //game_invokeEvent(game, EV_FRAMEUPDATE, &updateEvent);
   game_cleanup(game);
-}
-
-void game_draw(GAME *game) {
-  game_invokeEvent(game, EV_DRAW, NULL);
 }
 
 void game_cleanup(GAME *game) {
@@ -165,21 +149,25 @@ void game_start(GAME *game) {
   }
 
   AESysExit();
-  game_cleanup(game);
+  game_destroy(game);
 }
 
 bool game_loop(GAME *game) {
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
-  if (game->systems.time.dt <= game->systems.time.frameRate)
+  if (game->systems.time.dt < game->systems.time.frameRate)
     return true;
   game_getInput(game);
-  game_update(game);
+  game_tick(game);
   AEGfxStart();
-  game_draw(game);
+  game_invokeEvent(game, EV_DRAW, NULL);
   AEGfxEnd();
 
   if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
     return false;
   return true;
+}
+
+void game_destroy(GAME *game) {
+  // TODO
 }
