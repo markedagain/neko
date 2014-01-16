@@ -3,6 +3,7 @@
 #include "schoollogic.h"
 #include "room.h"
 #include "roomlogic.h"
+#include "../NekoEngine/linkedlist.h"
 
 int variableTest = 1;
 
@@ -49,10 +50,36 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   printf("TUITION: $%i\n", comData->tuition);
   printf("REP: %i\n", comData->reputation);
 
+  // Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_RELEASED) {
     ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, "Lobby");
     CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+    newRoomCompData->type = ROOMTYPE_LOBBY;
+    list_insert_end(comData->rooms, newRoom); //Add newRoom to the rooms list
+  }
+  // Create Class room if "K" is pressed
+  if(input->keyboard.keys[KEY_K] == ISTATE_RELEASED) {
+    ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, "Class");
+    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
     newRoomCompData->type = ROOMTYPE_CLASS;
+    list_insert_end(comData->rooms, newRoom); //Add newRoom to the rooms list
+  }
+  // Create Library room if "J" is pressed
+  if(input->keyboard.keys[KEY_J] == ISTATE_RELEASED) {
+    ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, "Library");
+    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+    newRoomCompData->type = ROOMTYPE_LIBRARY;
+    list_insert_end(comData->rooms, newRoom); //Add newRoom to the rooms list
+  }
+  // Create TeamSpace room if "H" is pressed
+  if(input->keyboard.keys[KEY_H] == ISTATE_RELEASED) {
+    ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, "TeamSpace");
+    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+    newRoomCompData->type = ROOMTYPE_TEAMSPACE;
+    list_insert_end(comData->rooms, newRoom); //Add newRoom to the rooms list
+  }
+  if(input->keyboard.keys[KEY_O] == ISTATE_RELEASED) {
+    
   }
 }
 
