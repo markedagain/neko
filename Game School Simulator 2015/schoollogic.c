@@ -1,6 +1,8 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "schoollogic.h"
+#include "room.h"
+#include "roomlogic.h"
 
 int variableTest = 1;
 
@@ -46,6 +48,12 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   printf("MONEY: $%i\n", comData->money);
   printf("TUITION: $%i\n", comData->tuition);
   printf("REP: %i\n", comData->reputation);
+
+  if(input->keyboard.keys[KEY_L] == ISTATE_RELEASED) {
+    ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, "Lobby");
+    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+    newRoomCompData->type = ROOMTYPE_CLASS;
+  }
 }
 
 void comp_schoolLogic(COMPONENT *self) {

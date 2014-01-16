@@ -6,20 +6,20 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
 
-  if(comData->type = ROOMTYPE_LOBBY) {
-    printf("Im totally a lobby!!!!!!!! :O");
+  if(comData->type == ROOMTYPE_LOBBY) {
+    printf("Im totally a lobby!!!!!!!! :O\n");
   }
 
-  if(comData->type = ROOMTYPE_CLASS) {
-    printf("GET TO CLASS");
+  if(comData->type == ROOMTYPE_CLASS) {
+    printf("GET TO CLASS\n");
   }
 
-  if(comData->type = ROOMTYPE_LIBRARY) {
-    printf("BOOKS... BOOKS EVERWHERE");
+  if(comData->type == ROOMTYPE_LIBRARY) {
+    printf("BOOKS... BOOKS EVERWHERE\n");
   }
 
-  if(comData->type = ROOMTYPE_TEAMSPACE) {
-    printf("NO FRESHMEN WELCOME...HAHA... HAHAHHAHAHAHHAH!");
+  if(comData->type == ROOMTYPE_TEAMSPACE) {
+    printf("NO FRESHMEN WELCOME...HAHA... HAHAHHAHAHAHHAH!\n");
   }
 
 }
