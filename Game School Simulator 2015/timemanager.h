@@ -10,6 +10,8 @@
 
 typedef struct cdata_timeManager_t {
   int months;
+  int previousYear;
+  int currentYear;
 } CDATA_TIMEMANAGER;
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);
