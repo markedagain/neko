@@ -12,8 +12,7 @@
 SPACE *space_create(char *name) {
   SPACE *space = (SPACE *)malloc(sizeof(SPACE));
   space->entities = list_create();
-  space->systems.time.dt = 1.0f / (float)DEFAULT_FRAMERATE;
-  space->systems.time.framerate = DEFAULT_FRAMERATE;
+  space->systems.time.dt = 0;
   space->systems.time.timeScale = 1.0f;
   space->systems.time.paused = false;
   space->systems.time.currentTime = 0;

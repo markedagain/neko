@@ -3,8 +3,6 @@
 #ifndef __SPACE_H__
 #define __SPACE_H__
 
-#define DEFAULT_FRAMERATE 60
-
 #include "neko.h"
 #include "linkedlist.h"
 #include "game.h"
@@ -13,8 +11,7 @@
 #include "vectormath.h"
 
 typedef struct sysTime_t {
-  float dt;
-  float framerate;
+  double dt;
   float timeScale;
   bool paused;
   double currentTime;

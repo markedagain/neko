@@ -37,13 +37,16 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroying = 0;
   game->window.width = 1280;
   game->window.height = 720;
+  game->systems.time.framesPerSecond = DEFAULT_FPS;
+  game->systems.time.frameRate = (double)1 / (double)DEFAULT_FPS;
+  game->systems.time.dt = 0;
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
   hWnd = AESysGetWindowHandle();
   GetWindowRect(hWnd, &rc) ;
   SetWindowPos(hWnd, 0, (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
-
+  SetCursor(NULL);
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
@@ -151,9 +154,12 @@ void game_cleanup(GAME *game) {
 
 void game_start(GAME *game) {
   bool gameRunning = true;
+  game->systems.time.frameRate = (double)1 / (double)game->systems.time.framesPerSecond;
 
   AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
   AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+
+  stopwatch_start(&game->systems.time.stopwatch);
   while(gameRunning) {
     gameRunning = game_loop(game);
   }
@@ -163,15 +169,17 @@ void game_start(GAME *game) {
 }
 
 bool game_loop(GAME *game) {
-    AESysFrameStart();
-    AEInputUpdate();
-    
-    game_getInput(game);
-    game_update(game);
-    game_draw(game);
-    AESysFrameEnd();
-
-    if (AEInputCheckTriggered(VK_ESCAPE) || 0 == AESysDoesWindowExist())
-      return false;
+  stopwatch_stop(&game->systems.time.stopwatch);
+  game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
+  if (game->systems.time.dt <= game->systems.time.frameRate)
     return true;
+  game_getInput(game);
+  game_update(game);
+  AEGfxStart();
+  game_draw(game);
+  AEGfxEnd();
+
+  if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
+    return false;
+  return true;
 }

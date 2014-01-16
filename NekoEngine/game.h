@@ -3,6 +3,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#define DEFAULT_FPS 60
+
 #include <time.h>
 #include <stdlib.h>
 #include <Windows.h>
@@ -13,6 +15,7 @@
 #include "input.h"
 #include "../AlphaEngine/AEEngine.h"
 #include "data.h"
+#include "stopwatch.h"
 
 typedef struct space_t SPACE;
 typedef struct component_t COMPONENT;
@@ -26,6 +29,14 @@ typedef struct game_t {
     unsigned int width;
     unsigned int height;
   } window;
+  struct {
+    struct {
+      STOPWATCH stopwatch;
+      unsigned int framesPerSecond;
+      double frameRate;
+      double dt;
+    } time;
+  } systems;
   INPUT_CONTAINER input;
   unsigned char destroying;
 } GAME;
