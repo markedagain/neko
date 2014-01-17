@@ -28,6 +28,15 @@ void textfile_init(TEXTFILE *textfile) {
   vector_init(&textfile->lines);
 }
 
+void sprite_init(SPRITE *sprite) {
+  sprite->width = 32;
+  sprite->height = 32;
+  sprite->u = 0.5f;
+  sprite->v = 0.5f;
+  sprite->texture = NULL;
+}
+
+
 
 void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filename) {
   TEXTFILE *textfile;
@@ -55,6 +64,29 @@ void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
   dict_set(&dataContainer->textures, storeKey, texture);
   printf("Loaded TEX %s from disk\n", storeKey);
+}
+
+void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *filename) {
+  TEXTURE *texture;
+  SPRITE *sprite;
+  char storeKey[80];
+  char storeKey2[80];
+  //char *bytes;
+  //bytes = file_readBinary(filename);
+  //AEGfxTextureLoadFromMemory(
+  texture = AEGfxTextureLoad(filename);
+  AE_ASSERT_MESG(texture, "Failed to load texture!")
+  sprite = (SPRITE *)malloc(sizeof(SPRITE));
+  sprite_init(sprite);
+  sprite->texture = texture;
+
+  data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
+  dict_set(&dataContainer->textures, storeKey, texture);
+  printf("Loaded TEX %s from disk (QUICK)\n", storeKey);
+
+  data_makeKey(dataContainer, storeKey2, filename, "spr/", ".png");
+  dict_set(&dataContainer->sprites, storeKey2, sprite);
+  printf("Loaded SPR %s from disk (QUICK)\n", storeKey2);
 }
 
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
@@ -193,11 +225,19 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   file_getCurrentDirectory(currentDirectory);
 
   // LOAD TEXTURES
-  sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
+  sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "tex");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".png");
   for (i = 0; i < vector_size(&files); ++i)
     data_loadTextureFromDisk(dataContainer, (char *)vector_get(&files, i));
+  vector_clear(&files);
+
+  // LOAD QUICK SPRITES/TEXTURES
+  sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
+  file_unixToWindows(subdir);
+  file_getAllByExtension(&files, subdir, ".png");
+  for (i = 0; i < vector_size(&files); ++i)
+    data_loadQuickSpriteFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
 
   // LOAD TEXTFILES

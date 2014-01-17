@@ -17,7 +17,6 @@ typedef struct cdata_sprite_t {
   char *source;
   AEGfxVertexList *mesh;
   VEC4 color;
-  VEC2 offset;
   VEC2 size;
   bool visible;
 } CDATA_SPRITE;

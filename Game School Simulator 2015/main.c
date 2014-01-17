@@ -19,39 +19,17 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   game = game_create(instanceH, show);
 
-  data_loadAll(&game->data);
-  /*
-  file_getCurrentDirectory(dir);
-  sprintf(dir, "%s\\data\\txt", dir);
-  printf("> > > %s < < <\n", dir);
-  */
-  /*vector_init(&v);
-  if (!file_getAllByExtension(&v, dir, ".txt")) {
-    printf("Find failed!\n");
-  }
-  else {
-    for (i = 0; i < vector_size(&v); ++i) {
-      printf(" >> %s <<\n", (char *)vector_get(&v, i));
-    }
-  }*/
-  
-  /*
-  data_loadTextfileFromDisk(&game->data, "data/txt/names_last.txt");
-  data_loadTextureFromDisk(&game->data, "data/spr/font.png");
-  data_loadTextureFromDisk(&game->data, "data/spr/PlanetTexture.png");
-  */
-
   mainSpace = game_addSpace(game, "main");
   space_addEntity(mainSpace, arch_test, "player");
 
   uiSpace = game_addSpace(game, "UI");
   space_addEntity(uiSpace, arch_cursor, "cursor");
-  /*
+
   simSpace = game_addSpace(game, "simulation");
   simSpace->visible = false;
   simSpace->systems.time.scale = 0.0166666666666667f;
   space_addEntity(simSpace, arch_gameManager, "gameManager");
-  */
+
   game_start(game);
 
   return 1;

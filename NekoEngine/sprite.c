@@ -51,12 +51,14 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
   VEC3 translation = trans->translation;
   VEC3 camTranslate = { 0 };
+  SPRITE *sprite;
   AEGfxTexture *texture;
 
   if (!comData->visible)
     return;
 
-  texture = (AEGfxTexture *)dict_get(&self->owner->space->game->data.textures, comData->source);
+  sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
+  texture = sprite->texture;
 
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
@@ -81,7 +83,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
-  AEGfxTextureSet(texture, comData->offset.x, comData->offset.x);
+  AEGfxTextureSet(texture, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
   AEGfxSetTransform(transform.m);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
@@ -94,8 +96,6 @@ void comp_sprite(COMPONENT *self) {
   data.color.g = 1;
   data.color.b = 1;
   data.color.a = 1;
-  data.offset.x = 0;
-  data.offset.y = 0;
   data.size.x = 32;
   data.size.y = 32;
   data.visible = true;

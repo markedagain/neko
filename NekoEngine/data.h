@@ -36,8 +36,8 @@ typedef struct {
 
 typedef struct {
   TEXTURE *texture;
-  unsigned int x;
-  unsigned int y;
+  float u;
+  float v;
   unsigned int width;
   unsigned int height;
 } SPRITE;

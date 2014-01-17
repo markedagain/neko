@@ -51,6 +51,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysReset();
   srand((unsigned int)time(NULL));
 
+  data_loadAll(&game->data);
+
   return game;
 }
 
