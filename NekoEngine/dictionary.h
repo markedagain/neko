@@ -3,6 +3,7 @@
 #ifndef __DICTIONARY_H__
 #define __DICTIONARY_H__
 
+#include <string.h>
 #include "vector.h"
 
 typedef struct dict_t {
