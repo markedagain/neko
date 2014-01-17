@@ -109,6 +109,10 @@ void vec4_div(VEC4 *a, float diviser, VEC4 *b) {
   b->w = a->w / diviser;
 }
 
+long vec4_toColor(VEC4 *a) {
+  return ((int)(a->a * 255) << 24) + ((int)(a->r * 255) << 16) + ((int)(a->g * 255) << 8) + (int)(a->b * 255);
+}
+
 // function to multiply two matrixes together, and modify the matrix *mat2 points to
 void matrix3_multiply(MATRIX3 *mat1, MATRIX3 *mat2) {
   // temp matrix to hold the resultant matrix
