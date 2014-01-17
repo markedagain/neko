@@ -28,22 +28,49 @@ void textfile_init(TEXTFILE *textfile) {
   vector_init(&textfile->lines);
 }
 
+
 void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filename) {
   TEXTFILE *textfile;
-  int c;
-  unsigned int lines = 0;
-  unsigned int size = TEXTFILE_LINELENGTH;
   char storeKey[80];
-  char *buffer = (char *)malloc(sizeof(char) * size);
-  FILE *f = fopen(filename, "rt");
-  if (!f) {
-    free(buffer);
-    return;
-  }
 
   textfile = (TEXTFILE *)malloc(sizeof(TEXTFILE));
   textfile_init(textfile);
 
+  file_readText(&textfile->lines, filename);
+
+  data_makeKey(dataContainer, storeKey, filename, "txt/", ".txt");
+  dict_set(&dataContainer->textfiles, storeKey, textfile);
+}
+
+void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename) {
+  TEXTURE *texture;
+  char storeKey[80];
+  //char *bytes;
+  //bytes = file_readBinary(filename);
+  //AEGfxTextureLoadFromMemory(
+  texture = AEGfxTextureLoad(filename);
+
+  data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
+  dict_set(&dataContainer->textures, storeKey, texture);
+}
+
+void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
+  // given the file /data/txt/subdir1/subdir2/file.txt,
+  // reduce it to just subdir1/subdir2/file for key storage
+  strcpy(storeKey, filename + (strlen(dataContainer->root) + sizeof(directory)) * sizeof(char));
+  storeKey[strlen(storeKey) - sizeof(extension)] = 0;
+}
+
+unsigned int file_readText(VECTOR *lines, const char *filename) {
+  int c;
+  unsigned int lineCount = 0;
+  unsigned int size = TEXTFILE_LINELENGTH;
+  char *buffer = (char *)malloc(sizeof(char) * size);
+  FILE *f = fopen(filename, "rt");
+  if (!f) {
+    free(buffer);
+    return 0;
+  }
   do {
     char *line;
     unsigned int pos = 0;
@@ -60,20 +87,27 @@ void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filenam
     buffer[pos - 1] = 0;
     line = (char *)malloc(sizeof(char) * pos);
     strcpy(line, buffer);
-    vector_append(&textfile->lines, line);
-    ++lines;
+    vector_append(lines, line);
+    ++lineCount;
   }
   while (c != EOF);
   fclose(f);
   free(buffer);
+  return lineCount;
+}
 
-  // given the file /data/txt/subdir1/subdir2/file.txt,
-  // reduce it to just subdir1/subdir2/file for key storage
-  strcpy(storeKey, filename + (strlen(dataContainer->root) + sizeof("txt/") - 1) * sizeof(char));
-  storeKey[strlen(storeKey) - sizeof(".txt") + 1] = 0;
-  dict_set(&dataContainer->textfiles, storeKey, textfile);
-
-  return;
+char *file_readBinary(const char *filename) {
+  unsigned long length;
+  char *bytes;
+  FILE *f;
+  f = fopen(filename, "rb");
+  fseek(f, 0, SEEK_END);
+  length = ftell(f);
+  bytes = (char *)malloc(length * sizeof(char));
+  fseek(f, 0, SEEK_SET);
+  fread(bytes, 1, length, f);
+  fclose(f);
+  return bytes;
 }
 
 bool file_exists(char *filename) {

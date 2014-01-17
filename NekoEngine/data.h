@@ -11,6 +11,7 @@
 #include "util.h"
 #include "dictionary.h"
 #include "vector.h"
+#include "../AlphaEngine/AEEngine.h"
 
 #define TEXTFILE_LINELENGTH 80
 
@@ -22,10 +23,12 @@ typedef struct {
   char *root;
 } DATACONTAINER;
 
-typedef struct {
-  void *data;
+/*typedef struct {
+  char *data;
   size_t size;
-} TEXTURE;
+} TEXTURE;*/
+
+typedef struct AEGfxTexture TEXTURE;
 
 typedef struct {
   VECTOR lines;
@@ -41,6 +44,12 @@ typedef struct {
 
 void dataContainer_init(DATACONTAINER *dataContainer);
 NEKO_API void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filename);
+NEKO_API void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename);
+
+void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension);
+
+unsigned int file_readText(VECTOR *lines, const char *filename);
+char *file_readBinary(const char *filename);
 
 bool file_exists(char *);
 void *file_load(char *);

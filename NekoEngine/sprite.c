@@ -25,10 +25,10 @@ void comp_sprite_initialize(COMPONENT *self, void *event) {
 	comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 
-  if (comData->source != NULL) {
+  /*if (comData->source != NULL) {
     comData->texture = AEGfxTextureLoad(comData->source);
     AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
-  }
+  }*/
 }
 
 void comp_sprite_logicUpdate(COMPONENT *self, void *event) {
@@ -51,9 +51,12 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
   VEC3 translation = trans->translation;
   VEC3 camTranslate = { 0 };
+  AEGfxTexture *texture;
 
   if (!comData->visible)
     return;
+
+  texture = (AEGfxTexture *)dict_get(&self->owner->space->game->data.textures, comData->source);
 
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
@@ -72,13 +75,13 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     return;
   }
 
-  if (comData->texture == NULL)
+  if (comData->source == NULL)
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
   else
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
-  AEGfxTextureSet(comData->texture, comData->offset.x, comData->offset.x);
+  AEGfxTextureSet(texture, comData->offset.x, comData->offset.x);
   AEGfxSetTransform(transform.m);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
@@ -87,7 +90,6 @@ void comp_sprite(COMPONENT *self) {
   CDATA_SPRITE data = { 0 };
   data.mesh = NULL;
   data.source = NULL;
-  data.texture = NULL;
   data.color.r = 1;
   data.color.g = 1;
   data.color.b = 1;
