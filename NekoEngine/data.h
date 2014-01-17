@@ -52,6 +52,12 @@ unsigned int file_readText(VECTOR *lines, const char *filename);
 char *file_readBinary(const char *filename);
 
 bool file_exists(char *);
-void *file_load(char *);
+NEKO_API void file_getCurrentDirectory(char *directory);
+NEKO_API bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char *extension);
+
+NEKO_API void file_unixToWindows(char *string);
+NEKO_API void file_windowsToUnix(char *string);
+
+NEKO_API void data_loadAll(DATACONTAINER *dataContainer);
 
 #endif

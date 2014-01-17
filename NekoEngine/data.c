@@ -40,6 +40,7 @@ void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filenam
 
   data_makeKey(dataContainer, storeKey, filename, "txt/", ".txt");
   dict_set(&dataContainer->textfiles, storeKey, textfile);
+  printf("Loaded TXT %s from disk\n", storeKey);
 }
 
 void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename) {
@@ -49,16 +50,21 @@ void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename
   //bytes = file_readBinary(filename);
   //AEGfxTextureLoadFromMemory(
   texture = AEGfxTextureLoad(filename);
+  AE_ASSERT_MESG(texture, "Failed to load texture!")
 
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
   dict_set(&dataContainer->textures, storeKey, texture);
+  printf("Loaded TEX %s from disk\n", storeKey);
 }
 
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
   // given the file /data/txt/subdir1/subdir2/file.txt,
   // reduce it to just subdir1/subdir2/file for key storage
-  strcpy(storeKey, filename + (strlen(dataContainer->root) + sizeof(directory)) * sizeof(char));
+  char currentDirectory[MAX_PATH];
+  file_getCurrentDirectory(currentDirectory);
+  strcpy(storeKey, filename + (strlen(currentDirectory) + 1 + strlen(dataContainer->root) + sizeof(directory)) * sizeof(char));
   storeKey[strlen(storeKey) - sizeof(extension)] = 0;
+  file_windowsToUnix(storeKey);
 }
 
 unsigned int file_readText(VECTOR *lines, const char *filename) {
@@ -115,13 +121,92 @@ bool file_exists(char *filename) {
   WIN32_FIND_DATA FindFileData;
   HANDLE handle = FindFirstFile(file, &FindFileData);
   int found = handle != INVALID_HANDLE_VALUE;
-  if (found) {
-    //FindClose(&handle); this will crash
+  if (found)
     FindClose(handle);
-  }
   return found;
 }
 
-void *file_load(char *filename) {
-  return NULL;
+void file_getCurrentDirectory(char *directory) {
+  TCHAR buffer[MAX_PATH];
+  char *lastSlash;
+  GetModuleFileName(NULL, buffer, MAX_PATH);
+  wcstombs(directory, buffer, MAX_PATH);
+  lastSlash = strrchr((char *)directory, '\\');
+  if (lastSlash != NULL)
+    *lastSlash = 0;
+}
+
+void file_unixToWindows(char *string) {
+  char *slash = strrchr(string, '/');
+  while (slash != NULL) {
+    *slash = '\\';
+    slash = strrchr(string, '/');
+  }
+}
+void file_windowsToUnix(char *string) {
+  char *slash = strrchr(string, '\\');
+  while (slash != NULL) {
+    *slash = '/';
+    slash = strrchr(string, '\\');
+  }
+}
+
+bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char *extension) {
+  WIN32_FIND_DATA findFile;
+  HANDLE find = NULL;
+  TCHAR widePath[MAX_PATH];
+  char path[MAX_PATH];
+  char file[MAX_PATH];
+  sprintf(path, "%s\\*", directory);
+  mbstowcs(widePath, path, MAX_PATH);
+  if ((find = FindFirstFile(widePath, &findFile)) == INVALID_HANDLE_VALUE)
+    return false;
+  do {
+    if (wcscmp(findFile.cFileName, __TEXT(".")) && wcscmp(findFile.cFileName, __TEXT(".."))) {
+      wcstombs(file, findFile.cFileName, MAX_PATH);
+      sprintf(path, "%s\\%s", directory, file);
+      if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        file_getAllByExtension(fileList, path, extension);
+      }
+      else {
+        char *filename;
+        if (strcmp(path + (strlen(path) - sizeof(extension)) * sizeof(char), extension))
+          continue;
+        filename = (char *)malloc(sizeof(char) * MAX_FILENAME);
+        strcpy(filename, path);
+        vector_append(fileList, filename);
+      }
+    }
+  }
+  while (FindNextFile(find, &findFile));
+  if (find)
+    FindClose(find);
+  return true;
+}
+
+void data_loadAll(DATACONTAINER *dataContainer) {
+  VECTOR files;
+  size_t i;
+  char subdir[MAX_PATH];
+  char currentDirectory[MAX_PATH];
+  vector_init(&files);
+  file_getCurrentDirectory(currentDirectory);
+
+  // LOAD TEXTURES
+  sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
+  file_unixToWindows(subdir);
+  file_getAllByExtension(&files, subdir, ".png");
+  for (i = 0; i < vector_size(&files); ++i)
+    data_loadTextureFromDisk(dataContainer, (char *)vector_get(&files, i));
+  vector_clear(&files);
+
+  // LOAD TEXTFILES
+  sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "txt");
+  file_unixToWindows(subdir);
+  file_getAllByExtension(&files, subdir, ".txt");
+  for (i = 0; i < vector_size(&files); ++i)
+    data_loadTextfileFromDisk(dataContainer, (char *)vector_get(&files, i));
+  vector_clear(&files);
+
+  vector_free(&files);
 }

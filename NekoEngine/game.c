@@ -180,7 +180,7 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
   HWND hWnd = AESysGetWindowHandle();
   game->window.width = width;
   game->window.height = height;
-  SetWindowPos(hWnd, HWND_TOPMOST, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, 0);
+  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, 0);
   if (game->initialized)
     AEGfxExit();
   AEGfxInit(game->window.width, game->window.height);

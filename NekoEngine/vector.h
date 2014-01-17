@@ -17,6 +17,7 @@ typedef struct vector_t {
 NEKO_API void vector_init(VECTOR *);
 NEKO_API void vector_init_size(VECTOR *, size_t);
 NEKO_API void vector_free(VECTOR *);
+NEKO_API void vector_clear(VECTOR *);
 NEKO_API size_t vector_size(VECTOR *);
 NEKO_API size_t vector_capacity(VECTOR *);
 NEKO_API void vector_append(VECTOR *, void *);
