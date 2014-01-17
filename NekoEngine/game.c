@@ -19,8 +19,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   GAME *game = (GAME *)malloc(sizeof(GAME));
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
-  sysInitInfo.mWinWidth      = 1280;
-  sysInitInfo.mWinHeight      = 720;
+  sysInitInfo.mWinWidth      = NEKO_DEFAULT_GAMEWIDTH;
+  sysInitInfo.mWinHeight      = NEKO_DEFAULT_GAMEHEIGHT;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS;
   sysInitInfo.mpWinCallBack    = NULL;
@@ -31,8 +31,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
-  game->window.width = 1280;
-  game->window.height = 720;
+  game->window.width = NEKO_DEFAULT_GAMEWIDTH;
+  game->window.height = NEKO_DEFAULT_GAMEHEIGHT;
   game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
   game->systems.time.frameRate = 0;
   game->systems.time.dt = 0;
