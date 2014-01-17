@@ -13,6 +13,10 @@ void comp_spriteText_draw(COMPONENT *self, void *event) {
 
 void comp_spriteText(COMPONENT *self) {
   CDATA_SPRITETEXT data = { 0 };
+  data.color.r = 1;
+  data.color.g = 1;
+  data.color.b = 1;
+  data.color.a = 1;
   COMPONENT_INIT(self, COMP_SPRITETEXT, data);
   component_depend(self, COMP_TRANSFORM);
 }
