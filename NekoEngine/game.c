@@ -15,8 +15,6 @@
 
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
-  HWND hWnd;
-  RECT rc;
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
   sysInitInfo.mAppInstance    = instanceH;
@@ -24,7 +22,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinWidth      = 1280;
   sysInitInfo.mWinHeight      = 720;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = DEFAULT_FPS;
+  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
@@ -37,17 +35,16 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroying = 0;
   game->window.width = 1280;
   game->window.height = 720;
-  game->systems.time.framesPerSecond = DEFAULT_FPS;
-  game->systems.time.frameRate = (double)1 / (double)DEFAULT_FPS;
+  game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
+  game->systems.time.frameRate = 0;
   game->systems.time.dt = 0;
   game->systems.time.currentFramesPerSecond = 0;
   game->systems.time.elapsedFrames = 0;
+  game->initialized = true;
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
-  hWnd = AESysGetWindowHandle();
-  GetWindowRect(hWnd, &rc) ;
-  SetWindowPos(hWnd, 0, (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
+  game_resize(game, 640, 360);
   SetCursor(NULL);
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -58,7 +55,6 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   return game;
 }
-
 
 SPACE *game_addSpace(GAME *game, char *name) {
   SPACE *space = space_create(name);
@@ -180,4 +176,14 @@ bool game_loop(GAME *game) {
 
 void game_destroy(GAME *game) {
   // TODO
+}
+
+void game_resize(GAME *game, unsigned int width, unsigned int height) {
+  HWND hWnd = AESysGetWindowHandle();
+  game->window.width = width;
+  game->window.height = height;
+  SetWindowPos(hWnd, HWND_TOPMOST, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, 0);
+  if (game->initialized)
+    AEGfxExit();
+  AEGfxInit(game->window.width, game->window.height);
 }

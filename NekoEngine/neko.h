@@ -9,4 +9,8 @@
 #define NEKO_API __declspec(dllimport)
 #endif
 
+#define NEKO_DEFAULT_FPS 60
+#define NEKO_DEFAULT_GAMEWIDTH 640
+#define NEKO_DEFAULT_GAMEHEIGHT 360
+
 #endif
