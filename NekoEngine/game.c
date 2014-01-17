@@ -27,9 +27,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
   game->spaces = list_create();
-  dict_init(&game->data.sprites);
-  dict_init(&game->data.textures);
-  dict_init(&game->data.sounds);
+  dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
