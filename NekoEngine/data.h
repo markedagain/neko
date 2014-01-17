@@ -19,6 +19,7 @@ typedef struct {
   DICT sounds;
   DICT textures;
   DICT textfiles;
+  char *root;
 } DATACONTAINER;
 
 typedef struct {

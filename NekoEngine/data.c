@@ -21,6 +21,7 @@ void dataContainer_init(DATACONTAINER *data) {
   dict_init(&data->textures);
   dict_init(&data->sounds);
   dict_init(&data->textfiles);
+  data->root = NEKO_DEFAULT_ROOT;
 }
 
 void textfile_init(TEXTFILE *textfile) {
@@ -32,6 +33,7 @@ void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filenam
   int c;
   unsigned int lines = 0;
   unsigned int size = TEXTFILE_LINELENGTH;
+  char storeKey[80];
   char *buffer = (char *)malloc(sizeof(char) * size);
   FILE *f = fopen(filename, "rt");
   if (!f) {
@@ -65,7 +67,11 @@ void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filenam
   fclose(f);
   free(buffer);
 
-  dict_set(&dataContainer->textfiles, filename, textfile);
+  // given the file /data/txt/subdir1/subdir2/file.txt,
+  // reduce it to just subdir1/subdir2/file for key storage
+  strcpy(storeKey, filename + (strlen(dataContainer->root) + sizeof("txt/") - 1) * sizeof(char));
+  storeKey[strlen(storeKey) - sizeof(".txt") + 1] = 0;
+  dict_set(&dataContainer->textfiles, storeKey, textfile);
 
   return;
 }

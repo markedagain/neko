@@ -19,6 +19,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   game = game_create(instanceH, show);
 
+  data_loadTextfileFromDisk(&game->data, "data/txt/names_last.txt");
+
   mainSpace = game_addSpace(game, "main");
   space_addEntity(mainSpace, arch_test, "player");
 
