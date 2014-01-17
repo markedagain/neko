@@ -11,7 +11,6 @@
 
 #pragma comment (lib, "../lib/neko.lib")
 
-int gGameRunning = 1;
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
   GAME *game;
   SPACE *mainSpace;
@@ -19,6 +18,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *simSpace;
 
   game = game_create(instanceH, show);
+
   mainSpace = game_addSpace(game, "main");
   space_addEntity(mainSpace, arch_test, "player");
 

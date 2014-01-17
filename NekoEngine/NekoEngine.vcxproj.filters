@@ -78,6 +78,9 @@
     <ClCompile Include="spritetext.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="neko.h">

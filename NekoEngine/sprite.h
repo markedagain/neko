@@ -11,6 +11,7 @@
 #include "util.h"
 
 #define COMP_SPRITE HASH("COMP_SPRITE")
+#define CONNECT_SPRITE(entity, sprite) (sprite) = ((CDATA_SPRITE)*)entity_connect((entity), comp_sprite)
 
 typedef struct cdata_sprite_t {
   char *source;

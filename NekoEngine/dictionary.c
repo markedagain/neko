@@ -4,34 +4,50 @@
 #include "util.h"
 
 void dict_init(DICT *dict) {
-  vector_init(&dict->keys);
-  vector_init(&dict->values);
-  vector_init(&dict->empties);
-  dict->count = 0;
+  dict->used = 0;
+  dict->capacity = DICT_DEFAULTCAPACITY;
+  dict->keys = (unsigned int *)calloc(sizeof(unsigned int), dict->capacity);
+  dict->values = (void **)calloc(sizeof(void *), dict->capacity);
 }
 
-void sdict_set(DICT *dict, char *key, void *value) {
-
-  if (vector_size(&dict->empties) > 0) {
-    // TODO: HANDLE EMPTIES
-  }
-  vector_append(&dict->keys, key);
-  vector_append(&dict->values, value);
+void dict_init_size(DICT *dict, size_t size) {
+  dict->used = 0;
+  dict->capacity = size;
+  dict->keys = (unsigned int *)calloc(sizeof(unsigned int), dict->capacity);
+  dict->values = (void **)calloc(sizeof(void *), dict->capacity);
 }
-void *sdict_get(DICT *dict, char *key) {
+
+void dict_free(DICT *dict) {
+  free(dict->keys);
+  free(dict->values);
+}
+
+void dict_grow(DICT *dict, size_t size) {
+  while (dict->capacity < size)
+    dict->capacity *= 2;
+  dict->keys = (unsigned int *)realloc(dict->keys, sizeof(unsigned int) * dict->capacity);
+  dict->values = (void **)realloc(dict->values, sizeof(void *) * dict->capacity);
+}
+
+void dict_set(DICT *dict, const char *key, void *value) {
+  if (dict->used >= dict->capacity)
+    dict_grow(dict, dict->capacity + 1);
+  dict->keys[dict->used] = hash_string(key);
+  dict->values[dict->used] = value;
+  dict->used++;
+}
+void *dict_get(DICT *dict, const char *key) {
   unsigned int i;
-  size_t keySize;
-  keySize = vector_size(&dict->keys);
-
-  bool found = false;
-  for (i = 0; i < keySize; ++i) {
-    if (strcmp((char *)vector_get(&dict->keys, i), key)) {
-      return vector_get(&dict->values, i);
-    }
+  unsigned int hash;
+  hash = hash_string(key);
+  for (i = 0; i < dict->used; ++i) {
+    if (hash == dict->keys[i])
+      return dict->values[i];
   }
   return NULL;
 }
-void sdict_remove(DICT *dict, char *key) {
+void dict_remove(DICT *dict, const char *key) {
+  // THIS SPACE INTENTIONALLY LEFT BLANK
 }
-void sdict_free(DICT *dict) {
+void dict_free(DICT *dict) {
 }
