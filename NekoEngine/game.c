@@ -161,16 +161,16 @@ bool game_loop(GAME *game) {
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
+    stopwatch_start(&game->systems.time.stopwatch);
     game_getInput(game);
+     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
+      return false;
     game_tick(game);
+    AEGfxStart();
+    game_invokeEvent(game, EV_DRAW, NULL);
+    AEGfxEnd();
   }
 
-  AEGfxStart();
-  game_invokeEvent(game, EV_DRAW, NULL);
-  AEGfxEnd();
-
-  if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
-    return false;
   return true;
 }
 
