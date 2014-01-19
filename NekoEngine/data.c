@@ -89,12 +89,57 @@ void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *file
   printf("Loaded SPR %s from disk (QUICK)\n", storeKey2);
 }
 
+void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename) {
+  TEXTFILE *textfile;
+  char storeKey[80];
+  char *data = NULL;
+  char *dataStart;
+  size_t count, i, bufferPos = 0;
+  char buffer[TEXTFILE_LINELENGTH] = { 0 };
+
+  data_makeKey(dataContainer, storeKey, filename, "txt/", ".txt");
+  if (dict_get(&dataContainer->textfiles, storeKey) != NULL) {
+    printf("Loaded TXT %s from pak (HIDDEN)\n", storeKey);
+    return;
+  }
+
+  textfile = (TEXTFILE *)malloc(sizeof(TEXTFILE));
+  textfile_init(textfile);
+  
+  data = (char *)pak_load(pak, filename, &count);
+  dataStart = data;
+  while (data < dataStart + count) {
+    if (*data == '\r')
+      ++data;
+    if (*data == '\n') {
+      char *newLine = (char *)malloc((strlen(buffer) + 1) * sizeof(char));
+      strcpy(newLine, buffer);
+      vector_append(&textfile->lines, newLine);
+      for (i = 0; i < TEXTFILE_LINELENGTH; ++i)
+        buffer[i] = 0;
+      bufferPos = 0;
+      ++data;
+    }
+    else {
+      buffer[bufferPos++] = *data++;
+    }
+  }
+  if (bufferPos != 0)
+    vector_append(&textfile->lines, (char *)malloc((strlen(buffer) + 1) * sizeof(char)));
+
+  
+  dict_set(&dataContainer->textfiles, storeKey, textfile);
+}
+
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
   // given the file /data/txt/subdir1/subdir2/file.txt,
   // reduce it to just subdir1/subdir2/file for key storage
   char currentDirectory[MAX_PATH];
   file_getCurrentDirectory(currentDirectory);
-  strcpy(storeKey, filename + (strlen(currentDirectory) + 1 + strlen(dataContainer->root) + sizeof(directory)) * sizeof(char));
+  if (strstr(filename, currentDirectory) != NULL)
+    strcpy(storeKey, filename + (strlen(currentDirectory) + 1 + strlen(dataContainer->root) + sizeof(directory)) * sizeof(char));
+  else
+    strcpy(storeKey, filename + sizeof(directory) * sizeof(char));
   storeKey[strlen(storeKey) - sizeof(extension)] = 0;
   file_windowsToUnix(storeKey);
 }
@@ -290,27 +335,30 @@ void data_loadAll(DATACONTAINER *dataContainer) {
     extension = strrchr(filename, '.');
     if (strstr(filename, "spr/") == filename) {
       if (strcmp(extension, ".png") == 0) {
-        printf(">> %s is a QUICK SPRITE (?)\n", filename);
+        //printf(">> %s is a QUICK SPRITE (?)\n", filename);
       }
       else if (strcmp(extension, ".spr") == 0) {
-        printf(">> %s is a SPRITE\n", filename);
+        //printf(">> %s is a SPRITE\n", filename);
       }
-      else
-        printf(">> %s is an UNKNOWN FILE\n", filename);
+      else {
+        //printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
     }
     else if (strstr(filename, "txt/") == filename) {
       if (strcmp(extension, ".txt") == 0) {
-        printf(">> %s is a TEXTFILE (?)\n", filename);
+        //printf(">> %s is a TEXTFILE (?)\n", filename);
+        data_loadTextfileFromPak(dataContainer, pak, filename);
       }
-      else
-        printf(">> %s is an UNKNOWN FILE\n", filename);
+      else {
+        //printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
     }
     //free(filename);
   }
   vector_clear(&files);
-
-
   pak_close(pak);
+
+  printf("REZICH: %s\n", (char *)vector_get(&((TEXTFILE *)dict_get(&dataContainer->textfiles, "names/last"))->lines, 0));
 
   vector_free(&files);
 }

@@ -19,11 +19,11 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   game = game_create(instanceH, show);
 
-  mainSpace = game_addSpace(game, "main");
+  /*mainSpace = game_addSpace(game, "main");
   space_addEntity(mainSpace, arch_test, "player");
 
   uiSpace = game_addSpace(game, "UI");
-  space_addEntity(uiSpace, arch_cursor, "cursor");
+  space_addEntity(uiSpace, arch_cursor, "cursor");*/
 
   /*simSpace = game_addSpace(game, "simulation");
   simSpace->visible = false;
