@@ -153,6 +153,7 @@ bool file_exists(char *filename) {
   WIN32_FIND_DATA FindFileData;
   HANDLE handle = FindFirstFile(file, &FindFileData);
   int found = handle != INVALID_HANDLE_VALUE;
+  printf("%s\n", filename);
   if (found)
     FindClose(handle);
   return found;
@@ -216,15 +217,44 @@ bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char 
   return true;
 }
 
+void data_test(DATACONTAINER *dataContainer) {
+  PAK_FILE* pakFile;
+  size_t sprSize;
+  void *sprData;
+  char pakDir[MAX_PATH];
+  unsigned char *texData = NULL;
+  POINT texDimensions;
+  AEGfxTexture *texture;
+  SPRITE *sprite;
+
+  sprite = (SPRITE *)malloc(sizeof(SPRITE));
+  sprite_init(sprite);
+
+  file_getCurrentDirectory(pakDir);
+  sprintf(pakDir, "%s\\data.pak", pakDir);
+  pakFile = pak_open(pakDir);
+  sprData = pak_load(pakFile, "spr/colortest.png", &sprSize);
+  data_convertPNGToTexture(sprData, sprSize, texData, &texDimensions);
+  texture = AEGfxTextureLoadFromMemory(texData, texDimensions.x, texDimensions.y);
+  AE_ASSERT_MESG(texture, "Failed to load texture!")
+  dict_set(&dataContainer->textures, "TEST", texture);
+  sprite->texture = texture;
+  dict_set(&dataContainer->sprites, "TEST", sprite);
+  //free(sprData);
+}
+
 void data_loadAll(DATACONTAINER *dataContainer) {
   VECTOR files;
+  PAK_FILE* pak;
+  char pakDir[MAX_PATH];
   size_t i;
   char subdir[MAX_PATH];
   char currentDirectory[MAX_PATH];
+
   vector_init(&files);
   file_getCurrentDirectory(currentDirectory);
 
-  // LOAD TEXTURES
+  // (DISK) LOAD TEXTURES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "tex");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".png");
@@ -232,7 +262,7 @@ void data_loadAll(DATACONTAINER *dataContainer) {
     data_loadTextureFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
 
-  // LOAD QUICK SPRITES/TEXTURES
+  // (DISK) LOAD QUICK SPRITES/TEXTURES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".png");
@@ -240,7 +270,7 @@ void data_loadAll(DATACONTAINER *dataContainer) {
     data_loadQuickSpriteFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
 
-  // LOAD TEXTFILES
+  // (DISK) LOAD TEXTFILES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "txt");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".txt");
@@ -248,5 +278,100 @@ void data_loadAll(DATACONTAINER *dataContainer) {
     data_loadTextfileFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
 
+  // (PAK) LOAD ALL
+  file_getCurrentDirectory(pakDir);
+  sprintf(pakDir, "%s\\data.pak", pakDir);
+  pak = pak_open(pakDir);
+  pak_getFileList(pak, &files);
+  for (i = 0; i < vector_size(&files); ++i) {
+    char *filename;
+    char *extension;
+    filename = (char *)vector_get(&files, i);
+    extension = strrchr(filename, '.');
+    if (strstr(filename, "spr/") == filename) {
+      if (strcmp(extension, ".png") == 0) {
+        printf(">> %s is a QUICK SPRITE (?)\n", filename);
+      }
+      else if (strcmp(extension, ".spr") == 0) {
+        printf(">> %s is a SPRITE\n", filename);
+      }
+      else
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+    }
+    else if (strstr(filename, "txt/") == filename) {
+      if (strcmp(extension, ".txt") == 0) {
+        printf(">> %s is a TEXTFILE (?)\n", filename);
+      }
+      else
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+    }
+    //free(filename);
+  }
+  vector_clear(&files);
+
+
+  pak_close(pak);
+
   vector_free(&files);
+}
+
+typedef struct {
+  png_bytep p;
+  png_uint_32 len;
+} PNGDATA, *PNGDATAPTR;
+
+void data_loadPNGFromMemory(png_structp png_ptr, png_bytep data, png_size_t length) {
+  PNGDATAPTR dataPtr = (PNGDATAPTR)png_get_io_ptr(png_ptr);
+  png_uint_32 i;
+
+  if (length > dataPtr->len) {
+    png_error(png_ptr, "EOF");
+    return;
+  }
+  for (i = 0; i < length; ++i)
+    data[i] = dataPtr->p[i];
+  dataPtr->p += length;
+  dataPtr->len -= length;
+}
+
+void data_convertPNGToTexture(void *data, size_t length, unsigned char *outData, POINT *outDimensions) {
+  png_structp png_ptr = NULL;
+  png_infop info_ptr = NULL;
+  png_uint_32 width, height;
+  int colorType, interlaceType, bitDepth;
+  unsigned int sig_read = 0;
+  PNGDATA pngData;
+  png_bytepp rowPointers;
+  unsigned int rowBytes;
+  int i;
+
+  pngData.p = (png_bytep)data;
+  pngData.len = length;
+
+  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+  info_ptr = png_create_info_struct(png_ptr);
+  if (info_ptr == NULL) {
+    png_destroy_read_struct(&png_ptr, NULL, NULL);
+    return;
+  }
+  if (setjmp(png_jmpbuf(png_ptr))) {
+    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+    return;
+  }
+  png_set_read_fn(png_ptr, (void *)&pngData, data_loadPNGFromMemory);
+  png_init_io(png_ptr, (FILE *)&pngData);
+  png_set_sig_bytes(png_ptr, sig_read);
+  png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_SWAP_ALPHA, NULL);
+  png_get_IHDR(png_ptr, info_ptr, &width, &height, &bitDepth, &colorType, &interlaceType, NULL, NULL);
+  outDimensions->x = width;
+  outDimensions->y = height;
+
+  rowPointers = png_get_rows(png_ptr, info_ptr);
+  rowBytes = png_get_rowbytes(png_ptr, info_ptr);
+  outData = (unsigned char*)malloc(rowBytes * height);
+  for (i = 0; i < height; ++i) {
+    memcpy(outData + (rowBytes * (height - 1 - i)), rowPointers[i], rowBytes);
+  }
+
+  png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 }

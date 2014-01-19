@@ -12,6 +12,7 @@
 #include "dictionary.h"
 #include "vector.h"
 #include "../AlphaEngine/AEEngine.h"
+#include "../include/png.h"
 
 #define TEXTFILE_LINELENGTH 80
 
@@ -59,5 +60,7 @@ NEKO_API void file_unixToWindows(char *string);
 NEKO_API void file_windowsToUnix(char *string);
 
 NEKO_API void data_loadAll(DATACONTAINER *dataContainer);
+
+NEKO_API void data_convertPNGToTexture(void *data, size_t length, unsigned char *outData, POINT *outDimensions);
 
 #endif
