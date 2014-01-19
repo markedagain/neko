@@ -58,7 +58,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     return;
 
   sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
-  texture = sprite->texture;
+  texture = sprite->texture->data;
 
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;

@@ -29,7 +29,11 @@ typedef struct {
   size_t size;
 } TEXTURE;*/
 
-typedef struct AEGfxTexture TEXTURE;
+typedef struct {
+  AEGfxTexture *data;
+  unsigned int width;
+  unsigned int height;
+} TEXTURE;
 
 typedef struct {
   VECTOR lines;

@@ -36,6 +36,11 @@ void sprite_init(SPRITE *sprite) {
   sprite->texture = NULL;
 }
 
+void texture_init(TEXTURE *texture) {
+  texture->data = NULL;
+  texture->width = 32;
+  texture->height = 32;
+}
 
 
 void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filename) {
@@ -55,10 +60,10 @@ void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filenam
 void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename) {
   TEXTURE *texture;
   char storeKey[80];
-  //char *bytes;
-  //bytes = file_readBinary(filename);
-  //AEGfxTextureLoadFromMemory(
-  texture = AEGfxTextureLoad(filename);
+  
+  texture = (TEXTURE *)malloc(sizeof(TEXTURE));
+  texture_init(texture);
+  texture->data = AEGfxTextureLoad(filename);
   AE_ASSERT_MESG(texture, "Failed to load texture!")
 
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
@@ -71,10 +76,10 @@ void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *file
   SPRITE *sprite;
   char storeKey[80];
   char storeKey2[80];
-  //char *bytes;
-  //bytes = file_readBinary(filename);
-  //AEGfxTextureLoadFromMemory(
-  texture = AEGfxTextureLoad(filename);
+
+  texture = (TEXTURE *)malloc(sizeof(TEXTURE));
+  texture_init(texture);
+  texture->data = AEGfxTextureLoad(filename);
   AE_ASSERT_MESG(texture, "Failed to load texture!")
   sprite = (SPRITE *)malloc(sizeof(SPRITE));
   sprite_init(sprite);
@@ -99,7 +104,7 @@ void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const
 
   data_makeKey(dataContainer, storeKey, filename, "txt/", ".txt");
   if (dict_get(&dataContainer->textfiles, storeKey) != NULL) {
-    printf("Loaded TXT %s from pak (HIDDEN)\n", storeKey);
+    printf("Found TXT %s in pak (HIDDEN)\n", storeKey);
     return;
   }
 
@@ -127,8 +132,80 @@ void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const
   if (bufferPos != 0)
     vector_append(&textfile->lines, (char *)malloc((strlen(buffer) + 1) * sizeof(char)));
 
-  
+  printf("Loaded TXT %s from pak\n", storeKey);
   dict_set(&dataContainer->textfiles, storeKey, textfile);
+}
+
+void data_loadQuickSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename) {
+  TEXTURE *texture;
+  SPRITE *sprite;
+  char storeKey[80];
+  char storeKey2[80];
+  char *pakData = NULL;
+  size_t pakSize;
+  unsigned char *texData = NULL;
+  POINT texDimensions;
+
+  data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
+  data_makeKey(dataContainer, storeKey2, filename, "spr/", ".png");
+
+  if (dict_get(&dataContainer->textures, storeKey) != NULL || dict_get(&dataContainer->sprites, storeKey2) != NULL) {
+    printf("Found TEX %s in pak (QUICK) (HIDDEN)\n", storeKey);
+    printf("Found SPR %s in pak (QUICK) (HIDDEN)\n", storeKey2);
+    return;
+  }
+
+  texture = (TEXTURE *)malloc(sizeof(TEXTURE));
+  texture_init(texture);
+
+  pakData = (char *)pak_load(pak, filename, &pakSize);
+
+  data_convertPNGToTexture(pakData, pakSize, texData, &texDimensions);
+  free(pakData);
+  texture->data = AEGfxTextureLoadFromMemory(texData, texDimensions.x, texDimensions.y);
+  texture->width = texDimensions.x;
+  texture->height = texDimensions.y;
+
+  sprite = (SPRITE *)malloc(sizeof(SPRITE));
+  sprite_init(sprite);
+  sprite->texture = texture;
+  sprite->width = texDimensions.x;
+  sprite->height = texDimensions.y;
+
+  dict_set(&dataContainer->textures, storeKey, texture);
+  printf("Loaded TEX %s from pak (QUICK)\n", storeKey);
+  dict_set(&dataContainer->sprites, storeKey2, sprite);
+  printf("Loaded SPR %s from pak (QUICK)\n", storeKey2);
+}
+
+void data_loadTextureFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename) {
+  TEXTURE *texture;
+  char storeKey[80];
+  char *pakData = NULL;
+  size_t pakSize;
+  unsigned char *texData = NULL;
+  POINT texDimensions;
+
+  data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
+
+  if (dict_get(&dataContainer->textures, storeKey) != NULL) {
+    printf("Found TEX %s int pak (QUICK) (HIDDEN)\n", storeKey);
+    return;
+  }
+
+  texture = (TEXTURE *)malloc(sizeof(TEXTURE));
+  texture_init(texture);
+
+  pakData = (char *)pak_load(pak, filename, &pakSize);
+
+  data_convertPNGToTexture(pakData, pakSize, texData, &texDimensions);
+  free(pakData);
+  texture->data = AEGfxTextureLoadFromMemory(texData, texDimensions.x, texDimensions.y);
+  texture->width = texDimensions.x;
+  texture->height = texDimensions.y;
+
+  dict_set(&dataContainer->textures, storeKey, texture);
+  printf("Loaded TEX %s from pak (QUICK)\n", storeKey);
 }
 
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
@@ -262,32 +339,6 @@ bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char 
   return true;
 }
 
-void data_test(DATACONTAINER *dataContainer) {
-  PAK_FILE* pakFile;
-  size_t sprSize;
-  void *sprData;
-  char pakDir[MAX_PATH];
-  unsigned char *texData = NULL;
-  POINT texDimensions;
-  AEGfxTexture *texture;
-  SPRITE *sprite;
-
-  sprite = (SPRITE *)malloc(sizeof(SPRITE));
-  sprite_init(sprite);
-
-  file_getCurrentDirectory(pakDir);
-  sprintf(pakDir, "%s\\data.pak", pakDir);
-  pakFile = pak_open(pakDir);
-  sprData = pak_load(pakFile, "spr/colortest.png", &sprSize);
-  data_convertPNGToTexture(sprData, sprSize, texData, &texDimensions);
-  texture = AEGfxTextureLoadFromMemory(texData, texDimensions.x, texDimensions.y);
-  AE_ASSERT_MESG(texture, "Failed to load texture!")
-  dict_set(&dataContainer->textures, "TEST", texture);
-  sprite->texture = texture;
-  dict_set(&dataContainer->sprites, "TEST", sprite);
-  //free(sprData);
-}
-
 void data_loadAll(DATACONTAINER *dataContainer) {
   VECTOR files;
   PAK_FILE* pak;
@@ -336,12 +387,21 @@ void data_loadAll(DATACONTAINER *dataContainer) {
     if (strstr(filename, "spr/") == filename) {
       if (strcmp(extension, ".png") == 0) {
         //printf(">> %s is a QUICK SPRITE (?)\n", filename);
+        data_loadQuickSpriteFromPak(dataContainer, pak, filename);
       }
       else if (strcmp(extension, ".spr") == 0) {
-        //printf(">> %s is a SPRITE\n", filename);
+        printf(">> %s is a SPRITE\n", filename);
       }
       else {
-        //printf(">> %s is an UNKNOWN FILE\n", filename);
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
+    }
+    else if (strstr(filename, "tex/") == filename) {
+      if (strcmp(extension, ".png") == 0) {
+        data_loadTextureFromPak(dataContainer, pak, filename);
+      }
+      else {
+        printf(">> %s is an UNKNOWN FILE\n", filename);
       }
     }
     else if (strstr(filename, "txt/") == filename) {
@@ -350,15 +410,12 @@ void data_loadAll(DATACONTAINER *dataContainer) {
         data_loadTextfileFromPak(dataContainer, pak, filename);
       }
       else {
-        //printf(">> %s is an UNKNOWN FILE\n", filename);
+        printf(">> %s is an UNKNOWN FILE\n", filename);
       }
     }
-    //free(filename);
   }
   vector_clear(&files);
   pak_close(pak);
-
-  printf("REZICH: %s\n", (char *)vector_get(&((TEXTFILE *)dict_get(&dataContainer->textfiles, "names/last"))->lines, 0));
 
   vector_free(&files);
 }
@@ -409,17 +466,22 @@ void data_convertPNGToTexture(void *data, size_t length, unsigned char *outData,
   png_set_read_fn(png_ptr, (void *)&pngData, data_loadPNGFromMemory);
   png_init_io(png_ptr, (FILE *)&pngData);
   png_set_sig_bytes(png_ptr, sig_read);
-  png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_SWAP_ALPHA, NULL);
+  png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_PACKING | PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_STRIP_FILLER_AFTER | PNG_TRANSFORM_STRIP_FILLER_BEFORE, NULL);
   png_get_IHDR(png_ptr, info_ptr, &width, &height, &bitDepth, &colorType, &interlaceType, NULL, NULL);
+  if (colorType == PNG_COLOR_TYPE_PALETTE || png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+    png_set_expand(png_ptr);
   outDimensions->x = width;
   outDimensions->y = height;
+  printf("%lu %lu\n", outDimensions->x, outDimensions->y);
 
   rowPointers = png_get_rows(png_ptr, info_ptr);
   rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-  outData = (unsigned char*)malloc(rowBytes * height);
-  for (i = 0; i < height; ++i) {
+  printf("%lu\n", rowBytes / width);
+  outData = (unsigned char *)calloc(sizeof(unsigned char), rowBytes * height);
+  memcpy(outData, rowPointers[0], rowBytes);
+  /*for (i = 0; i < height; ++i) {
     memcpy(outData + (rowBytes * (height - 1 - i)), rowPointers[i], rowBytes);
-  }
+  }*/
 
   png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 }

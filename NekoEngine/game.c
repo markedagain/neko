@@ -104,6 +104,7 @@ void game_getInput(GAME *game) {
 void game_tick(GAME *game) {
   EDATA_UPDATE updateEvent = { 0 };
   LIST_NODE *spaceNode;
+
   if (game->spaces->count == 0)
     return;
   spaceNode = game->spaces->first;
@@ -158,6 +159,9 @@ bool game_loop(GAME *game) {
     game->systems.time.elapsedFrames = 0;
     stopwatch_start(&game->systems.time.secondsStopwatch);
   }
+  if (AESysGetWindowHandle() != GetActiveWindow())
+    printf("AAAAA\n");
+  
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
@@ -182,7 +186,7 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
   HWND hWnd = AESysGetWindowHandle();
   game->window.width = width;
   game->window.height = height;
-  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, 0);
+  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
   if (game->initialized)
     AEGfxExit();
   AEGfxInit(game->window.width, game->window.height);
