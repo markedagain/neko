@@ -23,6 +23,13 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
     else
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_DOWN || input->keyboard.keys[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
   }
+  for (i = 0; i < MBUTTON_LAST; ++i) {
+    unsigned int map[3] = { VK_LBUTTON, VK_MBUTTON, VK_RBUTTON };
+    if (GetAsyncKeyState(map[i]))
+      input->mouse.buttons[i] = (input->mouse.buttons[i] == ISTATE_UP || input->mouse.buttons[i] == ISTATE_RELEASED ? ISTATE_PRESSED : ISTATE_DOWN);
+    else
+      input->mouse.buttons[i] = (input->mouse.buttons[i] == ISTATE_DOWN || input->mouse.buttons[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
+  }
   GetCursorPos(&input->mouse.position);
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);
 }

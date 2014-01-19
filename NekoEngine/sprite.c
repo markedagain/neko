@@ -16,13 +16,15 @@ void comp_sprite_initialize(COMPONENT *self, void *event) {
   float h = comData->size.y / 2;
 
   AEGfxMeshStart();
-	AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
+
+  
+  AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
               w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
               -h, w, 0xFFFFFFFF, 0.0f, 0.0f);
   AEGfxTriAdd( w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
               w,  h, 0xFFFFFFFF, 1.0f, 0.0f,
               -w, h, 0xFFFFFFFF, 0.0f, 0.0f);
-	comData->mesh = AEGfxMeshEnd();
+  comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 
   /*if (comData->source != NULL) {

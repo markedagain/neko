@@ -15,6 +15,10 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   trans->translation.x = mousePos.x;
   trans->translation.y = mousePos.y;
   snap_sprite(self, snaps, 2, 100);
+  if (input->mouse.left == ISTATE_DOWN) {
+    trans->scale.x = trans->scale.x * 1.01f;
+    trans->scale.y = trans->scale.x;
+  }
 }
 
 void comp_cursorLogic(COMPONENT *self) {
