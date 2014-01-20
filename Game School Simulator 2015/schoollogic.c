@@ -36,12 +36,6 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   //Add students
   comData->currentStudents += comData->incomingStudents;
 
-  //Change Tuition
-  if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_DOWN)
-    comData->tuition -= 1000;
-  if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_DOWN)
-    comData->tuition += 1000;
-
   //Add money
   comData->money += (comData->tuition * comData->currentStudents) / 6;
   //Lose money

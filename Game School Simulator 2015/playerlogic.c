@@ -55,6 +55,12 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
     self->owner->space->systems.camera.transform.scale.y -= 0.1f;
   }
 
+  //Change Tuition
+  if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
+    schoolData->tuition -= 1000;
+  if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
+    schoolData->tuition += 1000;
+
   //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
     ENTITY *newRoom = space_addEntity(simSpace, arch_room, "Lobby");
