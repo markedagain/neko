@@ -24,6 +24,72 @@ namespace NekoPak {
     [DllImport("neko.dll")]
     static extern int pak_close(IntPtr pak);
 
+    public static void TraverseTreeAddingFiles(string root, List<string> fileList) {
+      // Data structure to hold names of subfolders to be 
+      // examined for files.
+      Stack<string> dirs = new Stack<string>(20);
+
+      if (!System.IO.Directory.Exists(root)) {
+        throw new ArgumentException();
+      }
+      dirs.Push(root);
+
+      while (dirs.Count > 0) {
+        string currentDir = dirs.Pop();
+        string[] subDirs;
+        try {
+          subDirs = System.IO.Directory.GetDirectories(currentDir);
+        }
+        catch (UnauthorizedAccessException e) {
+          Console.WriteLine(e.Message);
+          continue;
+        }
+        catch (System.IO.DirectoryNotFoundException e) {
+          Console.WriteLine(e.Message);
+          continue;
+        }
+
+        string[] files = null;
+        try {
+          files = System.IO.Directory.GetFiles(currentDir);
+        }
+
+        catch (UnauthorizedAccessException e) {
+
+          Console.WriteLine(e.Message);
+          continue;
+        }
+
+        catch (System.IO.DirectoryNotFoundException e) {
+          Console.WriteLine(e.Message);
+          continue;
+        }
+        // Perform the required action on each file here. 
+        // Modify this block to perform your required task. 
+        foreach (string file in files) {
+          try {
+            // Perform whatever action is required in your scenario.
+            System.IO.FileInfo fi = new System.IO.FileInfo(file);
+            //Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+            if (fi.Name != "Thumbs.db")
+              fileList.Add(fi.FullName);
+          }
+          catch (System.IO.FileNotFoundException e) {
+            // If file was deleted by a separate application 
+            //  or thread since the call to TraverseTree() 
+            // then just continue.
+            Console.WriteLine(e.Message);
+            continue;
+          }
+        }
+
+        // Push the subdirectories onto the stack for traversal. 
+        // This could also be done before handing the files. 
+        foreach (string str in subDirs)
+          dirs.Push(str);
+      }
+    }
+
     static void Main(string[] args) {
       List<string> files = new List<string>();
       if (args.Length != 2) {
@@ -35,21 +101,7 @@ namespace NekoPak {
       path.Replace('/', '\\');
       if (!path.EndsWith("\\"))
         path += "\\";
-      try {
-        foreach (string d in Directory.GetDirectories(args[0]))
-          foreach (string f in Directory.GetFiles(d))
-            files.Add(f);
-      }
-      catch (System.Exception e) {
-        Console.WriteLine(e.Message);
-      }
-      try {
-        foreach (string f in Directory.GetFiles(args[0]))
-          files.Add(f);
-      }
-      catch (System.Exception e) {
-        Console.WriteLine(e.Message);
-      }
+      TraverseTreeAddingFiles(path, files);
       if (File.Exists(path))
         File.Delete(path);
       pak_create(pakFilename);

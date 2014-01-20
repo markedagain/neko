@@ -3,8 +3,6 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
-#define DEFAULT_FPS 60
-
 #include <time.h>
 #include <stdlib.h>
 #include <Windows.h>
@@ -40,6 +38,7 @@ typedef struct game_t {
       double dt;
     } time;
   } systems;
+  bool initialized;
   INPUT_CONTAINER input;
   unsigned char destroying;
 } GAME;
@@ -54,5 +53,6 @@ void game_tick(GAME *);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
+void game_resize(GAME *, unsigned int, unsigned int);
 
 #endif

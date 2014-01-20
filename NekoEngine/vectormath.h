@@ -61,6 +61,7 @@ NEKO_API void vec4_add(VEC4 *, VEC4 *, VEC4 *);
 NEKO_API void vec4_sub(VEC4 *, VEC4 *, VEC4 *);
 NEKO_API void vec4_mul(VEC4 *, float, VEC4 *);
 NEKO_API void vec4_div(VEC4 *, float, VEC4 *);
+NEKO_API long vec4_toColor(VEC4 *);
 
 NEKO_API void matrix3_identity(MATRIX3 *);
 NEKO_API void matrix3_translate(MATRIX3 *, VEC3 *);

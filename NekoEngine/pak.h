@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "neko.h"
+#include "vector.h"
 
 #define PAK_FILENAME_MAXLENGTH 56
 
@@ -46,3 +47,4 @@ NEKO_API PAK_ERROR pak_close(PAK_FILE *);
 PAK_SECTION *pak_getSection(PAK_FILE *, const char *);
 NEKO_API void *pak_load(PAK_FILE *, const char *, size_t *);
 void *pak_error(FILE *, PAK_ERROR);
+void pak_getFileList(PAK_FILE *pak, VECTOR *v);

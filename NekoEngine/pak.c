@@ -189,3 +189,21 @@ void *pak_load(PAK_FILE *pak, const char *filename, size_t *size) {
   fread(buffer, sizeof(char), section->size, pak->handle);
   return buffer;
 }
+
+void pak_getFileList(PAK_FILE *pak, VECTOR *v) {
+  PAK_SECTION *files;
+  int count, i;
+  files = pak_loadAllFiles(pak, &count);
+  /*for (i = 0; i < count; ++i) {
+    printf(">>>%s\n", files[i].name);
+  }*/
+  for (i = 0; i < count; ++i) {
+    char *name;
+    size_t size;
+    size = sizeof(char) * (strlen(files[i].name) + 1); // +1 because null terminator
+    name = (char *)malloc(size);
+    memcpy(name, files[i].name, size);
+    vector_append(v, name);
+  }
+  free(files);
+}

@@ -121,6 +121,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="soundemitter.h" />
     <ClInclude Include="space.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="spritetext.h" />
     <ClInclude Include="stopwatch.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="util.h" />
@@ -135,6 +136,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="entity.c" />
     <ClCompile Include="event.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="hash.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="linkedlist.c" />
     <ClCompile Include="neko.c" />
@@ -143,6 +145,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="soundemitter.c" />
     <ClCompile Include="space.c" />
     <ClCompile Include="sprite.c" />
+    <ClCompile Include="spritetext.c" />
     <ClCompile Include="stopwatch.c" />
     <ClCompile Include="transform.c" />
     <ClCompile Include="util.c" />

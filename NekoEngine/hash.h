@@ -18,4 +18,6 @@
 
 #define HASH(s)     ((uint32_t)(H256(s,0,0)^(H256(s,0,0)>>16)))
 
+unsigned int hash_string(const char *string);
+
 #endif

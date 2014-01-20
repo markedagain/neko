@@ -1,6 +1,9 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "schoollogic.h"
+#include "room.h"
+#include "roomlogic.h"
+#include "../NekoEngine/linkedlist.h"
 
 int variableTest = 1;
 

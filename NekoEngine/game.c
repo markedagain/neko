@@ -15,39 +15,34 @@
 
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
-  HWND hWnd;
-  RECT rc;
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
-  sysInitInfo.mWinWidth      = 1280;
-  sysInitInfo.mWinHeight      = 720;
+  sysInitInfo.mWinWidth      = NEKO_DEFAULT_GAMEWIDTH;
+  sysInitInfo.mWinHeight      = NEKO_DEFAULT_GAMEHEIGHT;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = DEFAULT_FPS;
+  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
   game->spaces = list_create();
-  dict_init(&game->data.sprites);
-  dict_init(&game->data.textures);
-  dict_init(&game->data.sounds);
+  dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
-  game->window.width = 1280;
-  game->window.height = 720;
-  game->systems.time.framesPerSecond = DEFAULT_FPS;
-  game->systems.time.frameRate = (double)1 / (double)DEFAULT_FPS;
+  game->window.width = NEKO_DEFAULT_GAMEWIDTH;
+  game->window.height = NEKO_DEFAULT_GAMEHEIGHT;
+  game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
+  game->systems.time.frameRate = 0;
   game->systems.time.dt = 0;
   game->systems.time.currentFramesPerSecond = 0;
   game->systems.time.elapsedFrames = 0;
+  game->initialized = true;
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
-  hWnd = AESysGetWindowHandle();
-  GetWindowRect(hWnd, &rc) ;
-  SetWindowPos(hWnd, 0, (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2, 0, 0, SWP_NOZORDER|SWP_NOSIZE);
+  game_resize(game, 640, 360);
   SetCursor(NULL);
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -56,9 +51,10 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysReset();
   srand((unsigned int)time(NULL));
 
+  data_loadAll(&game->data);
+
   return game;
 }
-
 
 SPACE *game_addSpace(GAME *game, char *name) {
   SPACE *space = space_create(name);
@@ -108,6 +104,7 @@ void game_getInput(GAME *game) {
 void game_tick(GAME *game) {
   EDATA_UPDATE updateEvent = { 0 };
   LIST_NODE *spaceNode;
+
   if (game->spaces->count == 0)
     return;
   spaceNode = game->spaces->first;
@@ -121,7 +118,6 @@ void game_tick(GAME *game) {
     spaceNode = spaceNode->next;
   }
   while (spaceNode != NULL);
-  //game_invokeEvent(game, EV_FRAMEUPDATE, &updateEvent);
   game_cleanup(game);
 }
 
@@ -163,23 +159,35 @@ bool game_loop(GAME *game) {
     game->systems.time.elapsedFrames = 0;
     stopwatch_start(&game->systems.time.secondsStopwatch);
   }
+  if (AESysGetWindowHandle() != GetActiveWindow())
+    printf("AAAAA\n");
+  
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
-  if (game->systems.time.dt < game->systems.time.frameRate)
-    return true;
+  if (game->systems.time.dt >= game->systems.time.frameRate) {
+    stopwatch_start(&game->systems.time.stopwatch);
+    game_getInput(game);
+     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
+      return false;
+    game_tick(game);
+    AEGfxStart();
+    game_invokeEvent(game, EV_DRAW, NULL);
+    AEGfxEnd();
+  }
 
-  game_getInput(game);
-  game_tick(game);
-
-  AEGfxStart();
-  game_invokeEvent(game, EV_DRAW, NULL);
-  AEGfxEnd();
-
-  if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
-    return false;
   return true;
 }
 
 void game_destroy(GAME *game) {
   // TODO
+}
+
+void game_resize(GAME *game, unsigned int width, unsigned int height) {
+  HWND hWnd = AESysGetWindowHandle();
+  game->window.width = width;
+  game->window.height = height;
+  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
+  if (game->initialized)
+    AEGfxExit();
+  AEGfxInit(game->window.width, game->window.height);
 }

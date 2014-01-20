@@ -8,6 +8,7 @@
 void arch_gameManager(ENTITY *entity) {
   entity->id = ARCH_GAMEMANAGER;
 
+  //Connect components to the entity
   entity_connect(entity, comp_schoolLogic);
   entity_connect(entity, comp_timeManager);
 }
