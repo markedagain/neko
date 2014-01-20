@@ -23,6 +23,12 @@
     <ClCompile Include="timemanager.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="studentdata.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="student.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -57,6 +63,13 @@
     <ClInclude Include="timemanager.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="studentdata.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="student.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="random.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\txt\names_first_female.txt">
