@@ -58,12 +58,19 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   VEC3 camTranslate = { 0 };
   SPRITE *sprite;
   TEXTURE *texture;
+  int i;
 
   if (!comData->visible)
     return;
 
   sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
   texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
+  if (texture == NULL)
+    printf("OH SHIT %s\n", sprite->textureName);
+
+  printf("vvvvvv\n");
+  //for (i = 0; i < self->owner->space->game->data.textures
+  printf("^^^^^^\n");
 
   screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
   spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);

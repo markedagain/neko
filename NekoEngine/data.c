@@ -146,8 +146,6 @@ void data_loadTextureFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const 
   char *pakData = NULL;
   size_t pakSize;
   unsigned char *texData = NULL;
-  /*unsigned short width = 0;
-  unsigned short height = 0;*/
 
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".tex");
 
@@ -230,7 +228,7 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
   sprite->height = (unsigned int)atoi((char *)vector_get(&lines, 4));
 
   vector_free(&lines);
-
+  printf("%s %f %f %u %u\n", sprite->textureName, sprite->u, sprite->v, sprite->width, sprite->height);
   printf("Loaded SPR %s from pak\n", storeKey);
   dict_set(&dataContainer->sprites, storeKey, sprite);
 
