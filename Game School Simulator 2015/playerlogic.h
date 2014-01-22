@@ -9,6 +9,7 @@
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 
 void comp_playerLogic_logicUpdate(COMPONENT *, void *);
+void comp_playerLogic_frameUpdate(COMPONENT *, void *);
 void comp_playerLogic(COMPONENT *);
 
 
