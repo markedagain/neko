@@ -23,21 +23,18 @@
     <ClCompile Include="timemanager.c">
       <Filter>Components</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="studentdata.c">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="student.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
-=======
     <ClCompile Include="room.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
     <ClCompile Include="roomlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
->>>>>>> bc20d43b20b18b893ab87b12bb7188092d29b118
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -72,7 +69,6 @@
     <ClInclude Include="timemanager.h">
       <Filter>Components</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="studentdata.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -80,14 +76,12 @@
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="random.h" />
-=======
     <ClInclude Include="room.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="roomlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
->>>>>>> bc20d43b20b18b893ab87b12bb7188092d29b118
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\txt\names_first_female.txt">
