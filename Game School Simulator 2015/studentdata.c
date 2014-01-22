@@ -4,6 +4,7 @@
 #include "random.h"
 #include <string.h>
 #include <malloc.h>
+#include "../NekoEngine/vector.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
 
@@ -11,22 +12,32 @@
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTDATA *comData = (CDATA_STUDENTDATA *)self->data;
-  //INPUT_CONTAINER *input = &self->owner->space->game->input;
+  INPUT_CONTAINER *input = &self->owner->space->game->input;
+  float foo = 0;
+  float baz = 99.9;
+  if (input->keyboard.keys[KEY_SPACE]) {
+    generate_student(self);
+    printf("Name: %s %s\n", comData->name.first, comData->name.last);
+    printf("Tech Skill: %d\n", comData->techSkill);
+    printf("Art Skill: %d\n", comData->artSkill);
+    printf("Design Skill: %d\n", comData->designSkill);
+    printf("Motivation: %%%d\n", comData->motivation);
+    printf("Year Started: %d\n", comData->yearStarted);
+    printf("Totally Random Float: %f\n", randomFloatRange(foo, baz)); 
+  }
+}
 
-  printf("Name: %s %s\n", comData->name.first, comData->name.last);
-  printf("Tech Skill: %d\n", comData->techSkill);
-  printf("Art Skill: %d\n", comData->artSkill);
-  printf("Design Skill: %d\n", comData->designSkill);
-  printf("Motivation: %d\n", comData->motivation);
-  printf("Year Started: %d\n", comData->yearStarted);
+void comp_studentData_initialize(COMPONENT *self, void *event) {
+  generate_student(self);
 }
 
 void comp_studentData(COMPONENT *self) {
   int lowValue = 0;
   int highValue = 99;
-// unsigned short elapsedFrames = self->owner->space->game->systems.time.elapsedFrames;
   
   CDATA_STUDENTDATA student = { 0 };
+  // generate_student(self);
+  
   student.name.first = "Samuel";
   student.name.last = "Valdez";
   student.techSkill = randomIntRange(lowValue, highValue);
@@ -37,4 +48,41 @@ void comp_studentData(COMPONENT *self) {
 
   COMPONENT_INIT(self, COMP_STUDENTDATA, student);
   self->events.logicUpdate = comp_studentData_logicUpdate;
+  self->events.initialize = comp_studentData_initialize;
+}
+
+void generate_student(COMPONENT *self) {
+  CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
+  int gender = randomIntRange(0, 1);
+  int lowValue = 0;
+  int highValue = 99;
+  GAME *owner = self->owner->space->game;
+  TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
+  unsigned int totalNames = vector_size(&namefile->lines);
+  char *lastname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
+  char *firstname;
+
+  data->name.last = lastname;
+
+  if(gender == 0) {
+    namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_male");
+    totalNames = vector_size(&namefile->lines);
+    firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
+    data->name.first = firstname;
+  }
+  else {
+    namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
+    totalNames = vector_size(&namefile->lines);
+    firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
+    data->name.first = firstname;
+  }
+
+  data->techSkill = randomIntRange(lowValue, highValue);
+  data->artSkill = randomIntRange(lowValue, highValue);
+  data->designSkill = randomIntRange(lowValue, highValue);
+
+  lowValue = 75;
+  highValue = 100;
+  data->motivation = randomIntRange(lowValue, highValue);
+  data->yearStarted = 0;
 }

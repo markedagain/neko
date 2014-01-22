@@ -9,7 +9,6 @@
 #include <string.h>
 #define COMP_STUDENTDATA HASH("COMP_STUDENTDATA")
 
-
 typedef struct cdata_studentData_t {
   struct {
     char *first;
@@ -22,6 +21,8 @@ typedef struct cdata_studentData_t {
   int yearStarted;
 } CDATA_STUDENTDATA;
 
+void comp_studentData_initialize(COMPONENT *self, void *event);
 void comp_studentData_logicUpdate(COMPONENT *, void *);
-void comp_studentData(COMPONENT *);
+void comp_studentData(COMPONENT *self);
+void generate_student(COMPONENT *self);
 #endif
