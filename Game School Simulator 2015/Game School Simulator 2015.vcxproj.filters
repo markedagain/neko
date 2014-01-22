@@ -84,13 +84,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\txt\names_first_female.txt">
+    <Text Include="data\txt\names\first_female.txt">
       <Filter>Data Files</Filter>
     </Text>
-    <Text Include="data\txt\names_first_male.txt">
+    <Text Include="data\txt\names\first_male.txt">
       <Filter>Data Files</Filter>
     </Text>
-    <Text Include="data\txt\names_last.txt">
+    <Text Include="data\txt\names\last.txt">
       <Filter>Data Files</Filter>
     </Text>
   </ItemGroup>

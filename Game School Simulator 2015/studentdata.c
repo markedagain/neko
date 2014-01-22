@@ -8,23 +8,21 @@
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
 
-
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTDATA *comData = (CDATA_STUDENTDATA *)self->data;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-  float foo = 0;
-  float baz = 99.9;
-  if (input->keyboard.keys[KEY_SPACE]) {
-    generate_student(self);
-    printf("Name: %s %s\n", comData->name.first, comData->name.last);
-    printf("Tech Skill: %d\n", comData->techSkill);
-    printf("Art Skill: %d\n", comData->artSkill);
-    printf("Design Skill: %d\n", comData->designSkill);
-    printf("Motivation: %%%d\n", comData->motivation);
-    printf("Year Started: %d\n", comData->yearStarted);
-    printf("Totally Random Float: %f\n", randomFloatRange(foo, baz)); 
-  }
+  // float foo = 0;
+  // float baz = 99.9;
+  generate_student(self);
+  printf("\nName: %s %s\n", comData->name.first, comData->name.last);
+  printf("Gender: %s\n", comData->gender);
+  printf("Tech Skill: %d\n", comData->techSkill);
+  printf("Art Skill: %d\n", comData->artSkill);
+  printf("Design Skill: %d\n", comData->designSkill);
+  printf("Motivation: %%%d\n", comData->motivation);
+  printf("Year Started: %d\n", comData->yearStarted);
+    // printf("Totally Random Float: %f\n", randomFloatRange(foo, baz)); 
 }
 
 void comp_studentData_initialize(COMPONENT *self, void *event) {
@@ -36,7 +34,6 @@ void comp_studentData(COMPONENT *self) {
   int highValue = 99;
   
   CDATA_STUDENTDATA student = { 0 };
-  // generate_student(self);
   
   student.name.first = "Samuel";
   student.name.last = "Valdez";
@@ -53,7 +50,7 @@ void comp_studentData(COMPONENT *self) {
 
 void generate_student(COMPONENT *self) {
   CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
-  int gender = randomIntRange(0, 1);
+  int gender = randomIntRange(0, 2);
   int lowValue = 0;
   int highValue = 99;
   GAME *owner = self->owner->space->game;
@@ -64,17 +61,19 @@ void generate_student(COMPONENT *self) {
 
   data->name.last = lastname;
 
-  if(gender == 0) {
+  if(gender == 1) {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_male");
     totalNames = vector_size(&namefile->lines);
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
+    data->gender = "Male";
   }
   else {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
     totalNames = vector_size(&namefile->lines);
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
+    data->gender = "Female";
   }
 
   data->techSkill = randomIntRange(lowValue, highValue);

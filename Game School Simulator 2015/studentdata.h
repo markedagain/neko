@@ -14,6 +14,7 @@ typedef struct cdata_studentData_t {
     char *first;
     char *last;
   } name;
+  char *gender;
   int techSkill;
   int artSkill;
   int designSkill;
