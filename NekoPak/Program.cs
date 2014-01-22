@@ -28,9 +28,42 @@ namespace NekoPak {
     [DllImport("neko.dll")]
     static extern int pak_close(IntPtr pak);
 
+    public static Point AddTextureToPak(string file, string storeName, IntPtr pak) {
+      Bitmap bmp = (Bitmap)Image.FromFile(file);
+      ushort width = Convert.ToUInt16(bmp.Width);
+      ushort height = Convert.ToUInt16(bmp.Height);
+      List<byte> data = new List<byte>();
+      foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
+        data.Add(b);
+      foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
+        data.Add(b);
+      Console.WriteLine(width.ToString() + "x" + height.ToString());
+      for (int i = 0; i < bmp.Height; ++i) {
+        for (int j = 0; j < bmp.Width; ++j) {
+          Color col = bmp.GetPixel(j, i);
+          data.Add(col.R);
+          data.Add(col.G);
+          data.Add(col.B);
+          data.Add(col.A);
+        }
+      }
+
+      storeName = storeName.Replace(".png", ".tex");
+      byte[] dataArray = data.ToArray();
+      int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
+      IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
+      Marshal.Copy(dataArray, 0, dataPtr, dataSize);
+
+      if (pak_insert_data(pak, storeName, dataPtr, (uint)dataSize) == 0)
+        Console.WriteLine("Converted and pak'd " + storeName + " successfully.");
+      else
+        Console.WriteLine("SOMETHING WENT WRONG!");
+
+      Marshal.FreeHGlobal(dataPtr);
+      return new Point(width, height);
+    }
+
     public static void TraverseTreeAddingFiles(string root, List<string> fileList) {
-      // Data structure to hold names of subfolders to be 
-      // examined for files.
       Stack<string> dirs = new Stack<string>(20);
 
       if (!System.IO.Directory.Exists(root)) {
@@ -59,7 +92,6 @@ namespace NekoPak {
         }
 
         catch (UnauthorizedAccessException e) {
-
           Console.WriteLine(e.Message);
           continue;
         }
@@ -68,27 +100,17 @@ namespace NekoPak {
           Console.WriteLine(e.Message);
           continue;
         }
-        // Perform the required action on each file here. 
-        // Modify this block to perform your required task. 
         foreach (string file in files) {
           try {
-            // Perform whatever action is required in your scenario.
             System.IO.FileInfo fi = new System.IO.FileInfo(file);
-            //Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
             if (fi.Name != "Thumbs.db")
               fileList.Add(fi.FullName);
           }
           catch (System.IO.FileNotFoundException e) {
-            // If file was deleted by a separate application 
-            //  or thread since the call to TraverseTree() 
-            // then just continue.
             Console.WriteLine(e.Message);
             continue;
           }
         }
-
-        // Push the subdirectories onto the stack for traversal. 
-        // This could also be done before handing the files. 
         foreach (string str in subDirs)
           dirs.Push(str);
       }
@@ -113,45 +135,22 @@ namespace NekoPak {
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-        if (storeName.EndsWith(".png") && storeName.Contains("tex/")) {
-          Bitmap bmp = (Bitmap)Image.FromFile(file);
-          ushort width = Convert.ToUInt16(bmp.Width);
-          ushort height = Convert.ToUInt16(bmp.Height);
-          List<byte> data = new List<byte>();
-          /*byte widthLeft = (byte)(width >> 8);
-          byte widthRight = (byte)(width & 255);
-          data.Add(widthLeft);
-          data.Add(widthRight);
-          byte heightLeft = (byte)(height >> 8);
-          byte heightRight = (byte)(height & 255);
-          data.Add(heightLeft);
-          data.Add(heightRight);*/
-          /*byte[] w = BitConverter.GetBytes(width);
-          byte[] h = BitConverter.GetBytes(height);
-          data.Add(w[1]);
-          data.Add(w[0]);
-          data.Add(h[1]);
-          data.Add(h[0]);*/
-          foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
-            data.Add(b);
-          foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
-            data.Add(b);
-          Console.WriteLine(width.ToString() + "x" + height.ToString());
-          for (int i = 0; i < bmp.Height; ++i) {
-            for (int j = 0; j < bmp.Width; ++j) {
-              Color col = bmp.GetPixel(j, i);
-              data.Add(col.R);
-              data.Add(col.G);
-              data.Add(col.B);
-              data.Add(col.A);
-            }
-          }
+        // Convert tex/*.png into TEX format
+        if (storeName.StartsWith("tex/") && storeName.EndsWith(".png")) {
+          AddTextureToPak(file, storeName, pak);
+        }
 
-          storeName = storeName.Replace(".png", ".tex");
-          byte[] dataArray = data.ToArray();
-          int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
+        // Convert spr/*.png to TEX format, creating a SPR file along the way
+        else if (storeName.StartsWith("spr/") && storeName.EndsWith(".png")) {
+          string storeName2 = storeName.Replace("spr/", "tex/");
+          Point dims = AddTextureToPak(file, storeName2, pak);
+          string spr = storeName2.Replace("spr/", "").Replace(".png", "") + "\n0.5000\n0.5000\n" + dims.X.ToString() + "\n" + dims.Y.ToString() + "\n";
+          byte[] bytes = System.Text.Encoding.UTF8.GetBytes(spr);
+
+          storeName = storeName.Replace(".png", ".spr");
+          int dataSize = bytes.Length * Marshal.SizeOf(typeof(byte));
           IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
-          Marshal.Copy(dataArray, 0, dataPtr, dataSize);
+          Marshal.Copy(bytes, 0, dataPtr, dataSize);
 
           if (pak_insert_data(pak, storeName, dataPtr, (uint)dataSize) == 0)
             Console.WriteLine("Converted and pak'd " + storeName + " successfully.");

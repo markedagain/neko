@@ -12,11 +12,16 @@
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  
+}
+
+void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-  ENTITY *simSpace = game_getSpace(self->owner->space->game,"simulation");
+  SPACE *simSpace = game_getSpace(self->owner->space->game,"simulation");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
 
+  // MANAGE INPUT
   if (input->keyboard.keys[KEY_SPACE]) {
     trans->scale.x *= 1.01f;
     trans->scale.y *= 1.01f;
@@ -54,6 +59,12 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
     self->owner->space->systems.camera.transform.scale.x -= 0.1f;
     self->owner->space->systems.camera.transform.scale.y -= 0.1f;
   }
+
+  //Change Tuition
+  if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
+    schoolData->tuition -= 1000;
+  if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
+    schoolData->tuition += 1000;
 
   //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
@@ -97,10 +108,25 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
       } while(roomNode != NULL);
     }
   }
+
+  if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
+    LIST_NODE *studentNode;
+    if(schoolData->students->first != NULL) {
+      studentNode = schoolData->students->first;
+      do {
+        ENTITY *student = (ENTITY *)studentNode->data;
+        printf("1) ");
+        printf(student->name);
+        printf("\n");
+        studentNode = studentNode->next;
+      } while(studentNode != NULL);
+    }
+  }
 }
 
 void comp_playerLogic(COMPONENT *self) {
   COMPONENT_INIT_NULL(self, COMP_PLAYERLOGIC);
   component_depend(self, COMP_TRANSFORM);
   self->events.logicUpdate = comp_playerLogic_logicUpdate;
+  self->events.frameUpdate = comp_playerLogic_frameUpdate;
 }

@@ -14,15 +14,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // Only display message once
   if(variableTest == 1) {
-    printf("School Name: %s\n", comData->schoolName);
+    printf("\n\nWelcome To: %s!\n", comData->schoolName);
     variableTest = 0;
   }
 
   printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
+}
 
-  // Calculate studentCapacity
-  comData->studentCapacity = comData->classrooms * 25;
-
+void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  ENTITY *newStudent;
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
     comData->incomingStudents = 1 + comData->reputation;
@@ -33,19 +33,16 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   else {
     comData->incomingStudents = 0;
   }
-  //Add students
-  comData->currentStudents += comData->incomingStudents;
 
-  //Change Tuition
-  if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_DOWN)
-    comData->tuition -= 1000;
-  if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_DOWN)
-    comData->tuition += 1000;
+  //Add students
+  newStudent = space_addEntity(self->owner->space, arch_room, "Student");
+  list_insert_end(comData->students, newStudent);
+  comData->currentStudents += comData->incomingStudents;
 
   //Add money
   comData->money += (comData->tuition * comData->currentStudents) / 6;
   //Lose money
-  comData->money -= (comData->classrooms * 10000) / 6;
+  comData->money -= comData->roomMaintainance / 6;
 
   printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
   printf("MONEY: $%i\n", comData->money);
@@ -62,11 +59,10 @@ void comp_schoolLogic(COMPONENT *self) {
   data.currentStudents = 0;
   data.incomingStudents = 0;
   data.students = list_create();
-  data.classrooms = 0;
+  data.roomMaintainance = 0;
   data.rooms = list_create();
   data.reputation = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
 }
-

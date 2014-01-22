@@ -8,21 +8,19 @@
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)self->data;
-  CDATA_SCHOOLLOGIC *schoolData;
+  COMPONENT *schoolLogic = entity_getComponent(self->owner, COMP_SCHOOLLOGIC);
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(self->owner, COMP_SCHOOLLOGIC);
+  
   INPUT_CONTAINER *input = &self->owner->space->game->input;
 
-  
 
-  schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(self->owner, COMP_SCHOOLLOGIC);
+  comData->timer++;
 
-  comData->months++;
-
-  printf("Current Months: %i | Current Semester: %i | Year: %i\n\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
-
-  if((comData->currentYear > comData->previousYear && schoolData->currentStudents >= schoolData->studentCapacity - 3)
-      || (input->keyboard.keys[KEY_B] == ISTATE_DOWN)) {
-    schoolData->classrooms++;
-    schoolData->money -= 100000;
+  if(comData->timer >= 6) {
+    comData->months++;
+    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
+    comp_schoolLogic_updateData(schoolLogic, schoolData);
+    comData->timer = 0;
   }
 
   comData->previousYear = comData->currentYear;
@@ -34,6 +32,7 @@ void comp_timeManager(COMPONENT *self) {
   data.months = 0;
   data.previousYear = 1988;
   data.currentYear = 1989;
+  data.timer = 10;
 
   COMPONENT_INIT(self, COMP_TIMEMANAGER, data);
   component_depend(self, COMP_SCHOOLLOGIC);
