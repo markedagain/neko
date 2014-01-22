@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Drawing;
 
 namespace NekoPak {
   class Program {
@@ -20,6 +21,9 @@ namespace NekoPak {
 
     [DllImport("neko.dll")]
     static extern int pak_insert(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string filename, [MarshalAs(UnmanagedType.LPStr)] string nameInPak);
+
+    [DllImport("neko.dll")]
+    static extern int pak_insert_data(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string filename, [MarshalAs(UnmanagedType.LPStr)] string nameInPak, IntPtr data, uint dataSize);
 
     [DllImport("neko.dll")]
     static extern int pak_close(IntPtr pak);
@@ -109,10 +113,38 @@ namespace NekoPak {
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-        if (pak_insert(pak, file, storeName) == 0)
-          Console.WriteLine("Pak'd " + storeName + " successfully.");
-        else
-          Console.WriteLine("SOMETHING WENT WRONG!");
+        if (storeName.EndsWith(".png")) {
+          Bitmap bmp = (Bitmap)Image.FromFile(file);
+          List<byte> data = new List<byte>();
+          for (int i = 0; i < bmp.Height; ++i) {
+            for (int j = 0; j < bmp.Width; ++j) {
+              Color col = bmp.GetPixel(j, i);
+              data.Add(col.R);
+              data.Add(col.G);
+              data.Add(col.B);
+              data.Add(col.A);
+            }
+          }
+
+          storeName.Replace(".png", ".tex");
+          byte[] dataArray = data.ToArray();
+          int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
+          IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
+          Marshal.Copy(dataArray, 0, dataPtr, dataSize);
+
+          if (pak_insert_data(pak, file, storeName, dataPtr, (uint)dataSize) == 0)
+            Console.WriteLine("Converted and pak'd " + storeName + " successfully.");
+          else
+            Console.WriteLine("SOMETHING WENT WRONG!");
+
+          Marshal.FreeHGlobal(dataPtr);
+        }
+        else {
+          if (pak_insert(pak, file, storeName) == 0)
+            Console.WriteLine("Pak'd " + storeName + " successfully.");
+          else
+            Console.WriteLine("SOMETHING WENT WRONG!");
+        }
       }
       pak_close(pak);
     }

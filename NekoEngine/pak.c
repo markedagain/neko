@@ -138,6 +138,10 @@ PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, char *nameInPak) {
   return PAKERROR_NONE;
 }
 
+PAK_ERROR pak_insert_data(PAK_FILE *pak, char *filename, char *nameInPak, char *data, size_t dataSize) {
+
+}
+
 PAK_SECTION *pak_loadAllFiles(PAK_FILE *pak, int *count) {
   PAK_SECTION *files;
   *count = pak->header.size / 64;

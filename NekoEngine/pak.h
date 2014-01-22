@@ -41,6 +41,7 @@ typedef enum {
 NEKO_API void pak_create(const char *);
 NEKO_API PAK_ERROR pak_check(PAK_FILE *);
 NEKO_API PAK_ERROR pak_insert(PAK_FILE *, char *, char *);
+NEKO_API PAK_ERROR pak_insert_data(PAK_FILE *pak, char *filename, char *nameInPak, char *data, size_t dataSize);
 NEKO_API PAK_ERROR pak_extract(PAK_FILE *, char *);
 NEKO_API PAK_FILE *pak_open(char *);
 NEKO_API PAK_ERROR pak_close(PAK_FILE *);
