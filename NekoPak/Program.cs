@@ -28,6 +28,41 @@ namespace NekoPak {
     [DllImport("neko.dll")]
     static extern int pak_close(IntPtr pak);
 
+    public static Point AddTextureToPak(string file, string storeName, IntPtr pak) {
+      Bitmap bmp = (Bitmap)Image.FromFile(file);
+      ushort width = Convert.ToUInt16(bmp.Width);
+      ushort height = Convert.ToUInt16(bmp.Height);
+      List<byte> data = new List<byte>();
+      foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
+        data.Add(b);
+      foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
+        data.Add(b);
+      Console.WriteLine(width.ToString() + "x" + height.ToString());
+      for (int i = 0; i < bmp.Height; ++i) {
+        for (int j = 0; j < bmp.Width; ++j) {
+          Color col = bmp.GetPixel(j, i);
+          data.Add(col.R);
+          data.Add(col.G);
+          data.Add(col.B);
+          data.Add(col.A);
+        }
+      }
+
+      storeName = storeName.Replace(".png", ".tex");
+      byte[] dataArray = data.ToArray();
+      int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
+      IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
+      Marshal.Copy(dataArray, 0, dataPtr, dataSize);
+
+      if (pak_insert_data(pak, storeName, dataPtr, (uint)dataSize) == 0)
+        Console.WriteLine("Converted and pak'd " + storeName + " successfully.");
+      else
+        Console.WriteLine("SOMETHING WENT WRONG!");
+
+      Marshal.FreeHGlobal(dataPtr);
+      return new Point(width, height);
+    }
+
     public static void TraverseTreeAddingFiles(string root, List<string> fileList) {
       Stack<string> dirs = new Stack<string>(20);
 
@@ -100,33 +135,22 @@ namespace NekoPak {
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-
         // Convert tex/*.png into TEX format
         if (storeName.StartsWith("tex/") && storeName.EndsWith(".png")) {
-          Bitmap bmp = (Bitmap)Image.FromFile(file);
-          ushort width = Convert.ToUInt16(bmp.Width);
-          ushort height = Convert.ToUInt16(bmp.Height);
-          List<byte> data = new List<byte>();
-          foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
-            data.Add(b);
-          foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
-            data.Add(b);
-          Console.WriteLine(width.ToString() + "x" + height.ToString());
-          for (int i = 0; i < bmp.Height; ++i) {
-            for (int j = 0; j < bmp.Width; ++j) {
-              Color col = bmp.GetPixel(j, i);
-              data.Add(col.R);
-              data.Add(col.G);
-              data.Add(col.B);
-              data.Add(col.A);
-            }
-          }
+          AddTextureToPak(file, storeName, pak);
+        }
 
-          storeName = storeName.Replace(".png", ".tex");
-          byte[] dataArray = data.ToArray();
-          int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
+        // Convert spr/*.png to TEX format, creating a SPR file along the way
+        else if (storeName.StartsWith("spr/") && storeName.EndsWith(".png")) {
+          string storeName2 = storeName.Replace("spr/", "tex/");
+          Point dims = AddTextureToPak(file, storeName2, pak);
+          string spr = storeName2.Replace("spr/", "").Replace(".png", "") + "\n0.5000\n0.5000\n" + dims.X.ToString() + "\n" + dims.Y.ToString() + "\n";
+          byte[] bytes = System.Text.Encoding.UTF8.GetBytes(spr);
+
+          storeName = storeName.Replace(".png", ".spr");
+          int dataSize = bytes.Length * Marshal.SizeOf(typeof(byte));
           IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
-          Marshal.Copy(dataArray, 0, dataPtr, dataSize);
+          Marshal.Copy(bytes, 0, dataPtr, dataSize);
 
           if (pak_insert_data(pak, storeName, dataPtr, (uint)dataSize) == 0)
             Console.WriteLine("Converted and pak'd " + storeName + " successfully.");
@@ -135,13 +159,7 @@ namespace NekoPak {
 
           Marshal.FreeHGlobal(dataPtr);
         }
-
-        // Convert spr/*.png to TEX format, creating a SPR file along the way
-        else if (storeName.StartsWith("spr/") && storeName.EndsWith(".png")) {
-
-        }
-        else
-        {
+        else {
           if (pak_insert(pak, file, storeName) == 0)
             Console.WriteLine("Pak'd " + storeName + " successfully.");
           else
