@@ -9,6 +9,7 @@
 #include "../AlphaEngine/AEEngine.h"
 #include "util.h"
 #include <math.h>
+#include <stdio.h>
 
 void comp_sprite_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
@@ -46,21 +47,26 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   CDATA_SPRITE* comData = (CDATA_SPRITE *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   MATRIX3 transform = { 0 };
+  VEC3 baseScale = { 0 };
+  VEC3 spriteScale = { 0 };
   VEC3 camScale = { 0 };
   int screenWidth = self->owner->space->game->window.width;
   int screenHeight = self->owner->space->game->window.height;
-  float screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
-  float spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
+  float screenRadius;
+  float spriteRadius;
   VEC3 translation = trans->translation;
   VEC3 camTranslate = { 0 };
   SPRITE *sprite;
-  AEGfxTexture *texture;
+  TEXTURE *texture;
 
   if (!comData->visible)
     return;
 
   sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
-  texture = sprite->texture->data;
+  texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
+
+  screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
+  spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
 
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
@@ -69,7 +75,14 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   translation.x *= camScale.x;
   translation.y *= camScale.y;
 
+  baseScale.x = sprite->width;
+  baseScale.y = sprite->height;
+  spriteScale.x = comData->size.x;
+  spriteScale.y = comData->size.y;
+
   matrix3_identity(&transform);
+  matrix3_scale(&transform, &baseScale);
+  matrix3_scale(&transform, &spriteScale);
   matrix3_scale(&transform, &camScale);
   matrix3_rotate(&transform, trans->rotation);
   matrix3_scale(&transform, &trans->scale);
@@ -85,7 +98,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
-  AEGfxTextureSet(texture, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
+  //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
+  AEGfxTextureSet(texture->data, (double)texture->width * sprite->u, (double)texture->height * sprite->v);
   AEGfxSetTransform(transform.m);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
@@ -98,8 +112,8 @@ void comp_sprite(COMPONENT *self) {
   data.color.g = 1;
   data.color.b = 1;
   data.color.a = 1;
-  data.size.x = 32;
-  data.size.y = 32;
+  data.size.x = 1;
+  data.size.y = 1;
   data.visible = true;
 
   COMPONENT_INIT(self, COMP_SPRITE, data);
