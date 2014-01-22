@@ -29,7 +29,7 @@ void arch_test(ENTITY *entity) {
 
   // And here's the sprite component. Yeah, it kind of sucks for now.
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "PlanetTexture";
+  sprite->source = "color_test";
 
   // This is what it looks like to connect a component to an entity without setting any data or
   // anything! Super easy, right?
