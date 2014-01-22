@@ -29,8 +29,6 @@ namespace NekoPak {
     static extern int pak_close(IntPtr pak);
 
     public static void TraverseTreeAddingFiles(string root, List<string> fileList) {
-      // Data structure to hold names of subfolders to be 
-      // examined for files.
       Stack<string> dirs = new Stack<string>(20);
 
       if (!System.IO.Directory.Exists(root)) {
@@ -59,7 +57,6 @@ namespace NekoPak {
         }
 
         catch (UnauthorizedAccessException e) {
-
           Console.WriteLine(e.Message);
           continue;
         }
@@ -68,27 +65,17 @@ namespace NekoPak {
           Console.WriteLine(e.Message);
           continue;
         }
-        // Perform the required action on each file here. 
-        // Modify this block to perform your required task. 
         foreach (string file in files) {
           try {
-            // Perform whatever action is required in your scenario.
             System.IO.FileInfo fi = new System.IO.FileInfo(file);
-            //Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
             if (fi.Name != "Thumbs.db")
               fileList.Add(fi.FullName);
           }
           catch (System.IO.FileNotFoundException e) {
-            // If file was deleted by a separate application 
-            //  or thread since the call to TraverseTree() 
-            // then just continue.
             Console.WriteLine(e.Message);
             continue;
           }
         }
-
-        // Push the subdirectories onto the stack for traversal. 
-        // This could also be done before handing the files. 
         foreach (string str in subDirs)
           dirs.Push(str);
       }
@@ -113,25 +100,13 @@ namespace NekoPak {
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-        if (storeName.EndsWith(".png") && storeName.Contains("tex/")) {
+
+        // Convert tex/*.png into TEX format
+        if (storeName.StartsWith("tex/") && storeName.EndsWith(".png")) {
           Bitmap bmp = (Bitmap)Image.FromFile(file);
           ushort width = Convert.ToUInt16(bmp.Width);
           ushort height = Convert.ToUInt16(bmp.Height);
           List<byte> data = new List<byte>();
-          /*byte widthLeft = (byte)(width >> 8);
-          byte widthRight = (byte)(width & 255);
-          data.Add(widthLeft);
-          data.Add(widthRight);
-          byte heightLeft = (byte)(height >> 8);
-          byte heightRight = (byte)(height & 255);
-          data.Add(heightLeft);
-          data.Add(heightRight);*/
-          /*byte[] w = BitConverter.GetBytes(width);
-          byte[] h = BitConverter.GetBytes(height);
-          data.Add(w[1]);
-          data.Add(w[0]);
-          data.Add(h[1]);
-          data.Add(h[0]);*/
           foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
             data.Add(b);
           foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
@@ -160,7 +135,13 @@ namespace NekoPak {
 
           Marshal.FreeHGlobal(dataPtr);
         }
-        else {
+
+        // Convert spr/*.png to TEX format, creating a SPR file along the way
+        else if (storeName.StartsWith("spr/") && storeName.EndsWith(".png")) {
+
+        }
+        else
+        {
           if (pak_insert(pak, file, storeName) == 0)
             Console.WriteLine("Pak'd " + storeName + " successfully.");
           else

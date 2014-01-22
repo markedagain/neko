@@ -5,13 +5,16 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
+#include "../NekoEngine/game.h"
 #include <string.h>
 #define COMP_STUDENTDATA HASH("COMP_STUDENTDATA")
 
 
 typedef struct cdata_studentData_t {
-  char *firstname;
-  char *lastname;
+  struct {
+    char *first;
+    char *last;
+  } name;
   int techSkill;
   int artSkill;
   int designSkill;
