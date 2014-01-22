@@ -18,7 +18,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
   if(comData->timer >= 6) {
     comData->months++;
-    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
+    printf("\n\n\n\n\n");
+    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
     comp_schoolLogic_updateData(schoolLogic, schoolData);
     comData->timer = 0;
   }

@@ -9,6 +9,7 @@
 #include "roomlogic.h"
 #include "schoollogic.h"
 #include "gamemanager.h"
+#include "studentdata.h"
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -115,8 +116,9 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       studentNode = schoolData->students->first;
       do {
         ENTITY *student = (ENTITY *)studentNode->data;
+        CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
         printf("1) ");
-        printf(student->name);
+        printf("Name: %s %s\n", studentData->name.first, studentData->name.last);
         printf("\n");
         studentNode = studentNode->next;
       } while(studentNode != NULL);
