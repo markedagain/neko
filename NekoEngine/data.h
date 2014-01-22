@@ -11,6 +11,7 @@
 #include "util.h"
 #include "dictionary.h"
 #include "vector.h"
+#include "pak.h"
 #include "../AlphaEngine/AEEngine.h"
 #include "../include/png.h"
 
@@ -41,6 +42,7 @@ typedef struct {
 
 typedef struct {
   TEXTURE *texture;
+  char textureName[PAK_FILENAME_MAXLENGTH];
   float u;
   float v;
   unsigned int width;

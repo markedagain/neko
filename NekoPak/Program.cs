@@ -23,7 +23,7 @@ namespace NekoPak {
     static extern int pak_insert(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string filename, [MarshalAs(UnmanagedType.LPStr)] string nameInPak);
 
     [DllImport("neko.dll")]
-    static extern int pak_insert_data(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string filename, [MarshalAs(UnmanagedType.LPStr)] string nameInPak, IntPtr data, uint dataSize);
+    static extern int pak_insert_data(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string nameInPak, IntPtr data, uint dataSize);
 
     [DllImport("neko.dll")]
     static extern int pak_close(IntPtr pak);
@@ -113,9 +113,30 @@ namespace NekoPak {
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');
-        if (storeName.EndsWith(".png")) {
+        if (storeName.EndsWith(".png") && storeName.Contains("tex/")) {
           Bitmap bmp = (Bitmap)Image.FromFile(file);
+          ushort width = Convert.ToUInt16(bmp.Width);
+          ushort height = Convert.ToUInt16(bmp.Height);
           List<byte> data = new List<byte>();
+          /*byte widthLeft = (byte)(width >> 8);
+          byte widthRight = (byte)(width & 255);
+          data.Add(widthLeft);
+          data.Add(widthRight);
+          byte heightLeft = (byte)(height >> 8);
+          byte heightRight = (byte)(height & 255);
+          data.Add(heightLeft);
+          data.Add(heightRight);*/
+          /*byte[] w = BitConverter.GetBytes(width);
+          byte[] h = BitConverter.GetBytes(height);
+          data.Add(w[1]);
+          data.Add(w[0]);
+          data.Add(h[1]);
+          data.Add(h[0]);*/
+          foreach (byte b in BitConverter.GetBytes((uint)bmp.Width))
+            data.Add(b);
+          foreach (byte b in BitConverter.GetBytes((uint)bmp.Height))
+            data.Add(b);
+          Console.WriteLine(width.ToString() + "x" + height.ToString());
           for (int i = 0; i < bmp.Height; ++i) {
             for (int j = 0; j < bmp.Width; ++j) {
               Color col = bmp.GetPixel(j, i);
@@ -126,13 +147,13 @@ namespace NekoPak {
             }
           }
 
-          storeName.Replace(".png", ".tex");
+          storeName = storeName.Replace(".png", ".tex");
           byte[] dataArray = data.ToArray();
           int dataSize = dataArray.Length * Marshal.SizeOf(typeof(byte));
           IntPtr dataPtr = Marshal.AllocHGlobal(dataSize);
           Marshal.Copy(dataArray, 0, dataPtr, dataSize);
 
-          if (pak_insert_data(pak, file, storeName, dataPtr, (uint)dataSize) == 0)
+          if (pak_insert_data(pak, storeName, dataPtr, (uint)dataSize) == 0)
             Console.WriteLine("Converted and pak'd " + storeName + " successfully.");
           else
             Console.WriteLine("SOMETHING WENT WRONG!");

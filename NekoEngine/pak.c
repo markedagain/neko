@@ -138,8 +138,51 @@ PAK_ERROR pak_insert(PAK_FILE *pak, char *filename, char *nameInPak) {
   return PAKERROR_NONE;
 }
 
-PAK_ERROR pak_insert_data(PAK_FILE *pak, char *filename, char *nameInPak, char *data, size_t dataSize) {
+PAK_ERROR pak_insert_data(PAK_FILE *pak, char *nameInPak, char *data, size_t dataSize) {
+  PAK_SECTION section;
+  PAK_SECTION *files;
+  int x = 0;
+  FILE *fp;
+  char c;
+  int b;
 
+  if (pak->header.size == 1) {
+    fseek(pak->handle, 4, SEEK_SET);
+    pak->header.offset = sizeof(pak->header) + sizeof(char) * dataSize;
+    pak->header.size = sizeof(PAK_SECTION);
+    fwrite(&pak->header.offset, sizeof(pak->header.offset), 1, pak->handle);
+    fwrite(&pak->header.size, sizeof(pak->header.size), 1, pak->handle);
+    fwrite(data, sizeof(char), dataSize, pak->handle);
+    strcpy(section.name, nameInPak);
+    section.offset = 12;
+    section.size = sizeof(char) * dataSize;
+    fwrite(&section, sizeof(section), 1, pak->handle);
+  }
+  else {
+    int i;
+    if (pak->header.size % 64 != 0)
+      return PAKERROR_HEADER_CORRUPT;
+    x = pak->header.size / 64;
+    files = (PAK_SECTION *)malloc((x + 1) * sizeof(PAK_SECTION));
+    fseek(pak->handle, pak->header.offset, SEEK_SET);
+    fread(files, sizeof(PAK_SECTION), x, pak->handle);
+    for (i = 0; i < x; ++i) {
+      if (strcmp(files[i].name, nameInPak) == 0)
+        return PAKERROR_DUPLICATE_FILE;
+    }
+    fseek(pak->handle, 4, SEEK_SET);
+    pak->header.offset += dataSize;
+    pak->header.size += sizeof(PAK_SECTION);
+    fwrite(&pak->header.offset, sizeof(pak->header.offset), 1, pak->handle);
+    fwrite(&pak->header.size, sizeof(pak->header.size), 1, pak->handle);
+    fseek(pak->handle, pak->header.offset - dataSize, SEEK_SET);
+    fwrite(data, sizeof(char), dataSize, pak->handle);
+    strcpy(files[x].name, nameInPak);
+    files[x].offset = pak->header.offset - dataSize;
+    files[x].size = sizeof(char) * dataSize;
+    fwrite(files, sizeof(PAK_SECTION), x + 1, pak->handle);
+  }
+  return PAKERROR_NONE;
 }
 
 PAK_SECTION *pak_loadAllFiles(PAK_FILE *pak, int *count) {
