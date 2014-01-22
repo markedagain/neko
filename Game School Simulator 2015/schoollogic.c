@@ -19,10 +19,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   }
 
   printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
+}
 
-  // Calculate studentCapacity
-  comData->studentCapacity = comData->classrooms * 25;
-
+void comp_schoolLogic_updateData(CDATA_SCHOOLLOGIC *comData) {
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
     comData->incomingStudents = 1 + comData->reputation;
@@ -39,7 +38,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   //Add money
   comData->money += (comData->tuition * comData->currentStudents) / 6;
   //Lose money
-  comData->money -= (comData->classrooms * 10000) / 6;
+  comData->money -= comData->roomMaintainance / 6;
 
   printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
   printf("MONEY: $%i\n", comData->money);
@@ -56,11 +55,10 @@ void comp_schoolLogic(COMPONENT *self) {
   data.currentStudents = 0;
   data.incomingStudents = 0;
   data.students = list_create();
-  data.classrooms = 0;
+  data.roomMaintainance = 0;
   data.rooms = list_create();
   data.reputation = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
 }
-

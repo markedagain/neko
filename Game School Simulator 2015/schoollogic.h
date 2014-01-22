@@ -17,12 +17,13 @@ typedef struct cdata_schoolLogic_t {
   int currentStudents;
   int incomingStudents;
   LIST *students;
-  int classrooms;
+  int roomMaintainance;
   LIST *rooms;
   int reputation;
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
+void comp_schoolLogic_updateData(CDATA_SCHOOLLOGIC *);
 void comp_schoolLogic(COMPONENT *);
 
 #endif
