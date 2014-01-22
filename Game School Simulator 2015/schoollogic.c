@@ -14,14 +14,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // Only display message once
   if(variableTest == 1) {
-    printf("School Name: %s\n", comData->schoolName);
+    printf("\n\nWelcome To: %s!\n", comData->schoolName);
     variableTest = 0;
   }
 
   printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
 }
 
-void comp_schoolLogic_updateData(CDATA_SCHOOLLOGIC *comData) {
+void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  ENTITY *newStudent;
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
     comData->incomingStudents = 1 + comData->reputation;
@@ -32,7 +33,10 @@ void comp_schoolLogic_updateData(CDATA_SCHOOLLOGIC *comData) {
   else {
     comData->incomingStudents = 0;
   }
+
   //Add students
+  newStudent = space_addEntity(self->owner->space, arch_room, "Student");
+  list_insert_end(comData->students, newStudent);
   comData->currentStudents += comData->incomingStudents;
 
   //Add money
