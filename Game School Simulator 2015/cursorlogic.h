@@ -14,4 +14,8 @@ void snap_sprite(COMPONENT *self, VEC3 *snaps, int size, float distance);
 void comp_cursorLogic_logicUpdate(COMPONENT *, void *);
 void comp_cursorLogic(COMPONENT *);
 
+typedef struct {
+  LIST *snapEntities;
+} CDATA_CURSORLOGIC;
+
 #endif

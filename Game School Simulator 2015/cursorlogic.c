@@ -6,11 +6,20 @@
 #include "../NekoEngine/sprite.h"
 #include <math.h>
 
+
 void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  CDATA_CURSORLOGIC *data = (CDATA_CURSORLOGIC *)entity_getComponentData(self->owner, COMP_CURSORLOGIC);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   POINT mousePos;
+  bool gotObjects = true;
+  if (!gotObjects) {
+    LIST *list = data->snapEntities;
+    list_insert_end(list, space_getEntity(self->owner->space, "player"));
+    gotObjects = false;
+  }
+
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
   trans->translation.x = mousePos.x;
   trans->translation.y = mousePos.y;
@@ -18,7 +27,9 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
 }
 
 void comp_cursorLogic(COMPONENT *self) {
-  COMPONENT_INIT_NULL(self, COMP_CURSORLOGIC);
+  CDATA_CURSORLOGIC data = { 0 };
+  data.snapEntities = list_create();
+  COMPONENT_INIT(self, COMP_CURSORLOGIC, data);
   component_depend(self, COMP_TRANSFORM);
   component_depend(self, COMP_SPRITE);
   self->events.logicUpdate = comp_cursorLogic_logicUpdate;
@@ -41,3 +52,7 @@ void snap_sprite(COMPONENT *self, VEC3 *snaps, int size, float distance) {
   }
 
 }
+
+//void snap_to_entity(COMPONENT *self, LIST *snapEntities){
+//
+//}

@@ -33,6 +33,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
+  game->dimensions.height = 360;
+  game->dimensions.width = 640;
   game->window.width = 1280;
   game->window.height = 720;
   game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
