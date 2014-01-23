@@ -75,7 +75,6 @@ void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename
 
 void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *filename) {
   TEXTURE *texture;
-  SPRITE *sprite;
   char storeKey[80];
   char storeKey2[80];
 
@@ -83,17 +82,10 @@ void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *file
   texture_init(texture);
   texture->data = AEGfxTextureLoad(filename);
   AE_ASSERT_MESG(texture, "Failed to load texture!")
-  sprite = (SPRITE *)malloc(sizeof(SPRITE));
-  sprite_init(sprite);
-  sprite->texture = texture;
 
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".png");
   dict_set(&dataContainer->textures, storeKey, texture);
   printf("Loaded TEX %s from disk (QUICK)\n", storeKey);
-
-  data_makeKey(dataContainer, storeKey2, filename, "spr/", ".png");
-  dict_set(&dataContainer->sprites, storeKey2, sprite);
-  printf("Loaded SPR %s from disk (QUICK)\n", storeKey2);
 }
 
 void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename) {
@@ -169,11 +161,6 @@ void data_loadTextureFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const 
 
   texData = (unsigned char *)pakData + 8;
 
-  /*
-  printf("%i %i %i %i\n", (int)texData[0], (int)texData[1], (int)texData[2], (int)texData[3]);
-  printf("%u %u\n", texture->width, texture->height);
-  */
-
   texture->data = AEGfxTextureLoadFromMemory(texData, texture->width, texture->height);
 
   free(pakData);
@@ -233,7 +220,6 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
   sprite->height = (unsigned int)atoi((char *)vector_get(&lines, 4));
 
   vector_free(&lines);
-  printf("%s %f %f %u %u\n", sprite->textureName, sprite->u, sprite->v, sprite->width, sprite->height);
   printf("Loaded SPR %s from pak\n", storeKey);
   dict_set(&dataContainer->sprites, storeKey, sprite);
 
@@ -393,14 +379,12 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   vector_clear(&files);
 
   // (DISK) LOAD QUICK SPRITES/TEXTURES
-  /*
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".png");
   for (i = 0; i < vector_size(&files); ++i)
     data_loadQuickSpriteFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
-  */
 
   // (DISK) LOAD TEXTFILES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "txt");
