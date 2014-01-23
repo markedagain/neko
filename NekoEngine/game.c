@@ -13,14 +13,19 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 360
+
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
+  RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
+  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
-  sysInitInfo.mWinWidth      = NEKO_DEFAULT_GAMEWIDTH;
-  sysInitInfo.mWinHeight      = NEKO_DEFAULT_GAMEHEIGHT;
+  sysInitInfo.mWinWidth      = WINDOW_WIDTH;
+  sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS;
   sysInitInfo.mpWinCallBack    = NULL;
@@ -31,8 +36,16 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
-  game->window.width = NEKO_DEFAULT_GAMEWIDTH;
-  game->window.height = NEKO_DEFAULT_GAMEHEIGHT;
+
+
+  game->window.width = windowRect.right - windowRect.left;
+  game->window.height = windowRect.bottom - windowRect.top;
+  game->innerWindow.width = WINDOW_WIDTH;
+  game->innerWindow.height = WINDOW_HEIGHT;
+
+  game->dimensions.width = NEKO_DEFAULT_GAMEWIDTH;
+  game->dimensions.height = NEKO_DEFAULT_GAMEHEIGHT;
+
   game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
   game->systems.time.frameRate = 0;
   game->systems.time.dt = 0;
@@ -42,7 +55,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   input_initialize(&game->input);
 
   AESysInit(&sysInitInfo);
-  game_resize(game, 640, 360);
+  AESysSetWindowTitle(NEKO_GAMETITLE);
+  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
   SetCursor(NULL);
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -184,10 +198,15 @@ void game_destroy(GAME *game) {
 
 void game_resize(GAME *game, unsigned int width, unsigned int height) {
   HWND hWnd = AESysGetWindowHandle();
-  game->window.width = width;
-  game->window.height = height;
+  RECT windowRect = { 0, 0, width, height };
+  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
+
+  game->window.width = windowRect.right - windowRect.left;
+  game->window.height = windowRect.bottom - windowRect.top;
+  game->innerWindow.width = width;
+  game->innerWindow.height = height;
   SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
   if (game->initialized)
     AEGfxExit();
-  AEGfxInit(game->window.width, game->window.height);
+  AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 }

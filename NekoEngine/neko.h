@@ -13,5 +13,6 @@
 #define NEKO_DEFAULT_GAMEWIDTH 640
 #define NEKO_DEFAULT_GAMEHEIGHT 360
 #define NEKO_DEFAULT_ROOT "data/"
+#define NEKO_GAMETITLE "Game School Simulator 2015"
 
 #endif

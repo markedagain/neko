@@ -24,9 +24,18 @@ typedef struct game_t {
   LIST *destroyingEntities;
   LIST *destroyingSpaces;
   struct {
+    float aspectRatio;
+    unsigned int width;
+    unsigned int height;
+  } dimensions;
+  struct {
     unsigned int width;
     unsigned int height;
   } window;
+  struct {
+    unsigned int width;
+    unsigned int height;
+  } innerWindow;
   struct {
     struct {
       STOPWATCH stopwatch;
@@ -53,6 +62,6 @@ void game_tick(GAME *);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
-void game_resize(GAME *, unsigned int, unsigned int);
+NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 
 #endif
