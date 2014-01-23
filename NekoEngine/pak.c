@@ -142,9 +142,6 @@ PAK_ERROR pak_insert_data(PAK_FILE *pak, char *nameInPak, char *data, size_t dat
   PAK_SECTION section;
   PAK_SECTION *files;
   int x = 0;
-  FILE *fp;
-  char c;
-  int b;
 
   if (pak->header.size == 1) {
     fseek(pak->handle, 4, SEEK_SET);

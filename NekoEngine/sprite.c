@@ -60,7 +60,6 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   VEC3 camTranslate = { 0 };
   SPRITE *sprite;
   TEXTURE *texture;
-  int i;
 
   if (!comData->visible)
     return;
@@ -80,8 +79,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   translation.x *= camScale.x;
   translation.y *= camScale.y;
 
-  baseScale.x = sprite->width;
-  baseScale.y = sprite->height;
+  baseScale.x = (float)sprite->width;
+  baseScale.y = (float)sprite->height;
   spriteScale.x = comData->size.x;
   spriteScale.y = comData->size.y;
 
@@ -111,7 +110,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
   //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
-  AEGfxTextureSet(texture->data, (double)texture->width * sprite->u, (double)texture->height * sprite->v);
+  AEGfxTextureSet(texture->data, (float)((float)texture->width * sprite->u), (float)((float)texture->height * sprite->v));
   AEGfxSetTransform(transform.m);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }

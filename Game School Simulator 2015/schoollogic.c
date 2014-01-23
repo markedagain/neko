@@ -7,6 +7,7 @@
 #include "../NekoEngine/linkedlist.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
+#include <math.h>
 
 int variableTest = 1;
 
@@ -52,9 +53,9 @@ void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   }
 
   //Add money
-  comData->money += (comData->tuition * comData->currentStudents) / 6.0;
+  comData->money += (int)floor((float)(comData->tuition * comData->currentStudents) / 6.0f);
   //Lose money
-  comData->money -= (float)comData->roomMaintainance / 6.0;
+  comData->money -= (int)floor((float)comData->roomMaintainance / 6.0f);
 
   printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
   printf("MONEY: $%i\n", comData->money);

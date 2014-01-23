@@ -76,7 +76,6 @@ void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char *filename
 void data_loadQuickSpriteFromDisk(DATACONTAINER *dataContainer, const char *filename) {
   TEXTURE *texture;
   char storeKey[80];
-  char storeKey2[80];
 
   texture = (TEXTURE *)malloc(sizeof(TEXTURE));
   texture_init(texture);
