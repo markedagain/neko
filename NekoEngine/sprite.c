@@ -52,8 +52,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   VEC3 screenScaleVec = { 0 };
   VEC3 camScale = { 0 };
   float screenScale;
-  int screenWidth = self->owner->space->game->window.width;
-  int screenHeight = self->owner->space->game->window.height;
+  int screenWidth = self->owner->space->game->innerWindow.width;
+  int screenHeight = self->owner->space->game->innerWindow.height;
   float screenRadius;
   float spriteRadius;
   VEC3 translation = trans->translation;
@@ -85,7 +85,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   spriteScale.x = comData->size.x;
   spriteScale.y = comData->size.y;
 
-  screenScale = (float)self->owner->space->game->window.width / self->owner->space->game->dimensions.width;
+  screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
   translation.x *= screenScale;
   translation.y *= screenScale;
   screenScaleVec.x = screenScale;

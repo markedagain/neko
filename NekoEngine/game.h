@@ -33,6 +33,10 @@ typedef struct game_t {
     unsigned int height;
   } window;
   struct {
+    unsigned int width;
+    unsigned int height;
+  } innerWindow;
+  struct {
     struct {
       STOPWATCH stopwatch;
       STOPWATCH secondsStopwatch;
@@ -58,6 +62,6 @@ void game_tick(GAME *);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
-void game_resize(GAME *, unsigned int, unsigned int);
+NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 
 #endif
