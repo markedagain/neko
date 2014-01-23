@@ -14,26 +14,39 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
 
 
-  comData->timer++;
+  comData->frameCounter++;
 
-  if(comData->timer >= 1) {
+  // New month every x frames
+  if(comData->frameCounter >= 1) {
     comData->months++;
-    printf("\n\n\n\n\n");
-    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n", comData->months, comData->months/6, comData->months/12 + 1989);
-    comp_schoolLogic_updateData(schoolLogic, schoolData);
-    comData->timer = 0;
+    printf("\n\n\n\n\n\n");
+    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);
+    comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
+    comData->frameCounter = 0;
+    comData->monthCounter++;
   }
 
-  comData->previousYear = comData->currentYear;
-  comData->currentYear = comData->months/12 + 1989;
+  if(comData->monthCounter == 6 || comData->monthCounter == 12) {
+    comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
+    comData->currentSemester++;
+  }
+
+  if(comData->monthCounter >= 12) {
+    comData->previousYear = comData->currentYear;
+    comData->currentYear++;
+    comp_schoolLogic_updateDataYear(schoolLogic, schoolData);
+    comData->monthCounter = 0;
+  }
 }
 
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
   data.months = 0;
+  data.currentSemester = 0;
   data.previousYear = 1988;
   data.currentYear = 1989;
-  data.timer = 10;
+  data.frameCounter = 10;
+  data.monthCounter = 0;
 
   COMPONENT_INIT(self, COMP_TIMEMANAGER, data);
   component_depend(self, COMP_SCHOOLLOGIC);

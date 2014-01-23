@@ -28,28 +28,16 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   //printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
 }
 
-void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
-  ENTITY *newStudent;
-  int i = 0;
+void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
-    comData->incomingStudents = 1 + comData->reputation;
+    comData->incomingStudents += 1 + comData->reputation;
     if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents)) {
       comData->incomingStudents = comData->studentCapacity - comData->currentStudents;
     }
   }
   else {
     comData->incomingStudents = 0;
-  }
-
-  //Add students
-  if(comData->incomingStudents > 0) {
-    for(i = 0; i <= comData->incomingStudents; i++)
-    {
-      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
-      list_insert_end(comData->students, newStudent);
-      comData->currentStudents++;
-    }
   }
 
   //Add money
@@ -61,6 +49,25 @@ void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   printf("MONEY: $%i\n", comData->money);
   printf("TUITION: $%i\n", comData->tuition);
   printf("REP: %i\n", comData->reputation);
+}
+
+void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  ENTITY *newStudent;
+  int i = 0;
+
+  //Add students
+  if(comData->incomingStudents > 0) {
+    for(i = 0; i <= comData->incomingStudents; i++)
+    {
+      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
+      list_insert_end(comData->students, newStudent);
+      comData->currentStudents++;
+    }
+  }
+}
+
+void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  
 }
 
 void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
