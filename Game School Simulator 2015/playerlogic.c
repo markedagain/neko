@@ -19,7 +19,7 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-  SPACE *simSpace = game_getSpace(self->owner->space->game,"simulation");
+  SPACE *simSpace = game_getSpace(self->owner->space->game,"sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
 
   // MANAGE INPUT
