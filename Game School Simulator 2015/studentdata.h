@@ -20,6 +20,7 @@ typedef struct cdata_studentData_t {
   int designSkill;
   int motivation;
   int yearStarted;
+  int counter;
 } CDATA_STUDENTDATA;
 
 void comp_studentData_initialize(COMPONENT *self, void *event);

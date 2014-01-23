@@ -5,6 +5,8 @@
 #include "roomlogic.h"
 #include "student.h"
 #include "../NekoEngine/linkedlist.h"
+#include "../NekoEngine/transform.h"
+#include "../NekoEngine/sprite.h"
 
 int variableTest = 1;
 
@@ -15,7 +17,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // Only display message once
   if(variableTest == 1) {
-    printf("\n\n\n\n\n\n\n\n\n\n\n\nWelcome To: %s!\n\n\n\n\n\n\n\n\n", comData->schoolName);
+    //CDATA_SPRITE *sprite;
+    //sprite = (CDATA_SPRITE *)entity_connect(self->owner, comp_sprite);
+    //sprite->source = "dev64";
+    printf("\n\n\n\n\n\n\n\n\n\n\n\nWelcome To %s!\n\n\n\n\n\n\n\n\n", comData->schoolName);
     variableTest = 0;
   }
 
@@ -39,15 +44,17 @@ void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   //Add students
   if(comData->incomingStudents > 0) {
     for(i = 0; i <= comData->incomingStudents; i++)
-    newStudent = space_addEntity(self->owner->space, arch_student, "Student");
-    list_insert_end(comData->students, newStudent);
-    comData->currentStudents += comData->incomingStudents;
+    {
+      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
+      list_insert_end(comData->students, newStudent);
+      comData->currentStudents++;
+    }
   }
 
   //Add money
-  comData->money += (comData->tuition * comData->currentStudents) / 6;
+  comData->money += (comData->tuition * comData->currentStudents) / 6.0;
   //Lose money
-  comData->money -= comData->roomMaintainance / 6;
+  comData->money -= (float)comData->roomMaintainance / 6.0;
 
   printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
   printf("MONEY: $%i\n", comData->money);
@@ -63,7 +70,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Tiny Game School";
+  data.schoolName = "Eduardo's Super Awesome Game School";
   data.money = 50000;
   data.tuition = 3000;
   data.studentCapacity = 0;
