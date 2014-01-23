@@ -8,14 +8,15 @@
 
 #define COMP_CURSORLOGIC HASH("COMP_CURSORLOGIC")
 
-static VEC3 snaps[] = {{100, 100}, {-100, -100}};
-
-void snap_sprite(COMPONENT *self, VEC3 *snaps, int size, float distance);
 void comp_cursorLogic_logicUpdate(COMPONENT *, void *);
 void comp_cursorLogic(COMPONENT *);
+void snap_sprite(COMPONENT *self);
+LIST_NODE *add_snap(COMPONENT *self, float left, float top, float right, float bot);
+void remove_snap(COMPONENT *self, LIST_NODE *remove);
+void comp_cursorLogic_destroy(COMPONENT *self, void *event);
 
 typedef struct {
-  LIST *snapEntities;
+  LIST *snaps;
 } CDATA_CURSORLOGIC;
 
 #endif
