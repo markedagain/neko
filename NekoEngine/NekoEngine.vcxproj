@@ -62,6 +62,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
