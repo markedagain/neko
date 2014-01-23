@@ -144,7 +144,7 @@ namespace NekoPak {
         else if (storeName.StartsWith("spr/") && storeName.EndsWith(".png")) {
           string storeName2 = string.Copy(storeName).Replace("spr/", "tex/").Replace(".png", ".tex");
           Point dims = AddTextureToPak(file, storeName2, pak);
-          string spr = storeName2.Replace("spr/", "").Replace(".png", "") + "\n0.5000\n0.5000\n" + dims.X.ToString() + "\n" + dims.Y.ToString() + "\n";
+          string spr = storeName2.Replace("tex/", "").Replace(".tex", "") + "\n0.5000\n0.5000\n" + dims.X.ToString() + "\n" + dims.Y.ToString() + "\n";
           Console.WriteLine(spr);
           byte[] bytes = System.Text.Encoding.UTF8.GetBytes(spr);
 
