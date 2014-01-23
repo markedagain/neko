@@ -7,6 +7,7 @@
 #include "../NekoEngine/vector.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
+#include "../NekoEngine/linkedlist.h"
 #include "timemanager.h"
 #include "schoollogic.h"
 
@@ -34,11 +35,12 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     // printf("Totally Random Float: %f\n", randomFloatRange(foo, baz));
   
   // Graduate
-  if(comData->yearStarted == timeData->currentYear - 4) {
+  if(comData->semesterStarted == timeData->currentSemester - 2) {
     schoolLogic->currentStudents--;
     schoolLogic->reputation++;
     printf("\n%s %s has graduated! +1 Rep\n", comData->name.first, comData->name.last);
-    comData->yearStarted--; // REPLACE THIS LINE WITH DESTROYING OF STUDENT
+    list_remove(schoolLogic->students, comData->listNodePtr);
+    comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
   }
 }
 
@@ -61,6 +63,7 @@ void comp_studentData(COMPONENT *self) {
   student.motivation = randomIntRange(lowValue, highValue);
   student.yearStarted = 1989;
   student.counter = 0;
+  student.listNodePtr = NULL;
 
   COMPONENT_INIT(self, COMP_STUDENTDATA, student);
   self->events.logicUpdate = comp_studentData_logicUpdate;
@@ -104,4 +107,5 @@ void generate_student(COMPONENT *self) {
   highValue = 100;
   data->motivation = randomIntRange(lowValue, highValue);
   data->yearStarted = timeData->currentYear;
+  data->semesterStarted = timeData->currentSemester;
 }

@@ -96,6 +96,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     list_insert_end(schoolData->rooms, newRoom); //Add newRoom to the rooms list
   }
 
+  // List all rooms constructed
   if(input->keyboard.keys[KEY_PERIOD] == ISTATE_PRESSED) {
     LIST_NODE *roomNode;
     if(schoolData->rooms->first != NULL) {
@@ -110,6 +111,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
   }
 
+  // List all enrolled students
   if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
     LIST_NODE *studentNode;
     if(schoolData->students->first != NULL) {
@@ -122,6 +124,22 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         printf("\n");
         studentNode = studentNode->next;
       } while(studentNode != NULL);
+    }
+  }
+
+  // List all alumni
+  if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
+    LIST_NODE *alumniNode;
+    if(schoolData->students->first != NULL) {
+      alumniNode = schoolData->alumni->first;
+      do {
+        ENTITY *alumni = (ENTITY *)alumniNode->data;
+        CDATA_STUDENTDATA *alumniData = (CDATA_STUDENTDATA *)entity_getComponentData(alumni, COMP_STUDENTDATA);
+        printf("1) ");
+        printf("Name: %s %s\n", alumniData->name.first, alumniData->name.last);
+        printf("\n");
+        alumniNode = alumniNode->next;
+      } while(alumniNode != NULL);
     }
   }
 }

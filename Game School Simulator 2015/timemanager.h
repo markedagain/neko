@@ -10,9 +10,11 @@
 
 typedef struct cdata_timeManager_t {
   int months;
+  int currentSemester;
   int previousYear;
   int currentYear;
-  int timer;
+  int frameCounter;
+  int monthCounter;
 } CDATA_TIMEMANAGER;
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);

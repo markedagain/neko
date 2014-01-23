@@ -17,6 +17,7 @@ typedef struct cdata_schoolLogic_t {
   int currentStudents;
   int incomingStudents;
   LIST *students;
+  LIST *alumni;
   int roomMaintainance;
   LIST *rooms;
   int reputation;
@@ -24,7 +25,9 @@ typedef struct cdata_schoolLogic_t {
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
 void comp_schoolLogic_destroy(COMPONENT *, void *);
-void comp_schoolLogic_updateData(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
+void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
+void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
+void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic(COMPONENT *);
 
 #endif
