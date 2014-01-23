@@ -7,5 +7,3 @@
 #include "../AlphaEngine/AEEngine.h"
 
 #pragma comment(lib, "../lib/Alpha_Engine.lib")
-#pragma comment(lib, "../lib/zdll.lib")
-#pragma comment(lib, "../lib/libpng.lib")
