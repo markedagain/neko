@@ -133,8 +133,13 @@ void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const
       buffer[bufferPos++] = *data++;
     }
   }
-  if (bufferPos != 0)
-    vector_append(&textfile->lines, (char *)malloc((strlen(buffer) + 1) * sizeof(char)));
+  if (bufferPos != 0) {
+    char *newLine;
+    buffer[bufferPos++] = 0;
+    newLine = (char *)malloc((bufferPos) * sizeof(char));
+    strcpy(newLine, buffer);
+    vector_append(&textfile->lines, newLine);
+  }
 
   printf("Loaded TXT %s from pak\n", storeKey);
   dict_set(&dataContainer->textfiles, storeKey, textfile);
@@ -270,7 +275,10 @@ unsigned int file_readText(VECTOR *lines, const char *filename) {
       }
     }
     while (c != EOF && c != '\n');
-    buffer[pos - 1] = 0;
+    if (c != EOF)
+      buffer[pos - 1] = 0;
+    else
+      buffer[pos] = 0;
     line = (char *)malloc(sizeof(char) * pos);
     strcpy(line, buffer);
     vector_append(lines, line);
@@ -385,12 +393,14 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   vector_clear(&files);
 
   // (DISK) LOAD QUICK SPRITES/TEXTURES
+  /*
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "spr");
   file_unixToWindows(subdir);
   file_getAllByExtension(&files, subdir, ".png");
   for (i = 0; i < vector_size(&files); ++i)
     data_loadQuickSpriteFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
+  */
 
   // (DISK) LOAD TEXTFILES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "txt");
