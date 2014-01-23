@@ -30,7 +30,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   simSpace->systems.time.scale = 0.0166666666666667f;
   space_addEntity(simSpace, arch_player, "player");
   space_addEntity(simSpace, arch_gameManager, "gameManager");
-  space_addEntity(simSpace, arch_student, "student");
 
   // bg - background, sky, clouds, etc.
   bgSpace = game_addSpace(game, "bg");

@@ -4,6 +4,7 @@
 #include "room.h"
 #include "roomlogic.h"
 #include "student.h"
+#include "studentdata.h"
 #include "../NekoEngine/linkedlist.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
@@ -53,14 +54,19 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
+
   int i = 0;
 
   //Add students
   if(comData->incomingStudents > 0) {
     for(i = 0; i <= comData->incomingStudents; i++)
     {
+      CDATA_STUDENTDATA *studentData;
+      LIST_NODE *nodeptr;
       newStudent = space_addEntity(self->owner->space, arch_student, "Student");
-      list_insert_end(comData->students, newStudent);
+      studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
+      nodeptr = list_insert_end(comData->students, newStudent);
+      studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
     }
   }
@@ -74,6 +80,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   list_destroy(comData->rooms);
   list_destroy(comData->students);
+  list_destroy(comData->alumni);
 }
 
 void comp_schoolLogic(COMPONENT *self) {
@@ -85,6 +92,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.currentStudents = 0;
   data.incomingStudents = 0;
   data.students = list_create();
+  data.alumni = list_create();
   data.roomMaintainance = 0;
   data.rooms = list_create();
   data.reputation = 0;

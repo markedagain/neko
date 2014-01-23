@@ -20,7 +20,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   if(comData->frameCounter >= 1) {
     comData->months++;
     printf("\n\n\n\n\n\n");
-    printf("Current Months: %i | Current Semester: %i | Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);
+    printf("Month: %i  Semester: %i  Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);
     comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
     comData->frameCounter = 0;
     comData->monthCounter++;
