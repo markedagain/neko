@@ -10,6 +10,8 @@
 #include "util.h"
 #include "student.h"
 #include "data.h"
+#include "../NekoEngine/genericsprite.h"
+#include "../NekoEngine/sprite.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -20,7 +22,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *mgSpace;
   SPACE *fgSpace;
   SPACE *uiSpace;
-
+  ENTITY *backdrop;
 
   game = game_create(instanceH, show);
 
@@ -34,6 +36,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   // bg - background, sky, clouds, etc.
   bgSpace = game_addSpace(game, "bg");
+  backdrop = space_addEntity(bgSpace, arch_genericsprite, "backdrop");
+  ((CDATA_SPRITE *)entity_getComponentData(backdrop, COMP_SPRITE))->source = "backgrounds/basic";
 
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");

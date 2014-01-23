@@ -15,7 +15,7 @@ void arch_cursor(ENTITY *entity) {
   entity_connect(entity, comp_transform);
 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "cursor/default";
+  sprite->source = "cursor";
 
   spriteText = (CDATA_SPRITETEXT *)entity_connect(entity, comp_spriteText);
   strcpy(spriteText->text, "Hey hi hello");

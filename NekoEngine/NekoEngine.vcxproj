@@ -113,6 +113,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="entity.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="genericsprite.h" />
     <ClInclude Include="hash.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="linkedlist.h" />
@@ -137,6 +138,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="entity.c" />
     <ClCompile Include="event.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="genericsprite.c" />
     <ClCompile Include="hash.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="linkedlist.c" />

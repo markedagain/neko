@@ -121,6 +121,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="background.c" />
     <ClCompile Include="cursor.c" />
     <ClCompile Include="cursorlogic.c" />
     <ClCompile Include="gamemanager.c" />
@@ -133,6 +134,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <ClCompile Include="studentdata.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="timemanager.c" />
+    <ClInclude Include="background.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
     <ClInclude Include="gamemanager.h" />
