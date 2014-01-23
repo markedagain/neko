@@ -131,7 +131,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <ClCompile Include="schoollogic.c" />
     <ClCompile Include="student.c" />
     <ClCompile Include="studentdata.c" />
-    <ClCompile Include="test.c" />
+    <ClCompile Include="player.c" />
     <ClCompile Include="timemanager.c" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
@@ -143,7 +143,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <ClInclude Include="schoollogic.h" />
     <ClInclude Include="student.h" />
     <ClInclude Include="studentdata.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="timemanager.h" />
   </ItemGroup>
   <ItemGroup>

@@ -5,9 +5,6 @@
     <ClCompile Include="playerlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="test.c">
-      <Filter>Archetypes</Filter>
-    </ClCompile>
     <ClCompile Include="cursorlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
@@ -35,6 +32,9 @@
     <ClCompile Include="roomlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="player.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -50,9 +50,6 @@
   <ItemGroup>
     <ClInclude Include="playerlogic.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="cursorlogic.h">
       <Filter>Components</Filter>
@@ -81,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="roomlogic.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
