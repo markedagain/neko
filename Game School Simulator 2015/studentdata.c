@@ -35,12 +35,13 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     // printf("Totally Random Float: %f\n", randomFloatRange(foo, baz));
   
   // Graduate
-  if(comData->semesterStarted == timeData->currentSemester - 2) {
+  if(comData->semesterStarted == timeData->currentSemester - 2 && !comData->graduated) {
     schoolLogic->currentStudents--;
     schoolLogic->reputation++;
     printf("\n%s %s has graduated! +1 Rep\n", comData->name.first, comData->name.last);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
+    comData->graduated = true;
   }
 }
 
@@ -63,6 +64,7 @@ void comp_studentData(COMPONENT *self) {
   student.motivation = randomIntRange(lowValue, highValue);
   student.yearStarted = 1989;
   student.counter = 0;
+  student.graduated = false;
   student.listNodePtr = NULL;
 
   COMPONENT_INIT(self, COMP_STUDENTDATA, student);
