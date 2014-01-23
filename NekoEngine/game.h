@@ -24,6 +24,11 @@ typedef struct game_t {
   LIST *destroyingEntities;
   LIST *destroyingSpaces;
   struct {
+    float aspectRatio;
+    unsigned int width;
+    unsigned int height;
+  } dimensions;
+  struct {
     unsigned int width;
     unsigned int height;
   } window;

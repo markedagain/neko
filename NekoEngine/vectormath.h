@@ -40,6 +40,11 @@ typedef struct matrix3_t {
   };
 } MATRIX3;
 
+typedef struct rect_t {
+  VEC2 topLeft;
+  VEC2 botRight;
+} RECTANGLE;
+
 NEKO_API void vec2_add(VEC2 *, VEC2 *, VEC2 *);
 NEKO_API void vec2_sub(VEC2 *, VEC2 *, VEC2 *);
 NEKO_API void vec2_mul(VEC2 *, float, VEC2 *);
