@@ -56,6 +56,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   int screenHeight = self->owner->space->game->innerWindow.height;
   float screenRadius;
   float spriteRadius;
+  float spriteWidth;
+  float spriteHeight;
   VEC3 translation = trans->translation;
   VEC3 camTranslate = { 0 };
   SPRITE *sprite;
@@ -70,14 +72,16 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     printf("OH SHIT %s\n", sprite->textureName);
 
   screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
-  spriteRadius = (float)(comData->size.x * comData->size.x + comData->size.y * comData->size.y);
-
+  spriteWidth = (float)sprite->width;
+  spriteHeight = (float)sprite->height;
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
   camScale.x = self->owner->space->systems.camera.transform.scale.x;
   camScale.y = self->owner->space->systems.camera.transform.scale.y;
   translation.x *= camScale.x;
   translation.y *= camScale.y;
+  spriteWidth *= camScale.x;
+  spriteHeight *= camScale.y;
 
   baseScale.x = (float)sprite->width;
   baseScale.y = (float)sprite->height;
@@ -87,8 +91,12 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
   translation.x *= screenScale;
   translation.y *= screenScale;
+  spriteWidth *= screenScale;
+  spriteHeight *= screenScale;
   screenScaleVec.x = screenScale;
   screenScaleVec.y = screenScale;
+
+  spriteRadius = (float)(sqrt(spriteWidth * spriteWidth + spriteHeight * spriteHeight));
 
   matrix3_identity(&transform);
   matrix3_scale(&transform, &baseScale);
