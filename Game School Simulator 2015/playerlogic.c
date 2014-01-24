@@ -52,12 +52,15 @@ void pan(COMPONENT *self, float x, float y) {
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-  bg->systems.camera.transform.translation.x += x;
-  bg->systems.camera.transform.translation.y += y;
-  mg->systems.camera.transform.translation.x += x;
-  mg->systems.camera.transform.translation.y += y;
-  fg->systems.camera.transform.translation.x += x;
-  fg->systems.camera.transform.translation.y += y;
+  float newX = bg->systems.camera.transform.translation.x + x;
+  float newY = bg->systems.camera.transform.translation.y + y;
+  newX = (float)min(max(newX, -80.0f * 4.0f), 80.0f * 4.0f);
+  bg->systems.camera.transform.translation.x = newX;
+  bg->systems.camera.transform.translation.y = newY;
+  mg->systems.camera.transform.translation.x = newX;
+  mg->systems.camera.transform.translation.y = newY;
+  fg->systems.camera.transform.translation.x = newX;
+  fg->systems.camera.transform.translation.y = newY;
 }
 void pan_reset(COMPONENT *self) {
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
