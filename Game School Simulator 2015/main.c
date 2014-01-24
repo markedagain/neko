@@ -37,7 +37,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   bgSpace = game_addSpace(game, "bg");
   backdrop = space_addEntity(bgSpace, arch_genericsprite, "backdrop");
   ((CDATA_SPRITE *)entity_getComponentData(backdrop, COMP_SPRITE))->source = "backgrounds/basic";
-  ((CDATA_TRANSFORM *)entity_getComponentData(backdrop, COMP_TRANSFORM))->translation.y = -24;
+  ((CDATA_TRANSFORM *)entity_getComponentData(backdrop, COMP_TRANSFORM))->translation.y = -24 + 180;
 
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");
