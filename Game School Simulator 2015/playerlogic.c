@@ -10,10 +10,70 @@
 #include "schoollogic.h"
 #include "gamemanager.h"
 #include "studentdata.h"
+#include <math.h>
+
+#define GROUND_HEIGHT 24
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   
+}
+
+void zoom(COMPONENT *self, float zoom) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  float newZoom = bg->systems.camera.transform.scale.x + zoom;
+  float gameHeight = (float)self->owner->space->game->dimensions.height;
+  newZoom = (float)max((float)min(newZoom, 1.0f), 0.5f);
+    
+  bg->systems.camera.transform.scale.x = newZoom;
+  bg->systems.camera.transform.scale.y = newZoom;
+  bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+  mg->systems.camera.transform.scale.x = newZoom;
+  mg->systems.camera.transform.scale.y = newZoom;
+  mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+  fg->systems.camera.transform.scale.x = newZoom;
+  fg->systems.camera.transform.scale.y = newZoom;
+  fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+}
+void zoom_reset(COMPONENT *self) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  bg->systems.camera.transform.scale.x = 1.0f;
+  bg->systems.camera.transform.scale.y = 1.0f;
+  mg->systems.camera.transform.scale.x = 1.0f;
+  mg->systems.camera.transform.scale.y = 1.0f;
+  fg->systems.camera.transform.scale.x = 1.0f;
+  fg->systems.camera.transform.scale.y = 1.0f;
+}
+void pan(COMPONENT *self, float x, float y) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  bg->systems.camera.transform.translation.x += x;
+  bg->systems.camera.transform.translation.y += y;
+  mg->systems.camera.transform.translation.x += x;
+  mg->systems.camera.transform.translation.y += y;
+  fg->systems.camera.transform.translation.x += x;
+  fg->systems.camera.transform.translation.y += y;
+}
+void pan_reset(COMPONENT *self) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  bg->systems.camera.transform.translation.x = 0.0f;
+  bg->systems.camera.transform.translation.y = -24.0f;
+  mg->systems.camera.transform.translation.x = 0.0f;
+  mg->systems.camera.transform.translation.y = -24.0f;
+  fg->systems.camera.transform.translation.x = 0.0f;
+  fg->systems.camera.transform.translation.y = -24.0f;
+}
+
+void comp_playerLogic_initialize(COMPONENT *self, void *event) {
+  pan_reset(self);
+  zoom_reset(self);
 }
 
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -23,42 +83,21 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
 
   // MANAGE INPUT
-  if (input->keyboard.keys[KEY_SPACE]) {
-    trans->scale.x *= 1.01f;
-    trans->scale.y *= 1.01f;
-    trans->rotation += 0.01f;
-  }
   if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.translation.x -= 4.0f;
+    pan(self, -4.0f, 0.0f);
   }
   if (input->keyboard.keys[KEY_RIGHT] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.translation.x += 4.0f;
+    pan(self, 4.0f, 0.0f);
   }
   if (input->keyboard.keys[KEY_UP] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.translation.y += 4.0f;
+    zoom(self, 0.01f);
   }
   if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.translation.y -= 4.0f;
-  }
-  if (input->keyboard.keys[KEY_A] == ISTATE_PRESSED) {
-    trans->translation.x -= 4.0f;
-  }
-  if (input->keyboard.keys[KEY_D] == ISTATE_PRESSED) {
-    trans->translation.x += 4.0f;
-  }
-  if (input->keyboard.keys[KEY_W] == ISTATE_PRESSED) {
-    trans->translation.y += 4.0f;
-  }
-  if (input->keyboard.keys[KEY_S] == ISTATE_PRESSED) {
-    trans->translation.y -= 4.0f;
-  }
-  if (input->keyboard.keys[KEY_O] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.scale.x += 0.1f;
-    self->owner->space->systems.camera.transform.scale.y += 0.1f;
+    zoom(self, -0.01f);
   }
   if (input->keyboard.keys[KEY_P] == ISTATE_DOWN) {
-    self->owner->space->systems.camera.transform.scale.x -= 0.1f;
-    self->owner->space->systems.camera.transform.scale.y -= 0.1f;
+    zoom_reset(self);
+    pan_reset(self);
   }
 
   //Change Tuition
@@ -147,6 +186,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 void comp_playerLogic(COMPONENT *self) {
   COMPONENT_INIT_NULL(self, COMP_PLAYERLOGIC);
   component_depend(self, COMP_TRANSFORM);
+  self->events.initialize = comp_playerLogic_initialize;
   self->events.logicUpdate = comp_playerLogic_logicUpdate;
   self->events.frameUpdate = comp_playerLogic_frameUpdate;
 }
