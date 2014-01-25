@@ -82,6 +82,9 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>rd /s /q "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,6 +122,9 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>rd /s /q "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="background.c" />
@@ -163,4 +169,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <Target Name="BeforeClean">
+    <Delete Files="$(SolutionDir)bin\*" />
+  </Target>
 </Project>
