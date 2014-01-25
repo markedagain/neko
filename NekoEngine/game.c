@@ -27,7 +27,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinWidth      = WINDOW_WIDTH;
   sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS;
+  sysInitInfo.mMaxFrameRate    = 0;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
@@ -61,7 +61,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
-  
+
   AESysReset();
   srand((unsigned int)time(NULL));
 
@@ -175,7 +175,7 @@ bool game_loop(GAME *game) {
   }
   if (AESysGetWindowHandle() != GetActiveWindow())
     printf("AAAAA\n");
-  
+
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
