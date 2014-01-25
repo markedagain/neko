@@ -82,6 +82,9 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>rd /s /q "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,6 +122,9 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>rd /s /q "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="background.c" />
@@ -126,6 +132,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <ClCompile Include="cursorlogic.c" />
     <ClCompile Include="gamemanager.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="mousebox.c" />
     <ClCompile Include="playerlogic.c" />
     <ClCompile Include="room.c" />
     <ClCompile Include="roomlogic.c" />
@@ -138,6 +145,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
     <ClInclude Include="gamemanager.h" />
+    <ClInclude Include="mousebox.h" />
     <ClInclude Include="playerlogic.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="room.h" />
@@ -161,4 +169,7 @@ xcopy /y "$(ProjectDir)data\*" "$(OutDir)data\" /e</Command>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <Target Name="BeforeClean">
+    <Delete Files="$(SolutionDir)bin\*" />
+  </Target>
 </Project>

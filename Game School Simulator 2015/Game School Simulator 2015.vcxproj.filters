@@ -38,6 +38,9 @@
     <ClCompile Include="background.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="mousebox.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="background.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="mousebox.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
