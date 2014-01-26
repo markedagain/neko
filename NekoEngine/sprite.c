@@ -13,25 +13,6 @@
 
 void comp_sprite_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
-  float w = comData->size.x / 2;
-  float h = comData->size.y / 2;
-
-  AEGfxMeshStart();
-
-  
-  AEGfxTriAdd(-w, -h, 0xFFFFFFFF, 0.0f, 1.0f,
-              w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
-              -h, w, 0xFFFFFFFF, 0.0f, 0.0f);
-  AEGfxTriAdd( w, -h, 0xFFFFFFFF, 1.0f, 1.0f,
-              w,  h, 0xFFFFFFFF, 1.0f, 0.0f,
-              -w, h, 0xFFFFFFFF, 0.0f, 0.0f);
-  comData->mesh = AEGfxMeshEnd();
-  AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
-
-  /*if (comData->source != NULL) {
-    comData->texture = AEGfxTextureLoad(comData->source);
-    AE_ASSERT_MESG(comData->texture, "Failed to load texture!");
-  }*/
 }
 
 void comp_sprite_logicUpdate(COMPONENT *self, void *event) {
@@ -120,6 +101,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
   AEGfxTextureSet(texture->data, (float)((float)texture->width * sprite->u), (float)((float)texture->height * sprite->v));
   AEGfxSetTransform(transform.m);
+  if (comData->mesh == NULL)
+    comp_sprite_buildMesh(self);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 
@@ -141,4 +124,31 @@ void comp_sprite(COMPONENT *self) {
   self->events.draw = comp_sprite_draw;
   self->events.logicUpdate = comp_sprite_logicUpdate;
   self->events.destroy = comp_sprite_destroy;
+}
+
+void comp_sprite_buildMesh(COMPONENT *self) {
+  CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
+  SPRITE *sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
+  TEXTURE *texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
+
+  float u1, v1, u2, v2, w, h;
+  w  = ((float)sprite->width / (float)texture->width) * 0.5f;
+  h = ((float)sprite->height / (float)texture->height) * 0.5f;
+  u1 = sprite->u - w;
+  v1 = sprite->v - h;
+
+  u2 = sprite->u + w;
+  v2 = sprite->v + h;
+
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0x00FF00FF, u1, v2,
+		0.5f,  -0.5f, 0x00FFFF00, u2, v2,
+		-0.5f,  0.5f, 0x00F00FFF, u1, v1);
+
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0x00FFFFFF, u2, v2,
+		0.5f,  0.5f, 0x00FFFFFF, u2, v1,
+		-0.5f,  0.5f, 0x00FFFFFF, u1, v1);
+  comData->mesh = AEGfxMeshEnd();
+  AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }

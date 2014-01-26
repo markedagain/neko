@@ -369,6 +369,7 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   vector_init(&files);
   file_getCurrentDirectory(currentDirectory);
 
+#if 0 // DISABLING DISK LOADING FOR NOW
   // (DISK) LOAD TEXTURES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "tex");
   file_unixToWindows(subdir);
@@ -392,7 +393,7 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   for (i = 0; i < vector_size(&files); ++i)
     data_loadTextfileFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
-
+#endif
   // (PAK) LOAD ALL
   file_getCurrentDirectory(pakDir);
   sprintf(pakDir, "%s\\data.pak", pakDir);

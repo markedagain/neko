@@ -26,6 +26,8 @@ void comp_sprite_frameUpdate(COMPONENT *, void *);
 void comp_sprite_destroy(COMPONENT *, void *);
 void comp_sprite_draw(COMPONENT *, void *);
 
+void comp_sprite_buildMesh(COMPONENT *self);
+
 NEKO_API void comp_sprite(COMPONENT *);
 
 #endif
