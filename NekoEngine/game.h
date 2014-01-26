@@ -32,9 +32,9 @@ typedef struct game_t {
     unsigned int width;
     unsigned int height;
     DWORD style;
-    WNDCLASS wndClass;
+    WNDCLASS winClass;
     HINSTANCE instance;
-    HWND hwnd;
+    HWND handle;
   } window;
   struct {
     unsigned int width;

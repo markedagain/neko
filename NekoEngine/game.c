@@ -13,8 +13,12 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 360
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
+
+extern HINSTANCE  ghAESysAppInstance;
+extern HWND      gAESysWindowHandle;
+extern WNDCLASS    winClass;
 
 GAME *game_create(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
   //AESysInitInfo sysInitInfo;
@@ -24,7 +28,8 @@ GAME *game_create(HINSTANCE instance, HINSTANCE previous, LPSTR command, int sho
   AllocConsole();
   game->window.style = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
   game_createWindow(game, instance, previous, command, show);
-  //AdjustWindowRect(&windowRect, game->window.style);
+  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
+  AdjustWindowRect(&windowRect, game->window.style, FALSE);
   /*sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = WINDOW_WIDTH;
@@ -59,19 +64,20 @@ GAME *game_create(HINSTANCE instance, HINSTANCE previous, LPSTR command, int sho
   
   //AESysInit(&sysInitInfo);
   //AESysSetWindowTitle(NEKO_GAMETITLE);
-//  game_createWindow(game, instance, previous, command, show);
-  //game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
-  
   
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
-  ShowWindow(game->window.hwnd, show);
-  UpdateWindow(game->window.hwnd);
+  ShowWindow(game->window.handle, show);
+  UpdateWindow(game->window.handle);
 
   //AESysReset();
   srand((unsigned int)time(NULL));
 
   data_loadAll(&game->data);
+
+  AESysReset();
+  AEGfxReset();
+  AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 
   return game;
 }
@@ -157,41 +163,34 @@ void game_cleanup(GAME *game) {
 int game_start(GAME *game) {
   bool gameRunning = true;
   MSG msg;
-#if 0
+#if 1
   game->systems.time.frameRate = (double)1 / (double)game->systems.time.framesPerSecond;
-
-  AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
-  AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-
   stopwatch_start(&game->systems.time.stopwatch);
   stopwatch_start(&game->systems.time.secondsStopwatch);
-  while(gameRunning) {
-    bool quitNow = false;
+  while (gameRunning) {
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
       if (msg.message == WM_QUIT) {
         gameRunning = false;
-        quitNow = true;
       }
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
-    if (quitNow)
-      break;
-    gameRunning = game_loop(game);
+    if (gameRunning) {
+      AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
+      AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+      AESysFrameStart();
+      gameRunning = game_loop(game);
+      //AESysFrameEnd();
+    }
   }
-#endif
-#if 1
-  while(GetMessage(&msg, NULL, 0, 0)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
 #endif
   //AESysExit();
   return game_destroy(game);
 }
 
 bool game_loop(GAME *game) {
-  SetCursor(NULL);
+  //SetCursor(NULL);
+  printf("LOOPING\n");
   game->systems.time.elapsedFrames++;
   stopwatch_stop(&game->systems.time.secondsStopwatch);
   if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {
@@ -199,23 +198,21 @@ bool game_loop(GAME *game) {
     game->systems.time.elapsedFrames = 0;
     stopwatch_start(&game->systems.time.secondsStopwatch);
   }
-  if (AESysGetWindowHandle() != GetActiveWindow())
-    printf("AAAAA\n");
+  if (game->window.handle != GetActiveWindow())
+    printf("WINDOW OUT OF FOCUS\n");
 
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
     stopwatch_start(&game->systems.time.stopwatch);
-    if (AESysGetWindowHandle() == GetActiveWindow())
+    if (game->window.handle == GetActiveWindow())
       game_getInput(game);
      if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     game_tick(game);
-    //AEGfxStart();
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
-    AESysFrameEnd();
-    //AEGfxEnd();
+    //AESysFrameEnd();
   }
 
   return true;
@@ -224,13 +221,12 @@ bool game_loop(GAME *game) {
 int game_destroy(GAME *game) {
   fclose(stdout);
   FreeConsole();
-  UnregisterClass(game->window.wndClass.lpszClassName, game->window.instance);
+  UnregisterClass(game->window.winClass.lpszClassName, game->window.instance);
   //return (int)msg.wParam;
   return 1;
 }
 
 void game_resize(GAME *game, unsigned int width, unsigned int height) {
-  HWND hWnd = AESysGetWindowHandle();
   RECT windowRect = { 0, 0, width, height };
   AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX, FALSE);
 
@@ -238,15 +234,15 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
   game->window.height = windowRect.bottom - windowRect.top;
   game->innerWindow.width = width;
   game->innerWindow.height = height;
-  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
+  SetWindowPos(game->window.handle, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
   if (game->initialized)
     AEGfxExit();
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 }
 
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-  HDC dc; // device context
-  PAINTSTRUCT ps;
+  //HDC dc; // device context
+  //PAINTSTRUCT ps;
   //RECT rect;
   
   switch (msg) {
@@ -260,10 +256,10 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
   case WM_MOUSEMOVE:
     break;
 
-  case WM_PAINT:
+  /*case WM_PAINT:
     dc = BeginPaint(hwnd, &ps);
     EndPaint(hwnd, &ps);
-    break;
+    break;*/
 
   case WM_DESTROY:
     PostQuitMessage(0);
@@ -287,20 +283,20 @@ void game_createWindow(GAME *game, HINSTANCE instance, HINSTANCE previous, LPSTR
   HWND hwnd;
   RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
   
-  game->window.wndClass.style = CS_HREDRAW | CS_VREDRAW;
-  game->window.wndClass.lpfnWndProc = __game_processWindow;
-  game->window.wndClass.cbClsExtra = 0;
-  game->window.wndClass.cbWndExtra = 0;
-  game->window.wndClass.hInstance = instance;
-  game->window.wndClass.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
-	game->window.wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-  game->window.wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-  game->window.wndClass.lpszMenuName = NULL;
-  game->window.wndClass.lpszClassName = __TEXT("NekoEngine");
+  game->window.winClass.style = CS_HREDRAW | CS_VREDRAW;
+  game->window.winClass.lpfnWndProc = __game_processWindow;
+  game->window.winClass.cbClsExtra = 0;
+  game->window.winClass.cbWndExtra = 0;
+  game->window.winClass.hInstance = instance;
+  game->window.winClass.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
+	game->window.winClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+  game->window.winClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+  game->window.winClass.lpszMenuName = NULL;
+  game->window.winClass.lpszClassName = __TEXT("NekoEngine");
 
-  RegisterClass(&game->window.wndClass);
+  RegisterClass(&game->window.winClass);
 
-  hwnd = CreateWindow(game->window.wndClass.lpszClassName,
+  hwnd = CreateWindow(game->window.winClass.lpszClassName,
                       __TEXT("NekoEngine"),
                       game->window.style,
                       CW_USEDEFAULT,
@@ -312,7 +308,13 @@ void game_createWindow(GAME *game, HINSTANCE instance, HINSTANCE previous, LPSTR
                       instance,
                       NULL);
   game->window.instance = instance;
-  game->window.hwnd = hwnd;
+  game->window.handle = hwnd;
   ShowWindow(hwnd, show);
   UpdateWindow(hwnd);
+
+  /**** GOD I WISH THIS WORKED ****
+  ghAESysAppInstance = game->window.instance;
+  gAESysWindowHandle = game->window.handle;
+  winClass = game->window.winClass;
+  */
 }
