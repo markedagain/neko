@@ -16,13 +16,16 @@
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
 
-GAME *game_create(HINSTANCE instanceH, int show) {
-  AESysInitInfo sysInitInfo;
+GAME *game_create(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
+  //AESysInitInfo sysInitInfo;
   RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
-  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
-  sysInitInfo.mAppInstance    = instanceH;
+  AllocConsole();
+  game->window.style = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
+  game_createWindow(game, instance, previous, command, show);
+  //AdjustWindowRect(&windowRect, game->window.style);
+  /*sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = WINDOW_WIDTH;
   sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
@@ -31,12 +34,12 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
+  */
   game->spaces = list_create();
   dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
-
 
   game->window.width = windowRect.right - windowRect.left;
   game->window.height = windowRect.bottom - windowRect.top;
@@ -53,16 +56,19 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->systems.time.elapsedFrames = 0;
   game->initialized = true;
   input_initialize(&game->input);
-
-  AESysInit(&sysInitInfo);
-  AESysSetWindowTitle(NEKO_GAMETITLE);
-  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
   
-  AllocConsole();
+  //AESysInit(&sysInitInfo);
+  //AESysSetWindowTitle(NEKO_GAMETITLE);
+//  game_createWindow(game, instance, previous, command, show);
+  //game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
+  
+  
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
+  ShowWindow(game->window.hwnd, show);
+  UpdateWindow(game->window.hwnd);
 
-  AESysReset();
+  //AESysReset();
   srand((unsigned int)time(NULL));
 
   data_loadAll(&game->data);
@@ -148,8 +154,10 @@ void game_cleanup(GAME *game) {
   }
 }
 
-void game_start(GAME *game) {
+int game_start(GAME *game) {
   bool gameRunning = true;
+  MSG msg;
+#if 0
   game->systems.time.frameRate = (double)1 / (double)game->systems.time.framesPerSecond;
 
   AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
@@ -158,11 +166,28 @@ void game_start(GAME *game) {
   stopwatch_start(&game->systems.time.stopwatch);
   stopwatch_start(&game->systems.time.secondsStopwatch);
   while(gameRunning) {
+    bool quitNow = false;
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+      if (msg.message == WM_QUIT) {
+        gameRunning = false;
+        quitNow = true;
+      }
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    if (quitNow)
+      break;
     gameRunning = game_loop(game);
   }
-
-  AESysExit();
-  game_destroy(game);
+#endif
+#if 1
+  while(GetMessage(&msg, NULL, 0, 0)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+#endif
+  //AESysExit();
+  return game_destroy(game);
 }
 
 bool game_loop(GAME *game) {
@@ -196,8 +221,12 @@ bool game_loop(GAME *game) {
   return true;
 }
 
-void game_destroy(GAME *game) {
-  // TODO
+int game_destroy(GAME *game) {
+  fclose(stdout);
+  FreeConsole();
+  UnregisterClass(game->window.wndClass.lpszClassName, game->window.instance);
+  //return (int)msg.wParam;
+  return 1;
 }
 
 void game_resize(GAME *game, unsigned int width, unsigned int height) {
@@ -254,42 +283,36 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
   return 0;
 }
 
-int __game_createWindow(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
-  WNDCLASS wc;
+void game_createWindow(GAME *game, HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
   HWND hwnd;
-  MSG msg;
   RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
   
-  wc.style = CS_HREDRAW | CS_VREDRAW;
-  wc.lpfnWndProc = __game_processWindow;
-  wc.cbClsExtra = 0;
-  wc.cbWndExtra = 0;
-  wc.hInstance = instance;
-  // wc.hIcon = LoadIcon( ... )
-  // wc.hCursor = LoadCursor( ... )
-  wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-  wc.lpszMenuName = NULL;
-  wc.lpszClassName = __TEXT("NekoEngine");
+  game->window.wndClass.style = CS_HREDRAW | CS_VREDRAW;
+  game->window.wndClass.lpfnWndProc = __game_processWindow;
+  game->window.wndClass.cbClsExtra = 0;
+  game->window.wndClass.cbWndExtra = 0;
+  game->window.wndClass.hInstance = instance;
+  game->window.wndClass.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
+	game->window.wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+  game->window.wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+  game->window.wndClass.lpszMenuName = NULL;
+  game->window.wndClass.lpszClassName = __TEXT("NekoEngine");
 
-  RegisterClass(&wc);
+  RegisterClass(&game->window.wndClass);
 
-  hwnd = CreateWindow(wc.lpszClassName,
+  hwnd = CreateWindow(game->window.wndClass.lpszClassName,
                       __TEXT("NekoEngine"),
-                      WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
-                      0,
-                      0,
-                      1,
-                      1,
+                      game->window.style,
+                      CW_USEDEFAULT,
+                      CW_USEDEFAULT,
+                      640,
+                      480,
                       NULL,
                       NULL,
                       instance,
                       NULL);
+  game->window.instance = instance;
+  game->window.hwnd = hwnd;
   ShowWindow(hwnd, show);
   UpdateWindow(hwnd);
-  while (GetMessage(&msg, NULL, 0, 0)) {
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
-  }
-  UnregisterClass(wc.lpszClassName, instance);
-  return (int)msg.wParam;
 }

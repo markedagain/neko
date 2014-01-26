@@ -31,6 +31,10 @@ typedef struct game_t {
   struct {
     unsigned int width;
     unsigned int height;
+    DWORD style;
+    WNDCLASS wndClass;
+    HINSTANCE instance;
+    HWND hwnd;
   } window;
   struct {
     unsigned int width;
@@ -52,19 +56,19 @@ typedef struct game_t {
   unsigned char destroying;
 } GAME;
 
-NEKO_API GAME *game_create(HINSTANCE, int);
-NEKO_API void game_destroy(GAME *);
+NEKO_API GAME *game_create(HINSTANCE instance, HINSTANCE previous, LPSTR command,  int show);
+NEKO_API int game_destroy(GAME *);
 NEKO_API SPACE *game_addSpace(GAME *, char *);
 NEKO_API SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
 void game_getInput(GAME *);
 void game_tick(GAME *);
 void game_cleanup(GAME *);
-NEKO_API void game_start(GAME *);
+NEKO_API int game_start(GAME *);
 bool game_loop(GAME *);
 NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-int __game_createWindow(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show);
+void game_createWindow(GAME *game, HINSTANCE instance, HINSTANCE previous, LPSTR command, int show);
 
 #endif

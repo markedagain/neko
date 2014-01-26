@@ -16,8 +16,9 @@
 
 #pragma comment (lib, "../lib/neko.lib")
 
-int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLine, int show) {
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
   GAME *game;
+#if 0
   SPACE *simSpace;
   SPACE *bgSpace;
   SPACE *mgSpace;
@@ -25,9 +26,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *uiSpace;
   ENTITY *ent; // temporary entity
   VEC3 position;
-
-  game = game_create(instanceH, show);
-
+#endif
+  game = game_create(instance, previous, command, show);
+#if 0
   // sim - where the simulation occurs
   simSpace = game_addSpace(game, "sim");
   simSpace->visible = false;
@@ -66,8 +67,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
-
-  game_start(game);
-
-  return 1;
+#endif
+  return game_start(game);
 }
