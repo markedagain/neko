@@ -59,6 +59,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
   SetCursor(NULL);
   AllocConsole();
+  AEInputShowCursor(0);
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
 
@@ -184,9 +185,11 @@ bool game_loop(GAME *game) {
      if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     game_tick(game);
-    AEGfxStart();
+    //AEGfxStart();
+    AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
-    AEGfxEnd();
+    AESysFrameEnd();
+    //AEGfxEnd();
   }
 
   return true;
