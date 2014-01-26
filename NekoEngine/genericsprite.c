@@ -4,7 +4,7 @@
 #include "transform.h"
 #include "sprite.h"
 
-void arch_genericsprite(ENTITY *entity) {
+void arch_genericSprite(ENTITY *entity) {
   entity->id = ARCH_GENERICSPRITE;
   entity_connect(entity, comp_transform);
   entity_connect(entity, comp_sprite);

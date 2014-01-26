@@ -9,6 +9,6 @@
 
 #define ARCH_GENERICSPRITE HASH("ARCH_GENERICSPRITE")
 
-NEKO_API void arch_genericsprite(ENTITY *);
+NEKO_API void arch_genericSprite(ENTITY *);
 
 #endif

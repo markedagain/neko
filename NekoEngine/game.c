@@ -30,7 +30,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mMaxFrameRate    = 0;
   sysInitInfo.mpWinCallBack    = NULL;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
-  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
+  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
   game->spaces = list_create();
   dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
@@ -57,9 +57,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInit(&sysInitInfo);
   AESysSetWindowTitle(NEKO_GAMETITLE);
   game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
-  SetCursor(NULL);
+  
   AllocConsole();
-  AEInputShowCursor(0);
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
 
@@ -167,6 +166,7 @@ void game_start(GAME *game) {
 }
 
 bool game_loop(GAME *game) {
+  SetCursor(NULL);
   game->systems.time.elapsedFrames++;
   stopwatch_stop(&game->systems.time.secondsStopwatch);
   if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {
@@ -181,7 +181,8 @@ bool game_loop(GAME *game) {
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
     stopwatch_start(&game->systems.time.stopwatch);
-    game_getInput(game);
+    if (AESysGetWindowHandle() == GetActiveWindow())
+      game_getInput(game);
      if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     game_tick(game);
@@ -202,7 +203,7 @@ void game_destroy(GAME *game) {
 void game_resize(GAME *game, unsigned int width, unsigned int height) {
   HWND hWnd = AESysGetWindowHandle();
   RECT windowRect = { 0, 0, width, height };
-  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
+  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX, FALSE);
 
   game->window.width = windowRect.right - windowRect.left;
   game->window.height = windowRect.bottom - windowRect.top;

@@ -77,8 +77,8 @@ ENTITY *space_getEntity(SPACE *space, char *name) {
 void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos) {
   int x = (int)mousePos->x - (int)space->game->innerWindow.width / 2 + (int)space->systems.camera.transform.translation.x;
   int y = -((int)mousePos->y - (int)space->game->innerWindow.height / 2) + (int)space->systems.camera.transform.translation.y;
-  worldPos->x = (unsigned int)x;
-  worldPos->y = (unsigned int)y;
+  worldPos->x = (int)((float)x / ((float)space->game->window.width / (float)space->game->dimensions.width));
+  worldPos->y = (int)((float)y / ((float)space->game->window.height / (float)space->game->dimensions.height));
 }
 
 void space_destroy(SPACE *space) {
