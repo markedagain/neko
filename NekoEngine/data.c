@@ -2,6 +2,8 @@
 
 #include "data.h"
 
+#define DATA_ENABLE_DATA_DIRECTORY 0 // DISABLING DISK LOADING FOR NOW
+
 /*
       (P)reload
 data/    root data folder/.pak file
@@ -363,13 +365,15 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   PAK_FILE* pak;
   char pakDir[MAX_PATH];
   size_t i;
+#if DATA_ENABLE_DATA_DIRECTORY
   char subdir[MAX_PATH];
+#endif
   char currentDirectory[MAX_PATH];
 
   vector_init(&files);
   file_getCurrentDirectory(currentDirectory);
 
-#if 0 // DISABLING DISK LOADING FOR NOW
+#if DATA_ENABLE_DATA_DIRECTORY
   // (DISK) LOAD TEXTURES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "tex");
   file_unixToWindows(subdir);
