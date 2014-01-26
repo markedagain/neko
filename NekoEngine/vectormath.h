@@ -46,6 +46,7 @@ typedef struct rect_t {
 } RECTANGLE;
 
 NEKO_API void vec2_set(VEC2 *a, float x, float y);
+NEKO_API void vec2_copy(VEC2 *destination, VEC2 *source);
 NEKO_API void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c);
 NEKO_API void vec2_sub(VEC2 *a, VEC2 *b, VEC2 *c);
 NEKO_API void vec2_mul(VEC2 *, float, VEC2 *);
@@ -54,7 +55,8 @@ NEKO_API float vec2_dot(VEC2 *a, VEC2 *b);
 NEKO_API float vec2_angleBetween(VEC2 *a, VEC2 *b);
 NEKO_API float vec2_magnitude(VEC2 *a);
 
-NEKO_API void vec3_set(VEC3 *a, float x, float y, float z) ;
+NEKO_API void vec3_set(VEC3 *a, float x, float y, float z);
+NEKO_API void vec3_copy(VEC3 *destination, VEC3 *source);
 NEKO_API void vec3_add(VEC3 *, VEC3 *, VEC3 *);
 NEKO_API void vec3_sub(VEC3 *, VEC3 *, VEC3 *);
 NEKO_API void vec3_mul(VEC3 *, float, VEC3 *);
@@ -64,6 +66,8 @@ NEKO_API void vec3_cross(VEC3 *, VEC3 *, VEC3 *);
 NEKO_API float vec3_angleBetween(VEC3 *, VEC3 *);
 NEKO_API float vec3_magnitude(VEC3 *);
 
+NEKO_API void vec4_set(VEC4 *a, float x, float y, float z, float w);
+NEKO_API void vec4_copy(VEC4 *destination, VEC4 *source);
 NEKO_API void vec4_add(VEC4 *, VEC4 *, VEC4 *);
 NEKO_API void vec4_sub(VEC4 *, VEC4 *, VEC4 *);
 NEKO_API void vec4_mul(VEC4 *, float, VEC4 *);

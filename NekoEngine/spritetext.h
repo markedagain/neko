@@ -14,6 +14,7 @@
 #define COMP_SPRITETEXT HASH("COMP_SPRITETEXT")
 
 typedef struct {
+  char *font;
   char text[255];
   VEC4 color;
 } CDATA_SPRITETEXT;

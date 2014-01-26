@@ -11,6 +11,7 @@
 #include "student.h"
 #include "data.h"
 #include "../NekoEngine/genericsprite.h"
+#include "../NekoEngine/generictext.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/transform.h"
 
@@ -23,8 +24,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *mgSpace;
   SPACE *fgSpace;
   SPACE *uiSpace;
-  ENTITY *ent; // temporary entity
   VEC3 position;
+  VEC4 color = { 1, 1, 1, 1 };
 
   game = game_create(instanceH, show);
 
@@ -32,38 +33,40 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   simSpace = game_addSpace(game, "sim");
   simSpace->visible = false;
   simSpace->systems.time.scale = 0.0166666666666667f;
+
   space_addEntity(simSpace, arch_gameManager, "gameManager");
 
   // bg - background, sky, clouds, etc.
   bgSpace = game_addSpace(game, "bg");
   vec3_set(&position, 0, 360 - 24, 0);
-  ent = space_addEntityAtPosition(bgSpace, arch_genericSprite, "backdrop", &position);
-  ((CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE))->source = "backgrounds/basic";
+  genericSprite_create(bgSpace, &position, "backdrop", "backgrounds/basic");
 
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");
 
   vec3_set(&position, 0, 40, 0);
-  ent = space_addEntityAtPosition(mgSpace, arch_genericSprite, NULL, &position);
-  ((CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE))->source = "rooms/frontdoor";
+  genericSprite_create(mgSpace, &position, NULL, "rooms/frontdoor");
 
   vec3_set(&position, -120, 40, 0);
-  ent = space_addEntityAtPosition(mgSpace, arch_genericSprite, NULL, &position);
-  ((CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE))->source = "rooms/exterior";
+  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
 
   vec3_set(&position, -120, 120, 0);
-  ent = space_addEntityAtPosition(mgSpace, arch_genericSprite, NULL, &position);
-  ((CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE))->source = "rooms/exterior";
+  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
 
   vec3_set(&position, 0, 120, 0);
-  ent = space_addEntityAtPosition(mgSpace, arch_genericSprite, NULL, &position);
-  ((CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE))->source = "rooms/exterior2";
+  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior2");
+
+  vec3_set(&position, 0, 0, 0);
+  //genericSprite_create(mgSpace, &position, NULL, "test");
 
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
 
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
+
+  vec3_set(&position, 0, 0, 0);
+  genericText_create(uiSpace, &position, NULL, "tex/font/8x8", "HEY HI HELLO", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 

@@ -10,5 +10,6 @@
 #define ARCH_GENERICSPRITE HASH("ARCH_GENERICSPRITE")
 
 NEKO_API void arch_genericSprite(ENTITY *);
+NEKO_API ENTITY *genericSprite_create(SPACE *space, VEC3 *position, char *name, char *source);
 
 #endif

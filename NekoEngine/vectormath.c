@@ -8,6 +8,11 @@ void vec2_set(VEC2 *a, float x, float y) {
   a->y = y;
 }
 
+void vec2_copy(VEC2 *a, VEC2 *b) {
+  a->x = b->x;
+  a->y = b->y;
+}
+
 void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c) {
   c->x = a->x + b->x;
   c->y = a->y + b->y;
@@ -47,6 +52,13 @@ void vec3_set(VEC3 *a, float x, float y, float z) {
   a->y = y;
   a->z = z;
 }
+
+void vec3_copy(VEC3 *a, VEC3 *b) {
+  a->x = b->x;
+  a->y = b->y;
+  a->z = b->z;
+}
+
 
 void vec3_add(VEC3 *a, VEC3 *b, VEC3 *c) {
   c->x = a->x + b->x;
@@ -90,6 +102,20 @@ float vec3_angleBetween(VEC3 *a, VEC3 *b) {
 
 float vec3_magnitude(VEC3 *a) {
   return (float)sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+}
+
+void vec4_set(VEC4 *a, float x, float y, float z, float w) {
+  a->x = x;
+  a->y = y;
+  a->z = z;
+  a->w = w;
+}
+
+void vec4_copy(VEC4 *a, VEC4 *b) {
+  a->x = b->x;
+  a->y = b->y;
+  a->z = b->z;
+  a->w = b->w;
 }
 
 void vec4_add(VEC4 *a, VEC4 *b, VEC4 *c) {
