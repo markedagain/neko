@@ -214,3 +214,82 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
     AEGfxExit();
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 }
+
+LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+  HDC dc; // device context
+  PAINTSTRUCT ps;
+  //RECT rect;
+  
+  switch (msg) {
+
+  case WM_CREATE:
+    break;
+
+  case WM_LBUTTONDOWN:
+    break;
+
+  case WM_MOUSEMOVE:
+    break;
+
+  case WM_PAINT:
+    dc = BeginPaint(hwnd, &ps);
+    EndPaint(hwnd, &ps);
+    break;
+
+  case WM_DESTROY:
+    PostQuitMessage(0);
+    break;
+
+  case WM_KEYDOWN:
+    break;
+
+  case WM_MOVE:
+    InvalidateRect(hwnd, NULL, FALSE);
+    break;
+
+  default:
+    return DefWindowProc(hwnd, msg, wparam, lparam);
+  }
+
+  return 0;
+}
+
+int __game_createWindow(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show) {
+  WNDCLASS wc;
+  HWND hwnd;
+  MSG msg;
+  RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+  
+  wc.style = CS_HREDRAW | CS_VREDRAW;
+  wc.lpfnWndProc = __game_processWindow;
+  wc.cbClsExtra = 0;
+  wc.cbWndExtra = 0;
+  wc.hInstance = instance;
+  // wc.hIcon = LoadIcon( ... )
+  // wc.hCursor = LoadCursor( ... )
+  wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+  wc.lpszMenuName = NULL;
+  wc.lpszClassName = __TEXT("NekoEngine");
+
+  RegisterClass(&wc);
+
+  hwnd = CreateWindow(wc.lpszClassName,
+                      __TEXT("NekoEngine"),
+                      WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+                      0,
+                      0,
+                      1,
+                      1,
+                      NULL,
+                      NULL,
+                      instance,
+                      NULL);
+  ShowWindow(hwnd, show);
+  UpdateWindow(hwnd);
+  while (GetMessage(&msg, NULL, 0, 0)) {
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+  }
+  UnregisterClass(wc.lpszClassName, instance);
+  return (int)msg.wParam;
+}

@@ -64,4 +64,7 @@ NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
 NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 
+LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+int __game_createWindow(HINSTANCE instance, HINSTANCE previous, LPSTR command, int show);
+
 #endif
