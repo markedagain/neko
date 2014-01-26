@@ -3,6 +3,11 @@
 #include "vectormath.h"
 #include <math.h>
 
+void vec2_set(VEC2 *a, float x, float y) {
+  a->x = x;
+  a->y = y;
+}
+
 void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c) {
   c->x = a->x + b->x;
   c->y = a->y + b->y;
@@ -35,6 +40,12 @@ float vec2_angleBetween(VEC2 *a, VEC2 *b) {
 
 float vec2_magnitude(VEC2 *a) {
   return (float)sqrt(a->x * a->x + a->y * a->y);
+}
+
+void vec3_set(VEC3 *a, float x, float y, float z) {
+  a->x = x;
+  a->y = y;
+  a->z = z;
 }
 
 void vec3_add(VEC3 *a, VEC3 *b, VEC3 *c) {

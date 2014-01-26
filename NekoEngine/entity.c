@@ -14,8 +14,9 @@ ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name) {
   entity->id = 0;
   entity->parent = NULL;
   entity->space = NULL;
-  //entity->game = NULL;
-  strcpy(entity->name, name);
+  entity->name[0] = 0;
+  if (name != NULL)
+    strcpy(entity->name, name);
   vector_init(&entity->components);
   vector_init(&entity->children);
   entity->destroying = 0;

@@ -29,13 +29,13 @@ void zoom(COMPONENT *self, float zoom) {
     
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
-  bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+  bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
   mg->systems.camera.transform.scale.x = newZoom;
   mg->systems.camera.transform.scale.y = newZoom;
-  mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+  mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
-  fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) - 24;
+  fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
 }
 void zoom_reset(COMPONENT *self) {
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
@@ -68,11 +68,11 @@ void pan_reset(COMPONENT *self) {
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   SPACE *fg = game_getSpace(self->owner->space->game, "fg");
   bg->systems.camera.transform.translation.x = 0.0f;
-  bg->systems.camera.transform.translation.y = -24.0f;
+  bg->systems.camera.transform.translation.y = 180.0f - 24.0f;
   mg->systems.camera.transform.translation.x = 0.0f;
-  mg->systems.camera.transform.translation.y = -24.0f;
+  mg->systems.camera.transform.translation.y = 180.0f - 24.0f;
   fg->systems.camera.transform.translation.x = 0.0f;
-  fg->systems.camera.transform.translation.y = -24.0f;
+  fg->systems.camera.transform.translation.y = 180.0f - 24.0f;
 }
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event) {

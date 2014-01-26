@@ -45,13 +45,14 @@ typedef struct space_t {
   unsigned char destroying;
 } SPACE;
 
-NEKO_API SPACE *space_create(char *);
-NEKO_API ENTITY *space_addEntity(SPACE *, void(*)(ENTITY *), char *);
-NEKO_API ENTITY *space_getEntity(SPACE *, char *);
-NEKO_API void space_mouseToWorld(SPACE *, POINT *, POINT *);
-NEKO_API void space_destroy(SPACE *);
-void space_invokeEvent(SPACE *, EVENT_TYPE, void *);
-void space_tick(SPACE *, EDATA_UPDATE *);
-void __space_destroy(SPACE *);
+NEKO_API SPACE *space_create(char *name);
+NEKO_API ENTITY *space_addEntity(SPACE *space, void(*)(ENTITY *archetypeFunction), char *name);
+NEKO_API ENTITY *space_addEntityAtPosition(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name, VEC3 *position);
+NEKO_API ENTITY *space_getEntity(SPACE *space, char *name);
+NEKO_API void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos);
+NEKO_API void space_destroy(SPACE *space);
+void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data);
+void space_tick(SPACE *space, EDATA_UPDATE *data);
+void __space_destroy(SPACE *space);
 
 #endif

@@ -45,14 +45,16 @@ typedef struct rect_t {
   VEC2 botRight;
 } RECTANGLE;
 
-NEKO_API void vec2_add(VEC2 *, VEC2 *, VEC2 *);
-NEKO_API void vec2_sub(VEC2 *, VEC2 *, VEC2 *);
+NEKO_API void vec2_set(VEC2 *a, float x, float y);
+NEKO_API void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c);
+NEKO_API void vec2_sub(VEC2 *a, VEC2 *b, VEC2 *c);
 NEKO_API void vec2_mul(VEC2 *, float, VEC2 *);
 NEKO_API void vec2_div(VEC2 *, float, VEC2 *);
-NEKO_API float vec2_dot(VEC2 *, VEC2 *);
-NEKO_API float vec2_angleBetween(VEC2 *, VEC2 *);
-NEKO_API float vec2_magnitude(VEC2 *);
+NEKO_API float vec2_dot(VEC2 *a, VEC2 *b);
+NEKO_API float vec2_angleBetween(VEC2 *a, VEC2 *b);
+NEKO_API float vec2_magnitude(VEC2 *a);
 
+NEKO_API void vec3_set(VEC3 *a, float x, float y, float z) ;
 NEKO_API void vec3_add(VEC3 *, VEC3 *, VEC3 *);
 NEKO_API void vec3_sub(VEC3 *, VEC3 *, VEC3 *);
 NEKO_API void vec3_mul(VEC3 *, float, VEC3 *);

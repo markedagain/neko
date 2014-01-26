@@ -8,6 +8,7 @@
 #include "vector.h"
 #include "entity.h"
 #include "util.h"
+#include "transform.h"
 
 SPACE *space_create(char *name) {
   SPACE *space = (SPACE *)malloc(sizeof(SPACE));
@@ -47,6 +48,15 @@ ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char 
     }
   }
   entity->node = list_insert_end(space->entities, (void *)entity);
+  return entity;
+}
+
+ENTITY *space_addEntityAtPosition(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name, VEC3 *position) {
+  ENTITY *entity = space_addEntity(space, archetypeFunction, name);
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(entity, COMP_TRANSFORM);
+  trans->translation.x = position->x;
+  trans->translation.y = position->y;
+  trans->translation.z = position->z;
   return entity;
 }
 

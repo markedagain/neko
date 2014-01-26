@@ -24,6 +24,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *fgSpace;
   SPACE *uiSpace;
   ENTITY *backdrop;
+  ENTITY *lobby;
+  VEC3 position;
 
   game = game_create(instanceH, show);
 
@@ -35,12 +37,16 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   // bg - background, sky, clouds, etc.
   bgSpace = game_addSpace(game, "bg");
-  backdrop = space_addEntity(bgSpace, arch_genericsprite, "backdrop");
+  vec3_set(&position, 0, 360 - 24, 0);
+  backdrop = space_addEntityAtPosition(bgSpace, arch_genericsprite, "backdrop", &position);
   ((CDATA_SPRITE *)entity_getComponentData(backdrop, COMP_SPRITE))->source = "backgrounds/basic";
-  ((CDATA_TRANSFORM *)entity_getComponentData(backdrop, COMP_TRANSFORM))->translation.y = -24 + 180;
 
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");
+
+  vec3_set(&position, 0, 40, 0);
+  lobby = space_addEntityAtPosition(mgSpace, arch_genericsprite, NULL, &position);
+  ((CDATA_SPRITE *)entity_getComponentData(lobby, COMP_SPRITE))->source = "rooms/frontdoor";
 
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
