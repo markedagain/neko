@@ -2,8 +2,6 @@
 
 #include "data.h"
 
-#define DATA_ENABLE_DATA_DIRECTORY 0 // DISABLING DISK LOADING FOR NOW
-
 /*
       (P)reload
 data/    root data folder/.pak file
@@ -144,29 +142,34 @@ void data_loadTextureFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const 
   char *pakData = NULL;
   size_t pakSize;
   unsigned char *texData = NULL;
+  bool existing = false;
 
   data_makeKey(dataContainer, storeKey, filename, "tex/", ".tex");
 
   if (dict_get(&dataContainer->textures, storeKey) != NULL) {
-    printf("Found TEX %s in pak (HIDDEN)\n", storeKey);
-    return;
+    printf("Found TEX %s in pak (PROPERTIES ONLY)\n", storeKey);
+    existing = true;
+    texture = (TEXTURE *)dict_get(&dataContainer->textures, storeKey);
   }
-
-  texture = (TEXTURE *)malloc(sizeof(TEXTURE));
-  texture_init(texture);
+  else {
+    texture = (TEXTURE *)malloc(sizeof(TEXTURE));
+    texture_init(texture);
+  }
 
   pakData = (char *)pak_load(pak, filename, &pakSize);
 
   texture->width = *(uint32_t *)pakData;
   texture->height = *(uint32_t *)(pakData + 4);
 
-  texData = (unsigned char *)pakData + 8;
-
-  texture->data = AEGfxTextureLoadFromMemory(texData, texture->width, texture->height);
+  if (!existing) {
+    texData = (unsigned char *)pakData + 8;
+    texture->data = AEGfxTextureLoadFromMemory(texData, texture->width, texture->height);
+  }
 
   free(pakData);
 
-  dict_set(&dataContainer->textures, storeKey, texture);
+  if (!existing)
+    dict_set(&dataContainer->textures, storeKey, texture);
   printf("Loaded TEX %s from pak\n", storeKey);
 }
 
@@ -178,16 +181,19 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
   size_t count, i, bufferPos = 0;
   char buffer[TEXTFILE_LINELENGTH] = { 0 };
   VECTOR lines;
+  bool existing = false;
 
   data_makeKey(dataContainer, storeKey, filename, "spr/", ".spr");
 
   if (dict_get(&dataContainer->sprites, storeKey) != NULL) {
-    printf("Found SPR %s in pak (QUICK) (HIDDEN)\n", storeKey);
-    return;
+    printf("Found SPR %s in pak (PROPERTIES ONLY)\n", storeKey);
+    existing = true;
+    sprite = (SPRITE *)dict_get(&dataContainer->sprites, storeKey);
   }
-
-  sprite = (SPRITE *)malloc(sizeof(SPRITE));
-  sprite_init(sprite);
+  else {
+    sprite = (SPRITE *)malloc(sizeof(SPRITE));
+    sprite_init(sprite);
+  }
 
   vector_init(&lines);
 
@@ -222,7 +228,8 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
 
   vector_free(&lines);
   printf("Loaded SPR %s from pak\n", storeKey);
-  dict_set(&dataContainer->sprites, storeKey, sprite);
+  if (!existing)
+    dict_set(&dataContainer->sprites, storeKey, sprite);
 
 }
 
@@ -365,15 +372,13 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   PAK_FILE* pak;
   char pakDir[MAX_PATH];
   size_t i;
-#if DATA_ENABLE_DATA_DIRECTORY
   char subdir[MAX_PATH];
-#endif
   char currentDirectory[MAX_PATH];
 
   vector_init(&files);
   file_getCurrentDirectory(currentDirectory);
 
-#if DATA_ENABLE_DATA_DIRECTORY
+
   // (DISK) LOAD TEXTURES
   sprintf(subdir, "%s/%s%s", currentDirectory, dataContainer->root, "tex");
   file_unixToWindows(subdir);
@@ -397,7 +402,7 @@ void data_loadAll(DATACONTAINER *dataContainer) {
   for (i = 0; i < vector_size(&files); ++i)
     data_loadTextfileFromDisk(dataContainer, (char *)vector_get(&files, i));
   vector_clear(&files);
-#endif
+
   // (PAK) LOAD ALL
   file_getCurrentDirectory(pakDir);
   sprintf(pakDir, "%s\\data.pak", pakDir);

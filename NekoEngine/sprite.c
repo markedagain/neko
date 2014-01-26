@@ -102,7 +102,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   AEGfxTextureSet(texture->data, (float)((float)texture->width * sprite->u), (float)((float)texture->height * sprite->v));
   AEGfxSetTransform(transform.m);
   if (comData->mesh == NULL)
-    comp_sprite_buildMesh(self);
+    comp_sprite_buildMesh(self, sprite->u, sprite->v, (float)sprite->width / (float)texture->width, (float)sprite->height / (float)texture->height);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 
@@ -126,19 +126,17 @@ void comp_sprite(COMPONENT *self) {
   self->events.destroy = comp_sprite_destroy;
 }
 
-void comp_sprite_buildMesh(COMPONENT *self) {
+void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float height) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
-  SPRITE *sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
-  TEXTURE *texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
 
   float u1, v1, u2, v2, w, h;
-  w  = ((float)sprite->width / (float)texture->width) * 0.5f;
-  h = ((float)sprite->height / (float)texture->height) * 0.5f;
-  u1 = sprite->u - w;
-  v1 = sprite->v - h;
+  w = width * 0.5f;
+  h = height * 0.5f;
+  u1 = u - w;
+  v1 = v - h;
 
-  u2 = sprite->u + w;
-  v2 = sprite->v + h;
+  u2 = u + w;
+  v2 = v + h;
 
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0x00FF00FF, u1, v2,
