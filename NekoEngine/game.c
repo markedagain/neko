@@ -174,8 +174,8 @@ bool game_loop(GAME *game) {
     game->systems.time.elapsedFrames = 0;
     stopwatch_start(&game->systems.time.secondsStopwatch);
   }
-  if (AESysGetWindowHandle() != GetActiveWindow())
-    printf("AAAAA\n");
+  /*if (AESysGetWindowHandle() != GetActiveWindow())
+    printf("AAAAA\n");*/
 
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);

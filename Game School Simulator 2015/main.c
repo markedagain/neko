@@ -45,16 +45,16 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   mgSpace = game_addSpace(game, "mg");
 
   vec3_set(&position, 0, 40, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/frontdoor");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
   vec3_set(&position, -120, 40, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 
   vec3_set(&position, -120, 120, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 
   vec3_set(&position, 0, 120, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior2");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
   vec3_set(&position, 0, 0, 0);
   //genericSprite_create(mgSpace, &position, NULL, "test");
