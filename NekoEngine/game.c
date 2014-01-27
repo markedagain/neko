@@ -28,7 +28,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = 0;
-  sysInitInfo.mpWinCallBack    = NULL;
+  sysInitInfo.mpWinCallBack    = __game_processWindow;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
   game->spaces = list_create();
@@ -213,4 +213,43 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
   if (game->initialized)
     AEGfxExit();
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
+}
+
+LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+  //HDC dc; // device context
+  //PAINTSTRUCT ps;
+  //RECT rect;
+  
+  switch (msg) {
+
+  case WM_CREATE:
+    break;
+
+  case WM_LBUTTONDOWN:
+    break;
+
+  case WM_MOUSEMOVE:
+    break;
+
+  /*case WM_PAINT:
+    dc = BeginPaint(hwnd, &ps);
+    EndPaint(hwnd, &ps);
+    break;*/
+
+  case WM_DESTROY:
+    PostQuitMessage(0);
+    break;
+
+  case WM_KEYDOWN:
+    break;
+
+  case WM_MOVE:
+    InvalidateRect(hwnd, NULL, FALSE);
+    break;
+
+  default:
+    return DefWindowProc(hwnd, msg, wparam, lparam);
+  }
+
+  return 0;
 }
