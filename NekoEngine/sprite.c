@@ -39,10 +39,12 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float spriteRadius;
   float spriteWidth;
   float spriteHeight;
-  VEC3 translation = trans->translation;
+  VEC3 translation;
   VEC3 camTranslate = { 0 };
   SPRITE *sprite;
   TEXTURE *texture;
+
+  vec3_copy(translation, trans->world.translation);
 
   if (!comData->visible)
     return;
@@ -83,8 +85,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   matrix3_scale(&transform, &baseScale);
   matrix3_scale(&transform, &spriteScale);
   matrix3_scale(&transform, &camScale);
-  matrix3_rotate(&transform, trans->rotation);
-  matrix3_scale(&transform, &trans->scale);
+  matrix3_rotate(&transform, trans->world.rotation);
+  matrix3_scale(&transform, &trans->world.scale);
   matrix3_scale(&transform, &screenScaleVec);
   matrix3_translate(&transform, &translation);
 

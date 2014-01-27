@@ -15,6 +15,11 @@ typedef struct cdata_transform_t {
   VEC3 translation;
   VEC3 scale;
   float rotation;
+  struct { // in better languages this would be getters/setters
+    VEC3 translation;
+    VEC3 scale;
+    float rotation;
+  } world;
 } CDATA_TRANSFORM;
 
 void comp_transform_logicUpdate(COMPONENT *, void *);

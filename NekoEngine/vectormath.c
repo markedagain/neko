@@ -172,7 +172,7 @@ void matrix3_multiply(MATRIX3 *mat1, MATRIX3 *mat2) {
   result.m22 = mat1->m20 * mat2->m02 + mat1->m21 * mat2->m12 + mat1->m22 * mat2->m22;
 
   for (i = 0; i < 9; ++i)
-    mat2->v[i] = result.v[i];  
+    mat2->v[i] = result.v[i];
 }
 
 void matrix3_identity(MATRIX3 *matrix) {
@@ -188,9 +188,9 @@ void matrix3_identity(MATRIX3 *matrix) {
 }
 
 void matrix3_rotate(MATRIX3 *matrix, float theta) {
-  
+
   MATRIX3 rotateMatrix;
-  
+
   rotateMatrix.m00 = cosf(theta);
   rotateMatrix.m01 = -sinf(theta);
   rotateMatrix.m02 = 0;
@@ -205,7 +205,7 @@ void matrix3_rotate(MATRIX3 *matrix, float theta) {
 }
 
 void matrix3_scale(MATRIX3 *matrix, VEC3 *scale) {
-  
+
   MATRIX3 scaleMatrix;
   scaleMatrix.m00 = scale->x;
   scaleMatrix.m01 = 0;
@@ -225,4 +225,10 @@ void matrix3_scale(MATRIX3 *matrix, VEC3 *scale) {
 void matrix3_translate(MATRIX3 *matrix, VEC3 *translation) {
   matrix->m02 += translation->x;
   matrix->m12 += translation->y;
+}
+
+
+float angle_normalize(float angle) {
+  angle = angle % (2.0f * (float)M_PI);
+  return angle >= 0 ? angle : angle + 2.0f * (float)M_PI;
 }
