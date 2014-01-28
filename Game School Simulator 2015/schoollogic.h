@@ -21,6 +21,9 @@ typedef struct cdata_schoolLogic_t {
   int roomMaintainance;
   LIST *rooms;
   int reputation;
+  int techBonus;
+  int designBonus;
+  int artBonus;
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);

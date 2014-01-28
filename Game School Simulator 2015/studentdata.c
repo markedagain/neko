@@ -35,7 +35,7 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     // printf("Totally Random Float: %f\n", randomFloatRange(foo, baz));
   
   // Graduate
-  if(comData->semesterStarted == timeData->currentSemester - 2 && !comData->graduated) {
+  if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
     schoolLogic->currentStudents--;
     schoolLogic->reputation++;
     printf("\n%s %s has graduated! +1 Rep\n", comData->name.first, comData->name.last);

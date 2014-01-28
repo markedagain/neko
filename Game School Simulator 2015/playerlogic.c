@@ -163,7 +163,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         ENTITY *student = (ENTITY *)studentNode->data;
         CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
         printf("1) ");
-        printf("Name: %s %s\n", studentData->name.first, studentData->name.last);
+        printf("Name: %s %s", studentData->name.first, studentData->name.last);
+        printf(" - Tech:%i Design:%i Art:%i\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
         printf("\n");
         studentNode = studentNode->next;
       } while(studentNode != NULL);

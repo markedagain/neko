@@ -30,6 +30,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 }
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  int i = 0;
+  LIST_NODE *studentPtr;
+  
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
     comData->incomingStudents += 1 + comData->reputation;
@@ -46,10 +49,22 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   //Lose money
   comData->money -= (int)floor((float)comData->roomMaintainance / 6.0f);
 
-  printf("STUDENTS: %i/%i\n", comData->currentStudents, comData->studentCapacity);
-  printf("MONEY: $%i\n", comData->money);
-  printf("TUITION: $%i\n", comData->tuition);
-  printf("REP: %i\n", comData->reputation);
+  // Add student stats
+  studentPtr = comData->students->first;
+  for(i = 0; i < comData->students->count; i++) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+    studentData->techSkill += (int)(1 + comData->techBonus * ((float)studentData->motivation / 100.0));
+    studentData->designSkill += (int)(1 + comData->designBonus * ((float)studentData->motivation / 100.0));
+    studentData->artSkill += (int)(1 + comData->artBonus * ((float)studentData->motivation / 100.0));
+    studentPtr = studentPtr->next;
+  }
+
+  printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
+  printf("       Incoming: %i\n", comData->incomingStudents);
+  printf("Money: $%i", comData->money);
+  printf("       Tuition: $%i\n", comData->tuition);
+  printf("Rep: %i", comData->reputation);
+  printf("              Alumni: %i\n", comData->alumni->count);
 }
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -69,6 +84,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
     }
+    comData->incomingStudents = 0;
   }
 }
 
@@ -96,6 +112,9 @@ void comp_schoolLogic(COMPONENT *self) {
   data.roomMaintainance = 0;
   data.rooms = list_create();
   data.reputation = 0;
+  data.techBonus = 1;
+  data.designBonus = 1;
+  data.artBonus = 1;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;

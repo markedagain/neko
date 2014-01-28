@@ -21,9 +21,12 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_CLASS:
       printf("New classroom created\n");
       schoolData->roomMaintainance += 20000;
-      schoolData->studentCapacity += 25;
+      schoolData->studentCapacity += 10;
       schoolData->money -= 40000;
       schoolData->reputation += 1;
+      schoolData->techBonus += 3;
+      schoolData->designBonus += 3;
+      schoolData->artBonus += 3;
       break;
 
     case ROOMTYPE_LIBRARY:
@@ -31,6 +34,9 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       schoolData->roomMaintainance += 25000;
       schoolData->money -= 50000;
       schoolData->reputation += 2;
+      schoolData->techBonus += 10;
+      schoolData->designBonus += 10;
+      schoolData->artBonus += 10;
       break;
 
     case ROOMTYPE_TEAMSPACE:
@@ -38,6 +44,9 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       schoolData->roomMaintainance += 50000;
       schoolData->money -= 75000;
       schoolData->reputation += 10;
+      schoolData->techBonus += 5;
+      schoolData->designBonus += 5;
+      schoolData->artBonus += 5;
       break;
 
     default:
