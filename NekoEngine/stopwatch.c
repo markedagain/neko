@@ -8,6 +8,9 @@ void stopwatch_start(STOPWATCH *sw) {
 void stopwatch_stop(STOPWATCH *sw) {
   QueryPerformanceCounter(&sw->stop);
 }
+void stopwatch_lap(STOPWATCH *sw) {
+  sw->start = sw->stop;
+}
 double stopwatch_delta(STOPWATCH *sw) {
   LARGE_INTEGER time, frequency;
   time.QuadPart = sw->stop.QuadPart - sw->start.QuadPart;

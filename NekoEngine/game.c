@@ -29,7 +29,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mWinWidth      = WINDOW_WIDTH;
   sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS -1; // -1 to make Alpha not be dumb (?)
+  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS - 1; // -1 to make Alpha not be dumb (?)
   sysInitInfo.mpWinCallBack    = __game_processWindow;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
   sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME;
@@ -181,7 +181,7 @@ bool game_loop(GAME *game) {
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
-    stopwatch_start(&game->systems.time.stopwatch);
+    stopwatch_lap(&game->systems.time.stopwatch);
     if (AESysGetWindowHandle() == GetActiveWindow())
       input_update(&game->input, NULL);
     else
