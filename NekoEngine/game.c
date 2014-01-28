@@ -167,7 +167,13 @@ void game_start(GAME *game) {
 }
 
 bool game_loop(GAME *game) {
-  SetCursor(NULL);
+  RECT clientRect;
+  POINT cursorPos;
+  GetClientRect(AESysGetWindowHandle(), &clientRect);
+  GetCursorPos(&cursorPos);
+  ScreenToClient(AESysGetWindowHandle(), &cursorPos);
+  if (cursorPos.x > 0 && cursorPos.x < clientRect.right && cursorPos.y > 0 && cursorPos.y < clientRect.bottom)
+    SetCursor(NULL);
   game->systems.time.elapsedFrames++;
   stopwatch_stop(&game->systems.time.secondsStopwatch);
   if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {

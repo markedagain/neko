@@ -118,10 +118,13 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     game_resize(self->owner->space->game, 1280, 720);
   }*/
 
-  if (input->mouse.wheel.direction == -1)
+  /*if (input->mouse.wheel.direction == -1)
     zoom(self, -0.1f);
   if (input->mouse.wheel.direction == 1)
-    zoom(self, 0.1f);
+    zoom(self, 0.1f);*/
+
+  if (input->mouse.wheel.delta != 0)
+    zoom(self, 0.1f * (float)input->mouse.wheel.delta);
   if (input->mouse.left == ISTATE_PRESSED && !input->mouse.handled.left) {
     data->dragging = true;
     input_lockMouse(input);

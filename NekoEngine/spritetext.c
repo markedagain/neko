@@ -44,7 +44,7 @@ void comp_spriteText_initialize(COMPONENT *self, void *event) {
     else
       offset.x += fontSize.x;
     list_insert_end(multi->entities, (void *)ent);
-    printf("DOIN A THING: %s\n", sprData->manual.textureName);
+    //printf("DOIN A THING: %s\n", sprData->manual.textureName);
   }
 }
 
