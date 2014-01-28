@@ -5,8 +5,14 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
+#include "../NekoEngine/vectormath.h"
 
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
+
+typedef struct {
+  bool dragging;
+  POINT dragOrigin;
+} CDATA_PLAYERLOGIC;
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event);
 void comp_playerLogic_logicUpdate(COMPONENT *, void *);

@@ -57,12 +57,13 @@ NEKO_API void game_destroy(GAME *);
 NEKO_API SPACE *game_addSpace(GAME *, char *);
 NEKO_API SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
-void game_getInput(GAME *);
 void game_tick(GAME *);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
 NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
+extern GAME *__game;
 
 #endif

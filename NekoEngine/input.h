@@ -128,6 +128,20 @@ typedef struct inputContainer_t {
       };
       INPUT_STATE buttons[MBUTTON_LAST];
     };
+    struct {
+      union {
+        struct {
+          bool left;
+          bool middle;
+          bool right;
+        };
+        bool buttons[MBUTTON_LAST];
+      };
+    } handled;
+    struct {
+      int delta;
+      int direction;
+    } wheel;
     POINT position;
   } mouse;
   struct {
@@ -135,7 +149,11 @@ typedef struct inputContainer_t {
   } keyboard;
 } INPUT_CONTAINER;
 
-void input_initialize(INPUT_CONTAINER *);
-void input_update(INPUT_CONTAINER *, HWND *window);
+void input_initialize(INPUT_CONTAINER *input);
+void input_update(INPUT_CONTAINER *input, HWND *window);
+void input_reset(INPUT_CONTAINER *input);
+NEKO_API void input_setMousePos(INPUT_CONTAINER *input, int x, int y);
+NEKO_API void input_lockMouse(INPUT_CONTAINER *input);
+NEKO_API void input_unlockMouse(INPUT_CONTAINER *input);
 
 #endif

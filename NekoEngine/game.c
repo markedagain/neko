@@ -16,6 +16,8 @@
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
 
+GAME *__game = NULL; // UGHHHHHHH
+
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
   RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
@@ -67,6 +69,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   data_loadAll(&game->data);
 
+
+  __game = game;
   return game;
 }
 
@@ -109,10 +113,6 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
     spaceNode = spaceNode->next;
   }
   while (spaceNode != NULL);
-}
-
-void game_getInput(GAME *game) {
-  input_update(&game->input, NULL);
 }
 
 void game_tick(GAME *game) {
@@ -182,15 +182,16 @@ bool game_loop(GAME *game) {
   if (game->systems.time.dt >= game->systems.time.frameRate) {
     stopwatch_start(&game->systems.time.stopwatch);
     if (AESysGetWindowHandle() == GetActiveWindow())
-      game_getInput(game);
-     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
+      input_update(&game->input, NULL);
+    else
+      input_unlockMouse(&game->input);
+    if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     game_tick(game);
-    //AEGfxStart();
+    input_reset(&game->input);
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
     AESysFrameEnd();
-    //AEGfxEnd();
   }
 
   return true;
@@ -245,6 +246,12 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 
   case WM_MOVE:
     InvalidateRect(hwnd, NULL, FALSE);
+    break;
+
+  case WM_MOUSEWHEEL:
+    if (__game != NULL)
+      if (AESysGetWindowHandle() == GetActiveWindow())
+        __game->input.mouse.wheel.delta += GET_WHEEL_DELTA_WPARAM(wparam) / WHEEL_DELTA;
     break;
 
   default:

@@ -81,10 +81,14 @@ void comp_playerLogic_initialize(COMPONENT *self, void *event) {
 }
 
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
+  CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   SPACE *simSpace = game_getSpace(self->owner->space->game,"sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+  POINT mousePos;
+
+  space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
 
   // MANAGE INPUT
   if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
@@ -103,6 +107,29 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom_reset(self);
     pan_reset(self);
   }
+
+  if (input->mouse.wheel.direction == -1)
+    zoom(self, -0.1f);
+  if (input->mouse.wheel.direction == 1)
+    zoom(self, 0.1f);
+  if (input->mouse.left == ISTATE_PRESSED && !input->mouse.handled.left) {
+    data->dragging = true;
+    input_lockMouse(input);
+    data->dragOrigin.x = input->mouse.position.x;
+    data->dragOrigin.y = input->mouse.position.y;
+  }
+  if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
+    data->dragging = false;
+    input_unlockMouse(input);
+  }
+  if (data->dragging) {
+    int xdiff = data->dragOrigin.x - input->mouse.position.x;
+    data->dragOrigin.x = input->mouse.position.x;
+    pan(self, (float)xdiff, 0.0f);
+    input_setMousePos(input, input->mouse.position.x, data->dragOrigin.y);
+  }
+
+
 
   //Change Tuition
   if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
@@ -189,7 +216,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 }
 
 void comp_playerLogic(COMPONENT *self) {
-  COMPONENT_INIT_NULL(self, COMP_PLAYERLOGIC);
+  CDATA_PLAYERLOGIC data = { 0 };
+  COMPONENT_INIT(self, COMP_PLAYERLOGIC, data);
   component_depend(self, COMP_TRANSFORM);
   self->events.initialize = comp_playerLogic_initialize;
   self->events.logicUpdate = comp_playerLogic_logicUpdate;
