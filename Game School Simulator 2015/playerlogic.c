@@ -123,8 +123,25 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if (input->mouse.wheel.direction == 1)
     zoom(self, 0.1f);*/
 
-  if (input->mouse.wheel.delta != 0)
-    zoom(self, 0.1f * (float)input->mouse.wheel.delta);
+  if (input->mouse.wheel.delta != 0) {
+    if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))
+      data->zoomVelocity += 0.004f * (float)input->mouse.wheel.delta;
+    else
+      data->zoomVelocity = 0.012f * (float)input->mouse.wheel.delta;
+  }
+  zoom(self, data->zoomVelocity);
+  if (data->zoomVelocity != 0.0f) {
+    if (data->zoomVelocity > 0) {
+      data->zoomVelocity -= 0.0008f;
+      if (data->zoomVelocity < 0.0005f)
+        data->zoomVelocity = 0.0f;
+    }
+    if (data->zoomVelocity < 0) {
+      data->zoomVelocity += 0.0008f;
+      if (data->zoomVelocity > -0.0005f)
+        data->zoomVelocity = 0.0f;
+    }
+  }
   if (input->mouse.left == ISTATE_PRESSED && !input->mouse.handled.left) {
     input->mouse.handled.left = true;
     data->dragging = true;

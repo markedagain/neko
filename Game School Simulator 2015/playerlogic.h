@@ -12,6 +12,7 @@
 typedef struct {
   bool dragging;
   POINT dragOrigin;
+  float zoomVelocity;
 } CDATA_PLAYERLOGIC;
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event);
