@@ -62,8 +62,18 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
 
+  vec3_set(&position, -256, 160, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "NEKO MEANS CAT PRESENTS", &color);
   vec3_set(&position, -256, 128, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/8x8", "GAME SCHOOL SIMULATOR 2015\nENGINE PROOF\nMOTHER FUCKERS", &color);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", "GAME SCHOOL SIMULATOR 2015\nENGINE PROOF", &color);
+  vec3_set(&position, -256, 80, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "NOW WITH TOTALLY BANGIN'\nSPRITETEXT", &color);
+  vec3_set(&position, -256, 48, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/c64/8", "AND LIKE SIX DIFFERENT FONTS", &color);
+  vec3_set(&position, -256, 36, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/terminal/6", "OKAY ONLY FOUR; MS GOTHIC 4 LYFE (THIS ONE IS TERMINAL THO)", &color);
+  vec3_set(&position, -256, 28, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/28", "JUST KIDDING, NOW THERE'S SIX", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
