@@ -87,6 +87,9 @@
     <ClCompile Include="generictext.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="multisprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="neko.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="generictext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="multisprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *fgSpace;
   SPACE *uiSpace;
   VEC3 position;
-  VEC4 color = { 1, 1, 1, 1 };
+  VEC4 color = { 1, 0, 0, 1 };
 
   game = game_create(instanceH, show);
 
@@ -45,19 +45,16 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   mgSpace = game_addSpace(game, "mg");
 
   vec3_set(&position, 0, 40, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/frontdoor");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
   vec3_set(&position, -120, 40, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 
   vec3_set(&position, -120, 120, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 
   vec3_set(&position, 0, 120, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/exterior2");
-
-  vec3_set(&position, 0, 0, 0);
-  //genericSprite_create(mgSpace, &position, NULL, "test");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
@@ -65,8 +62,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
 
-  vec3_set(&position, 0, 0, 0);
-  //genericText_create(uiSpace, &position, NULL, "font/8x8", "HEY HI HELLO", &color);
+  vec3_set(&position, -256, 128, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/8x8", "GAME SCHOOL SIMULATOR 2015\nENGINE PROOF\nMOTHER FUCKERS", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 

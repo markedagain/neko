@@ -39,22 +39,28 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float spriteRadius;
   float spriteWidth;
   float spriteHeight;
-  VEC3 translation = trans->translation;
+  VEC3 translation;
   VEC3 camTranslate = { 0 };
-  SPRITE *sprite;
+  SPRITE *sprite = NULL;
   TEXTURE *texture;
+  float u, v;
+
+  vec3_copy(&translation, &trans->world.translation);
 
   if (!comData->visible)
     return;
 
-  sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
-  texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
-  if (texture == NULL)
-    printf("OH SHIT %s\n", sprite->textureName);
+  if (comData->manual.enabled) {
+    texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, comData->manual.textureName);
+  }
+  else {
+    sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
+    texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
+  }
 
   screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
-  spriteWidth = (float)sprite->width;
-  spriteHeight = (float)sprite->height;
+  spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
+  spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
   translation.x -= self->owner->space->systems.camera.transform.translation.x;
   translation.y -= self->owner->space->systems.camera.transform.translation.y;
   camScale.x = self->owner->space->systems.camera.transform.scale.x;
@@ -64,8 +70,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   spriteWidth *= camScale.x;
   spriteHeight *= camScale.y;
 
-  baseScale.x = (float)sprite->width;
-  baseScale.y = (float)sprite->height;
+  baseScale.x = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
+  baseScale.y = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
   spriteScale.x = comData->size.x;
   spriteScale.y = comData->size.y;
 
@@ -83,8 +89,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   matrix3_scale(&transform, &baseScale);
   matrix3_scale(&transform, &spriteScale);
   matrix3_scale(&transform, &camScale);
-  matrix3_rotate(&transform, trans->rotation);
-  matrix3_scale(&transform, &trans->scale);
+  matrix3_rotate(&transform, trans->world.rotation);
+  matrix3_scale(&transform, &trans->world.scale);
   matrix3_scale(&transform, &screenScaleVec);
   matrix3_translate(&transform, &translation);
 
@@ -92,17 +98,23 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     return;
   }
 
-  if (comData->source == NULL)
+  if (comData->source == NULL && !(comData->manual.enabled && comData->manual.textureName != NULL))
     AEGfxSetRenderMode(AE_GFX_RM_COLOR);
   else
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
   AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
   //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
-  AEGfxTextureSet(texture->data, (float)((float)texture->width * sprite->u), (float)((float)texture->height * sprite->v));
+
+  u = comData->manual.enabled ? comData->manual.u : sprite->u;
+  v = comData->manual.enabled ? comData->manual.v : sprite->v;
+
+  AEGfxTextureSet(texture->data, (float)((float)texture->width * u), (float)((float)texture->height * v));
   AEGfxSetTransform(transform.m);
+  spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
+  spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
   if (comData->mesh == NULL)
-    comp_sprite_buildMesh(self, sprite->u, sprite->v, (float)sprite->width / (float)texture->width, (float)sprite->height / (float)texture->height);
+    comp_sprite_buildMesh(self, u, v, spriteWidth / (float)texture->width, spriteHeight / (float)texture->height);
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 

@@ -2,11 +2,13 @@
 
 #include "generictext.h"
 #include "transform.h"
+#include "multisprite.h"
 #include "spritetext.h"
 
 void arch_genericText(ENTITY *entity) {
   entity->id = ARCH_GENERICTEXT;
   entity_connect(entity, comp_transform);
+  entity_connect(entity, comp_multiSprite);
   entity_connect(entity, comp_spriteText);
 }
 
@@ -18,5 +20,6 @@ ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font,
   textData->font = font;
   strcpy(textData->text, text);
   vec4_copy(&textData->color, color);
+  comp_spriteText_initialize(entity_getComponent(entity, COMP_SPRITETEXT), NULL);
   return entity;
 }

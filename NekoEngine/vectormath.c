@@ -14,23 +14,23 @@ void vec2_copy(VEC2 *a, VEC2 *b) {
 }
 
 void vec2_add(VEC2 *a, VEC2 *b, VEC2 *c) {
-  c->x = a->x + b->x;
-  c->y = a->y + b->y;
+  a->x = b->x + c->x;
+  a->y = b->y + c->y;
 }
 
 void vec2_sub(VEC2 *a, VEC2 *b, VEC2 *c) {
-  c->x = a->x - b->x;
-  c->y = a->y - b->y;
+  a->x = b->x - c->x;
+  a->y = b->y - c->y;
 }
 
 void vec2_mul(VEC2 *a, float scalar, VEC2 *b) {
-  b->x = scalar * a->x;
-  b->y = scalar * a->y;
+  a->x = scalar * b->x;
+  a->y = scalar * b->y;
 }
 
 void vec2_div(VEC2 *a, float diviser, VEC2 *b) {
-  b->x = a->x / diviser;
-  b->y = a->y / diviser;
+  a->x = b->x / diviser;
+  a->y = b->y / diviser;
 }
 
 float vec2_dot(VEC2 *a, VEC2 *b) {
@@ -61,27 +61,27 @@ void vec3_copy(VEC3 *a, VEC3 *b) {
 
 
 void vec3_add(VEC3 *a, VEC3 *b, VEC3 *c) {
-  c->x = a->x + b->x;
-  c->y = a->y + b->y;
-  c->z = a->z + b->z;
+  a->x = b->x + c->x;
+  a->y = b->y + c->y;
+  a->z = b->z + c->z;
 }
 
 void vec3_sub(VEC3 *a, VEC3 *b, VEC3 *c) {
-  c->x = a->x - b->x;
-  c->y = a->y - b->y;
-  c->z = a->z - b->z;
+  a->x = b->x - c->x;
+  a->y = b->y - c->y;
+  a->z = b->z - c->z;
 }
 
 void vec3_mul(VEC3 *a, float scalar, VEC3 *b) {
-  b->x = scalar * a->x;
-  b->y = scalar * a->y;
-  b->z = scalar * a->z;
+  a->x = scalar * b->x;
+  a->y = scalar * b->y;
+  a->z = scalar * b->z;
 }
 
-void vec3_div(VEC3 *a, float diviser, VEC3 *b) {
-  b->x = a->x / diviser;
-  b->y = a->y / diviser;
-  b->z = a->z / diviser;
+void vec3_div(VEC3 *a, float divisor, VEC3 *b) {
+  a->x = b->x / divisor;
+  a->y = b->y / divisor;
+  a->z = b->z / divisor;
 }
 
 float vec3_dot(VEC3 *a, VEC3 *b) {
@@ -89,9 +89,9 @@ float vec3_dot(VEC3 *a, VEC3 *b) {
 }
 
 void vec3_cross(VEC3 *a, VEC3 *b, VEC3 *c) {
-  c->x = a->y * b->z - a->z * b->y;
-  c->y = -(b->z * a->x - b->x * a->z);
-  c->z = a->x * b->y - a->y * b->x;
+  a->x = b->y * c->z - b->z * c->y;
+  a->y = -(c->z * b->x -c->x * b->z);
+  a->z = b->x * c->y - b->y * c->x;
 }
 
 float vec3_angleBetween(VEC3 *a, VEC3 *b) {
@@ -119,31 +119,31 @@ void vec4_copy(VEC4 *a, VEC4 *b) {
 }
 
 void vec4_add(VEC4 *a, VEC4 *b, VEC4 *c) {
-  c->x = a->x + b->x;
-  c->y = a->y + b->y;
-  c->z = a->z + b->z;
-  c->w = a->w + b->w;
+  a->x = b->x + c->x;
+  a->y = b->y + c->y;
+  a->z = b->z + c->z;
+  a->w = b->w + c->w;
 }
 
 void vec4_sub(VEC4 *a, VEC4 *b, VEC4 *c) {
-  c->x = a->x - b->x;
-  c->y = a->y - b->y;
-  c->z = a->z - b->z;
-  c->w = a->w - b->w;
+  a->x = b->x - c->x;
+  a->y = b->y - c->y;
+  a->z = b->z - c->z;
+  a->w = b->w - c->w;
 }
 
 void vec4_mul(VEC4 *a, float scalar, VEC4 *b) {
-  b->x = scalar * a->x;
-  b->y = scalar * a->y;
-  b->z = scalar * a->z;
-  b->w = scalar * a->w;
+  a->x = scalar * b->x;
+  a->y = scalar * b->y;
+  a->z = scalar * b->z;
+  a->w = scalar * b->w;
 }
 
 void vec4_div(VEC4 *a, float diviser, VEC4 *b) {
-  b->x = a->x / diviser;
-  b->y = a->y / diviser;
-  b->z = a->z / diviser;
-  b->w = a->w / diviser;
+  a->x = b->x / diviser;
+  a->y = b->y / diviser;
+  a->z = b->z / diviser;
+  a->w = b->w / diviser;
 }
 
 long vec4_toColor(VEC4 *a) {
@@ -172,7 +172,7 @@ void matrix3_multiply(MATRIX3 *mat1, MATRIX3 *mat2) {
   result.m22 = mat1->m20 * mat2->m02 + mat1->m21 * mat2->m12 + mat1->m22 * mat2->m22;
 
   for (i = 0; i < 9; ++i)
-    mat2->v[i] = result.v[i];  
+    mat2->v[i] = result.v[i];
 }
 
 void matrix3_identity(MATRIX3 *matrix) {
@@ -188,9 +188,9 @@ void matrix3_identity(MATRIX3 *matrix) {
 }
 
 void matrix3_rotate(MATRIX3 *matrix, float theta) {
-  
+
   MATRIX3 rotateMatrix;
-  
+
   rotateMatrix.m00 = cosf(theta);
   rotateMatrix.m01 = -sinf(theta);
   rotateMatrix.m02 = 0;
@@ -205,7 +205,7 @@ void matrix3_rotate(MATRIX3 *matrix, float theta) {
 }
 
 void matrix3_scale(MATRIX3 *matrix, VEC3 *scale) {
-  
+
   MATRIX3 scaleMatrix;
   scaleMatrix.m00 = scale->x;
   scaleMatrix.m01 = 0;
@@ -225,4 +225,11 @@ void matrix3_scale(MATRIX3 *matrix, VEC3 *scale) {
 void matrix3_translate(MATRIX3 *matrix, VEC3 *translation) {
   matrix->m02 += translation->x;
   matrix->m12 += translation->y;
+}
+
+
+float angle_normalize(float angle) {
+  angle = (float)fmod(angle, 2.0f * (float)M_PI);
+  
+  return angle >= 0 ? angle : angle + 2.0f * (float)M_PI;
 }

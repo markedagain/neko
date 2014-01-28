@@ -313,7 +313,8 @@ void file_getCurrentDirectory(char *directory) {
   TCHAR buffer[MAX_PATH];
   char *lastSlash;
   GetModuleFileName(NULL, buffer, MAX_PATH);
-  wcstombs(directory, buffer, MAX_PATH);
+  //wcstombs(directory, buffer, MAX_PATH);
+  strcpy(directory, buffer); 
   lastSlash = strrchr((char *)directory, '\\');
   if (lastSlash != NULL)
     *lastSlash = 0;
@@ -341,12 +342,15 @@ bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char 
   char path[MAX_PATH];
   char file[MAX_PATH];
   sprintf(path, "%s\\*", directory);
-  mbstowcs(widePath, path, MAX_PATH);
+  //mbstowcs(widePath, path, MAX_PATH);
+  strcpy(widePath, path);
   if ((find = FindFirstFile(widePath, &findFile)) == INVALID_HANDLE_VALUE)
     return false;
   do {
-    if (wcscmp(findFile.cFileName, __TEXT(".")) && wcscmp(findFile.cFileName, __TEXT(".."))) {
-      wcstombs(file, findFile.cFileName, MAX_PATH);
+    //if (wcscmp(findFile.cFileName, __TEXT(".")) && wcscmp(findFile.cFileName, __TEXT(".."))) {
+    if (strcmp(findFile.cFileName, ".") && strcmp(findFile.cFileName, "..")) {
+      //wcstombs(file, findFile.cFileName, MAX_PATH);
+      strcpy(file, findFile.cFileName);
       sprintf(path, "%s\\%s", directory, file);
       if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
         file_getAllByExtension(fileList, path, extension);

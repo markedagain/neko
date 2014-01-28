@@ -80,4 +80,6 @@ NEKO_API void matrix3_scale(MATRIX3 *, VEC3 *);
 NEKO_API void matrix3_rotate(MATRIX3 *, float);
 NEKO_API void matrix3_multiply(MATRIX3 *, MATRIX3 *);
 
+NEKO_API float angle_normalize(float angle);
+
 #endif

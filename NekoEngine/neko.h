@@ -15,4 +15,6 @@
 #define NEKO_DEFAULT_ROOT "data/"
 #define NEKO_GAMETITLE "Game School Simulator 2015"
 
+#include "util.h"
+
 #endif
