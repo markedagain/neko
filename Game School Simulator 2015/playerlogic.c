@@ -19,6 +19,38 @@ void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   
 }
 
+void pan(COMPONENT *self, float x, float y, POINT *outPoint) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  float zoom = bg->systems.camera.transform.scale.x;
+  float oldX = bg->systems.camera.transform.translation.x;
+  float oldY = bg->systems.camera.transform.translation.y;
+  float newX = bg->systems.camera.transform.translation.x + x;
+  float newY = bg->systems.camera.transform.translation.y + y;
+  newX = (float)min(max(newX, -80.0f * 4.0f * zoom), 80.0f * 4.0f * zoom);
+  bg->systems.camera.transform.translation.x = newX;
+  bg->systems.camera.transform.translation.y = newY;
+  mg->systems.camera.transform.translation.x = newX;
+  mg->systems.camera.transform.translation.y = newY;
+  fg->systems.camera.transform.translation.x = newX;
+  fg->systems.camera.transform.translation.y = newY;
+  if (outPoint != NULL) {
+    outPoint->x = (int)floor(newX - oldX);
+    outPoint->y = (int)floor(newY - oldY);
+  }
+}
+void pan_reset(COMPONENT *self) {
+  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+  bg->systems.camera.transform.translation.x = 0.0f;
+  bg->systems.camera.transform.translation.y = 180.0f - 24.0f;
+  mg->systems.camera.transform.translation.x = 0.0f;
+  mg->systems.camera.transform.translation.y = 180.0f - 24.0f;
+  fg->systems.camera.transform.translation.x = 0.0f;
+  fg->systems.camera.transform.translation.y = 180.0f - 24.0f;
+}
 void zoom(COMPONENT *self, float zoom) {
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
@@ -36,6 +68,7 @@ void zoom(COMPONENT *self, float zoom) {
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
   fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+  pan(self, 0.0f, 0.0f, NULL);
 }
 void zoom_reset(COMPONENT *self) {
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
@@ -47,32 +80,6 @@ void zoom_reset(COMPONENT *self) {
   mg->systems.camera.transform.scale.y = 1.0f;
   fg->systems.camera.transform.scale.x = 1.0f;
   fg->systems.camera.transform.scale.y = 1.0f;
-}
-void pan(COMPONENT *self, float x, float y) {
-  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
-  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-  float zoom = bg->systems.camera.transform.scale.x;
-  float newX = bg->systems.camera.transform.translation.x + x;
-  float newY = bg->systems.camera.transform.translation.y + y;
-  newX = (float)min(max(newX, -80.0f * 4.0f * zoom), 80.0f * 4.0f * zoom);
-  bg->systems.camera.transform.translation.x = newX;
-  bg->systems.camera.transform.translation.y = newY;
-  mg->systems.camera.transform.translation.x = newX;
-  mg->systems.camera.transform.translation.y = newY;
-  fg->systems.camera.transform.translation.x = newX;
-  fg->systems.camera.transform.translation.y = newY;
-}
-void pan_reset(COMPONENT *self) {
-  SPACE *bg = game_getSpace(self->owner->space->game, "bg");
-  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-  SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-  bg->systems.camera.transform.translation.x = 0.0f;
-  bg->systems.camera.transform.translation.y = 180.0f - 24.0f;
-  mg->systems.camera.transform.translation.x = 0.0f;
-  mg->systems.camera.transform.translation.y = 180.0f - 24.0f;
-  fg->systems.camera.transform.translation.x = 0.0f;
-  fg->systems.camera.transform.translation.y = 180.0f - 24.0f;
 }
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event) {
@@ -92,10 +99,10 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   // MANAGE INPUT
   if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
-    pan(self, -4.0f, 0.0f);
+    pan(self, -4.0f, 0.0f, NULL);
   }
   if (input->keyboard.keys[KEY_RIGHT] == ISTATE_DOWN) {
-    pan(self, 4.0f, 0.0f);
+    pan(self, 4.0f, 0.0f, NULL);
   }
   if (input->keyboard.keys[KEY_UP] == ISTATE_DOWN) {
     zoom(self, 0.01f);
@@ -107,6 +114,9 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom_reset(self);
     pan_reset(self);
   }
+  /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
+    game_resize(self->owner->space->game, 1280, 720);
+  }*/
 
   if (input->mouse.wheel.direction == -1)
     zoom(self, -0.1f);
@@ -123,10 +133,13 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     input_unlockMouse(input);
   }
   if (data->dragging) {
-    int xdiff = data->dragOrigin.x - input->mouse.position.x;
-    data->dragOrigin.x = input->mouse.position.x;
-    pan(self, (float)xdiff, 0.0f);
-    input_setMousePos(input, input->mouse.position.x, data->dragOrigin.y);
+    POINT panned;
+    float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
+    xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
+    pan(self, xdiff, 0.0f, &panned);
+    if (panned.x != 0)
+      data->dragOrigin.x = input->mouse.position.x;
+    input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
   }
 
 

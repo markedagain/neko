@@ -62,18 +62,18 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
 
-  vec3_set(&position, -256, 160, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "NEKO MEANS CAT PRESENTS", &color);
-  vec3_set(&position, -256, 128, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", "GAME SCHOOL SIMULATOR 2015\nENGINE PROOF", &color);
-  vec3_set(&position, -256, 80, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "NOW WITH TOTALLY BANGIN'\nSPRITETEXT", &color);
-  vec3_set(&position, -256, 48, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/c64/8", "AND LIKE SIX DIFFERENT FONTS", &color);
-  vec3_set(&position, -256, 36, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/terminal/6", "OKAY ONLY FOUR; MS GOTHIC 4 LYFE (THIS ONE IS TERMINAL THO)", &color);
-  vec3_set(&position, -256, 28, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/28", "JUST KIDDING, NOW THERE'S SIX", &color);
+  vec3_set(&position, -318, 180, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/28", "MS GOTHIC 28", &color);
+  vec3_set(&position, -318, 150, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "MS GOTHIC 20", &color);
+  vec3_set(&position, -318, 130, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", "MS GOTHIC 16", &color);
+  vec3_set(&position, -318, 112, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "MS GOTHIC 12", &color);
+  vec3_set(&position, -318, 98, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/c64/8", "COMMODORE 64 8x8", &color);
+  vec3_set(&position, -318, 88, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/terminal/6", "TERMINAL 6\n\n(SUPER SUPER TINY FONT FOR LIKE\nIDK STUDENTS' THOUGHTS AND STUFF\nOR SOMETHING) HOLY SHIT NEWLINES\nTOTES WORK", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 

@@ -48,6 +48,7 @@ typedef struct game_t {
     } time;
   } systems;
   bool initialized;
+  bool resized;
   INPUT_CONTAINER input;
   unsigned char destroying;
 } GAME;
@@ -63,6 +64,7 @@ NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
 NEKO_API void game_resize(GAME *, unsigned int, unsigned int);
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+void __game_resize(GAME *game);
 
 extern GAME *__game;
 

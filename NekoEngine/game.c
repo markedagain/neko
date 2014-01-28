@@ -13,8 +13,8 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 360
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 GAME *__game = NULL; // UGHHHHHHH
 
@@ -23,21 +23,22 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
-  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
+  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME, FALSE);
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = WINDOW_WIDTH;
   sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
   sysInitInfo.mCreateConsole    = 1;
-  sysInitInfo.mMaxFrameRate    = 0;
+  sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS -1; // -1 to make Alpha not be dumb (?)
   sysInitInfo.mpWinCallBack    = __game_processWindow;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
-  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
+  sysInitInfo.mWindowStyle    = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME;
   game->spaces = list_create();
   dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
   game->destroying = 0;
+  game->resized = false;
 
 
   game->window.width = windowRect.right - windowRect.left;
@@ -192,6 +193,10 @@ bool game_loop(GAME *game) {
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
     AESysFrameEnd();
+    if (game->resized) {
+      game->resized = false;
+      __game_resize(game);
+    }
   }
 
   return true;
@@ -204,7 +209,7 @@ void game_destroy(GAME *game) {
 void game_resize(GAME *game, unsigned int width, unsigned int height) {
   HWND hWnd = AESysGetWindowHandle();
   RECT windowRect = { 0, 0, width, height };
-  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX, FALSE);
+  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME, FALSE);
 
   game->window.width = windowRect.right - windowRect.left;
   game->window.height = windowRect.bottom - windowRect.top;
@@ -212,7 +217,22 @@ void game_resize(GAME *game, unsigned int width, unsigned int height) {
   game->innerWindow.height = height;
   SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
   if (game->initialized)
-    AEGfxExit();
+    AEGfxExit(); // TODO: Replace with better?
+  AEGfxInit(game->innerWindow.width, game->innerWindow.height);
+}
+
+void __game_resize(GAME *game) {
+  RECT windowRect = { 0, 0 };
+  RECT clientRect = { 0, 0 };
+  GetWindowRect(AESysGetWindowHandle(), &windowRect);
+  GetClientRect(AESysGetWindowHandle(), &clientRect);
+  game->window.width = windowRect.right - windowRect.left;
+  game->window.height = windowRect.bottom - windowRect.top;
+  //game->innerWindow.width = clientRect.right - clientRect.left;
+  //game->innerWindow.height = clientRect.bottom - clientRect.top;
+
+  if (game->initialized)
+    AEGfxExit(); // TODO: Replace with better?
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 }
 
@@ -245,7 +265,13 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_MOVE:
-    InvalidateRect(hwnd, NULL, FALSE);
+    //InvalidateRect(hwnd, NULL, FALSE);
+    break;
+
+  case WM_SIZE:
+    if (__game != NULL)
+      //__game_resize(__game);
+      __game->resized = true;
     break;
 
   case WM_MOUSEWHEEL:
