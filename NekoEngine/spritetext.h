@@ -11,6 +11,7 @@
 #include "util.h"
 #include "vectormath.h"
 #include "multisprite.h"
+#include "genericsprite.h"
 
 #define COMP_SPRITETEXT HASH("COMP_SPRITETEXT")
 #define SPRITETEXT_MAXLENGTH 80

@@ -44,15 +44,13 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   SPRITE *sprite;
   TEXTURE *texture;
 
-  vec3_copy(translation, trans->world.translation);
+  vec3_copy(&translation, &trans->world.translation);
 
   if (!comData->visible)
     return;
 
   sprite = (SPRITE *)dict_get(&self->owner->space->game->data.sprites, comData->source);
   texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
-  if (texture == NULL)
-    printf("OH SHIT %s\n", sprite->textureName);
 
   screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
   spriteWidth = (float)sprite->width;

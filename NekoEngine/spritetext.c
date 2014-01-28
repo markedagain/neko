@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "transform.h"
 #include "vectormath.h"
+#include <stdio.h>
 
 void comp_spriteText_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITETEXT *data = (CDATA_SPRITETEXT *)self->data;
@@ -26,6 +27,7 @@ void comp_spriteText_initialize(COMPONENT *self, void *event) {
     else
       offset.x += fontSize.x;
     list_insert_end(multi->entities, (void *)ent);
+    printf("DOIN A THING\n");
   }
 }
 
@@ -44,5 +46,6 @@ void comp_spriteText(COMPONENT *self) {
   data.color.b = 1;
   data.color.a = 1;
   COMPONENT_INIT(self, COMP_SPRITETEXT, data);
+  self->events.initialize = comp_spriteText_initialize;
   component_depend(self, COMP_MULTISPRITE);
 }

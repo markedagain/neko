@@ -229,6 +229,7 @@ void matrix3_translate(MATRIX3 *matrix, VEC3 *translation) {
 
 
 float angle_normalize(float angle) {
-  angle = angle % (2.0f * (float)M_PI);
+  angle = (float)fmod(angle, 2.0f * (float)M_PI);
+  
   return angle >= 0 ? angle : angle + 2.0f * (float)M_PI;
 }

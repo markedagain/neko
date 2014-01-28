@@ -8,7 +8,6 @@
 
 void arch_cursor(ENTITY *entity) {
   CDATA_SPRITE *sprite;
-  CDATA_SPRITETEXT *spriteText;
 
   entity->id = ARCH_CURSOR;
 
@@ -16,13 +15,6 @@ void arch_cursor(ENTITY *entity) {
 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   sprite->source = "cursor/default";
-
-  spriteText = (CDATA_SPRITETEXT *)entity_connect(entity, comp_spriteText);
-  strcpy(spriteText->text, "Hey hi hello");
-  spriteText->color.r = 1;
-  spriteText->color.g = 1;
-  spriteText->color.b = 1;
-  spriteText->color.a = 1;
 
   entity_connect(entity, comp_cursorLogic);
 }

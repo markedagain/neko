@@ -7,6 +7,8 @@
 #include "component.h"
 #include "hash.h"
 #include "linkedlist.h"
+#include "sprite.h"
+#include "transform.h"
 
 #define COMP_MULTISPRITE HASH("COMP_MULTISPRITE")
 

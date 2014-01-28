@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   uiSpace = game_addSpace(game, "ui");
 
   vec3_set(&position, 0, 0, 0);
-  genericText_create(uiSpace, &position, NULL, "font/8x8", "HEY HI HELLO", &color);
+  //genericText_create(uiSpace, &position, NULL, "fonts/8x8", "HEY HI HELLO", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 

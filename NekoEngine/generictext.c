@@ -2,11 +2,13 @@
 
 #include "generictext.h"
 #include "transform.h"
+#include "multisprite.h"
 #include "spritetext.h"
 
 void arch_genericText(ENTITY *entity) {
   entity->id = ARCH_GENERICTEXT;
   entity_connect(entity, comp_transform);
+  entity_connect(entity, comp_multiSprite);
   entity_connect(entity, comp_spriteText);
 }
 
