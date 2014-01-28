@@ -126,6 +126,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if (input->mouse.wheel.delta != 0)
     zoom(self, 0.1f * (float)input->mouse.wheel.delta);
   if (input->mouse.left == ISTATE_PRESSED && !input->mouse.handled.left) {
+    input->mouse.handled.left = true;
     data->dragging = true;
     input_lockMouse(input);
     data->dragOrigin.x = input->mouse.position.x;

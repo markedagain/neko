@@ -58,7 +58,9 @@ void input_setMousePos(INPUT_CONTAINER *input, int x, int y) {
 
 void input_lockMouse(INPUT_CONTAINER *input) {
   RECT r;
-  GetWindowRect(AESysGetWindowHandle(), &r);
+  GetClientRect(AESysGetWindowHandle(), &r);
+  ClientToScreen(AESysGetWindowHandle(), (LPPOINT)&r.left);
+  ClientToScreen(AESysGetWindowHandle(), (LPPOINT)&r.right);
   ClipCursor(&r);
 }
 

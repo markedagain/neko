@@ -6,13 +6,14 @@
 #include "vectormath.h"
 #include "dictionary.h"
 #include <stdio.h>
+#include <string.h>
 
 void comp_spriteText_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITETEXT *data = (CDATA_SPRITETEXT *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(self->owner, COMP_MULTISPRITE);
   TEXTURE *texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, data->font);
-  POINT fontSize = { texture->width / 16, texture->height / 16 }; // TODO: Make this dynamic, based on texture size
+  POINT fontSize = { texture->width / 16, texture->height / 16 };
   VEC2 offset = { (float)fontSize.x / 2.0f, -(float)fontSize.y / 2.0f };
   int i;
 
@@ -52,8 +53,44 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
   CDATA_SPRITETEXT *data = (CDATA_SPRITETEXT *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(self->owner, COMP_MULTISPRITE);
-
-
+  TEXTURE *texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, data->font);
+  POINT fontSize = { texture->width / 16, texture->height / 16 };
+  VEC2 offset = { (float)fontSize.x / 2.0f, -(float)fontSize.y / 2.0f };
+  int i = 0;
+  LIST_NODE *node = multi->entities->first;
+  for (i = 0; i < SPRITETEXT_MAXLENGTH; ++i) {
+    data->text[i] = 0;
+  }
+  strcpy(data->text, text);
+  i = 0;
+  while (node != NULL) {
+    VEC3 position = { offset.x, offset.y };
+    ENTITY *ent = (ENTITY *)node->data;
+    CDATA_SPRITE *sprData = (CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE);
+    bool newline = false;
+    char ch;
+    sprData->manual.enabled = true;
+    sprData->manual.textureName = data->font;
+    sprData->manual.width = fontSize.x;
+    sprData->manual.height = fontSize.y;
+    vec4_copy(&sprData->color, &data->color);
+    ch = data->text[i];
+    if (data->text[i] == '\n') {
+      newline = true;
+      ch = ' ';
+    }
+    sprData->manual.u = (float)((ch % 16 * sprData->manual.width) + (sprData->manual.width / 2)) / (float)(16 * sprData->manual.width);
+    sprData->manual.v = (float)((ch / 16 * sprData->manual.height) + (sprData->manual.height / 2)) / (float)(16 * sprData->manual.height);
+    entity_attach(ent, self->owner);
+    if (newline) {
+      offset.x = (float)fontSize.x / 2.0f;
+      offset.y -= (float)fontSize.y;
+    }
+    else
+      offset.x += fontSize.x;
+    node = node->next;
+    ++i;
+  }
 }
 
 void comp_spriteText(COMPONENT *self) {

@@ -28,4 +28,6 @@ NEKO_API void comp_spriteText_initialize(COMPONENT *self, void *event);
 
 NEKO_API void comp_spriteText(COMPONENT *self);
 
+NEKO_API void comp_spriteText_setText(COMPONENT *self, char *text);
+
 #endif

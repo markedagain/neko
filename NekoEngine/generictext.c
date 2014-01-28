@@ -23,3 +23,8 @@ ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font,
   comp_spriteText_initialize(entity_getComponent(entity, COMP_SPRITETEXT), NULL);
   return entity;
 }
+
+void genericText_setText(ENTITY *entity, char *text) {
+  COMPONENT *comText = entity_getComponent(entity, COMP_SPRITETEXT);
+  comp_spriteText_setText(comText, text);
+}

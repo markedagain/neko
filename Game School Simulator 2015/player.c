@@ -7,6 +7,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
+#include "../NekoEngine/spritetext.h"
 #include "playerlogic.h"
 
 void arch_player(ENTITY *entity) {
@@ -34,4 +35,7 @@ void arch_player(ENTITY *entity) {
   // This is what it looks like to connect a component to an entity without setting any data or
   // anything! Super easy, right?
   entity_connect(entity, comp_playerLogic);
+  entity_connect(entity, comp_transform);
+  entity_connect(entity, comp_multiSprite);
+  entity_connect(entity, comp_spriteText);
 }

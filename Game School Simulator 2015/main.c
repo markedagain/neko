@@ -14,6 +14,7 @@
 #include "../NekoEngine/generictext.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/transform.h"
+#include "../NekoEngine/spritetext.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
