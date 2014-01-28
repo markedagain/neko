@@ -19,6 +19,14 @@ typedef struct cdata_sprite_t {
   VEC4 color;
   VEC2 size;
   bool visible;
+  struct {
+    bool enabled;
+    char *textureName;
+    float u;
+    float v;
+    unsigned int width;
+    unsigned int height;
+  } manual;
 } CDATA_SPRITE;
 
 void comp_sprite_initialize(COMPONENT *, void *);

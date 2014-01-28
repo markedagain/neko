@@ -13,12 +13,17 @@
 
 #define COMP_SPRITETEXT HASH("COMP_SPRITETEXT")
 
+#define SPRITETEXT_MAXLENGTH 64
+
 typedef struct {
   char *font;
-  char text[255];
+  char text[SPRITETEXT_MAXLENGTH];
   VEC4 color;
+  VECTOR characters;
 } CDATA_SPRITETEXT;
 
+void comp_spriteText_initialize(COMPONENT *, void *);
+void comp_spriteText_destroy(COMPONENT *, void *);
 void comp_spriteText_draw(COMPONENT *, void *);
 
 NEKO_API void comp_spriteText(COMPONENT *);
