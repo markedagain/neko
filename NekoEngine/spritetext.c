@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "transform.h"
 #include "vectormath.h"
+#include "dictionary.h"
 #include <stdio.h>
 
 void comp_spriteText_initialize(COMPONENT *self, void *event) {
@@ -11,8 +12,11 @@ void comp_spriteText_initialize(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(self->owner, COMP_MULTISPRITE);
   VEC2 offset = { 0, 0 };
-  VEC2 fontSize = { 8, 8 }; // TODO: Make this dynamic, based on texture size
+  TEXTURE *texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, data->font);
+  POINT fontSize = { texture->width / 16, texture->height / 16 }; // TODO: Make this dynamic, based on texture size
   int i;
+
+
 
   for (i = 0; i < SPRITETEXT_MAXLENGTH; ++i) {
     VEC3 position = { offset.x, offset.y };
@@ -22,8 +26,8 @@ void comp_spriteText_initialize(COMPONENT *self, void *event) {
     char ch;
     sprData->manual.enabled = true;
     sprData->manual.textureName = data->font;
-    sprData->manual.width = 8;
-    sprData->manual.height = 8;
+    sprData->manual.width = fontSize.x;
+    sprData->manual.height = fontSize.y;
     vec4_copy(&sprData->color, &data->color);
     ch = data->text[i];
     if (data->text[i] == '\n') {
