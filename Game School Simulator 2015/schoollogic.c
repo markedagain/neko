@@ -58,12 +58,12 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
-  printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
+  /*printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
   printf("       Incoming: %i\n", comData->incomingStudents);
   printf("Money: $%i", comData->money);
   printf("       Tuition: $%i\n", comData->tuition);
   printf("Rep: %i", comData->reputation);
-  printf("              Alumni: %i\n", comData->alumni->count);
+  printf("              Alumni: %i\n", comData->alumni->count);*/
 }
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -95,11 +95,37 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
   ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, NULL);
   CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
   int i = 0;
+
+  if(roomType == ROOMTYPE_LOBBY) {
+    if(comData->rooms.coord[2][7] == NULL)
+      comData->rooms.coord[2][7] = newRoom;
+    else if(comData->rooms.coord[1][7] == NULL)
+      comData->rooms.coord[1][7] = newRoom;
+    else if(comData->rooms.coord[0][7] == NULL)
+      comData->rooms.coord[0][7] = newRoom;
+    else {
+      printf("NO MORE SPACE");
+      return;
+    }
+  }
+  else {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+      int floor = i / MAX_ROOMS_PER_FLOOR;
+      int col = i % MAX_ROOMS_PER_FLOOR;
+      // If there is an empty space
+      // And the spot next is occupied
+      if(comData->rooms.coord[floor][col] == NULL
+      && comData->rooms.coord[floor][col + 1]) {
+        comData->rooms.coord[floor][col] = newRoom;
+      }
+    }
+  }
+  
   newRoomCompData->type = roomType;
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
-  if(roomType == ROOMTYPE_LOBBY) {
-    comData->rooms.coord[2][7] = newRoom;
-  }
+  
+
+  //Show school layout
   for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
     int floor = i / MAX_ROOMS_PER_FLOOR;
     int col = i % MAX_ROOMS_PER_FLOOR;
