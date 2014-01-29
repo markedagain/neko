@@ -22,7 +22,7 @@ typedef struct cdata_studentData_t {
   int yearStarted;
   int semesterStarted;
   int counter;
-  bool graduated; 
+  bool graduated;
   LIST_NODE *listNodePtr;
 } CDATA_STUDENTDATA;
 

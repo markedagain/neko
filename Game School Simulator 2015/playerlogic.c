@@ -93,6 +93,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   SPACE *simSpace = game_getSpace(self->owner->space->game,"sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+  COMPONENT *schoolLogic = (COMPONENT *)entity_getComponent((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   POINT mousePos;
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
@@ -156,79 +157,34 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    ENTITY *newRoom = space_addEntity(simSpace, arch_room, "Lobby");
-    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-    newRoomCompData->type = ROOMTYPE_LOBBY;
-    list_insert_end(schoolData->rooms, newRoom); //Add newRoom to the rooms list
+    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_LOBBY);
   }
   // Create Class room if "K" is pressed
   if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {
-    ENTITY *newRoom = space_addEntity(simSpace, arch_room, "Class");
-    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-    newRoomCompData->type = ROOMTYPE_CLASS;
-    list_insert_end(schoolData->rooms, newRoom); //Add newRoom to the rooms list
+    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_CLASS);
   }
   // Create Library room if "J" is pressed
   if(input->keyboard.keys[KEY_J] == ISTATE_PRESSED) {
-    ENTITY *newRoom = space_addEntity(simSpace, arch_room, "Library");
-    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-    newRoomCompData->type = ROOMTYPE_LIBRARY;
-    list_insert_end(schoolData->rooms, newRoom); //Add newRoom to the rooms list
+    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_LIBRARY);
   }
   // Create TeamSpace room if "H" is pressed
   if(input->keyboard.keys[KEY_H] == ISTATE_PRESSED) {
-    ENTITY *newRoom = space_addEntity(simSpace, arch_room, "TeamSpace");
-    CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-    newRoomCompData->type = ROOMTYPE_TEAMSPACE;
-    list_insert_end(schoolData->rooms, newRoom); //Add newRoom to the rooms list
+    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_TEAMSPACE);
   }
 
   // List all rooms constructed
   if(input->keyboard.keys[KEY_PERIOD] == ISTATE_PRESSED) {
-    LIST_NODE *roomNode;
-    if(schoolData->rooms->first != NULL) {
-      roomNode = schoolData->rooms->first;
-      do {
-        ENTITY *room = (ENTITY *)roomNode->data;
-        printf("1) ");
-        printf(room->name);
-        printf("\n");
-        roomNode = roomNode->next;
-      } while(roomNode != NULL);
-    }
+    comp_schoolLogic_listRooms(schoolLogic, schoolData);
   }
 
   // List all enrolled students
   if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
-    LIST_NODE *studentNode;
-    if(schoolData->students->first != NULL) {
-      studentNode = schoolData->students->first;
-      do {
-        ENTITY *student = (ENTITY *)studentNode->data;
-        CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
-        printf("1) ");
-        printf("Name: %s %s", studentData->name.first, studentData->name.last);
-        printf(" - Tech:%i Design:%i Art:%i\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
-        printf("\n");
-        studentNode = studentNode->next;
-      } while(studentNode != NULL);
-    }
+    comp_schoolLogic_listStudents(schoolLogic, schoolData);
   }
 
   // List all alumni
   if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-    LIST_NODE *alumniNode;
-    if(schoolData->students->first != NULL) {
-      alumniNode = schoolData->alumni->first;
-      do {
-        ENTITY *alumni = (ENTITY *)alumniNode->data;
-        CDATA_STUDENTDATA *alumniData = (CDATA_STUDENTDATA *)entity_getComponentData(alumni, COMP_STUDENTDATA);
-        printf("1) ");
-        printf("Name: %s %s\n", alumniData->name.first, alumniData->name.last);
-        printf("\n");
-        alumniNode = alumniNode->next;
-      } while(alumniNode != NULL);
-    }
+    comp_schoolLogic_listAlumni(schoolLogic, schoolData);
   }
 }
 

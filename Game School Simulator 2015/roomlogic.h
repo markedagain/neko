@@ -17,7 +17,14 @@ typedef enum {
 
 typedef struct cdata_roomlogic_t {
   ROOM_TYPE type;
+  int cost;
   int upkeep;
+  int size;
+  int techBonus;
+  int designBonus;
+  int artBonus;
+  int motivationBonus;
+  int repBonus;
   int frameCounter;
 
 } CDATA_ROOMLOGIC;

@@ -2,7 +2,6 @@
 
 #include "schoollogic.h"
 #include "room.h"
-#include "roomlogic.h"
 #include "student.h"
 #include "studentdata.h"
 #include "../NekoEngine/linkedlist.h"
@@ -10,28 +9,23 @@
 #include "../NekoEngine/sprite.h"
 #include <math.h>
 
-int variableTest = 1;
+void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
+  printf("\n\n\n\n\n\nWelcome To: %s\n\n\n\n\n\n", comData->schoolName);
+}
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  /*EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-
-  // Only display message once
-  if(variableTest == 1) {
-    //CDATA_SPRITE *sprite;
-    //sprite = (CDATA_SPRITE *)entity_connect(self->owner, comp_sprite);
-    //sprite->source = "dev64";
-    printf("\n\n\n\n\n\n\n\n\n\n\n\nWelcome To %s!\n\n\n\n\n\n\n\n\n", comData->schoolName);
-    variableTest = 0;
-  }
-
+  */
   //printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
 }
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
   LIST_NODE *studentPtr;
+  LIST_NODE *roomPtr;
   
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
@@ -47,7 +41,12 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   //Add money
   comData->money += (int)floor((float)(comData->tuition * comData->currentStudents) / 6.0f);
   //Lose money
-  comData->money -= (int)floor((float)comData->roomMaintainance / 6.0f);
+  //Go through list of rooms and pay upkeep
+  roomPtr = comData->roomList->first;
+  for(i = 0; i < comData->roomList->count; i++) {
+    CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(roomPtr->data, COMP_ROOMLOGIC);
+    comData->money -= roomData->upkeep;
+  }
 
   // Add student stats
   studentPtr = comData->students->first;
@@ -92,9 +91,76 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
   
 }
 
+void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
+  ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, NULL);
+  CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+  int i = 0;
+  newRoomCompData->type = roomType;
+  list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
+  if(roomType == ROOMTYPE_LOBBY) {
+    comData->rooms.coord[2][7] = newRoom;
+  }
+  for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+    int floor = i / MAX_ROOMS_PER_FLOOR;
+    int col = i % MAX_ROOMS_PER_FLOOR;
+    //printf(" (%i,%i) ", floor, col);
+    if(comData->rooms.coord[floor][col])
+      printf(" X ");
+    else
+      printf(" 0 ");
+    if(col == 15)
+      printf("\n");
+  }
+}
+
+void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  LIST_NODE *roomNode;
+    if(comData->roomList->first != NULL) {
+      roomNode = comData->roomList->first;
+      do {
+        ENTITY *room = (ENTITY *)roomNode->data;
+        printf("1) ");
+        printf(room->name);
+        printf("\n");
+        roomNode = roomNode->next;
+      } while(roomNode != NULL);
+    }
+}
+
+void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  LIST_NODE *studentNode;
+    if(comData->students->first != NULL) {
+      studentNode = comData->students->first;
+      do {
+        ENTITY *student = (ENTITY *)studentNode->data;
+        CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
+        printf("1) ");
+        printf("Name: %s %s", studentData->name.first, studentData->name.last);
+        printf(" - Tech:%i Design:%i Art:%i\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
+        printf("\n");
+        studentNode = studentNode->next;
+      } while(studentNode != NULL);
+    }
+}
+
+void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
+  LIST_NODE *alumniNode;
+    if(comData->students->first != NULL) {
+      alumniNode = comData->alumni->first;
+      do {
+        ENTITY *alumni = (ENTITY *)alumniNode->data;
+        CDATA_STUDENTDATA *alumniData = (CDATA_STUDENTDATA *)entity_getComponentData(alumni, COMP_STUDENTDATA);
+        printf("1) ");
+        printf("Name: %s %s\n", alumniData->name.first, alumniData->name.last);
+        printf("\n");
+        alumniNode = alumniNode->next;
+      } while(alumniNode != NULL);
+    }
+}
+
 void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-  list_destroy(comData->rooms);
+  list_destroy(comData->roomList);
   list_destroy(comData->students);
   list_destroy(comData->alumni);
 }
@@ -110,7 +176,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.students = list_create();
   data.alumni = list_create();
   data.roomMaintainance = 0;
-  data.rooms = list_create();
+  data.roomList = list_create();
   data.reputation = 0;
   data.techBonus = 1;
   data.designBonus = 1;
