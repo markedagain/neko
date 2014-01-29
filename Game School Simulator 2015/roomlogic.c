@@ -86,7 +86,6 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_roomLogic(COMPONENT *self) {
   CDATA_ROOMLOGIC data;
-  data.type = ROOMTYPE_LOBBY;
   data.cost = 0;
   data.upkeep = 0;
   data.size = 0;

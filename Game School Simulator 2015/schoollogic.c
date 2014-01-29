@@ -92,18 +92,26 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
 }
 
 void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
-  ENTITY *newRoom = space_addEntity(self->owner->space, arch_room, NULL);
-  CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+  ENTITY *newRoom;
+  CDATA_ROOMLOGIC *newRoomCompData;
+  int floorToUse;
+  int colToUse;
   int i = 0;
 
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
-    if(comData->rooms.coord[2][7] == NULL)
-      comData->rooms.coord[2][7] = newRoom;
-    else if(comData->rooms.coord[1][7] == NULL)
-      comData->rooms.coord[1][7] = newRoom;
-    else if(comData->rooms.coord[0][7] == NULL)
-      comData->rooms.coord[0][7] = newRoom;
+    if(comData->rooms.coord[2][7] == NULL) {
+      floorToUse = 2;
+      colToUse = 7;
+    }
+    else if(comData->rooms.coord[1][7] == NULL) {
+      floorToUse = 1;
+      colToUse = 7;
+    }
+    else if(comData->rooms.coord[0][7] == NULL) {
+      floorToUse = 0;
+      colToUse = 7;
+    }
     else {
       printf("NO MORE SPACE\n");
       return;
@@ -126,7 +134,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
             continue;
         }
         // Build new room
-        comData->rooms.coord[floor][col] = newRoom;
+        floorToUse = floor;
+        colToUse = col;
         createdRoom = 1;
         break;
       }
@@ -138,8 +147,11 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
   }
   
+  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
+  newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
   newRoomCompData->type = roomType;
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
+  comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   
 
   //Show school layout
