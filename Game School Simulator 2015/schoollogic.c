@@ -105,11 +105,12 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     else if(comData->rooms.coord[0][7] == NULL)
       comData->rooms.coord[0][7] = newRoom;
     else {
-      printf("NO MORE SPACE");
+      printf("NO MORE SPACE\n");
       return;
     }
   }
   else {
+    int createdRoom = 0;
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
@@ -120,10 +121,15 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
       && ((comData->rooms.coord[floor][col + 1] && col + 1 < 15)
       || (comData->rooms.coord[floor][col - 1] && col - 1 > 0))){
         comData->rooms.coord[floor][col] = newRoom;
+        createdRoom = 1;
         break;
       }
     }
     //return since no space is found
+    if(createdRoom == 0) {
+      printf("NO SPACE TO CONSTRUCT ROOM\n");
+      return;
+    }
   }
   
   newRoomCompData->type = roomType;
