@@ -58,12 +58,12 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
-  /*printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
+  printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
   printf("       Incoming: %i\n", comData->incomingStudents);
   printf("Money: $%i", comData->money);
   printf("       Tuition: $%i\n", comData->tuition);
   printf("Rep: %i", comData->reputation);
-  printf("              Alumni: %i\n", comData->alumni->count);*/
+  printf("              Alumni: %i\n", comData->alumni->count);
 }
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -96,6 +96,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
   CDATA_ROOMLOGIC *newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
   int i = 0;
 
+  // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
     if(comData->rooms.coord[2][7] == NULL)
       comData->rooms.coord[2][7] = newRoom;
@@ -113,12 +114,16 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
       // If there is an empty space
-      // And the spot next is occupied
-      if(comData->rooms.coord[floor][col] == NULL
-      && comData->rooms.coord[floor][col + 1]) {
+      // And (the spot to the left is occupied and the spot next is not the end of the row)
+      // Or (teh spot to the right is occupied)
+      if((comData->rooms.coord[floor][col] == NULL)
+      && ((comData->rooms.coord[floor][col + 1] && col + 1 < 15)
+      || (comData->rooms.coord[floor][col - 1] && col - 1 > 0))){
         comData->rooms.coord[floor][col] = newRoom;
+        break;
       }
     }
+    //return since no space is found
   }
   
   newRoomCompData->type = roomType;
