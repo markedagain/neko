@@ -120,6 +120,12 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
       if((comData->rooms.coord[floor][col] == NULL)
       && ((comData->rooms.coord[floor][col + 1] && col + 1 < 15)
       || (comData->rooms.coord[floor][col - 1] && col - 1 > 0))){
+        // Check if room under *remember that floors is reversed (2 is 1st floor 0 is 3rd floor)
+        if(floor < 2) {
+          if(comData->rooms.coord[floor + 1][col] == NULL)
+            continue;
+        }
+        // Build new room
         comData->rooms.coord[floor][col] = newRoom;
         createdRoom = 1;
         break;
