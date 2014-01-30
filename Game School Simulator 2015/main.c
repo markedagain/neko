@@ -15,6 +15,7 @@
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/spritetext.h"
+#include "graphicroom.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -45,7 +46,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");
 
-  vec3_set(&position, 0, 40, 0);
+  space_addEntity(mgSpace, arch_graphicRoom, "graphicRoom");
+
+  /*vec3_set(&position, 0, 40, 0);
   genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
   vec3_set(&position, -120, 40, 0);
@@ -55,7 +58,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 
   vec3_set(&position, 0, 120, 0);
-  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
+  genericSprite_create(mgSpace, &position, NULL, "rooms/template2");*/
 
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");

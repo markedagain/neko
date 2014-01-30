@@ -41,6 +41,9 @@
     <ClCompile Include="mousebox.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="graphicroom.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -93,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="mousebox.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicroom.h">
+      <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
