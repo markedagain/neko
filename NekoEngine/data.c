@@ -20,6 +20,7 @@ void dataContainer_init(DATACONTAINER *data) {
   dict_init(&data->textures);
   dict_init(&data->sounds);
   dict_init(&data->textfiles);
+  dict_init(&data->sounds);
   data->root = NEKO_DEFAULT_ROOT;
 }
 
