@@ -90,6 +90,9 @@
     <ClCompile Include="multisprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sound.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="neko.h">
@@ -168,6 +171,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="multisprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
