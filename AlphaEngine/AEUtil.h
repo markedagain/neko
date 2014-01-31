@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
-// Project Name		:	Alpha Engine
-// File Name		:	AEUtil.h
-// Author			:	Sun Tjen Fam
-// Creation Date	:	2008/02/01
-// Purpose			:	header file for utility library
-// History			:
-// - 2008/02/01		:	- initial implementation
+// Project Name    :  Alpha Engine
+// File Name    :  AEUtil.h
+// Author      :  Sun Tjen Fam
+// Creation Date  :  2008/02/01
+// Purpose      :  header file for utility library
+// History      :
+// - 2008/02/01    :  - initial implementation
 // ---------------------------------------------------------------------------
 
 #ifndef AE_UTIL_H
@@ -18,10 +18,10 @@ extern "C"
 #endif
 
 // Time functions
-AE_API f64		AEGetTime(f64* pTime);
+AE_API f64    AEGetTime(f64* pTime);
 
 // random number generator
-AE_API f32		AERandFloat();
+AE_API f32    AERandFloat();
 
 
 #define isZero(x) ((x < EPSILON) && (x > -EPSILON))
@@ -30,12 +30,12 @@ AE_API f32		AERandFloat();
 
 
 // Bit accessors
-#define IsFlag(Value, Flag) 						((Value & Flag) == Flag)	
-#define FlagOn(Value, Flag)							Value |= Flag;					
-#define FlagOff(Value, Flag)						Value &= ~Flag;					
-#define FlagZero(Value)								Value = 0;						
-#define FlagOnExclusive(Value, Flag)				FlagZero(Value); 	\
-													FlagOn(Value, Flag);					
+#define IsFlag(Value, Flag)             ((Value & Flag) == Flag)  
+#define FlagOn(Value, Flag)              Value |= Flag;          
+#define FlagOff(Value, Flag)            Value &= ~Flag;          
+#define FlagZero(Value)                Value = 0;            
+#define FlagOnExclusive(Value, Flag)        FlagZero(Value);   \
+                          FlagOn(Value, Flag);          
 
 
 

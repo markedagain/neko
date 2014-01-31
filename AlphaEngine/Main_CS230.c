@@ -26,20 +26,13 @@ int gGameRunning = 1;
 // ---------------------------------------------------------------------------
 // Static function protoypes
 
-
-// ---------------------------------------------------------------------------
-
-
-LRESULT CALLBACK MyWinCallBack(HWND hWin, UINT msg, WPARAM wp, LPARAM lp);
-
-
 // ---------------------------------------------------------------------------
 // main
 
 
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
 {
-	// Variable declaration	
+	// Variable declaration
 	unsigned char colors[16];				// 2x2 image
 	float obj1X = 0.0f, obj1Y = 0.0f;		// Position variables for object 1
 	float obj1texX = 0, obj1texY = 0;		// Texture variables for object 2's texture
@@ -50,69 +43,31 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AEGfxTexture *pTex2;					// Pointer to Texture (Image)
 	float camX, camY;						// Used to temporary store camera position
 	float alpha = 1.0f;
-	WNDCLASS	winClass;
-	HWND winHandle;
-	RECT rect;
 
-	// Initialize the system 
+	// Initialize the system
 	AESysInitInfo sysInitInfo;
-
 	sysInitInfo.mAppInstance		= instanceH;
 	sysInitInfo.mShow				= show;
-	sysInitInfo.mWinWidth			= 800; 
+	sysInitInfo.mWinWidth			= 800;
 	sysInitInfo.mWinHeight			= 600;
 	sysInitInfo.mCreateConsole		= 1;
 	sysInitInfo.mMaxFrameRate		= 60;
 	sysInitInfo.mpWinCallBack		= NULL;//MyWinCallBack;
-	sysInitInfo.mClassStyle			= CS_HREDRAW | CS_VREDRAW;											
-	sysInitInfo.mWindowStyle		= WS_OVERLAPPEDWINDOW;//WS_POPUP | WS_VISIBLE | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-
-
-	winClass.style			= sysInitInfo.mClassStyle;
-	winClass.lpfnWndProc	= MyWinCallBack;//(pSysInitInfo->mpWinCallBack) ? pSysInitInfo->mpWinCallBack : winCallBack;
-	winClass.cbClsExtra		= 0;
-	winClass.cbWndExtra		= 0;
-	winClass.hInstance		= sysInitInfo.mAppInstance;
-	winClass.hIcon			= LoadIcon(NULL,IDI_EXCLAMATION);
-	winClass.hCursor		= LoadCursor(NULL,IDC_ARROW);
-	winClass.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);
-	winClass.lpszMenuName	= NULL;
-	winClass.lpszClassName	= "Window Class Name";
-
-	RegisterClass(&winClass);
-
-
-	rect.left = 0;
-	rect.top = 0;
-	rect.right = sysInitInfo.mWinWidth;//WinWidth;
-	rect.bottom = sysInitInfo.mWinHeight;//WinHeight;
-
-
-	AdjustWindowRect(&rect, sysInitInfo.mWindowStyle, 0);
-
-	winHandle = CreateWindow(winClass.lpszClassName, "Window Title", sysInitInfo.mWindowStyle, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, sysInitInfo.mAppInstance, NULL);
-
-	ShowWindow	(winHandle, show);
-	UpdateWindow(winHandle);
-
-
-	sysInitInfo.mCreateWindow		= 0;
-	sysInitInfo.mWindowHandle		= winHandle;
-
-	if(0 == AESysInit (&sysInitInfo))
-		printf("System Init Failed!\n");
+	sysInitInfo.mClassStyle			= CS_HREDRAW | CS_VREDRAW;
+	sysInitInfo.mWindowStyle		= WS_OVERLAPPEDWINDOW;//WS_POPUP | WS_VISIBLE | WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;;
+	AESysInit (&sysInitInfo);
 
 	// reset the system modules
 	AESysReset();
 
-	
+
 	// Informing the library that we're about to start adding triangles
 	AEGfxMeshStart();
 
 	// 1 triangle at a time
 	// X, Y, Color, texU, texV
 	AEGfxTriAdd(
-		-25.5f, -25.5f, 0xFFFF0000, 0.0f, 0.0f, 
+		-25.5f, -25.5f, 0xFFFF0000, 0.0f, 0.0f,
 		25.5f,  0.0f, 0xFFFF0000, 0.0f, 0.0f,
 		-25.5f,  25.5f, 0xFFFF0000, 0.0f, 0.0f);
 
@@ -126,19 +81,19 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 	// This shape has 2 triangles
 	AEGfxTriAdd(
-		-30.0f, -30.0f, 0x00FF00FF, 0.0f, 1.0f, 
+		-30.0f, -30.0f, 0x00FF00FF, 0.0f, 1.0f,
 		30.0f,  -30.0f, 0x00FFFF00, 1.0f, 1.0f,
 		-30.0f,  30.0f, 0x00F00FFF, 0.0f, 0.0f);
 
 	AEGfxTriAdd(
-		30.0f, -30.0f, 0x00FFFFFF, 1.0f, 1.0f, 
+		30.0f, -30.0f, 0x00FFFFFF, 1.0f, 1.0f,
 		30.0f,  30.0f, 0x00FFFFFF, 1.0f, 0.0f,
 		-30.0f,  30.0f, 0x00FFFFFF, 0.0f, 0.0f);
 
 	pMesh2 = AEGfxMeshEnd();
 	AE_ASSERT_MESG(pMesh2, "Failed to create mesh 2!!");
 
-		
+
 	// Informing the library that we're about to start adding vertices
 	AEGfxMeshStart();
 
@@ -163,14 +118,14 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	// RGBA format
 	colors[0] = 255;	colors[1] = 0;		colors[2] = 0;		colors[3] = 255;
 	colors[4] = 0;		colors[5] = 255;	colors[6] = 0;		colors[7] = 255;
-	colors[8] = 0;		colors[9] = 0;		colors[10] = 255;	colors[11] = 255;	
-	colors[12] = 255;	colors[13] = 255;	colors[14] = 255;	colors[15] = 255;				
+	colors[8] = 0;		colors[9] = 0;		colors[10] = 255;	colors[11] = 255;
+	colors[12] = 255;	colors[13] = 255;	colors[14] = 255;	colors[15] = 255;
 
 	pTex2 = AEGfxTextureLoadFromMemory(colors, 2, 2);
 	// This step is optional, it creates a file from the texture argument
 	AE_ASSERT_MESG(pTex2, "Failed to create texture2!!");
 
-	
+
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 
@@ -183,7 +138,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		// Handling Input
 		AEInputUpdate();
 
-		
+
 		// Object Control
 		if (AEInputCheckCurr(VK_UP))
 			obj1Y += 3.0f;
@@ -205,20 +160,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 			alpha += 0.01f;
 
 		alpha = AEClamp(alpha, 0.0f, 1.0f);
-
-
-		// Blending mode
-		if (AEInputCheckCurr('1'))
-			AEGfxSetBlendMode(AE_GFX_BM_NONE);
-		else
-		if (AEInputCheckCurr('2'))
-			AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-		else
-		if (AEInputCheckCurr('3'))
-			AEGfxSetBlendMode(AE_GFX_BM_ADD);
-		else
-		if (AEInputCheckCurr('4'))
-			AEGfxSetBlendMode(AE_GFX_BM_MULTIPLY);
 
 
 		// Move the camera
@@ -279,7 +220,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		// Drawing the mesh (list of triangles)
 		AEGfxMeshDraw(pMesh2, AE_GFX_MDM_TRIANGLES);
 
-		
+
 		// Drawing object 2 again
 		// Set position for object 2
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -292,7 +233,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AEGfxMeshDraw(pMesh2, AE_GFX_MDM_TRIANGLES);
 
 
-		
+
 		// Drawing object 2 again and again
 		// Set poisition for object 2
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -317,7 +258,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AEGfxMeshFree(pMesh1);
 	AEGfxMeshFree(pMesh2);
 	AEGfxMeshFree(pMeshLine);
-	
+
 	AEGfxTextureUnload(pTex1);
 	AEGfxTextureUnload(pTex2);
 
@@ -330,47 +271,3 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 // ---------------------------------------------------------------------------
 
-
-LRESULT CALLBACK MyWinCallBack(HWND hWin, UINT msg, WPARAM wp, LPARAM lp) 
-{
-	HDC dc;   
-	PAINTSTRUCT ps;
-
-	switch (msg)
-	{
-	// when the window is created
-	case WM_CREATE:
-		printf("My own code in window create message!\n");
-		break;
-
-	// when the rectangle is drawn
-	case WM_PAINT:
-		dc = BeginPaint(hWin, &ps);
-
-		// Cleans up the painting process
-		EndPaint(hWin, &ps);
-		break;
-
-	// When it's time for the window to go away
-	case WM_DESTROY:
-		//PostQuitMessage(0);
-		//gAESysWinExists = false;
-		break;
-
-	// called any time the window is moved
-	case WM_MOVE:
-		// Invalidate the rect to force a redraw
-		InvalidateRect(hWin, NULL, FALSE);
-		break;
-
-	case WM_ACTIVATE:
-		// DO NOT REMOVE THIS
-		// *(AESysGetAppActive()) = (LOWORD(wp) == WA_INACTIVE) ? 0 : 1;
-		break;
-
-	default:
-		return DefWindowProc(hWin, msg, wp, lp);
-	}
-
-	return 0;
-}
