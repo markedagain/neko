@@ -95,23 +95,6 @@
   <ItemGroup>
     <ClCompile Include="Main_CS230.c" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="3DPipelineTools.h" />
-    <ClInclude Include="AECollision.h" />
-    <ClInclude Include="AEEngine.h" />
-    <ClInclude Include="AEExport.h" />
-    <ClInclude Include="AEFrameRateController.h" />
-    <ClInclude Include="AEGameStateMgr.h" />
-    <ClInclude Include="AEGraphics.h" />
-    <ClInclude Include="AEInput.h" />
-    <ClInclude Include="AELineSegment2.h" />
-    <ClInclude Include="AEMath.h" />
-    <ClInclude Include="AEMtx33.h" />
-    <ClInclude Include="AESystem.h" />
-    <ClInclude Include="AETypes.h" />
-    <ClInclude Include="AEUtil.h" />
-    <ClInclude Include="AEVec2.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

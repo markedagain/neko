@@ -5,24 +5,24 @@
 /*
 struct Vertex
 {
-  Point4 position;
-  Vector4 normal;
-  Point4 color;
-  Point4 texCoord;
+	Point4 position;
+	Vector4 normal;
+	Point4 color;
+	Point4 texCoord;
 
-  f32 zInCamera;
-  f32 zDepth;
+	f32 zInCamera;
+	f32 zDepth;
 
-  Vertex(Point4 p = Point4(), Vector4 n = Vector4(), Point4 c = Point4(), Point4 t = Point4(), f32 zc = 0.0f, f32 zd = 0.0f)
-  {
-    position = p;
-    normal = n;
-    color = c;
-    texCoord = t;
+	Vertex(Point4 p = Point4(), Vector4 n = Vector4(), Point4 c = Point4(), Point4 t = Point4(), f32 zc = 0.0f, f32 zd = 0.0f)
+	{
+		position = p;
+		normal = n;
+		color = c;
+		texCoord = t;
 
-    zInCamera = zc;
-    zDepth = zd;
-  }
+		zInCamera = zc;
+		zDepth = zd;
+	}
 };
 */
 
