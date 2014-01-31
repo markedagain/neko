@@ -44,6 +44,18 @@
     <ClCompile Include="graphicroom.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="UI_base.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_build.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_manage.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_student.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -99,6 +111,18 @@
     </ClInclude>
     <ClInclude Include="graphicroom.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_base.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_build.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_manage.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_student.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
