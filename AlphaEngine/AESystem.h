@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
-// Project Name    :  Alpha Engine
-// File Name    :  AESystem.h
-// Author      :  Sun Tjen Fam
-// Creation Date  :  2008/01/31
-// Purpose      :  header file for the system module
-// History      :
-// - 2008/01/31    :  - initial implementation
+// Project Name		:	Alpha Engine
+// File Name		:	AESystem.h
+// Author			:	Sun Tjen Fam
+// Creation Date	:	2008/01/31
+// Purpose			:	header file for the system module
+// History			:
+// - 2008/01/31		:	- initial implementation
 // ---------------------------------------------------------------------------
 
 #ifndef AE_SYSTEM_H
@@ -17,14 +17,7 @@
 // ---------------------------------------------------------------------------
 
 // window related variables
-extern HINSTANCE  ghAESysAppInstance;
-extern HWND      gAESysWindowHandle;
-extern WNDCLASS    winClass;
-
-extern const char*  gpAESysWinTitle;
-extern const char*  gpAESysWinClassName;
-
-extern AE_API int  gAESysAppActive;
+extern HWND			gAESysWindowHandle;
 
 // ---------------------------------------------------------------------------
 
@@ -33,20 +26,22 @@ extern AE_API int  gAESysAppActive;
 typedef struct AESysInitInfo
 {
 #if(EXPORT_WINDOWS == 1)
-  HINSTANCE    mAppInstance;
-  int        mShow;
-  int        mWinWidth, mWinHeight;
-  int        mCreateConsole;
-  unsigned int  mMaxFrameRate;
-  LRESULT (CALLBACK *mpWinCallBack)(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);      // NULL to use the default message handler
+	int				mCreateWindow;
+	HWND			mWindowHandle;
+	HINSTANCE		mAppInstance;
+	int				mShow;
+	int				mWinWidth, mWinHeight;
+	int				mCreateConsole;
+	unsigned int	mMaxFrameRate;
+	LRESULT (CALLBACK *mpWinCallBack)(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);			// NULL to use the default message handler
 
-  unsigned int  mClassStyle;                              
-  unsigned int  mWindowStyle;                              
+	unsigned int	mClassStyle;															
+	unsigned int	mWindowStyle;															
 
 
 
 #else
-  int dummy;
+	int dummy;
 
 #endif
 }AESysInitInfo;
@@ -59,15 +54,15 @@ extern "C"
 #endif
 
 
-AE_API int AESysInit        (AESysInitInfo *pSysInitInfo);//HINSTANCE hAppInstance, int show, int WinWidth, int WinHeight, int CreateConsole, unsigned int FrameRateMax, LRESULT (CALLBACK *pWinCallBack)(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp));
-AE_API void AESysReset        ();
-AE_API void AESysUpdate        ();
-AE_API void AESysExit        ();
+AE_API int AESysInit				(AESysInitInfo *pSysInitInfo);//HINSTANCE hAppInstance, int show, int WinWidth, int WinHeight, int CreateConsole, unsigned int FrameRateMax, LRESULT (CALLBACK *pWinCallBack)(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp));
+AE_API void AESysReset				();
+AE_API void AESysUpdate				();
+AE_API void AESysExit				();
 
-AE_API HWND AESysGetWindowHandle  ();
-//AE_API int* AESysGetAppActive    ();
-AE_API void AESysSetWindowTitle    (const char *pTitle);
-AE_API int AESysDoesWindowExist    ();
+AE_API HWND AESysGetWindowHandle	();
+//AE_API int* AESysGetAppActive		();
+AE_API void AESysSetWindowTitle		(const char *pTitle);
+AE_API int AESysDoesWindowExist		();
 
 // ---------------------------------------------------------------------------
 

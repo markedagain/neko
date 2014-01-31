@@ -115,6 +115,17 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom_reset(self);
     pan_reset(self);
   }
+  /*
+  if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
+    ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
+    CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
+    trans->rotation += 0.2f;
+  }
+  if (input->keyboard.keys[KEY_2] == ISTATE_DOWN) {
+    ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
+    CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
+    trans->scale.x -= 0.1f;
+  }*/
   /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
     game_resize(self->owner->space->game, 1280, 720);
   }*/

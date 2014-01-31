@@ -23,11 +23,12 @@ void comp_transform_logicUpdate(COMPONENT *self, void *event) {
   }
   else {
     parentTransform = (CDATA_TRANSFORM *)entity_getComponentData(self->owner->parent, COMP_TRANSFORM);
-    vec3_add(&comData->world.translation, &parentTransform->translation, &comData->translation);
-    comData->world.scale.x = parentTransform->scale.x * comData->scale.x;
-    comData->world.scale.y = parentTransform->scale.y * comData->scale.y;
-    comData->world.scale.z = parentTransform->scale.z * comData->scale.z;
-    comData->world.rotation = angle_normalize(parentTransform->rotation + comData->rotation);
+    comData->world.scale.x = parentTransform->world.scale.x * comData->scale.x;
+    comData->world.scale.y = parentTransform->world.scale.y * comData->scale.y;
+    comData->world.scale.z = parentTransform->world.scale.z * comData->scale.z;
+    comData->world.rotation = angle_normalize(parentTransform->world.rotation + comData->rotation);
+    // TODO: Use 2x2 matrix math to transform the translation based on parent's rotation and scale
+    vec3_add(&comData->world.translation, &parentTransform->world.translation, &comData->translation);
   }
 }
 

@@ -14,6 +14,7 @@
 #include "../AlphaEngine/AEEngine.h"
 #include "data.h"
 #include "stopwatch.h"
+#include "sound.h"
 
 typedef struct space_t SPACE;
 typedef struct component_t COMPONENT;
@@ -46,6 +47,7 @@ typedef struct game_t {
       double frameRate;
       double dt;
     } time;
+    SOUND_SYSTEM sound;
   } systems;
   bool initialized;
   bool resized;

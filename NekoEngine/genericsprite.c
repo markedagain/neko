@@ -18,3 +18,11 @@ ENTITY *genericSprite_create(SPACE *space, VEC3 *position, char *name, char *sou
   spriteData->source = source;
   return entity;
 }
+
+ENTITY *genericSprite_createBlank(SPACE *space, VEC3 *position, VEC2 *dimensions, VEC4 *color, char *name) {
+  ENTITY *entity = genericSprite_create(space, position, name, "blank");
+  CDATA_SPRITE *spriteData = ((CDATA_SPRITE *)entity_getComponentData(entity, COMP_SPRITE));
+  vec2_copy(&spriteData->size, dimensions);
+  vec4_copy(&spriteData->color, color);
+  return entity;
+}

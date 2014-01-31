@@ -11,5 +11,6 @@
 
 NEKO_API void arch_genericSprite(ENTITY *);
 NEKO_API ENTITY *genericSprite_create(SPACE *space, VEC3 *position, char *name, char *source);
+NEKO_API ENTITY *genericSprite_createBlank(SPACE *space, VEC3 *position, VEC2 *dimensions, VEC4 *color, char *name);
 
 #endif

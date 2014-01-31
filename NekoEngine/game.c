@@ -56,6 +56,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->systems.time.elapsedFrames = 0;
   game->initialized = true;
   input_initialize(&game->input);
+  sound_initialize(&game->systems.sound, &game->data.sounds);
 
   AESysInit(&sysInitInfo);
   AESysSetWindowTitle(NEKO_GAMETITLE);
