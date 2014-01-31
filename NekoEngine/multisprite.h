@@ -16,6 +16,8 @@ typedef struct {
   LIST *entities;
 } CDATA_MULTISPRITE;
 
-NEKO_API void comp_multiSprite(COMPONENT *);
+void comp_multiSprite_destroy(COMPONENT *self, void *event);
+
+NEKO_API void comp_multiSprite(COMPONENT *self);
 
 #endif

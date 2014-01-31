@@ -7,3 +7,4 @@
 #include "../AlphaEngine/AEEngine.h"
 
 #pragma comment(lib, "../lib/Alpha_Engine.lib")
+#pragma comment(lib, "../lib/fmodex_vc.lib")

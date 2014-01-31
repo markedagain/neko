@@ -158,7 +158,6 @@ void check_hover(COMPONENT *self) {
 
   if ((posX >= box.topLeft.x && posX <= box.botRight.x) && (posY <= box.topLeft.y && posY >= box.botRight.y))
   {
-    printf("\nfffffff|||||||||||||||||||||||||||||||||||\n");
     data->hover = true;
   }
   else

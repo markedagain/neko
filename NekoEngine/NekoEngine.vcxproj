@@ -60,7 +60,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
-      <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AlphaEngine;..\fmod;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -91,7 +91,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;NEKOENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
-      <AdditionalIncludeDirectories>..\AlphaEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AlphaEngine;..\fmod;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
@@ -130,6 +130,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClInclude Include="neko.h" />
     <ClInclude Include="pak.h" />
     <ClInclude Include="random.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="soundemitter.h" />
     <ClInclude Include="space.h" />
     <ClInclude Include="sprite.h" />
@@ -157,6 +158,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="neko.c" />
     <ClCompile Include="pak.c" />
     <ClCompile Include="random.c" />
+    <ClCompile Include="sound.c" />
     <ClCompile Include="soundemitter.c" />
     <ClCompile Include="space.c" />
     <ClCompile Include="sprite.c" />

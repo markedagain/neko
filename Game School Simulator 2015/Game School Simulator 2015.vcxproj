@@ -142,6 +142,10 @@ xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e</Command>
     <ClCompile Include="studentdata.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="timemanager.c" />
+    <ClCompile Include="UI_base.c" />
+    <ClCompile Include="UI_build.c" />
+    <ClCompile Include="UI_manage.c" />
+    <ClCompile Include="UI_student.c" />
     <ClInclude Include="background.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
@@ -157,6 +161,10 @@ xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e</Command>
     <ClInclude Include="studentdata.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="timemanager.h" />
+    <ClInclude Include="UI_base.h" />
+    <ClInclude Include="UI_build.h" />
+    <ClInclude Include="UI_manage.h" />
+    <ClInclude Include="UI_student.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NekoEngine\NekoEngine.vcxproj">
