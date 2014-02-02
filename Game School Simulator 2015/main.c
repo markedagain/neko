@@ -80,7 +80,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   ent2 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "TEST2");
   entity_attach(ent2, ent1);
 
-  vec3_set(&position, 0, 0, 0);
+  vec3_set(&position, -20.0f, 0, 0);
   vec4_set(&color, 0.0f, 0.0f, 1.0f, 1.0f);
   ent3 = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "CHILD!", &color);
   entity_attach(ent3, ent2);
