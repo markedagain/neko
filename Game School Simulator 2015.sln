@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E549C1A6-3057-446D-95B1-F51100155D82}"
 	ProjectSection(SolutionItems) = preProject
 		etc\AssemblyDependencies.dgml = etc\AssemblyDependencies.dgml
+		etc\IncludeFileDependencies.dgml = etc\IncludeFileDependencies.dgml
 	EndProjectSection
 EndProject
 Global
