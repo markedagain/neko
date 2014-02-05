@@ -86,17 +86,11 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   entity_attach(ent3, ent2);
 
   vec3_set(&position, -318, 180, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/28", "MS GOTHIC 28", &color);
-  vec3_set(&position, -318, 150, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "MS GOTHIC 20", &color);
-  vec3_set(&position, -318, 130, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", "MS GOTHIC 16", &color);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);
+  vec3_set(&position, -318, 160, 0);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Engine Proof", &color);
   vec3_set(&position, -318, 112, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "MS GOTHIC 12", &color);
-  vec3_set(&position, -318, 98, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/c64/8", "COMMODORE 64 8x8", &color);
-  vec3_set(&position, -318, 88, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/terminal/6", "TERMINAL 6\n\n(SUPER SUPER TINY FONT FOR LIKE\nIDK STUDENTS' THOUGHTS AND STUFF\nOR SOMETHING) HOLY SHIT NEWLINES\nTOTES WORK", &color);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
