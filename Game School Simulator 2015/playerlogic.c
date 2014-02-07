@@ -185,19 +185,19 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_LOBBY);
+    comp_schoolLogic_findBuildSpot(schoolLogic, schoolData, ROOMTYPE_LOBBY);
   }
   // Create Class room if "K" is pressed
   if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_CLASS);
+    comp_schoolLogic_findBuildSpot(schoolLogic, schoolData, ROOMTYPE_CLASS);
   }
   // Create Library room if "J" is pressed
   if(input->keyboard.keys[KEY_J] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_LIBRARY);
+    comp_schoolLogic_findBuildSpot(schoolLogic, schoolData, ROOMTYPE_LIBRARY);
   }
   // Create TeamSpace room if "H" is pressed
   if(input->keyboard.keys[KEY_H] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(schoolLogic, schoolData, ROOMTYPE_TEAMSPACE);
+    comp_schoolLogic_findBuildSpot(schoolLogic, schoolData, ROOMTYPE_TEAMSPACE);
   }
 
   // List all rooms constructed
