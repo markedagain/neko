@@ -25,11 +25,6 @@ typedef struct {
   char *root;
 } DATACONTAINER;
 
-/*typedef struct {
-  char *data;
-  size_t size;
-} TEXTURE;*/
-
 typedef struct {
   AEGfxTexture *data;
   unsigned int width;
