@@ -8,7 +8,9 @@
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
 
+  trans->translation.y = 100.0f;
 
   /*if (mbox->left.down) {
     //sprite->color.r = min(sprite->color.r + 0.05f, 1);

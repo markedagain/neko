@@ -96,9 +96,7 @@ void set_box_sprite(COMPONENT *self) {
   VEC3 camScale;
   VEC3 worldScale = trans->world.scale;
   float worldRotation = trans->world.rotation;
-  VEC3 screenScaleVec;
   MATRIX3 transform = { 0 };
-  float screenScale;
 
 
   size.x = spriteData->size.x;
@@ -106,10 +104,6 @@ void set_box_sprite(COMPONENT *self) {
 
   camScale.x = self->owner->space->systems.camera.transform.scale.x;
   camScale.y = self->owner->space->systems.camera.transform.scale.y;
-
-  screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
-  screenScaleVec.x = screenScale;
-  screenScaleVec.y = screenScale;
 
   if (spriteData->manual.enabled) {
     texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, spriteData->manual.textureName);
@@ -122,7 +116,7 @@ void set_box_sprite(COMPONENT *self) {
   spriteWidth = spriteData->manual.enabled ? spriteData->manual.width : (float)sprite->width;
   spriteHeight = spriteData->manual.enabled ? spriteData->manual.height : (float)sprite->height;
 
-  translation = trans->translation;
+  translation = trans->world.translation;
 
   topLeft.y = translation.y + spriteHeight / 2;
   topLeft.x = translation.x - spriteWidth / 2;
@@ -132,7 +126,6 @@ void set_box_sprite(COMPONENT *self) {
   matrix3_identity(&transform);
   matrix3_scale(&transform, &size);
   matrix3_scale(&transform, &camScale);
-  matrix3_scale(&transform, &screenScaleVec);
   matrix3_scale(&transform, &worldScale);
   matrix3_rotate(&transform, worldRotation);
 

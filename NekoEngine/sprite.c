@@ -40,7 +40,6 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float spriteWidth;
   float spriteHeight;
   VEC3 translation;
-  VEC3 camTranslate = { 0 };
   SPRITE *sprite = NULL;
   TEXTURE *texture;
   float u, v;

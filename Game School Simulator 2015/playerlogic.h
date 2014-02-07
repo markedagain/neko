@@ -9,7 +9,13 @@
 
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 
+typedef enum {
+  DEFAULT = 0,
+  BUILD
+} GMODE;
+
 typedef struct {
+  GMODE gameMode;
   bool dragging;
   POINT dragOrigin;
   float zoomVelocity;

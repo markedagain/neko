@@ -75,10 +75,36 @@ ENTITY *space_getEntity(SPACE *space, char *name) {
 }
 
 void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos) {
-  int x = (int)mousePos->x - (int)(space->game->innerWindow.width / 2) + (int)space->systems.camera.transform.translation.x;
-  int y = -((int)mousePos->y - (int)(space->game->innerWindow.height / 2)) + (int)space->systems.camera.transform.translation.y;
-  worldPos->x = (int)((float)x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width));
-  worldPos->y = (int)((float)y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height));
+  VEC3 camTranslate = { 0 };
+  VEC3 camScale;
+  VEC3 screenScaleVec;
+  float screenScale;
+  MATRIX3 transform = { 0 };
+  int x, y;
+
+  camScale.x = space->systems.camera.transform.scale.x;
+  camScale.y = space->systems.camera.transform.scale.y;
+
+  screenScale = (float)space->game->innerWindow.width / space->game->dimensions.width;
+  screenScaleVec.x = screenScale;
+  screenScaleVec.y = screenScale;
+
+  matrix3_identity(&transform);
+  matrix3_scale(&transform, &camScale);
+  matrix3_scale(&transform, &screenScaleVec);
+
+  camTranslate.x = space->systems.camera.transform.translation.x;
+  camTranslate.y = space->systems.camera.transform.translation.y;
+
+  matrix3_apply_to_vector(&camTranslate, &transform);
+
+  x = (int)mousePos->x - (int)(space->game->innerWindow.width / 2) + (int)camTranslate.x;
+  y = -((int)mousePos->y - (int)(space->game->innerWindow.height / 2)) + (int)camTranslate.y;
+  
+  
+
+  worldPos->x = (int)(x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width));
+  worldPos->y = (int)(y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height));
 }
 
 void space_destroy(SPACE *space) {
