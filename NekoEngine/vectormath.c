@@ -227,6 +227,14 @@ void matrix3_translate(MATRIX3 *matrix, VEC3 *translation) {
   matrix->m12 += translation->y;
 }
 
+void matrix3_apply_to_vector(VEC3 *vector, MATRIX3 *matrix) {
+  VEC3 temp = { 0 };
+  temp.x = matrix->m00 * vector->x + matrix->m01 * vector->y + matrix->m02;
+  temp.y = matrix->m10 * vector->x + matrix->m11 * vector->y + matrix->m12;
+
+  *vector = temp;
+}
+
 
 float angle_normalize(float angle) {
   angle = (float)fmod(angle, 2.0f * (float)M_PI);

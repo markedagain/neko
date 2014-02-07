@@ -13,6 +13,9 @@ void comp_transform_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *comData = (CDATA_TRANSFORM *)self->data;
   CDATA_TRANSFORM *parentTransform = NULL;
+  MATRIX3 parentMatrix = { 0 };
+  VEC3 childTranslation = { 0 };
+  VEC3 scale = { 0 };
   comData->rotation = (float)fmod(comData->rotation, 2.0f * (float)M_PI);
   if (comData->rotation < 0)
     comData->rotation += 2.0f * (float)M_PI;
@@ -23,11 +26,22 @@ void comp_transform_logicUpdate(COMPONENT *self, void *event) {
   }
   else {
     parentTransform = (CDATA_TRANSFORM *)entity_getComponentData(self->owner->parent, COMP_TRANSFORM);
-    vec3_add(&comData->world.translation, &parentTransform->translation, &comData->translation);
-    comData->world.scale.x = parentTransform->scale.x * comData->scale.x;
-    comData->world.scale.y = parentTransform->scale.y * comData->scale.y;
-    comData->world.scale.z = parentTransform->scale.z * comData->scale.z;
-    comData->world.rotation = angle_normalize(parentTransform->rotation + comData->rotation);
+    comData->world.scale.x = parentTransform->world.scale.x * comData->scale.x;
+    comData->world.scale.y = parentTransform->world.scale.y * comData->scale.y;
+    comData->world.scale.z = parentTransform->world.scale.z * comData->scale.z;
+    comData->world.rotation = angle_normalize(parentTransform->world.rotation + comData->rotation);
+    // TODO: Use 2x2 matrix math to transform the translation based on parent's rotation and scale
+    // currently does not work with un-uniform scaling
+    childTranslation = comData->translation;
+    matrix3_identity(&parentMatrix);
+    scale.x = parentTransform->world.scale.x;
+    scale.y = parentTransform->world.scale.y;
+    matrix3_scale(&parentMatrix, &scale);
+    matrix3_rotate(&parentMatrix, parentTransform->world.rotation);
+    matrix3_apply_to_vector(&childTranslation, &parentMatrix);
+
+    //all my scaling stuff
+    vec3_add(&comData->world.translation, &parentTransform->world.translation, &childTranslation);
   }
 }
 

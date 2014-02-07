@@ -89,9 +89,9 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   matrix3_scale(&transform, &baseScale);
   matrix3_scale(&transform, &spriteScale);
   matrix3_scale(&transform, &camScale);
-  matrix3_rotate(&transform, trans->world.rotation);
   matrix3_scale(&transform, &trans->world.scale);
   matrix3_scale(&transform, &screenScaleVec);
+  matrix3_rotate(&transform, trans->world.rotation);
   matrix3_translate(&transform, &translation);
 
   if(vec3_magnitude(&translation) > screenRadius + spriteRadius) {

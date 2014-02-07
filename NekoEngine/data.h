@@ -13,6 +13,7 @@
 #include "vector.h"
 #include "pak.h"
 #include "../AlphaEngine/AEEngine.h"
+#include "../fmod/fmod.h"
 
 #define TEXTFILE_LINELENGTH 80
 
@@ -23,11 +24,6 @@ typedef struct {
   DICT textfiles;
   char *root;
 } DATACONTAINER;
-
-/*typedef struct {
-  char *data;
-  size_t size;
-} TEXTURE;*/
 
 typedef struct {
   AEGfxTexture *data;
@@ -47,6 +43,13 @@ typedef struct {
   unsigned int width;
   unsigned int height;
 } SPRITE;
+
+typedef struct {
+  char filename[MAX_PATH];
+  bool inMemory;
+  FMOD_SOUND *data;
+  size_t size;
+} SOUND;
 
 void dataContainer_init(DATACONTAINER *dataContainer);
 NEKO_API void data_loadTextfileFromDisk(DATACONTAINER *dataContainer, const char *filename);
