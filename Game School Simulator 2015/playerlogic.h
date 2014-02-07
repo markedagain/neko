@@ -6,6 +6,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
 #include "../NekoEngine/vectormath.h"
+#include "schoollogic.h"
 
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 
@@ -16,6 +17,7 @@ typedef enum {
 
 typedef struct {
   GMODE gameMode;
+  ROOM_TYPE roomType;
   bool dragging;
   POINT dragOrigin;
   float zoomVelocity;

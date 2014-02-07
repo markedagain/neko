@@ -1,7 +1,6 @@
 #include "roomactorlogic.h"
 #include "mousebox.h"
 #include "../NekoEngine/component.h"
-#include <math.h>
 
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {

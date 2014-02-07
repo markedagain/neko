@@ -59,6 +59,12 @@
     <ClCompile Include="roomactor.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="ghostroom.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="ghostroomlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -129,6 +135,12 @@
     </ClInclude>
     <ClInclude Include="roomactor.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ghostroom.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ghostroomlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
