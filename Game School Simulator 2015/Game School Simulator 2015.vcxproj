@@ -131,7 +131,8 @@ xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e</Command>
     <ClCompile Include="cursor.c" />
     <ClCompile Include="cursorlogic.c" />
     <ClCompile Include="gamemanager.c" />
-    <ClCompile Include="graphicroom.c" />
+    <ClCompile Include="roomactor.c" />
+    <ClCompile Include="roomactorlogic.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mousebox.c" />
     <ClCompile Include="playerlogic.c" />
@@ -150,7 +151,8 @@ xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e</Command>
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
     <ClInclude Include="gamemanager.h" />
-    <ClInclude Include="graphicroom.h" />
+    <ClInclude Include="roomactor.h" />
+    <ClInclude Include="roomactorlogic.h" />
     <ClInclude Include="mousebox.h" />
     <ClInclude Include="playerlogic.h" />
     <ClInclude Include="random.h" />

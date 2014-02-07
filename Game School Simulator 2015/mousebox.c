@@ -11,7 +11,7 @@ void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
   else
     adjust_box(self);
 
-  check_hover(self);
+  check_status(self);
 }
 
 void comp_mouseBox(COMPONENT *self) {
@@ -142,7 +142,7 @@ void set_box_sprite(COMPONENT *self) {
   set_box(self, topLeft.x, topLeft.y, botRight.x, botRight.y);
 }
 
-void check_hover(COMPONENT *self) {
+void check_status(COMPONENT *self) {
   CDATA_MOUSEBOX *data = (CDATA_MOUSEBOX *)self->data;
   POINT mousePos;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
@@ -151,17 +151,63 @@ void check_hover(COMPONENT *self) {
   float posX;
   float posY;
 
+  // translate mouse position to world position
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
   
+  // reset all mouse states
+  data->left.down = false;
+  data->left.pressed = false;
+  data->left.released = false;
+  data->right.down = false;
+  data->right.pressed = false;
+  data->right.released = false;
+
   posX = (float)mousePos.x;
   posY = (float)mousePos.y;
 
-  if ((posX >= box.topLeft.x && posX <= box.botRight.x) && (posY <= box.topLeft.y && posY >= box.botRight.y))
-  {
-    data->hover = true;
+  // checks if the mouse if over the object or not
+  if ((posX >= box.topLeft.x && posX <= box.botRight.x) && (posY <= box.topLeft.y && posY >= box.botRight.y)) {
+    if (data->over != true)
+      data->entered = true;
+    else
+      data->entered = false;
+    data->over = true;
   }
-  else
-    data->hover = false;
+  else {
+    if (data->over == true)
+      data->exited = true;
+    else
+      data->exited = false;
+    data->over = false;
+  }
+
+  // if mouse is cuurrently over the object
+  if (data->over == true) {
+    // check for left mouse input
+    switch (input->mouse.left) {
+      case ISTATE_DOWN:
+        data->left.down = true;
+        break;
+      case ISTATE_PRESSED:
+        data->left.pressed = true;
+        break;
+      case ISTATE_RELEASED:
+        data->left.released = true;
+        break;
+    }
+    // check for right mouse input
+    switch (input->mouse.right) {
+      case ISTATE_DOWN:
+        data->left.down = true;
+        break;
+      case ISTATE_PRESSED:
+        data->left.pressed = true;
+        break;
+      case ISTATE_RELEASED:
+        data->left.released = true;
+        break;
+    }
+  }
 }
 
 

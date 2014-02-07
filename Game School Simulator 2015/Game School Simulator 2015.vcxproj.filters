@@ -41,9 +41,6 @@
     <ClCompile Include="mousebox.c">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="graphicroom.c">
-      <Filter>Archetypes</Filter>
-    </ClCompile>
     <ClCompile Include="UI_base.c">
       <Filter>Components</Filter>
     </ClCompile>
@@ -55,6 +52,12 @@
     </ClCompile>
     <ClCompile Include="UI_student.c">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="roomactorlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="roomactor.c">
+      <Filter>Archetypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +112,6 @@
     <ClInclude Include="mousebox.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="graphicroom.h">
-      <Filter>Archetypes</Filter>
-    </ClInclude>
     <ClInclude Include="UI_base.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -123,6 +123,12 @@
     </ClInclude>
     <ClInclude Include="UI_student.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="roomactorlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="roomactor.h">
+      <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

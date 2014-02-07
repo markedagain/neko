@@ -1,13 +1,13 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#ifndef __ARCH_GRAPHICROOM__
-#define __ARCH_GRAPHICROOM__
+#ifndef __ARCH_ROOMACTOR__
+#define __ARCH_ROOMACTOR__
 
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/hash.h"
 
-#define ARCH_GRAPHICROOM HASH("ARCH_GRAPHICROOM")
+#define ARCH_ROOMACTOR HASH("ARCH_ROOMACTOR")
 
-void arch_graphicRoom(ENTITY *);
+void arch_roomActor(ENTITY *);
 
 #endif
