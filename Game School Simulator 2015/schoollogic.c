@@ -8,10 +8,16 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include <math.h>
+#include "roomactorlogic.h"
+#include "roomactor.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   printf("\n\n\n\n\n\nWelcome To: %s\n\n\n\n\n\n", comData->schoolName);
+}
+
+void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
@@ -91,12 +97,27 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
   
 }
 
-void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
-  ENTITY *newRoom;
-  CDATA_ROOMLOGIC *newRoomCompData;
+void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
   int floorToUse;
   int colToUse;
+  int roomSize;
   int i = 0;
+  CDATA_ROOMLOGIC *lastKnownRoomData = NULL;
+  int distanceFromLastKnown = 47;
+
+  if(comData->roomConstructed == TRUE) {
+    printf("\n1 RPS (Room Per Second)!!!... its the law.\n");
+    return;
+  }
+
+  // Determine room size
+  if(roomType == ROOMTYPE_CLASS)
+    roomSize = 1;
+  else if(roomType == ROOMTYPE_LOBBY
+  || roomType == ROOMTYPE_LIBRARY)
+    roomSize = 2;
+  else if(roomType == ROOMTYPE_TEAMSPACE)
+    roomSize = 3;
 
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
@@ -118,28 +139,97 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
   }
   else {
+    BOOL openSlot[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
+    LIST *legalSlots = list_create();
     int createdRoom = 0;
+    int j = 0;
+    int k = 0;
+
+    // SET ALL VALUES TO TRUE
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
-      // If there is an empty space
-      // And (the spot to the left is occupied and the spot next is not the end of the row)
-      // Or (teh spot to the right is occupied)
-      if((comData->rooms.coord[floor][col] == NULL)
-      && ((comData->rooms.coord[floor][col + 1] && col + 1 < 15)
-      || (comData->rooms.coord[floor][col - 1] && col - 1 > 0))){
-        // Check if room under *remember that floors is reversed (2 is 1st floor 0 is 3rd floor)
-        if(floor < 2) {
-          if(comData->rooms.coord[floor + 1][col] == NULL)
-            continue;
-        }
-        // Build new room
-        floorToUse = floor;
-        colToUse = col;
-        createdRoom = 1;
-        break;
+      openSlot[floor][col] = TRUE;
+    }
+
+    // TAKE OUT ALL SLOTS WITH ROOMS IN THEM ALREADY
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+      int floor = i / MAX_ROOMS_PER_FLOOR;
+      int col = i % MAX_ROOMS_PER_FLOOR;
+      
+      if(comData->rooms.coord[floor][col] == NULL && openSlot[floor][col] != FALSE)
+        openSlot[floor][col] = TRUE;
+      else {
+        CDATA_ROOMLOGIC *otherRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
+        for(k = 0; k < otherRoomData->size; k++)
+          openSlot[floor][col + k] = FALSE;
+        i += otherRoomData->size - 1;
       }
     }
+
+    // TAKE OUT ALL NON LEGAL BUILD LOCATIONS
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+      int floor = i / MAX_ROOMS_PER_FLOOR;
+      int col = i % MAX_ROOMS_PER_FLOOR;
+
+      if(comData->rooms.coord[floor][col]) {
+        lastKnownRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
+        distanceFromLastKnown = 0;
+      }
+      else {
+        distanceFromLastKnown++;
+      }
+      
+      if(openSlot[floor][col] == TRUE) {
+        if(lastKnownRoomData != NULL) {
+          // Make sure room will be connected either on the left or the right
+          if((comData->rooms.coord[floor][col + roomSize] == NULL || col + roomSize >= 16)
+          && (lastKnownRoomData->size < distanceFromLastKnown || col - 1 < 0)) {
+            openSlot[floor][col] = FALSE;
+            continue;
+          }
+        }
+        //Check for size of the room to right
+        for(j = 0; j < roomSize; j++) {
+          //printf("%i ", col+j);
+          if(comData->rooms.coord[floor][col + j]) {
+            openSlot[floor][col] = FALSE;
+            continue;
+          }
+        }
+        // Check if room below *remember that floors is reversed (2 is 1st floor 0 is 3rd floor)
+        if(floor < 2) {
+          if(comData->rooms.coord[floor + 1][col] == NULL) {
+            openSlot[floor][col] = FALSE;
+            continue;
+          }
+        }
+      }
+    }
+
+    // Create list of still available build spots
+    /*for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+      int floor = i / MAX_ROOMS_PER_FLOOR;
+      int col = i % MAX_ROOMS_PER_FLOOR;
+        
+      if(openSlot[floor][col] == TRUE) {
+        list_insert_end(legalSlots, );
+      }
+    }*/
+
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+        int floor = i / MAX_ROOMS_PER_FLOOR;
+        int col = i % MAX_ROOMS_PER_FLOOR;
+
+        if(openSlot[floor][col] == TRUE) {
+          // Build new room
+          floorToUse = floor;
+          colToUse = col;
+          createdRoom = 1;
+          i += MAX_FLOORS * MAX_ROOMS_PER_FLOOR; // end loop
+        }
+    }
+
     //return since no space is found
     if(createdRoom == 0) {
       printf("NO SPACE TO CONSTRUCT ROOM\n");
@@ -147,12 +237,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
   }
   
-  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
-  newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-  newRoomCompData->type = roomType;
-  list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
-  comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
-  
+  //TO BE TAKEN OUT... AT SOME POINT
+  comp_schoolLogic_constructRoom(self, comData, roomType, floorToUse, colToUse);
 
   //Show school layout
   for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
@@ -166,6 +252,26 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     if(col == 15)
       printf("\n");
   }
+}
+
+void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType, int floorToUse, int colToUse) {
+  ENTITY *newRoom;
+  ENTITY *newRoomActor;
+  CDATA_ROOMLOGIC *newRoomCompData;
+  CDATA_ACTORLOGIC *actorCompData;
+
+  // CREATE ROOM
+  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
+  newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+  newRoomCompData->type = roomType;
+  list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
+  comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
+  comData->roomConstructed = TRUE;
+
+  // CREATE ACTOR
+  newRoomActor = space_addEntity(game_getSpace(self->owner->space->game, "mg"), arch_roomActor, NULL);
+  actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
+  actorCompData->type = roomType;
 }
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -236,7 +342,10 @@ void comp_schoolLogic(COMPONENT *self) {
   data.techBonus = 1;
   data.designBonus = 1;
   data.artBonus = 1;
+  data.roomConstructed = FALSE;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
+  self->events.frameUpdate = comp_schoolLogic_frameUpdate;
+  self->events.initialize = comp_schoolLogic_initialize;
 }

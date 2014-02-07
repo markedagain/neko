@@ -4,6 +4,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
+#include "../NekoEngine/entity.h"
 #include <math.h>
 
 
@@ -13,11 +14,12 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_CURSORLOGIC *data = (CDATA_CURSORLOGIC *)entity_getComponentData(self->owner, COMP_CURSORLOGIC);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   POINT mousePos;
+  //SPACE * uiSpace = game_getSpace(self->owner->space->game, "ui");
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
   trans->translation.x = (float)mousePos.x;
   trans->translation.y = (float)mousePos.y;
-  //snap_sprite(self);
+
 }
 
 void comp_cursorLogic(COMPONENT *self) {

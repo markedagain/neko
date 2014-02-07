@@ -75,10 +75,36 @@ ENTITY *space_getEntity(SPACE *space, char *name) {
 }
 
 void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos) {
-  int x = (int)mousePos->x - (int)(space->game->innerWindow.width / 2) + (int)space->systems.camera.transform.translation.x;
-  int y = -((int)mousePos->y - (int)(space->game->innerWindow.height / 2)) + (int)space->systems.camera.transform.translation.y;
-  worldPos->x = (int)((float)x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width));
-  worldPos->y = (int)((float)y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height));
+  VEC3 camTranslate = { 0 };
+  VEC3 camScale;
+  VEC3 screenScaleVec;
+  float screenScale;
+  MATRIX3 transform = { 0 };
+  int x, y;
+
+  camScale.x = space->systems.camera.transform.scale.x;
+  camScale.y = space->systems.camera.transform.scale.y;
+
+  screenScale = (float)space->game->innerWindow.width / space->game->dimensions.width;
+  screenScaleVec.x = screenScale;
+  screenScaleVec.y = screenScale;
+
+  matrix3_identity(&transform);
+  matrix3_scale(&transform, &camScale);
+  matrix3_scale(&transform, &screenScaleVec);
+
+  camTranslate.x = space->systems.camera.transform.translation.x;
+  camTranslate.y = space->systems.camera.transform.translation.y;
+
+  matrix3_apply_to_vector(&camTranslate, &transform);
+
+  x = (int)mousePos->x - (int)(space->game->innerWindow.width / 2) + (int)camTranslate.x;
+  y = -((int)mousePos->y - (int)(space->game->innerWindow.height / 2)) + (int)camTranslate.y;
+  
+  
+
+  worldPos->x = (int)(x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width));
+  worldPos->y = (int)(y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height));
 }
 
 void space_destroy(SPACE *space) {
@@ -127,9 +153,37 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
   while (entityNode != NULL);
 }
 
+void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
+  LIST_NODE *entityNode;
+  entityNode = space->entities->last;
+  do {
+    ENTITY *entity = (ENTITY *)(entityNode->data);
+    unsigned int i = 0;
+    unsigned int componentCount = vector_size(&entity->components);
+
+    if (componentCount == 0 || entity->destroying) {
+      entityNode = entityNode->prev;
+      continue;
+    }
+    do {
+      COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+
+      if (component->events.logicUpdate == NULL) {
+        ++i;
+        continue;
+      }
+      component_doEvent(component, event, data);
+      ++i;
+    }
+    while (i < componentCount);
+    entityNode = entityNode->prev;
+  }
+  while (entityNode != NULL);
+}
+
 void space_tick(SPACE *space, EDATA_UPDATE *data) {
   EDATA_UPDATE logicUpdateData;
-  space_invokeEvent(space, EV_FRAMEUPDATE, data);
+  space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
   stopwatch_stop(&space->systems.time.stopwatch);
   space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);
   if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {

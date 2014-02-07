@@ -5,8 +5,14 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
+#include "roomlogic.h"
 
-#define COMP_ROOMACTORLOGIC HASH("COMP_CURSORLOGIC")
+#define COMP_ROOMACTORLOGIC HASH("COMP_ROOMACTORLOGIC")
+
+typedef struct cdata_actorLogic_t {
+  ROOM_TYPE type;
+
+} CDATA_ACTORLOGIC;
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_roomActorLogic(COMPONENT *self);

@@ -52,6 +52,7 @@ NEKO_API ENTITY *space_getEntity(SPACE *space, char *name);
 NEKO_API void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos);
 NEKO_API void space_destroy(SPACE *space);
 void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data);
+void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data);
 void space_tick(SPACE *space, EDATA_UPDATE *data);
 void __space_destroy(SPACE *space);
 
