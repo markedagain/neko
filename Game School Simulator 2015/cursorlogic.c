@@ -15,9 +15,9 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   POINT mousePos;
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
-  trans->translation.x = (float)mousePos.x + 4.0f;
-  trans->translation.y = (float)mousePos.y - 8.0f;
-  snap_sprite(self);
+  trans->translation.x = (float)mousePos.x;
+  trans->translation.y = (float)mousePos.y;
+  //snap_sprite(self);
 }
 
 void comp_cursorLogic(COMPONENT *self) {
