@@ -8,6 +8,8 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include <math.h>
+#include "roomactorlogic.h"
+#include "roomactor.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
@@ -95,9 +97,7 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
   
 }
 
-void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
-  ENTITY *newRoom;
-  CDATA_ROOMLOGIC *newRoomCompData;
+void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
   int floorToUse;
   int colToUse;
   int roomSize;
@@ -237,14 +237,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
   }
   
-  
-  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
-  newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
-  newRoomCompData->type = roomType;
-  list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
-  comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
-  comData->roomConstructed = TRUE;
-  
+  //TO BE TAKEN OUT... AT SOME POINT
+  comp_schoolLogic_constructRoom(self, comData, roomType, floorToUse, colToUse);
 
   //Show school layout
   for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
@@ -258,6 +252,26 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     if(col == 15)
       printf("\n");
   }
+}
+
+void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType, int floorToUse, int colToUse) {
+  ENTITY *newRoom;
+  ENTITY *newRoomActor;
+  CDATA_ROOMLOGIC *newRoomCompData;
+  CDATA_ACTORLOGIC *actorCompData;
+
+  // CREATE ROOM
+  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
+  newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
+  newRoomCompData->type = roomType;
+  list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
+  comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
+  comData->roomConstructed = TRUE;
+
+  // CREATE ACTOR
+  newRoomActor = space_addEntity(game_getSpace(self->owner->space->game, "mg"), arch_roomActor, NULL);
+  actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
+  actorCompData->type = roomType;
 }
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
