@@ -27,12 +27,14 @@ typedef struct cdata_schoolLogic_t {
   int techBonus;
   int designBonus;
   int artBonus;
+  BOOL roomConstructed;
   union {
     ENTITY *coord[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
   } rooms;
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
+void comp_schoolLogic_frameUpdate(COMPONENT *, void *);
 void comp_schoolLogic_initialize(COMPONENT *self, void *event);
 void comp_schoolLogic_destroy(COMPONENT *, void *);
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
