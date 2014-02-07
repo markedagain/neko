@@ -8,13 +8,14 @@
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  INPUT_CONTAINER *input = &self->owner->space->game->input;
 
-
-  /*if (mbox->left.down) {
+  if (mbox->left.down) {
+    input->mouse.handled.left = true;
     //sprite->color.r = min(sprite->color.r + 0.05f, 1);
     sprite->color.b = max(sprite->color.b - 0.05f, 0);
     sprite->color.g = max(sprite->color.g - 0.05f, 0);
-  }*/
+  }
   if (mbox->left.pressed) {
     sprite->color.b = 0.0f;
     sprite->color.g = 0.0f;
