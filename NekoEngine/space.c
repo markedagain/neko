@@ -153,9 +153,37 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
   while (entityNode != NULL);
 }
 
+void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
+  LIST_NODE *entityNode;
+  entityNode = space->entities->last;
+  do {
+    ENTITY *entity = (ENTITY *)(entityNode->data);
+    unsigned int i = 0;
+    unsigned int componentCount = vector_size(&entity->components);
+
+    if (componentCount == 0 || entity->destroying) {
+      entityNode = entityNode->prev;
+      continue;
+    }
+    do {
+      COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+
+      if (component->events.logicUpdate == NULL) {
+        ++i;
+        continue;
+      }
+      component_doEvent(component, event, data);
+      ++i;
+    }
+    while (i < componentCount);
+    entityNode = entityNode->prev;
+  }
+  while (entityNode != NULL);
+}
+
 void space_tick(SPACE *space, EDATA_UPDATE *data) {
   EDATA_UPDATE logicUpdateData;
-  space_invokeEvent(space, EV_FRAMEUPDATE, data);
+  space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
   stopwatch_stop(&space->systems.time.stopwatch);
   space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);
   if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {

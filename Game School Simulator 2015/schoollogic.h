@@ -27,18 +27,21 @@ typedef struct cdata_schoolLogic_t {
   int techBonus;
   int designBonus;
   int artBonus;
+  BOOL roomConstructed;
   union {
     ENTITY *coord[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
   } rooms;
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
+void comp_schoolLogic_frameUpdate(COMPONENT *, void *);
 void comp_schoolLogic_initialize(COMPONENT *self, void *event);
 void comp_schoolLogic_destroy(COMPONENT *, void *);
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
-void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType);
+void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType);
+void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType, int floorToUse, int colToUse);
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);

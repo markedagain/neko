@@ -16,7 +16,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
   comData->frameCounter++;
 
-  // New month every x frames
+  // New month every x frames (1 FPS)
   if(comData->frameCounter >= 1) {
     comData->months++;
     printf("\n\n\n\n\n\n");
@@ -24,6 +24,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
     comData->frameCounter = 0;
     comData->monthCounter++;
+    schoolData->roomConstructed = FALSE;
   }
 
   if(comData->monthCounter == 6 || comData->monthCounter == 12) {
