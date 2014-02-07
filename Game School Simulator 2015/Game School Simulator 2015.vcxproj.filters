@@ -41,23 +41,29 @@
     <ClCompile Include="mousebox.c">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="UI_base.c">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_build.c">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_manage.c">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_student.c">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="roomactorlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="roomactor.c">
       <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_base.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_build.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_manage.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_student.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_logic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_button.c">
+      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ghostroom.c">
       <Filter>Archetypes</Filter>
@@ -118,23 +124,29 @@
     <ClInclude Include="mousebox.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="UI_base.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_build.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_manage.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_student.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="roomactorlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="roomactor.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_base.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_build.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_manage.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_student.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_logic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_button.h">
+      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ghostroom.h">
       <Filter>Archetypes</Filter>
