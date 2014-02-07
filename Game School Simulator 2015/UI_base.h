@@ -8,6 +8,6 @@
 
 #define ARCH_UIBASE HASH("ARCH_UIBASE")
 
-void arch_UIbase(ENTITY *);
+void arch_uibase(ENTITY *);
 
 #endif

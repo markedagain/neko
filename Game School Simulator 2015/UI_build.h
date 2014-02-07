@@ -8,6 +8,6 @@
 
 #define ARCH_UIBUILD HASH("ARCH_UIBUILD")
 
-void arch_UIbuild(ENTITY *);
+void arch_uibuild(ENTITY *);
 
 #endif
