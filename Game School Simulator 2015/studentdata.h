@@ -39,6 +39,7 @@ typedef struct cdata_studentData_t {
   int motivation;
   int yearStarted;
   int semesterStarted;
+  int tuition;
   int counter;
   bool graduated;
   LIST_NODE *listNodePtr;
