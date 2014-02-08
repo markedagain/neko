@@ -116,7 +116,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     pan_reset(self);
   }
   if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
-    data->gameMode = BUILD;
+    self->owner->space->systems.camera.transform.scale.x += 1.0f;
+    self->owner->space->systems.camera.transform.scale.y += 1.0f;
   }
   if (input->keyboard.keys[KEY_N] == ISTATE_PRESSED) {
     data->gameMode = DEFAULT;
@@ -140,6 +141,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom(self, -0.1f);
   if (input->mouse.wheel.direction == 1)
     zoom(self, 0.1f);*/
+
 
   if (input->mouse.wheel.delta != 0) {
     if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))

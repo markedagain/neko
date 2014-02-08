@@ -8,7 +8,12 @@
 
 #define COMP_GHOSTROOMLOGIC HASH("COMP_GHOSTROOMLOGIC")
 
-void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event);
+void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void*event);
 void comp_ghostRoomLogic(COMPONENT *self);
+void comp_ghostRoomLogic_initialize(COMPONENT *self, void *event);
+
+typedef struct {
+  bool constructed;
+} CDATA_GHOSTROOMLOGIC;
 
 #endif

@@ -8,7 +8,8 @@
 #include "../NekoEngine/sprite.h"
 #include <math.h>
 #include <stdio.h>
-
+#include "ghostroom.h"
+#include "playerlogic.h"
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -19,6 +20,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   VEC3 position = { 10, 10, 0 };
   VEC4 color = { 0, 0, 1, 1 };
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  SPACE *mgSpace = game_getSpace(self->owner->space->game, "mg");
+  ENTITY *player = space_getEntity(uiSpace, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
 
   if (mbox->over) {
     sprite->color.r = min(sprite->color.r + 0.05f, 1);
@@ -28,7 +32,18 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   else {
     sprite->color.b = 0.1f;
   }
-  
+    
+
+  if (mbox->left.pressed) {
+    if (playerData->gameMode != BUILD) {
+      playerData->gameMode = BUILD;
+      space_addEntity(mgSpace, arch_ghostRoom, "ghostroom");
+    }
+    else {
+      playerData->gameMode = DEFAULT;
+    }
+  }
+  /*
   if (mbox->entered && data->ent1 == NULL) {
     //vec3_set(&position, &input->mouse.position.x, &input->mouse.position.y, 0);
     data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");;
@@ -46,6 +61,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     entity_destroy(data->ent2);
     data->ent2 = NULL;
   }
+  */
 }
 
 void comp_UI_button(COMPONENT *self) {

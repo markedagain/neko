@@ -57,6 +57,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
     texture = (TEXTURE *)dict_get(&self->owner->space->game->data.textures, sprite->textureName);
   }
 
+  // checks to see if the sprite should be drawn
   screenRadius = (float)(0.5 * sqrt((float)(screenWidth * screenWidth + screenHeight * screenHeight)));
   spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
   spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
