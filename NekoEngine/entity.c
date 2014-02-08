@@ -71,13 +71,13 @@ void *entity_getComponentData(ENTITY *entity, unsigned int componentId) {
 }
 
 void entity_destroy(ENTITY *entity) {
-  unsigned int childrenCount;
-  unsigned int i;
+  //unsigned int childrenCount;
+  //unsigned int i;
   if (entity->destroying)
     return;
   entity->destroying = 1;
   list_insert_end(entity->space->game->destroyingEntities, entity);
-  childrenCount = vector_size(&entity->children);
+  /*childrenCount = vector_size(&entity->children);
   for (i = 0; i < childrenCount; ++i) {
     ENTITY *child;
     child = (ENTITY *)vector_get(&entity->children, i);
@@ -87,6 +87,17 @@ void entity_destroy(ENTITY *entity) {
     child->destroying = 1;
     if (entity->space != NULL)
       list_insert_end(entity->space->game->destroyingEntities, child);
+  }*/
+  while (vector_size(&entity->children) > 0) {
+    ENTITY *child;
+    child = (ENTITY *)vector_get(&entity->children, 0);
+    if (child->destroying)
+      continue;
+    //entity_detach(child, entity);
+    //child->destroying = 1;
+    entity_destroy(child);
+    /*if (entity->space != NULL)
+      list_insert_end(entity->space->game->destroyingEntities, child);*/
   }
   if (entity->parent != NULL)
     entity_detach(entity, entity->parent);
@@ -94,8 +105,9 @@ void entity_destroy(ENTITY *entity) {
 
 void __entity_destroy(ENTITY *entity) {
   unsigned int i;
+  size_t componentCount = vector_size(&entity->components);
 
-  for (i = 0; i < (int)vector_size(&entity->components); ++i) {
+  for (i = 0; i < componentCount; ++i) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
     if (component == NULL)
       break;

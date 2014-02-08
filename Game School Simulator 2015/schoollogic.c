@@ -97,27 +97,18 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
   
 }
 
-void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType) {
+LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize) {
   int floorToUse;
   int colToUse;
-  int roomSize;
   int i = 0;
   CDATA_ROOMLOGIC *lastKnownRoomData = NULL;
   int distanceFromLastKnown = 47;
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "arch_gameManager"), COMP_SCHOOLLOGIC);
 
   if(comData->roomConstructed == TRUE) {
     printf("\n1 RPS (Room Per Second)!!!... its the law.\n");
-    return;
+    return NULL;
   }
-
-  // Determine room size
-  if(roomType == ROOMTYPE_CLASS)
-    roomSize = 1;
-  else if(roomType == ROOMTYPE_LOBBY
-  || roomType == ROOMTYPE_LIBRARY)
-    roomSize = 2;
-  else if(roomType == ROOMTYPE_TEAMSPACE)
-    roomSize = 3;
 
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
@@ -135,7 +126,7 @@ void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
     else {
       printf("NO MORE SPACE\n");
-      return;
+      return NULL;
     }
   }
   else {
@@ -208,14 +199,20 @@ void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     }
 
     // Create list of still available build spots
-    /*for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
+      POINT spot = {0,0};
+      POINT *spotPtr = &spot;
         
       if(openSlot[floor][col] == TRUE) {
-        list_insert_end(legalSlots, );
+        spotPtr->x;
+        spotPtr->y;
+        list_insert_end(legalSlots, spotPtr);
       }
-    }*/
+    }
+
+    return legalSlots;
 
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
         int floor = i / MAX_ROOMS_PER_FLOOR;
@@ -233,12 +230,9 @@ void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     //return since no space is found
     if(createdRoom == 0) {
       printf("NO SPACE TO CONSTRUCT ROOM\n");
-      return;
+      return NULL;
     }
   }
-  
-  //TO BE TAKEN OUT... AT SOME POINT
-  comp_schoolLogic_constructRoom(self, comData, roomType, floorToUse, colToUse);
 
   //Show school layout
   for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
@@ -252,16 +246,20 @@ void comp_schoolLogic_findBuildSpot(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
     if(col == 15)
       printf("\n");
   }
+
+  return NULL;
 }
 
-void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData, ROOM_TYPE roomType, int floorToUse, int colToUse) {
+void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int floorToUse, int colToUse) {
   ENTITY *newRoom;
   ENTITY *newRoomActor;
   CDATA_ROOMLOGIC *newRoomCompData;
   CDATA_ACTORLOGIC *actorCompData;
+  SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "arch_gameManager"), COMP_SCHOOLLOGIC);
 
   // CREATE ROOM
-  newRoom = space_addEntity(self->owner->space, arch_room, NULL);
+  newRoom = space_addEntity(simSpace, arch_room, NULL);
   newRoomCompData = (CDATA_ROOMLOGIC *)entity_getComponentData(newRoom, COMP_ROOMLOGIC);
   newRoomCompData->type = roomType;
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
@@ -269,9 +267,20 @@ void comp_schoolLogic_constructRoom(COMPONENT *self, CDATA_SCHOOLLOGIC *comData,
   comData->roomConstructed = TRUE;
 
   // CREATE ACTOR
-  newRoomActor = space_addEntity(game_getSpace(self->owner->space->game, "mg"), arch_roomActor, NULL);
+  newRoomActor = space_addEntity(game_getSpace(simSpace->game, "mg"), arch_roomActor, NULL);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
+}
+
+int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
+  if(type == ROOMTYPE_CLASS)
+    return 1;
+  else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
+    return 2;
+  else if(type == ROOMTYPE_TEAMSPACE)
+    return 3;
+
+  return 1;
 }
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
