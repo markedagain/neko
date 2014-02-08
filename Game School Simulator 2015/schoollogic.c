@@ -45,7 +45,12 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   }
 
   //Add money
-  comData->money += (int)floor((float)(comData->tuition * comData->currentStudents) / 6.0f);
+  studentPtr = comData->students->first;
+  for(i = 0; i < comData->students->count; i++) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+    comData->money += studentData->tuition;
+  }
+
   //Lose money
   //Go through list of rooms and pay upkeep
   roomPtr = comData->roomList->first;
@@ -88,6 +93,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       nodeptr = list_insert_end(comData->students, newStudent);
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
+      studentData->tuition = comData->tuition;
     }
     comData->incomingStudents = 0;
   }
@@ -113,16 +119,31 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
     if(comData->rooms.coord[2][7] == NULL) {
-      floorToUse = 2;
-      colToUse = 7;
+      LIST *legalSlots = list_create();
+      POINT spot = {0,0};
+      POINT *spotPtr = &spot;
+        
+      spotPtr->x = 7;
+      spotPtr->y = 2;
+      list_insert_end(legalSlots, spotPtr);
     }
     else if(comData->rooms.coord[1][7] == NULL) {
-      floorToUse = 1;
-      colToUse = 7;
+      LIST *legalSlots = list_create();
+      POINT spot = {0,0};
+      POINT *spotPtr = &spot;
+        
+      spotPtr->x = 7;
+      spotPtr->y = 1;
+      list_insert_end(legalSlots, spotPtr);
     }
     else if(comData->rooms.coord[0][7] == NULL) {
-      floorToUse = 0;
-      colToUse = 7;
+      LIST *legalSlots = list_create();
+      POINT spot = {0,0};
+      POINT *spotPtr = &spot;
+        
+      spotPtr->x = 7;
+      spotPtr->y = 0;
+      list_insert_end(legalSlots, spotPtr);
     }
     else {
       printf("NO MORE SPACE\n");
