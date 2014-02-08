@@ -21,7 +21,8 @@ void comp_sprite_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_sprite_destroy(COMPONENT *self, void *event) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
-  AEGfxMeshFree(comData->mesh);
+  if (comData->mesh != NULL)
+    AEGfxMeshFree(comData->mesh);
 }
 
 void comp_sprite_draw(COMPONENT *self, void *event) {

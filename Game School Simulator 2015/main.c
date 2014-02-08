@@ -18,6 +18,8 @@
 #include "roomactor.h"
 #include "UI_base.h"
 #include "UI_build.h"
+#include "UI_manage.h"
+#include "UI_student.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -88,8 +90,12 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   vec3_set(&position, 0, 0, 0);
   space_addEntityAtPosition(uiSpace, arch_uibase, "UI", &position);
-  vec3_set(&position, 280, 150, 0);
-  space_addEntityAtPosition(uiSpace, arch_uibuild, "button1", &position);
+  vec3_set(&position, 280, 130, 0);
+  space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
+  vec3_set(&position, 280, 70, 0);
+  space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
+  vec3_set(&position, 280, 10, 0);
+  space_addEntityAtPosition(uiSpace, arch_uistudent, "students_button", &position);
   vec3_set(&position, -318, 180, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);
   vec3_set(&position, -318, 160, 0);
