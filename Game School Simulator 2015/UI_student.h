@@ -8,6 +8,6 @@
 
 #define ARCH_UISTUDENT HASH("ARCH_UISTUDENT")
 
-void arch_UIstudent(ENTITY *);
+void arch_uistudent(ENTITY *);
 
 #endif

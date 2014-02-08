@@ -8,6 +8,6 @@
 
 #define ARCH_UIMANAGE HASH("ARCH_UIMANAGE")
 
-void arch_UImanage(ENTITY *);
+void arch_uimanage(ENTITY *);
 
 #endif
