@@ -18,8 +18,8 @@ void remove_snap(COMPONENT *self, LIST_NODE *remove);
 void comp_cursorLogic_destroy(COMPONENT *self, void *event);
 void free_snaps(COMPONENT *self);
 void findWorldBuildSpots(COMPONENT *self, LIST *buildSpaces, int roomSize);
-LIST *findBuildSpot(ROOM_TYPE toBuild, int roomSize);
-int getRoomSize(ROOM_TYPE toBuild);
+//LIST *findBuildSpot(ROOM_TYPE toBuild, int roomSize);
+//int getRoomSize(ROOM_TYPE toBuild);
 void adjust_snaps(COMPONENT *self, RECTANGLE *inRect, VEC3 *topLeft, VEC3 *botRight);
 
 typedef struct {

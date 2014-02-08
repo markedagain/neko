@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "ghostroom.h"
 #include "playerlogic.h"
+#include "roomlogic.h"
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -39,6 +40,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed) {
     if (playerData->gameMode != BUILD) {
       playerData->gameMode = BUILD;
+      playerData->roomType = ROOMTYPE_CLASS;
       space_addEntity(mgSpace, arch_ghostRoom, "ghostroom");
     }
     else {

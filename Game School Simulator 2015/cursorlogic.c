@@ -34,8 +34,9 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   if (playerData->gameMode == BUILD) {
     if (data->gameMode != BUILD) {
       toBuild = playerData->roomType;
-      roomSize = getRoomSize(toBuild);
-      buildSpaces = findBuildSpot(toBuild, roomSize);
+      roomSize = comp_schoolLogic_getRoomSize(toBuild);
+      buildSpaces = comp_schoolLogic_findBuildSpots(self, toBuild, roomSize);
+      //if (buildSpaces != NULL)
       findWorldBuildSpots(self, buildSpaces, roomSize);
       data->gameMode = BUILD;
     }
@@ -66,11 +67,11 @@ void findWorldBuildSpots(COMPONENT *self, LIST *buildSpaces, int roomSize) {
   float right;
   float bot;
   VEC3 sizeOfSquare = { 80.0f, 80.0f, 0 };
-  VEC3 *simPoint;
+  POINT *simPoint;
 
 
   while(pNode) {
-    simPoint = (VEC3 *)pNode->data;
+    simPoint = (POINT *)pNode->data;
     x = (int)simPoint->x;
     y = (int)simPoint->y;
 
@@ -179,6 +180,8 @@ void snap_sprite(COMPONENT *self) {
     middleX -= camTranslate.x;
     middleY -= camTranslate.y;
 
+    printf("=========================%f==================================\n", pos.x);
+
     if ((pos.x >= topLeft.x && pos.x <= botRight.x) && (pos.y <= topLeft.y && pos.y >= botRight.y)) {
       transformData->translation.x = middleX;
       transformData->translation.y = middleY;
@@ -232,6 +235,7 @@ void comp_cursorLogic_destroy(COMPONENT *self, void *event) {
   list_destroy(data->snaps);
 }
 
+/*
 int getRoomSize(ROOM_TYPE toBuild) {
   return 2;
 }
@@ -243,4 +247,4 @@ LIST *findBuildSpot(ROOM_TYPE toBuild, int roomSize) {
   list_insert_end(newList, (void *)data);
 
   return newList;
-}
+}*/

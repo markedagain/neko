@@ -103,7 +103,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
   int i = 0;
   CDATA_ROOMLOGIC *lastKnownRoomData = NULL;
   int distanceFromLastKnown = 47;
-  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "arch_gameManager"), COMP_SCHOOLLOGIC);
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
 
   if(comData->roomConstructed == TRUE) {
     printf("\n1 RPS (Room Per Second)!!!... its the law.\n");
@@ -206,8 +206,8 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
       POINT *spotPtr = &spot;
         
       if(openSlot[floor][col] == TRUE) {
-        spotPtr->x;
-        spotPtr->y;
+        spotPtr->x = col;
+        spotPtr->y = floor;
         list_insert_end(legalSlots, spotPtr);
       }
     }

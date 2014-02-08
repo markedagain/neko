@@ -24,7 +24,7 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
   trans->translation.y = cursorTrans->translation.y + camScale.y * self->owner->space->game->innerWindow.height / 2; //camTranslate.y;
 
 
-  printf("%f============%f\n", camTranslate.x, camTranslate.y + cursorTrans->translation.y);
+  //printf("%f============%f\n", camTranslate.x, camTranslate.y + cursorTrans->translation.y);
 }
 
 void comp_ghostRoomLogic_initialize(COMPONENT *self, void *event) {
