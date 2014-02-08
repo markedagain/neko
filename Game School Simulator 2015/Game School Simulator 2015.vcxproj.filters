@@ -59,11 +59,17 @@
     <ClCompile Include="UI_student.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
-    <ClCompile Include="UI_logic.c">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="UI_button.c">
-      <Filter>Components</Filter>
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_logic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="management.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_studentLogic.c">
+      <Filter>Components\UI_elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +81,9 @@
     </Filter>
     <Filter Include="Data Files">
       <UniqueIdentifier>{026bb7bd-bc62-45ad-a064-8e0c658fb14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\UI_elements">
+      <UniqueIdentifier>{094115b5-25f8-4f71-afa9-ecfbb9c95ae2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,11 +145,17 @@
     <ClInclude Include="UI_student.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
-    <ClInclude Include="UI_logic.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="UI_button.h">
-      <Filter>Components</Filter>
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_logic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="management.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_studentLogic.h">
+      <Filter>Components\UI_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

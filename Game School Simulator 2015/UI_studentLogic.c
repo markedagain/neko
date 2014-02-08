@@ -1,4 +1,4 @@
-#include "UI_button.h"
+#include "UI_studentLogic.h"
 #include "mousebox.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/generictext.h"
@@ -10,8 +10,8 @@
 #include <stdio.h>
 
 
-void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
-  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+void comp_UI_studentLogicUpdate(COMPONENT *self, void *event) {
+  CDATA_UI_STUDENTLOGIC *data = (CDATA_UI_STUDENTLOGIC *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
@@ -33,26 +33,25 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   
   if (mbox->entered && data->ent1 == NULL) {
     //vec3_set(&position, &input->mouse.position.x, &input->mouse.position.y, 0);
-    data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");
+    data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");;
     sprite->color.r = sprite->color.r + 0.5f;
   }
-  else if (mbox->exited && data->ent1) {
+  if (mbox->exited && data->ent1) {
     entity_destroy(data->ent1);
     data->ent1 = NULL;
   }
-
+  
   if (mbox->entered && data->ent3 == NULL) {
-    vec3_set(&position, 250, 130, 0);
-    data->ent3 = genericSprite_create(uiSpace, &position, NULL, "cursor/build");
+    vec3_set(&position, 250, 10, 0);
+    data->ent3 = genericSprite_create(uiSpace, &position, NULL, "cursor/students");
   }
-
   else if (mbox->exited && data->ent3) {
     entity_destroy(data->ent3);
     data->ent3 = NULL;
   }
 
   if(mbox->left.pressed && data->ent2 == NULL) {
-    vec3_set(&position, 100, 100, 0);
+    vec3_set(&position, 50, 20, 20);
     data->ent2 = genericSprite_create(uiSpace, &position, NULL, "backgrounds/i_love_you");
   }
   else if(mbox->left.pressed && data->ent2) {
@@ -61,9 +60,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   }
 }
 
-void comp_UI_button(COMPONENT *self) {
-  CDATA_UI_BUTTON data = { 0 };
-  COMPONENT_INIT(self, COMP_UI_BUTTON, data);
+void comp_UI_studentLogic(COMPONENT *self) {
+  CDATA_UI_STUDENTLOGIC data = { 0 };
+  COMPONENT_INIT(self, COMP_UI_STUDENTLOGIC, data);
   component_depend(self, COMP_MOUSEBOX);
-  self->events.logicUpdate = comp_UI_buttonUpdate;
+  self->events.logicUpdate = comp_UI_studentLogicUpdate;
 }
