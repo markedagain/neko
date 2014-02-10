@@ -20,15 +20,23 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     SPACE *ui = game_getSpace(self->owner->space->game, "ui");
     ENTITY *cursor = space_getEntity(ui, "cursor");
     ENTITY *player = space_getEntity(ui, "player");
-    CDATA_PLAYERLOGIC *playerData = entity_getComponentData(player, COMP_PLAYERLOGIC);
-    CDATA_CURSORLOGIC *cursorData = entity_getComponentData(cursor, COMP_CURSORLOGIC);
-    
-    sprite->color.a = 0.0f;
+    CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+    CDATA_CURSORLOGIC *cursorData = (CDATA_CURSORLOGIC *)entity_getComponentData(cursor, COMP_CURSORLOGIC);
+    LIST *ghostrooms = list_create();
+    LIST_NODE *pNode;
+
     playerData->gameMode = DEFAULT;
     cursorData->gameMode = DEFAULT;
 
-    sprite->color.a = 1.0f;
     comp_schoolLogic_constructRoom(self, gData->roomType, gData->point.x, gData->point.y);
+
+    space_getAllEntities(self->owner->space, "ghostRoom", ghostrooms);
+    pNode = ghostrooms->first;
+    while (pNode) {
+      ENTITY *groom = (ENTITY *)pNode->data;
+      entity_destroy(groom);
+      pNode = pNode->next;
+    }
   }
 }
 

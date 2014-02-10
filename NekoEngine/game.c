@@ -13,8 +13,8 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 360
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 GAME *__game = NULL; // UGHHHHHHH
 
