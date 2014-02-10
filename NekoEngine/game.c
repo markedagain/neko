@@ -123,15 +123,15 @@ void game_tick(GAME *game) {
 
   if (game->spaces->count == 0)
     return;
-  spaceNode = game->spaces->first;
+  spaceNode = game->spaces->last;
   do {
     SPACE *space = (SPACE*)spaceNode->data;
     if (space->entities->count == 0 || !space->active || space->destroying) {
-      spaceNode = spaceNode->next;
+      spaceNode = spaceNode->prev;
       continue;
     }
     space_tick(space, &updateEvent);
-    spaceNode = spaceNode->next;
+    spaceNode = spaceNode->prev;
   }
   while (spaceNode != NULL);
   game_cleanup(game);
