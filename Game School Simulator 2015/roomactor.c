@@ -16,5 +16,5 @@ void arch_roomActor(ENTITY *entity) {
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_roomActorLogic);
-  sprite->source = "rooms/template2";
+  sprite->source = "rooms/template";
 }

@@ -9,7 +9,7 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_ACTORLOGIC *comData = (CDATA_ACTORLOGIC *)self->data;
 
-  if(comData->type == ROOMTYPE_LOBBY) {
+  /*if(comData->type == ROOMTYPE_LOBBY) {
     sprite->source = "rooms/frontdoor";
     trans->translation.x = 0;
     trans->translation.y = 40;
@@ -19,7 +19,7 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
     sprite->source = "rooms/template";
     trans->translation.x = -120;
     trans->translation.y = 40;
-  }
+  }*/
 
   /*if (mbox->left.down) {
     //sprite->color.r = min(sprite->color.r + 0.05f, 1);

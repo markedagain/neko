@@ -336,14 +336,21 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
   return NULL;
 }
 
-void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int floorToUse, int colToUse) {
+void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, int floorToUse, int colToUse) {
   ENTITY *newRoom;
   ENTITY *newRoomActor;
   CDATA_ROOMLOGIC *newRoomCompData;
   CDATA_ACTORLOGIC *actorCompData;
   SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
+  SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
   ENTITY *entity = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
+  VEC3 middle;
+  float squareSize = 80.0f;
+  CDATA_SPRITE *sprite;
+  
+  middle.z = 0;
+  middle.y = (2.5f - floorToUse) * squareSize;
 
   // CREATE ROOM
   newRoom = space_addEntity(simSpace, arch_room, NULL);
@@ -354,9 +361,26 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int floo
   comData->roomConstructed = TRUE;
 
   // CREATE ACTOR
-  newRoomActor = space_addEntity(game_getSpace(simSpace->game, "mg"), arch_roomActor, NULL);
+  switch (roomSize) {
+    case (1):
+      middle.x = (colToUse - 7.5f) * squareSize;
+      break;
+    case (2):
+      middle.x = (colToUse - 8.0f) * squareSize + squareSize;
+      break;
+    }
+  newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
+  sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
+  switch (roomType) {
+  case(ROOMTYPE_LOBBY):
+    sprite->source = "rooms/frontdoor";
+    break;
+  case(ROOMTYPE_CLASS):
+    sprite->source = "rooms/template";
+    break;
+  }
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {

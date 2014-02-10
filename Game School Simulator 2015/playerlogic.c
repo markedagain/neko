@@ -195,7 +195,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(self, ROOMTYPE_LOBBY, 2, 7);
+    comp_schoolLogic_constructRoom(self, ROOMTYPE_LOBBY, 2, 2, 7);
   }
   /* Create Class room if "K" is pressed
   if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {

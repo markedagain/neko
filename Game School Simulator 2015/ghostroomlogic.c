@@ -28,7 +28,7 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     playerData->gameMode = DEFAULT;
     cursorData->gameMode = DEFAULT;
 
-    comp_schoolLogic_constructRoom(self, gData->roomType, gData->point.x, gData->point.y);
+    comp_schoolLogic_constructRoom(self, gData->roomType, gData->roomSize, gData->point.y, gData->point.x);
 
     space_getAllEntities(self->owner->space, "ghostRoom", ghostrooms);
     pNode = ghostrooms->first;
