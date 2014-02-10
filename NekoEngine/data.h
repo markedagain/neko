@@ -12,10 +12,13 @@
 #include "dictionary.h"
 #include "vector.h"
 #include "pak.h"
+#include "sound.h"
 #include "../AlphaEngine/AEEngine.h"
 #include "../fmod/fmod.h"
 
 #define TEXTFILE_LINELENGTH 80
+
+typedef struct soundSystem_t SOUNDSYSTEM;
 
 typedef struct {
   DICT sprites;
@@ -67,6 +70,6 @@ NEKO_API bool file_getAllByExtension(VECTOR *fileList, const char *directory, co
 NEKO_API void file_unixToWindows(char *string);
 NEKO_API void file_windowsToUnix(char *string);
 
-NEKO_API void data_loadAll(DATACONTAINER *dataContainer);
+NEKO_API void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem);
 
 #endif

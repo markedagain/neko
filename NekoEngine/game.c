@@ -69,7 +69,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysReset();
   srand((unsigned int)time(NULL));
 
-  data_loadAll(&game->data);
+  data_loadAll(&game->data, &game->systems.sound);
 
 
   __game = game;

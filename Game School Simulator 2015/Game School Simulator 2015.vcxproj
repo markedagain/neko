@@ -77,7 +77,8 @@
       <Command>xcopy /y "$(ProjectDir)lib\*" "$(OutDir)"
 mkdir "$(ProjectDir)data"
 "$(SolutionDir)tools\nekopak.exe" "$(ProjectDir)data" "$(OutDir)data.pak"
-xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e</Command>
+xcopy /y "$(ProjectDir)data\*.png" "$(OutDir)data\" /e
+xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     </PostBuildEvent>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

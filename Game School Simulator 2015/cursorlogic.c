@@ -5,6 +5,7 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/entity.h"
+#include "../NekoEngine/sound.h"
 #include <math.h>
 
 
@@ -20,6 +21,10 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   trans->translation.x = (float)mousePos.x;
   trans->translation.y = (float)mousePos.y;
 
+  if (input->mouse.left == ISTATE_PRESSED) {
+    sound_playSound(&self->owner->space->game->systems.sound, "title_adam");
+    printf("TOTALLY PLAYING A SOUND LOADED FROM THE PAK\n");
+  }
 }
 
 void comp_cursorLogic(COMPONENT *self) {
