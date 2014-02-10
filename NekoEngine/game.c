@@ -195,6 +195,7 @@ bool game_loop(GAME *game) {
       input_unlockMouse(&game->input);
     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
+    sound_update(&game->systems.sound);
     game_tick(game);
     input_reset(&game->input);
     AESysFrameStart();

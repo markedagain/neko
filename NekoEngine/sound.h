@@ -36,6 +36,8 @@ NEKO_API void sound_setVolume_master(SOUNDSYSTEM *system, float volume);
 NEKO_API void sound_setVolume_sound(SOUNDSYSTEM *system, float volume);
 NEKO_API void sound_setVolume_music(SOUNDSYSTEM *system, float volume);
 
+NEKO_API void sound_update(SOUNDSYSTEM *system);
+
 void sound_loadSoundFromMemory(SOUNDSYSTEM *system, char *name, const char *data, size_t size);
 
 #endif
