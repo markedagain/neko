@@ -15,6 +15,7 @@ typedef struct soundSystem_t {
   FMOD_SYSTEM *system;
   FMOD_SPEAKERMODE speakerMode;
   DICT *sounds;
+  FMOD_CHANNEL *musicChannel;
 } SOUNDSYSTEM;
 
 NEKO_API void sound_initialize(SOUNDSYSTEM *system, DICT *sounds);
@@ -22,6 +23,7 @@ NEKO_API void sound_initialize(SOUNDSYSTEM *system, DICT *sounds);
 NEKO_API void sound_playSound(SOUNDSYSTEM *system, char *sound);
 
 NEKO_API void sound_playSong(SOUNDSYSTEM *system, char *song);
+NEKO_API void sound_stopSong(SOUNDSYSTEM *system);
 
 NEKO_API void sound_destroy(SOUNDSYSTEM *system);
 

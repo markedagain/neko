@@ -5,6 +5,7 @@
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/game.h"
+#include "../NekoEngine/sound.h"
 #include "room.h"
 #include "roomlogic.h"
 #include "schoollogic.h"
@@ -85,6 +86,7 @@ void zoom_reset(COMPONENT *self) {
 void comp_playerLogic_initialize(COMPONENT *self, void *event) {
   pan_reset(self);
   zoom_reset(self);
+  sound_playSong(&self->owner->space->game->systems.sound, "01");
 }
 
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {

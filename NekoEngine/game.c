@@ -210,6 +210,7 @@ bool game_loop(GAME *game) {
 }
 
 void game_destroy(GAME *game) {
+  sound_destroy(&game->systems.sound);
   // TODO
 }
 

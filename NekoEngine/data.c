@@ -239,15 +239,12 @@ void data_loadSoundFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const ch
   char *pakData = NULL;
   size_t pakSize;
   unsigned char *soundData = NULL;
-  //bool existing = false;
 
   data_makeKey(dataContainer, storeKey, filename, "sfx/", ".mp3");
 
   if (dict_get(&dataContainer->sounds, storeKey) != NULL) {
     printf("Found SFX %s in pak, SKIPPING\n", storeKey);
-    //existing = true;
     return;
-    //sound = (SOUND *)dict_get(&dataContainer->sounds, storeKey);
   }
   pakData = (char *)pak_load(pak, filename, &pakSize);
 
@@ -256,10 +253,27 @@ void data_loadSoundFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const ch
   free(pakData);
 
   printf("Loaded SFX %s from pak\n", storeKey);
+}
 
-  // TODO: FREE?
+void data_loadMusicFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename, SOUNDSYSTEM *system) {
+  char storeKey[80];
+  char *pakData = NULL;
+  size_t pakSize;
+  unsigned char *soundData = NULL;
 
-  //sound->data = pakData;
+  data_makeKey(dataContainer, storeKey, filename, "bgm/", ".mp3");
+
+  if (dict_get(&dataContainer->sounds, storeKey) != NULL) {
+    printf("Found BGM %s in pak, SKIPPING\n", storeKey);
+    return;
+  }
+  pakData = (char *)pak_load(pak, filename, &pakSize);
+
+  sound_loadSoundFromMemory(system, storeKey, pakData, pakSize);
+
+  free(pakData);
+
+  printf("Loaded BGM %s from pak\n", storeKey);
 }
 
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
@@ -479,6 +493,14 @@ void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem) {
     else if (strstr(filename, "sfx/") == filename) {
       if (strcmp(extension, ".mp3") == 0) {
         data_loadSoundFromPak(dataContainer, pak, filename, soundSystem);
+      }
+      else {
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
+    }
+    else if (strstr(filename, "bgm/") == filename) {
+      if (strcmp(extension, ".mp3") == 0) {
+        data_loadMusicFromPak(dataContainer, pak, filename, soundSystem);
       }
       else {
         printf(">> %s is an UNKNOWN FILE\n", filename);
