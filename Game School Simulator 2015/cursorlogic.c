@@ -35,9 +35,14 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
       toBuild = playerData->roomType;
       roomSize = comp_schoolLogic_getRoomSize(toBuild);
       buildSpaces = comp_schoolLogic_findBuildSpots(self, toBuild, roomSize);
-      if (buildSpaces != NULL)
-       createGhostRooms(self, buildSpaces, roomSize, toBuild);
-      data->gameMode = BUILD;
+      if (buildSpaces->first == NULL) {
+        playerData->gameMode = DEFAULT;
+        data->gameMode = DEFAULT;
+      }
+      else {
+        createGhostRooms(self, buildSpaces, roomSize, toBuild);
+        data->gameMode = BUILD;
+      }
     }
   }
 }

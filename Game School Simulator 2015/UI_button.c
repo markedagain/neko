@@ -12,6 +12,7 @@
 #include "playerlogic.h"
 #include "roomlogic.h"
 
+// code is breaking and eduardo is screaming
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
@@ -35,17 +36,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     sprite->color.b = min(sprite->color.b + 0.05f, 1);
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
-    
 
   if (mbox->left.pressed) {
-    if (playerData->gameMode != BUILD) {
-      playerData->gameMode = BUILD;
-      playerData->roomType = ROOMTYPE_CLASS;
-      //space_addEntity(mgSpace, arch_ghostRoom, "ghostroom");
-    }
-    else {
-      playerData->gameMode = DEFAULT;
-    }
+    playerData->gameMode = BUILD;
+    playerData->roomType = ROOMTYPE_CLASS;
   }
   /*
   if (mbox->entered && data->ent1 == NULL) {
