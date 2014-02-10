@@ -5,6 +5,7 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/entity.h"
+#include "../NekoEngine/sound.h"
 #include <math.h>
 #include "ghostroomlogic.h"
 
@@ -114,7 +115,6 @@ void adjust_snaps(COMPONENT *self, RECTANGLE *inRect, VEC3 *topLeft, VEC3 *botRi
 
   matrix3_apply_to_vector(topLeft, &transform);
   matrix3_apply_to_vector(botRight, &transform);
-
 }
 
 void comp_cursorLogic(COMPONENT *self) {
