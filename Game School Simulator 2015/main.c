@@ -54,10 +54,11 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");
 
-  space_addEntity(mgSpace, arch_roomActor, "roomActor");
-  /*vec3_set(&position, 0, 40, 0);
+  //space_addEntity(mgSpace, arch_roomActor, "roomActor");
+  vec3_set(&position, 0, 40, 0);
   genericSprite_create(mgSpace, &position, NULL, "rooms/template2");
 
+  /*
   vec3_set(&position, -120, 40, 0);
   genericSprite_create(mgSpace, &position, NULL, "rooms/template");
 

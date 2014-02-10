@@ -41,7 +41,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     if (playerData->gameMode != BUILD) {
       playerData->gameMode = BUILD;
       playerData->roomType = ROOMTYPE_CLASS;
-      space_addEntity(mgSpace, arch_ghostRoom, "ghostroom");
+      //space_addEntity(mgSpace, arch_ghostRoom, "ghostroom");
     }
     else {
       playerData->gameMode = DEFAULT;

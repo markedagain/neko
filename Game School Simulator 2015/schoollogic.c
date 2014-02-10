@@ -277,7 +277,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int floo
   CDATA_ROOMLOGIC *newRoomCompData;
   CDATA_ACTORLOGIC *actorCompData;
   SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
-  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "arch_gameManager"), COMP_SCHOOLLOGIC);
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
 
   // CREATE ROOM
   newRoom = space_addEntity(simSpace, arch_room, NULL);

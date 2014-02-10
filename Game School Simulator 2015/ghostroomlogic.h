@@ -5,6 +5,7 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
+#include "schoollogic.h"
 
 #define COMP_GHOSTROOMLOGIC HASH("COMP_GHOSTROOMLOGIC")
 
@@ -14,6 +15,9 @@ void comp_ghostRoomLogic_initialize(COMPONENT *self, void *event);
 
 typedef struct {
   bool constructed;
+  ROOM_TYPE roomType;
+  int roomSize;
+  POINT point;
 } CDATA_GHOSTROOMLOGIC;
 
 #endif

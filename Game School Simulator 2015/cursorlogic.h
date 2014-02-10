@@ -12,19 +12,9 @@
 
 void comp_cursorLogic_logicUpdate(COMPONENT *, void *);
 void comp_cursorLogic(COMPONENT *);
-void snap_sprite(COMPONENT *self);
-LIST_NODE *add_snap(COMPONENT *self, float left, float top, float right, float bot);
-void remove_snap(COMPONENT *self, LIST_NODE *remove);
-void comp_cursorLogic_destroy(COMPONENT *self, void *event);
-void free_snaps(COMPONENT *self);
-void findWorldBuildSpots(COMPONENT *self, LIST *buildSpaces, int roomSize);
-//LIST *findBuildSpot(ROOM_TYPE toBuild, int roomSize);
-//int getRoomSize(ROOM_TYPE toBuild);
-void adjust_snaps(COMPONENT *self, RECTANGLE *inRect, VEC3 *topLeft, VEC3 *botRight);
+void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE roomType);
 
 typedef struct {
-  LIST *snaps;
-  bool snapped;
   GMODE gameMode;
 } CDATA_CURSORLOGIC;
 
