@@ -21,9 +21,16 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   trans->translation.x = (float)mousePos.x;
   trans->translation.y = (float)mousePos.y;
 
+  if (input->mouse.left == ISTATE_PRESSED) {
+    sound_playSound(&self->owner->space->game->systems.sound, "coin");
+    printf("TOTALLY PLAYING A SOUND LOADED FROM THE PAK\n");
+  }
   if (input->mouse.right == ISTATE_PRESSED) {
     sound_playSound(&self->owner->space->game->systems.sound, "title_adam");
     printf("TOTALLY PLAYING A SOUND LOADED FROM THE PAK\n");
+  }
+  if (input->keyboard.keys[KEY_5] == ISTATE_PRESSED) {
+    sound_setVolume_music(&self->owner->space->game->systems.sound, 0.1f);
   }
 }
 

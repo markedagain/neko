@@ -266,6 +266,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;*/
 
   case WM_DESTROY:
+    game_destroy(__game);
     PostQuitMessage(0);
     break;
 
