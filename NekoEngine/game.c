@@ -206,7 +206,7 @@ bool game_loop(GAME *game) {
     }
   }
 
-  return true;
+  return !game->destroying;
 }
 
 void game_destroy(GAME *game) {
@@ -266,7 +266,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;*/
 
   case WM_DESTROY:
-    game_destroy(__game);
+    __game->destroying = true;
     PostQuitMessage(0);
     break;
 
