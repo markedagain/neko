@@ -10,6 +10,7 @@ void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   FMOD_SPEAKERMODE speakerMode;
   char name[80] = { 0 };
   system->sounds = sounds;
+  system->musicChannel = NULL;
   result = FMOD_System_Create(&system->system);
   result = FMOD_System_GetDriverCaps(system->system, 0, &caps, 0, &speakerMode);
   result = FMOD_System_SetSpeakerMode(system->system, speakerMode);
@@ -46,6 +47,20 @@ void sound_loadSoundFromMemory(SOUNDSYSTEM *system, char *name, const char *data
 void sound_playSound(SOUNDSYSTEM *system, char *sound) {
   SOUND *snd = (SOUND *)dict_get(system->sounds, sound);
   FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, NULL);
+}
+
+void sound_playSong(SOUNDSYSTEM *system, char *song) {
+  SOUND *snd = (SOUND *)dict_get(system->sounds, song);
+  if (system->musicChannel != NULL)
+    sound_stopSong(system);
+  FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->musicChannel);
+  FMOD_Channel_SetMode(system->musicChannel, FMOD_LOOP_NORMAL);
+  FMOD_Channel_SetLoopCount(system->musicChannel, -1);
+}
+
+void sound_stopSong(SOUNDSYSTEM *system) {
+  FMOD_Channel_Stop(system->musicChannel);
+  system->musicChannel = NULL;
 }
 
 void sound_destroy(SOUNDSYSTEM *system) {
