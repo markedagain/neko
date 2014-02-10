@@ -6,11 +6,9 @@
 #include "cursorlogic.h"
 
 void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
-  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-  
-  
+  CDATA_GHOSTROOMLOGIC *gData = (CDATA_GHOSTROOMLOGIC *)self->data;
 
   if (mbox->over) {
     sprite->color.a = 0.9f;
@@ -23,13 +21,14 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     ENTITY *cursor = space_getEntity(ui, "cursor");
     ENTITY *player = space_getEntity(ui, "player");
     CDATA_PLAYERLOGIC *playerData = entity_getComponentData(player, COMP_PLAYERLOGIC);
-    CDATA_CURSORLOGIC *cursorData = entity_getComponentData(player, COMP_CURSORLOGIC);
-
+    CDATA_CURSORLOGIC *cursorData = entity_getComponentData(cursor, COMP_CURSORLOGIC);
+    
+    sprite->color.a = 0.0f;
     playerData->gameMode = DEFAULT;
     cursorData->gameMode = DEFAULT;
 
     sprite->color.a = 1.0f;
-
+    comp_schoolLogic_constructRoom(self, gData->roomType, gData->point.x, gData->point.y);
   }
 }
 

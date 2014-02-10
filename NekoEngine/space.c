@@ -74,6 +74,19 @@ ENTITY *space_getEntity(SPACE *space, char *name) {
   return NULL;
 }
 
+void space_getAllEntities(SPACE *space, char *name, LIST *list) {
+  LIST_NODE *node;
+  if (space->entities->count == 0)
+    return;
+  node = space->entities->first;
+  while (node != NULL) {
+    ENTITY *entity = (ENTITY *)node->data;
+    if (strcmp(entity->name, name) == 0)
+      list_insert_end(list, entity);
+    node = node->next;
+  }
+}
+
 void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos) {
   VEC3 camTranslate = { 0 };
   int x, y;

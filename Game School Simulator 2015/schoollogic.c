@@ -287,13 +287,13 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
-      POINT spot = {0,0};
-      POINT *spotPtr = &spot;
+      POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       if(openSlot[floor][col] == TRUE) {
         spotPtr->x = col;
         spotPtr->y = floor;
-        list_insert_end(legalSlots, spotPtr);
+
+        list_insert_end(legalSlots, (void *)spotPtr);
         printf("\nFloor:%i    Col:%i   \n", floor, col);
       }
     }

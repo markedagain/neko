@@ -66,11 +66,11 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     LONG x = data->x;
     LONG y = data->y;
     float top = (3 - y) * squareSize;
-    float left = (x - 7) * squareSize;
+    float left = (x - 8) * squareSize;
     VEC3 middle;
     middle.y = top - squareSize / 2.0f;
     middle.z = 0;
-
+      
     switch (roomSize) {
     case (1):
       middle.x = left + squareSize / 2.0f;
