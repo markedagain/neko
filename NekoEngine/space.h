@@ -49,6 +49,7 @@ NEKO_API SPACE *space_create(char *name);
 NEKO_API ENTITY *space_addEntity(SPACE *space, void(*)(ENTITY *archetypeFunction), char *name);
 NEKO_API ENTITY *space_addEntityAtPosition(SPACE *space, void (*archetypeFunction)(ENTITY *), char *name, VEC3 *position);
 NEKO_API ENTITY *space_getEntity(SPACE *space, char *name);
+NEKO_API void space_getAllEntities(SPACE *space, char *name, LIST *list);
 NEKO_API void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos);
 NEKO_API void space_destroy(SPACE *space);
 NEKO_API void space_getCamTranslate(SPACE *space, VEC3 *camTranslate);
