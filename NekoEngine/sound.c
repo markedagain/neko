@@ -64,6 +64,8 @@ void sound_stopSong(SOUNDSYSTEM *system) {
 }
 
 void sound_destroy(SOUNDSYSTEM *system) {
+  FMOD_System_Release(system->system);
+  // TODO: RELEASE SOUNDS TOO
 }
 
 void sound_update(SOUNDSYSTEM *system) {
