@@ -1,0 +1,1 @@
+gource --file-idle-time 0 --camera-mode overview --key
