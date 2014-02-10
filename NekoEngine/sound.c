@@ -4,11 +4,12 @@
 
 #include "sound.h"
 
-void sound_initialize(SOUND_SYSTEM *system, DICT *sounds) {
+void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   FMOD_RESULT result;
   FMOD_CAPS caps;
   FMOD_SPEAKERMODE speakerMode;
   char name[80] = { 0 };
+  system->sounds = sounds;
   result = FMOD_System_Create(&system->system);
   result = FMOD_System_GetDriverCaps(system->system, 0, &caps, 0, &speakerMode);
   result = FMOD_System_SetSpeakerMode(system->system, speakerMode);
@@ -24,26 +25,32 @@ void sound_initialize(SOUND_SYSTEM *system, DICT *sounds) {
   }
 }
 
-void sound_loadSoundFromFile(SOUND_SYSTEM *system, char *name, void *data) {
+void sound_loadSoundFromFile(SOUNDSYSTEM *system, char *name, void *data) {
   SOUND *sound = (SOUND *)malloc(sizeof(SOUND));
   FMOD_System_CreateSound(system->system, name, FMOD_DEFAULT, NULL, &sound->data);
   dict_set(system->sounds, name, sound);
 }
 
-void sound_loadSoundFromMemory(SOUND_SYSTEM *system, char *name, void *data) {
+void sound_loadSoundFromMemory(SOUNDSYSTEM *system, char *name, const char *data, size_t size) {
   SOUND *sound = (SOUND *)malloc(sizeof(SOUND));
-  FMOD_System_CreateSound(system->system, name, FMOD_HARDWARE | FMOD_OPENMEMORY, NULL, &sound->data);
+  FMOD_CREATESOUNDEXINFO audioInfo;
+  memset(&audioInfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+  audioInfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+  audioInfo.length = size;
+  strcpy(sound->filename, name);
+  sound->size = size;
+  FMOD_System_CreateSound(system->system, data, FMOD_OPENMEMORY, &audioInfo, &sound->data);
   dict_set(system->sounds, name, sound);
 }
 
-void sound_playSound(SOUND_SYSTEM *system, char *sound) {
+void sound_playSound(SOUNDSYSTEM *system, char *sound) {
   SOUND *snd = (SOUND *)dict_get(system->sounds, sound);
   FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, NULL);
 }
 
-void sound_destroy(SOUND_SYSTEM *system) {
+void sound_destroy(SOUNDSYSTEM *system) {
 }
 
-void sound_update(SOUND_SYSTEM *system) {
+void sound_update(SOUNDSYSTEM *system) {
   FMOD_System_Update(system->system);
 }

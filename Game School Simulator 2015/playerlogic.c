@@ -191,11 +191,11 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
     schoolData->tuition += 1000;
 
-  /*Create Lobby room if "L" is pressed
+  //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_LOBBY);
+    comp_schoolLogic_constructRoom(self, ROOMTYPE_LOBBY, 2, 7);
   }
-  // Create Class room if "K" is pressed
+  /* Create Class room if "K" is pressed
   if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {
     comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_CLASS);
   }

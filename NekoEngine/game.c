@@ -13,8 +13,8 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 360
 
 GAME *__game = NULL; // UGHHHHHHH
 
@@ -69,7 +69,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysReset();
   srand((unsigned int)time(NULL));
 
-  data_loadAll(&game->data);
+  data_loadAll(&game->data, &game->systems.sound);
 
 
   __game = game;

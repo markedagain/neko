@@ -47,7 +47,7 @@ typedef struct game_t {
       double frameRate;
       double dt;
     } time;
-    SOUND_SYSTEM sound;
+    SOUNDSYSTEM sound;
   } systems;
   bool initialized;
   bool resized;
