@@ -13,8 +13,8 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 360
 
 GAME *__game = NULL; // UGHHHHHHH
 
@@ -69,7 +69,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysReset();
   srand((unsigned int)time(NULL));
 
-  data_loadAll(&game->data);
+  data_loadAll(&game->data, &game->systems.sound);
 
 
   __game = game;
@@ -195,6 +195,7 @@ bool game_loop(GAME *game) {
       input_unlockMouse(&game->input);
     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
+    sound_update(&game->systems.sound);
     game_tick(game);
     input_reset(&game->input);
     AESysFrameStart();
@@ -206,10 +207,11 @@ bool game_loop(GAME *game) {
     }
   }
 
-  return true;
+  return !game->destroying;
 }
 
 void game_destroy(GAME *game) {
+  sound_destroy(&game->systems.sound);
   // TODO
 }
 
@@ -265,6 +267,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;*/
 
   case WM_DESTROY:
+    __game->destroying = true;
     PostQuitMessage(0);
     break;
 

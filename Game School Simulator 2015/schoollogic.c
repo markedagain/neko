@@ -18,6 +18,8 @@ void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
+
+
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
@@ -104,8 +106,6 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
 }
 
 LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize) {
-  int floorToUse;
-  int colToUse;
   int i = 0;
   CDATA_ROOMLOGIC *lastKnownRoomData = NULL;
   int distanceFromLastKnown = 47;
@@ -150,14 +150,78 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
       return NULL;
     }
   }
-  else {
+  else { // IF NOT A LOBBY
     BOOL openSlot[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
     LIST *legalSlots = list_create();
     int createdRoom = 0;
     int j = 0;
     int k = 0;
+    int lastFilledCol = -1;
+    int lastFilledColSize = -1;
 
-    // SET ALL VALUES TO TRUE
+    /****************************************************
+    FIND BUILD SPOTS
+    1) Set all spots to true
+    2) Take out all spots with a room already in them
+    3) Take out all spots which do not have a room below them and lobby spots
+    4) Take out all spots which do not have a building either to their left or right
+    5) Take out all spots which do not have enough room for the length of the room
+    6) Return a list of remaining rooms available
+    *****************************************************/
+    // 1) Set all spots to true
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
+    {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+       openSlot[floor][col] = TRUE;
+    }
+
+    // 2) Take out all spots with a room already in them
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
+    {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+       
+       if(comData->rooms.coord[floor][col]) {
+         CDATA_ROOMLOGIC *otherRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
+         for(j = 0; j < otherRoomData->size; j++) {
+           openSlot[floor][col + j] = FALSE;
+         }
+       }
+    }
+
+    // 3) Take out all spots which do not have a room below them
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
+    {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       // Remember that the top floor is 0 and bottom floor is 2
+       if(openSlot[floor][col] == TRUE && openSlot[floor + 1][col] == TRUE && floor != 2)
+         openSlot[floor][col] = FALSE;
+       if((col == 7 || col == 8) && floor != 2)
+         openSlot[floor][col] = FALSE;
+    }
+
+    // 4) Take out all spots which do not have a building either to their left or right
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
+    {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       if(comData->rooms.coord[floor][col]) {
+         lastKnownRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
+         lastFilledCol = col;
+         lastFilledColSize = lastKnownRoomData->size - 1;
+       }
+
+       if (openSlot[floor][col] == TRUE
+       && ((comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize) || col == 0)
+       && (openSlot[floor][col + roomSize] == TRUE || col + roomSize > 15))
+         openSlot[floor][col] = FALSE;
+    }
+
+    /* SET ALL VALUES TO TRUE
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
@@ -217,9 +281,9 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
           }
         }
       }
-    }
+    }*/
 
-    // Create list of still available build spots
+    // 6) Return a list of remaining rooms available
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
@@ -230,12 +294,13 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
         spotPtr->x = col;
         spotPtr->y = floor;
         list_insert_end(legalSlots, spotPtr);
+        printf("\nFloor:%i    Col:%i   \n", floor, col);
       }
     }
 
     return legalSlots;
 
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+    /*for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
         int floor = i / MAX_ROOMS_PER_FLOOR;
         int col = i % MAX_ROOMS_PER_FLOOR;
 
@@ -252,7 +317,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     if(createdRoom == 0) {
       printf("NO SPACE TO CONSTRUCT ROOM\n");
       return NULL;
-    }
+    }*/
   }
 
   //Show school layout
@@ -277,7 +342,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int floo
   CDATA_ROOMLOGIC *newRoomCompData;
   CDATA_ACTORLOGIC *actorCompData;
   SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
-  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+  ENTITY *entity = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
 
   // CREATE ROOM
   newRoom = space_addEntity(simSpace, arch_room, NULL);

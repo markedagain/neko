@@ -5,6 +5,7 @@
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/game.h"
+#include "../NekoEngine/sound.h"
 #include "room.h"
 #include "roomlogic.h"
 #include "schoollogic.h"
@@ -85,6 +86,7 @@ void zoom_reset(COMPONENT *self) {
 void comp_playerLogic_initialize(COMPONENT *self, void *event) {
   pan_reset(self);
   zoom_reset(self);
+  sound_playSong(&self->owner->space->game->systems.sound, "01");
 }
 
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -191,11 +193,11 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
     schoolData->tuition += 1000;
 
-  /*Create Lobby room if "L" is pressed
+  //Create Lobby room if "L" is pressed
   if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_LOBBY);
+    comp_schoolLogic_constructRoom(self, ROOMTYPE_LOBBY, 2, 7);
   }
-  // Create Class room if "K" is pressed
+  /* Create Class room if "K" is pressed
   if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {
     comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_CLASS);
   }

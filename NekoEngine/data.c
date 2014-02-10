@@ -234,6 +234,48 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
 
 }
 
+void data_loadSoundFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename, SOUNDSYSTEM *system) {
+  char storeKey[80];
+  char *pakData = NULL;
+  size_t pakSize;
+  unsigned char *soundData = NULL;
+
+  data_makeKey(dataContainer, storeKey, filename, "sfx/", ".mp3");
+
+  if (dict_get(&dataContainer->sounds, storeKey) != NULL) {
+    printf("Found SFX %s in pak, SKIPPING\n", storeKey);
+    return;
+  }
+  pakData = (char *)pak_load(pak, filename, &pakSize);
+
+  sound_loadSoundFromMemory(system, storeKey, pakData, pakSize);
+
+  free(pakData);
+
+  printf("Loaded SFX %s from pak\n", storeKey);
+}
+
+void data_loadMusicFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const char *filename, SOUNDSYSTEM *system) {
+  char storeKey[80];
+  char *pakData = NULL;
+  size_t pakSize;
+  unsigned char *soundData = NULL;
+
+  data_makeKey(dataContainer, storeKey, filename, "bgm/", ".mp3");
+
+  if (dict_get(&dataContainer->sounds, storeKey) != NULL) {
+    printf("Found BGM %s in pak, SKIPPING\n", storeKey);
+    return;
+  }
+  pakData = (char *)pak_load(pak, filename, &pakSize);
+
+  sound_loadSoundFromMemory(system, storeKey, pakData, pakSize);
+
+  free(pakData);
+
+  printf("Loaded BGM %s from pak\n", storeKey);
+}
+
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension) {
   // given the file /data/txt/subdir1/subdir2/file.txt,
   // reduce it to just subdir1/subdir2/file for key storage
@@ -372,7 +414,7 @@ bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char 
   return true;
 }
 
-void data_loadAll(DATACONTAINER *dataContainer) {
+void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem) {
   VECTOR files;
   PAK_FILE* pak;
   char pakDir[MAX_PATH];
@@ -443,6 +485,22 @@ void data_loadAll(DATACONTAINER *dataContainer) {
       if (strcmp(extension, ".txt") == 0) {
         //printf(">> %s is a TEXTFILE (?)\n", filename);
         data_loadTextfileFromPak(dataContainer, pak, filename);
+      }
+      else {
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
+    }
+    else if (strstr(filename, "sfx/") == filename) {
+      if (strcmp(extension, ".mp3") == 0) {
+        data_loadSoundFromPak(dataContainer, pak, filename, soundSystem);
+      }
+      else {
+        printf(">> %s is an UNKNOWN FILE\n", filename);
+      }
+    }
+    else if (strstr(filename, "bgm/") == filename) {
+      if (strcmp(extension, ".mp3") == 0) {
+        data_loadMusicFromPak(dataContainer, pak, filename, soundSystem);
       }
       else {
         printf(">> %s is an UNKNOWN FILE\n", filename);

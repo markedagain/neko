@@ -5,6 +5,7 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/entity.h"
+#include "../NekoEngine/sound.h"
 #include <math.h>
 #include "ghostroomlogic.h"
 #include "ghostroom.h"
@@ -92,3 +93,4 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
   }
   list_destroy(spots);
 }
+
