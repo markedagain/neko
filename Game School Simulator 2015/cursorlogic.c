@@ -35,7 +35,7 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
       toBuild = playerData->roomType;
       roomSize = comp_schoolLogic_getRoomSize(toBuild);
       buildSpaces = comp_schoolLogic_findBuildSpots(self, toBuild, roomSize);
-      if (buildSpaces->first == NULL) {
+      if (buildSpaces == NULL) {
         playerData->gameMode = DEFAULT;
         data->gameMode = DEFAULT;
       }
@@ -84,9 +84,11 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
       middle.x = left + squareSize;
       break;
     }
+
     created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);
     gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
+    sprite->source = "rooms/template2";
     gData->point.x = x;
     gData->point.y = y;
     gData->roomSize = roomSize;
