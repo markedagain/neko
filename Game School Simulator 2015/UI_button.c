@@ -39,7 +39,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   if (mbox->left.pressed) {
     playerData->gameMode = BUILD;
-    playerData->roomType = ROOMTYPE_CLASS;
+    playerData->roomType = ROOMTYPE_LOBBY;
   }
   /*
   if (mbox->entered && data->ent1 == NULL) {

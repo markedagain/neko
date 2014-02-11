@@ -120,30 +120,30 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
   if(roomType == ROOMTYPE_LOBBY) {
     if(comData->rooms.coord[2][7] == NULL) {
       LIST *legalSlots = list_create();
-      POINT spot = {0,0};
-      POINT *spotPtr = &spot;
+      POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 2;
-      list_insert_end(legalSlots, spotPtr);
+      list_insert_end(legalSlots, (void *)spotPtr);
+      return legalSlots;
     }
     else if(comData->rooms.coord[1][7] == NULL) {
       LIST *legalSlots = list_create();
-      POINT spot = {0,0};
-      POINT *spotPtr = &spot;
+      POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 1;
-      list_insert_end(legalSlots, spotPtr);
+      list_insert_end(legalSlots, (void *)spotPtr);
+      return legalSlots;
     }
     else if(comData->rooms.coord[0][7] == NULL) {
       LIST *legalSlots = list_create();
-      POINT spot = {0,0};
-      POINT *spotPtr = &spot;
+      POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 0;
-      list_insert_end(legalSlots, spotPtr);
+      list_insert_end(legalSlots, (void *)spotPtr);
+      return legalSlots;
     }
     else {
       printf("NO MORE SPACE\n");
@@ -464,7 +464,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Eduardo's Super Awesome Game School";
-  data.money = 50000;
+  data.money = 100000;
   data.tuition = 3000;
   data.studentCapacity = 0;
   data.currentStudents = 0;
