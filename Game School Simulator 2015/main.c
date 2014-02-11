@@ -20,6 +20,7 @@
 #include "UI_build.h"
 #include "UI_manage.h"
 #include "UI_student.h"
+#include "splash.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -30,6 +31,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *mgSpace;
   SPACE *fgSpace;
   SPACE *uiSpace;
+  SPACE *splashSpace;
   VEC3 position;
   VEC4 color = { 1, 0, 0, 1 };
   VEC2 dimensions = { 40.0f, 20.0f };
@@ -106,7 +108,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
-  
+  splashSpace = game_addSpace(game, "splash");
+  space_addEntity(splashSpace, arch_splash, "splash");
 
   game_start(game);
 
