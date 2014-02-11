@@ -20,6 +20,10 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   VEC4 color = { 0, 0, 1, 1 };
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
 
+  if (mbox->left.down) {
+    input->mouse.handled[MBUTTON_LEFT] = 2;
+  }
+
   if (mbox->over) {
     sprite->color.r = min(sprite->color.r + 0.05f, 1);
     sprite->color.b = max(sprite->color.b - 0.05f, 1);

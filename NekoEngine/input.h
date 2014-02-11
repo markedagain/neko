@@ -128,16 +128,7 @@ typedef struct inputContainer_t {
       };
       INPUT_STATE buttons[MBUTTON_LAST];
     };
-    struct {
-      union {
-        struct {
-          bool left;
-          bool middle;
-          bool right;
-        };
-        bool buttons[MBUTTON_LAST];
-      };
-    } handled;
+    int handled[MBUTTON_LAST];
     struct {
       int delta;
       int direction;

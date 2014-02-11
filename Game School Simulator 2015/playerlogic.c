@@ -164,25 +164,32 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         data->zoomVelocity = 0.0f;
     }
   }
-  if (input->mouse.left == ISTATE_PRESSED && !input->mouse.handled.left) {
-    input->mouse.handled.left = true;
-    data->dragging = true;
-    input_lockMouse(input);
-    data->dragOrigin.x = input->mouse.position.x;
-    data->dragOrigin.y = input->mouse.position.y;
+  printf("%i <<\n", input->mouse.handled[MBUTTON_LEFT]);
+  if (input->mouse.handled[MBUTTON_LEFT] == 0) {
+    if (input->mouse.left == ISTATE_PRESSED) {
+      //input->mouse.handled[MBUTTON_LEFT] = true;
+      data->dragging = true;
+      input_lockMouse(input);
+      data->dragOrigin.x = input->mouse.position.x;
+      data->dragOrigin.y = input->mouse.position.y;
+    }
+    if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
+      data->dragging = false;
+      input_unlockMouse(input);
+    }
+    if (data->dragging) {
+      POINT panned;
+      float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
+      xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
+      pan(self, xdiff, 0.0f, &panned);
+      if (panned.x != 0)
+        data->dragOrigin.x = input->mouse.position.x;
+      input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
+    }
   }
-  if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
+  else {
     data->dragging = false;
     input_unlockMouse(input);
-  }
-  if (data->dragging) {
-    POINT panned;
-    float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
-    xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
-    pan(self, xdiff, 0.0f, &panned);
-    if (panned.x != 0)
-      data->dragOrigin.x = input->mouse.position.x;
-    input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
   }
 
 
