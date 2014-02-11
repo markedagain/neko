@@ -73,6 +73,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
+  space_addEntity(uiSpace, arch_player, "player");
 
   vec3_set(&position, 100.0f, 40.0f, 0);
   vec2_set(&dimensions, 100.0f, 40.0f);
@@ -103,7 +104,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Engine Proof", &color);
   vec3_set(&position, -318, 112, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);
-  space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
   

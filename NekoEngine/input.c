@@ -9,7 +9,7 @@ void input_initialize(INPUT_CONTAINER *input) {
     input->keyboard.keys[i] = ISTATE_UP;
   for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buttons[i] = ISTATE_UP;
-    input->mouse.handled.buttons[i] = false;
+    input->mouse.handled[i] = 0;
   }
   input->mouse.position.x = 0;
   input->mouse.position.y = 0;
@@ -42,7 +42,8 @@ void input_reset(INPUT_CONTAINER *input) {
   input->mouse.wheel.delta = 0;
   input->mouse.wheel.direction = 0;
   for (i = 0; i < MBUTTON_LAST; ++i) {
-    input->mouse.handled.buttons[i] = false;
+    input->mouse.handled[i]--;
+    if (input->mouse.handled[i] < 0) input->mouse.handled[i] = 0;
   }
 }
 

@@ -189,8 +189,9 @@ bool game_loop(GAME *game) {
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
     stopwatch_lap(&game->systems.time.stopwatch);
-    if (AESysGetWindowHandle() == GetActiveWindow())
+    if (AESysGetWindowHandle() == GetActiveWindow()) {
       input_update(&game->input, NULL);
+    }
     else
       input_unlockMouse(&game->input);
     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
