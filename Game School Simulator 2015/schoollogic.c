@@ -162,6 +162,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     /****************************************************
     FIND BUILD SPOTS
     1) Set all spots to true
+    1.5) Take out all spots without a lobby on their floor
     2) Take out all spots with a room already in them
     3) Take out all spots which do not have a room below them and lobby spots
     4) Take out all spots which do not have a building either to their left or right
@@ -174,6 +175,20 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
        openSlot[floor][col] = TRUE;
+    }
+
+    // 1.5) Take out all spots without a lobby on their floor
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
+    {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       if(comData->rooms.coord[2][7] == NULL && floor == 2)
+         openSlot[floor][col] = FALSE;
+       if(comData->rooms.coord[1][7] == NULL && floor == 1)
+         openSlot[floor][col] = FALSE;
+       if(comData->rooms.coord[0][7] == NULL && floor == 0)
+         openSlot[floor][col] = FALSE;
     }
 
     // 2) Take out all spots with a room already in them
