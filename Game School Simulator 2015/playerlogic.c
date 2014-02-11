@@ -164,7 +164,6 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         data->zoomVelocity = 0.0f;
     }
   }
-  printf("%i <<\n", input->mouse.handled[MBUTTON_LEFT]);
   if (input->mouse.handled[MBUTTON_LEFT] == 0) {
     if (input->mouse.left == ISTATE_PRESSED) {
       //input->mouse.handled[MBUTTON_LEFT] = true;
