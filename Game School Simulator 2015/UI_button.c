@@ -11,6 +11,7 @@
 #include "ghostroom.h"
 #include "playerlogic.h"
 #include "roomlogic.h"
+#include "UI_build.h"
 
 // code is breaking and eduardo is screaming
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
@@ -25,6 +26,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   SPACE *mgSpace = game_getSpace(self->owner->space->game, "mg");
   ENTITY *player = space_getEntity(uiSpace, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
 
   if (mbox->over) {
     sprite->color.r = min(sprite->color.r + 0.05f, 1);
@@ -38,8 +40,73 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   }
 
   if (mbox->left.pressed) {
-    playerData->gameMode = BUILD;
-    playerData->roomType = ROOMTYPE_LOBBY;
+    VEC3 position;
+    ENTITY *newButton;
+    CDATA_UI_BUTTON *buttonData;
+    switch (comData->type) {
+    case BUTTON_DEFAULT:
+      if(comData->showing == FALSE) {
+        // LOBBY BUTTON
+        vec3_set(&position, 200, -25, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDLOBBY;
+        // CLASS BUTTON
+        vec3_set(&position, 200, 30, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDCLASS;
+        // LIBRARY BUTTON
+        vec3_set(&position, 200, 85, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDLIBRARY;
+        // TEAMSPACE BUTTON
+        vec3_set(&position, 200, 140, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDTEAMSPACE;
+
+        comData->showing = TRUE;
+        break;
+      }
+      else {
+        LIST_NODE *node;
+        LIST *buttons = list_create();
+        space_getAllEntities(self->owner->space, "buildButton", buttons);
+        node = buttons->first;
+        while (node) {
+          entity_destroy((ENTITY *)node->data);
+          node = node->next;
+        }
+
+        list_destroy(buttons);
+        comData->showing = FALSE;
+      }
+
+    case BUTTON_BUILDLOBBY:
+      playerData->roomType = ROOMTYPE_LOBBY;
+      playerData->gameMode = BUILD;
+      break;
+
+    case BUTTON_BUILDCLASS:
+      playerData->roomType = ROOMTYPE_CLASS;
+      playerData->gameMode = BUILD;
+      break;
+
+    case BUTTON_BUILDLIBRARY:
+      playerData->roomType = ROOMTYPE_LIBRARY;
+      playerData->gameMode = BUILD;
+      break;
+
+    case BUTTON_BUILDTEAMSPACE:
+      playerData->roomType = ROOMTYPE_TEAMSPACE;
+      playerData->gameMode = BUILD;
+      break;
+
+    default:
+      break;
+    }
   }
   /*
   if (mbox->entered && data->ent1 == NULL) {
@@ -75,6 +142,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
 void comp_UI_button(COMPONENT *self) {
   CDATA_UI_BUTTON data = { 0 };
+  data.type = BUTTON_DEFAULT;
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;

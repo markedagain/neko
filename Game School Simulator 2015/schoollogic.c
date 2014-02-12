@@ -395,6 +395,15 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   case(ROOMTYPE_CLASS):
     sprite->source = "rooms/template";
     break;
+  case(ROOMTYPE_LIBRARY):
+    sprite->source = "rooms/template2";
+    break;
+  case(ROOMTYPE_TEAMSPACE):
+    sprite->source = "rooms/template3";
+    break;
+  default:
+    sprite->source = "rooms/template";
+    break;
   }
 }
 

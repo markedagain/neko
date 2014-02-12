@@ -92,7 +92,22 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);
     gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
-    sprite->source = "rooms/template2";
+    switch (toBuild) {
+    case ROOMTYPE_LOBBY:
+      sprite->source = "rooms/template2";
+      break;
+    case ROOMTYPE_CLASS:
+      sprite->source = "rooms/template";
+      break;
+    case ROOMTYPE_LIBRARY:
+      sprite->source = "rooms/template2";
+      break;
+    case ROOMTYPE_TEAMSPACE:
+      sprite->source = "rooms/template3";
+      break;
+    default:
+      break;
+    }
     gData->point.x = x;
     gData->point.y = y;
     gData->roomSize = roomSize;
