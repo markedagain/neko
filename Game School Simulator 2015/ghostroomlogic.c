@@ -11,10 +11,10 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_GHOSTROOMLOGIC *gData = (CDATA_GHOSTROOMLOGIC *)self->data;
 
   if (mbox->over) {
-    sprite->color.a = 0.9f;
+    sprite->color.a = 0.8f;
   }
   else
-    sprite->color.a = 0.75f;
+    sprite->color.a = 0.55f;
 
   if (mbox->left.pressed) {
     SPACE *ui = game_getSpace(self->owner->space->game, "ui");

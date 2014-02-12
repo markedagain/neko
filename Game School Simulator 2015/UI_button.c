@@ -12,6 +12,7 @@
 #include "playerlogic.h"
 #include "roomlogic.h"
 #include "UI_build.h"
+#include "schoollogic.h"
 
 // code is breaking and eduardo is screaming
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
@@ -43,32 +44,48 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     VEC3 position;
     ENTITY *newButton;
     CDATA_UI_BUTTON *buttonData;
+    ENTITY *text;
+    VEC4 color;
+    vec4_set(&color, 0.0f, 0.0f, 0.0f, 1.0f);
     switch (comData->type) {
     case BUTTON_DEFAULT:
       if(comData->showing == FALSE) {
         // LOBBY BUTTON
-        vec3_set(&position, 200, -25, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        buttonData->type = BUTTON_BUILDLOBBY;
-        // CLASS BUTTON
-        vec3_set(&position, 200, 30, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        buttonData->type = BUTTON_BUILDCLASS;
-        // LIBRARY BUTTON
-        vec3_set(&position, 200, 85, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        buttonData->type = BUTTON_BUILDLIBRARY;
-        // TEAMSPACE BUTTON
         vec3_set(&position, 200, 140, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        vec3_set(&position, -10, 0, 0);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color);
+        entity_attach(text, newButton);
+        buttonData->type = BUTTON_BUILDLOBBY;
+
+        // CLASS BUTTON
+        vec3_set(&position, 200, 85, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        vec3_set(&position, -10, 0, 0);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color);
+        entity_attach(text, newButton);
+        buttonData->type = BUTTON_BUILDCLASS;
+        // LIBRARY BUTTON
+        vec3_set(&position, 200, 30, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        vec3_set(&position, -10, 0, 0);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color);
+        entity_attach(text, newButton);
+        buttonData->type = BUTTON_BUILDLIBRARY;
+        // TEAMSPACE BUTTON
+        vec3_set(&position, 200, -25, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        vec3_set(&position, -10, 0, 0);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color);
+        entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDTEAMSPACE;
 
+
         comData->showing = TRUE;
-        break;
       }
       else {
         LIST_NODE *node;
@@ -83,6 +100,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         list_destroy(buttons);
         comData->showing = FALSE;
       }
+      break;
 
     case BUTTON_BUILDLOBBY:
       playerData->roomType = ROOMTYPE_LOBBY;
