@@ -109,6 +109,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
   splashSpace = game_addSpace(game, "splash");
+  vec3_set(&position, 0.0f, 0.0f, 0.0f);
+  vec4_set(&color, 1.0f, 1.0f, 1.0f, 1.0f);
+  vec2_set(&dimensions, 640.0f, 360.0f);
+  genericSprite_createBlank(splashSpace, &position, &dimensions, &color, "splash_bg");
   space_addEntity(splashSpace, arch_splash, "splash");
 
   game_start(game);

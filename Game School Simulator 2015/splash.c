@@ -13,7 +13,7 @@ void arch_splash(ENTITY *entity) {
   entity_connect(entity, comp_transform);
 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "splash";
+  sprite->source = "digipen";
   sprite->color.a = 0.0f;
   
   entity_connect(entity, comp_splashLogic);
