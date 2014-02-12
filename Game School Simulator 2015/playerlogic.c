@@ -117,10 +117,10 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom_reset(self);
     pan_reset(self);
   }
-  if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
+  /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
     self->owner->space->systems.camera.transform.scale.x += 1.0f;
     self->owner->space->systems.camera.transform.scale.y += 1.0f;
-  }
+  } */
   if (input->keyboard.keys[KEY_N] == ISTATE_PRESSED) {
     data->gameMode = DEFAULT;
   }

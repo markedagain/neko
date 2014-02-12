@@ -118,7 +118,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     entity_destroy(data->ent1);
     data->ent1 = NULL;
   }
-
+  */
   if (mbox->entered && data->ent3 == NULL) {
     vec3_set(&position, 250, 130, 0);
     data->ent3 = genericSprite_create(uiSpace, &position, NULL, "cursor/build");
@@ -128,7 +128,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     entity_destroy(data->ent3);
     data->ent3 = NULL;
   }
-
+  /*
   if(mbox->left.pressed && data->ent2 == NULL) {
     vec3_set(&position, 100, 100, 0);
     data->ent2 = genericSprite_create(uiSpace, &position, NULL, "backgrounds/i_love_you");
