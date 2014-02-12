@@ -15,8 +15,10 @@
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
+#define FULLSCREEN true
 
 GAME *__game = NULL; // UGHHHHHHH
+WINDOWPLACEMENT g_wpPrev = { sizeof(g_wpPrev) }; // UGHHHHHHHHHHHHHHhhhhhhh
 
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
@@ -39,6 +41,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->destroyingSpaces = list_create();
   game->destroying = 0;
   game->resized = false;
+  game->fullscreen = false;
 
 
   game->window.width = windowRect.right - windowRect.left;
@@ -60,7 +63,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   AESysInit(&sysInitInfo);
   AESysSetWindowTitle(NEKO_GAMETITLE);
-  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT);
+  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN);
   
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -216,16 +219,39 @@ void game_destroy(GAME *game) {
   // TODO
 }
 
-void game_resize(GAME *game, unsigned int width, unsigned int height) {
+void game_resize(GAME *game, unsigned int width, unsigned int height, bool fullscreen) {
   HWND hWnd = AESysGetWindowHandle();
   RECT windowRect = { 0, 0, width, height };
-  AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME, FALSE);
+  DWORD dwStyle = GetWindowLong(hWnd, GWL_STYLE);
 
-  game->window.width = windowRect.right - windowRect.left;
-  game->window.height = windowRect.bottom - windowRect.top;
-  game->innerWindow.width = width;
-  game->innerWindow.height = height;
-  SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
+  if (fullscreen) {
+    if (dwStyle & WS_OVERLAPPEDWINDOW) {
+      MONITORINFO mi = { sizeof(mi) };
+      if (GetWindowPlacement(hWnd, &g_wpPrev) &&
+        GetMonitorInfo(MonitorFromWindow(hWnd, MONITOR_DEFAULTTOPRIMARY), &mi)) {
+          SetWindowLong(hWnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
+          SetWindowPos(hWnd, HWND_TOP, mi.rcMonitor.left, mi.rcMonitor.top,
+            mi.rcMonitor.right - mi.rcMonitor.left,
+            mi.rcMonitor.bottom - mi.rcMonitor.top,
+            SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+          game->innerWindow.width = mi.rcMonitor.right - mi.rcMonitor.left;
+          game->innerWindow.height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+          game->window.width = game->innerWindow.width;
+          game->window.height = game->innerWindow.height;
+          game->fullscreen = true;
+      }
+    }
+  }
+  else {
+    AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME, FALSE);
+
+    game->window.width = windowRect.right - windowRect.left;
+    game->window.height = windowRect.bottom - windowRect.top;
+    game->innerWindow.width = width;
+    game->innerWindow.height = height;
+    SetWindowPos(hWnd, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - game->window.width) / 2, (GetSystemMetrics(SM_CYSCREEN) - game->window.height) / 2, game->window.width, game->window.height, SWP_NOZORDER);
+    game->fullscreen = false;
+  }
   if (game->initialized)
     AEGfxExit(); // TODO: Replace with better?
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
