@@ -45,27 +45,44 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     CDATA_UI_BUTTON *buttonData;
     switch (comData->type) {
     case BUTTON_DEFAULT:
-      // LOBBY BUTTON
-      vec3_set(&position, 200, -25, 0);
-      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "lobbyButton", &position);
-      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-      buttonData->type = BUTTON_BUILDLOBBY;
-      // CLASS BUTTON
-      vec3_set(&position, 200, 30, 0);
-      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "classButton", &position);
-      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-      buttonData->type = BUTTON_BUILDCLASS;
-      // LIBRARY BUTTON
-      vec3_set(&position, 200, 85, 0);
-      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "libraryButton", &position);
-      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-      buttonData->type = BUTTON_BUILDLIBRARY;
-      // TEAMSPACE BUTTON
-      vec3_set(&position, 200, 140, 0);
-      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "teamspaceButton", &position);
-      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-      buttonData->type = BUTTON_BUILDTEAMSPACE;
-      break;
+      if(comData->showing == FALSE) {
+        // LOBBY BUTTON
+        vec3_set(&position, 200, -25, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDLOBBY;
+        // CLASS BUTTON
+        vec3_set(&position, 200, 30, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDCLASS;
+        // LIBRARY BUTTON
+        vec3_set(&position, 200, 85, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDLIBRARY;
+        // TEAMSPACE BUTTON
+        vec3_set(&position, 200, 140, 0);
+        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+        buttonData->type = BUTTON_BUILDTEAMSPACE;
+
+        comData->showing = TRUE;
+        break;
+      }
+      else {
+        LIST_NODE *node;
+        LIST *buttons = list_create();
+        space_getAllEntities(self->owner->space, "buildButton", buttons);
+        node = buttons->first;
+        while (node) {
+          entity_destroy((ENTITY *)node->data);
+          node = node->next;
+        }
+
+        list_destroy(buttons);
+        comData->showing = FALSE;
+      }
 
     case BUTTON_BUILDLOBBY:
       playerData->roomType = ROOMTYPE_LOBBY;

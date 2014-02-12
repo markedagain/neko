@@ -21,6 +21,7 @@ typedef struct{
   ENTITY *ent2;
   ENTITY *ent3;
   BUTTON_TYPE type;
+  BOOL showing;
 
 } CDATA_UI_BUTTON;
 
