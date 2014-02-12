@@ -14,6 +14,7 @@ void arch_cursor(ENTITY *entity) {
 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   sprite->source = "cursor/default";
+  sprite->visible = false;
 
   entity_connect(entity, comp_cursorLogic);
 }

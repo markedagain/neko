@@ -32,6 +32,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   SPACE *fgSpace;
   SPACE *uiSpace;
   SPACE *splashSpace;
+  SPACE *cursorSpace;
   VEC3 position;
   VEC4 color = { 1, 0, 0, 1 };
   VEC2 dimensions = { 40.0f, 20.0f };
@@ -100,13 +101,16 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
   vec3_set(&position, 280, 10, 0);
   space_addEntityAtPosition(uiSpace, arch_uistudent, "students_button", &position);
-  vec3_set(&position, -318, 180, 0);
+  /*vec3_set(&position, -318, 180, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);
   vec3_set(&position, -318, 160, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Engine Proof", &color);
   vec3_set(&position, -318, 112, 0);
-  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);
+  genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);*/
   space_addEntity(uiSpace, arch_cursor, "cursor");
+
+  cursorSpace = game_addSpace(game, "cursor");
+  genericSprite_create(cursorSpace, &position, "cursorSprite", "cursor/default");
 
   splashSpace = game_addSpace(game, "splash");
   vec3_set(&position, 0.0f, 0.0f, 0.0f);

@@ -25,10 +25,14 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   int roomSize;
   ROOM_TYPE toBuild;
   LIST *buildSpaces;
+  CDATA_TRANSFORM *cursorSpriteTransform = (CDATA_TRANSFORM *)entity_getComponentData(space_getEntity(game_getSpace(self->owner->space->game, "cursor"), "cursorSprite"), COMP_TRANSFORM);
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
   trans->translation.x = (float)mousePos.x;
   trans->translation.y = (float)mousePos.y;
+  cursorSpriteTransform->translation.x = trans->translation.x;
+  cursorSpriteTransform->translation.y = trans->translation.y;
+
 
   if (playerData->gameMode == BUILD) {
     if (data->gameMode != BUILD) {

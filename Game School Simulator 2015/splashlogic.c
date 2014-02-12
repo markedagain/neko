@@ -12,11 +12,13 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   if (bg && data->fadeBackground) {
     CDATA_SPRITE *bgSprite = (CDATA_SPRITE *)entity_getComponentData(bg, COMP_SPRITE);
     bgSprite->color.a -= 0.01f;
-    if (bgSprite->color.a <= 0.0f) {
+    if (bgSprite->color.a <= 0.45 && !data->secondLogo) {
       sprite->source = "splash";
       data->secondLogo = true;
       data->timer = 3.0f;
       sound_playSound(&self->owner->space->game->systems.sound, "logo");
+    }
+    if (bgSprite->color.a <= 0.0f) {
       data->fadeBackground = false;
       entity_destroy(bg);
     }
