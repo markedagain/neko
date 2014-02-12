@@ -87,6 +87,9 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     case (2):
       middle.x = left + squareSize;
       break;
+    case (3):
+      middle.x = left + squareSize * 1.5f;
+      break;
     }
 
     created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);

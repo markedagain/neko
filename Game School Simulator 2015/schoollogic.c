@@ -383,6 +383,9 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     case (2):
       middle.x = (colToUse - 8.0f) * squareSize + squareSize;
       break;
+    case (3):
+      middle.x = (colToUse - 8.5f) * squareSize + squareSize + squareSize;
+      break;
     }
   newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
