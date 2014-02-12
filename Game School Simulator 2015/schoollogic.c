@@ -7,7 +7,11 @@
 #include "../NekoEngine/linkedlist.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
+#include "../Nekoengine/spritetext.h"
+#include "../NekoEngine/generictext.h"
+#include "../NekoEngine/entity.h"
 #include <math.h>
+#include <string.h>
 #include "roomactorlogic.h"
 #include "roomactor.h"
 
@@ -32,9 +36,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
+  // ENTITY *currMoney = 0;
+  // char buffer[20];
+  // VEC3 position = { 10, 10, 0 };
+  // VEC4 color = { 0, 0, 1, 1 };
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
-  
+  // SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  // int prevMoney = comData->money;
+
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
     comData->incomingStudents += 1 + comData->reputation;
@@ -77,6 +87,17 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   printf("       Tuition: $%i\n", comData->tuition);
   printf("Rep: %i", comData->reputation);
   printf("              Alumni: %i\n", comData->alumni->count);
+  /*
+  if(!currMoney) {
+    sprintf(buffer,"%d", comData->money);
+    vec3_set(&position, -318, -100, 0);
+    currMoney = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color);
+  }
+  else {
+    sprintf(buffer, "%d", comData->money);
+    genericText_setText(currMoney, buffer);
+  }
+  */
 }
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -382,6 +403,9 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       break;
     case (2):
       middle.x = (colToUse - 8.0f) * squareSize + squareSize;
+      break;
+    case (3):
+      middle.x = (colToUse - 8.5f) * squareSize + squareSize + squareSize;
       break;
     }
   newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);

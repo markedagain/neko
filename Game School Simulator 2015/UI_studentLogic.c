@@ -31,7 +31,7 @@ void comp_UI_studentLogicUpdate(COMPONENT *self, void *event) {
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
   
-  if (mbox->entered && data->ent1 == NULL) {
+  /*if (mbox->entered && data->ent1 == NULL) {
     //vec3_set(&position, &input->mouse.position.x, &input->mouse.position.y, 0);
     data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");;
     sprite->color.r = sprite->color.r + 0.5f;
@@ -39,7 +39,7 @@ void comp_UI_studentLogicUpdate(COMPONENT *self, void *event) {
   if (mbox->exited && data->ent1) {
     entity_destroy(data->ent1);
     data->ent1 = NULL;
-  }
+  }*/
   
   if (mbox->entered && data->ent3 == NULL) {
     vec3_set(&position, 250, 10, 0);
