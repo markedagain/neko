@@ -36,16 +36,17 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   VEC3 position;
   VEC4 color = { 1, 0, 0, 1 };
   VEC2 dimensions = { 40.0f, 20.0f };
-  ENTITY *ent1;
+  /*ENTITY *ent1;
   ENTITY *ent2;
-  ENTITY *ent3;
+  ENTITY *ent3;*/
 
   game = game_create(instanceH, show);
 
   // sim - where the simulation occurs
   simSpace = game_addSpace(game, "sim");
   simSpace->visible = false;
-  simSpace->systems.time.scale = 0.0166666666666667f;
+  //simSpace->systems.time.scale = 0.0166666666666667f;
+  simSpace->systems.time.scale = 0.0f;
 
   space_addEntity(simSpace, arch_gameManager, "gameManager");
 
@@ -78,6 +79,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
 
+  /*
   vec3_set(&position, 100.0f, 40.0f, 0);
   vec2_set(&dimensions, 100.0f, 40.0f);
   ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "TEST1");
@@ -92,6 +94,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   vec4_set(&color, 0.0f, 0.0f, 1.0f, 1.0f);
   ent3 = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "CHILD!", &color);
   entity_attach(ent3, ent2);
+  */
 
   vec3_set(&position, 0, 0, 0);
   space_addEntityAtPosition(uiSpace, arch_uibase, "UI", &position);
