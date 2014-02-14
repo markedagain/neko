@@ -21,6 +21,7 @@
 #include "UI_manage.h"
 #include "UI_student.h"
 #include "splash.h"
+#include "blackbar.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -112,15 +113,17 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);*/
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
-  cursorSpace = game_addSpace(game, "cursor");
-  genericSprite_create(cursorSpace, &position, "cursorSprite", "cursor/default");
-
   splashSpace = game_addSpace(game, "splash");
   vec3_set(&position, 0.0f, 0.0f, 0.0f);
   vec4_set(&color, 1.0f, 1.0f, 1.0f, 1.0f);
   vec2_set(&dimensions, 640.0f, 360.0f);
   genericSprite_createBlank(splashSpace, &position, &dimensions, &color, "splash_bg");
   space_addEntity(splashSpace, arch_splash, "splash");
+
+  cursorSpace = game_addSpace(game, "cursor");
+  genericSprite_create(cursorSpace, &position, "cursorSprite", "cursor/default");
+  space_addEntity(cursorSpace, arch_blackbar, "blackbar1");
+  space_addEntity(cursorSpace, arch_blackbar, "blackbar2");
 
   game_start(game);
 

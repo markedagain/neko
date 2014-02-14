@@ -83,6 +83,12 @@
     <ClCompile Include="splash.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="blackbar.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="blackbarlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -180,6 +186,12 @@
     </ClInclude>
     <ClInclude Include="splash.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="blackbar.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="blackbarlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

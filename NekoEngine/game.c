@@ -13,8 +13,8 @@
 #include "util.h"
 #include "../AlphaEngine/AEEngine.h"
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 360
 #define FULLSCREEN true
 
 GAME *__game = NULL; // UGHHHHHHH
@@ -51,6 +51,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   game->dimensions.width = NEKO_DEFAULT_GAMEWIDTH;
   game->dimensions.height = NEKO_DEFAULT_GAMEHEIGHT;
+  game->dimensions.aspectRatio = (float)game->dimensions.width / (float)game->dimensions.height;
 
   game->systems.time.framesPerSecond = NEKO_DEFAULT_FPS;
   game->systems.time.frameRate = 0;

@@ -76,7 +76,10 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   spriteScale.x = comData->size.x;
   spriteScale.y = comData->size.y;
 
-  screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
+  if (((float)self->owner->space->game->innerWindow.width / (float)self->owner->space->game->innerWindow.height) <= self->owner->space->game->dimensions.aspectRatio)
+    screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
+  else
+    screenScale = (float)self->owner->space->game->innerWindow.height / self->owner->space->game->dimensions.height;
   translation.x *= screenScale;
   translation.y *= screenScale;
   spriteWidth *= screenScale;
