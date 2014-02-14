@@ -3,6 +3,7 @@
 #include "blackbar.h"
 #include "transform.h"
 #include "sprite.h"
+#include "mousebox.h"
 #include "blackbarlogic.h"
 
 void arch_blackbar(ENTITY *entity) {
@@ -16,5 +17,6 @@ void arch_blackbar(ENTITY *entity) {
   sprite->visible = false;
   vec4_set(&sprite->color, 0.0f, 0.0f, 0.0f, 1.0f);
 
+  entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_blackBarLogic);
 }
