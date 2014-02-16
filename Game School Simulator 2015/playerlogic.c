@@ -120,7 +120,11 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   }
   if (input->keyboard.keys[KEY_F1] == ISTATE_PRESSED) {
     ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
-    genericText_setText(ent, "Engine Proof Demonstration");
+    genericText_setText(ent, "Engine Proof\nDemon\nstration");
+  }
+  if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
+    ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
+    genericText_setText(ent, "Alpha Presentation");
   }
   /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
     self->owner->space->systems.camera.transform.scale.x += 1.0f;

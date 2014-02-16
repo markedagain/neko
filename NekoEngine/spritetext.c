@@ -51,7 +51,21 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
     }
   }
   if (textLength < listLength) {
-    // TODO: Handle
+   size_t lastIndex = textLength;
+   LIST_NODE *nextNode;
+   i = 0;
+   node = multiData->entities->first;
+   while (i < lastIndex) {
+     node = node->next;
+     ++i;
+   }
+   while (node != NULL) {
+     ENTITY *ent;
+     nextNode = node->next;
+     ent = (ENTITY *)list_remove(multiData->entities, node);
+     entity_destroy(ent);
+     node = nextNode;
+   }
   }
 
   if (multiData->entities->count == 0)
@@ -60,33 +74,27 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
   node = multiData->entities->first;
   i = 0;
   while (node != NULL) {
-    VEC3 position = { offset.x, offset.y };
     ENTITY *ent = (ENTITY *)node->data;
     CDATA_SPRITE *sprData = (CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE);
     CDATA_TRANSFORM *sprTrans = (CDATA_TRANSFORM *)entity_getComponentData(ent, COMP_TRANSFORM);
-    bool newline = false;
     char ch;
-    sprTrans->translation.x = position.x;
-    sprTrans->translation.y = position.y;
     sprData->manual.enabled = true;
     sprData->manual.textureName = data->font;
     sprData->manual.width = fontSize.x;
     sprData->manual.height = fontSize.y;
     comp_sprite_clearMesh(entity_getComponent(ent, COMP_SPRITE));
     vec4_copy(&sprData->color, &data->color);
-    ch = text[i];
-    if (text[i] == '\n') {
-      newline = true;
-      ch = ' ';
-    }
-    sprData->manual.u = (float)((ch % 16 * sprData->manual.width) + (sprData->manual.width / 2)) / (float)(16 * sprData->manual.width);
-    sprData->manual.v = (float)((ch / 16 * sprData->manual.height) + (sprData->manual.height / 2)) / (float)(16 * sprData->manual.height);
-    if (newline) {
+    while (text[i] == '\n') {
+      ++i;
       offset.x = (float)fontSize.x / 2.0f;
       offset.y -= (float)fontSize.y;
     }
-    else
-      offset.x += fontSize.x;
+    sprTrans->translation.x = offset.x;
+    sprTrans->translation.y = offset.y;
+    ch = text[i];
+    sprData->manual.u = (float)((ch % 16 * sprData->manual.width) + (sprData->manual.width / 2)) / (float)(16 * sprData->manual.width);
+    sprData->manual.v = (float)((ch / 16 * sprData->manual.height) + (sprData->manual.height / 2)) / (float)(16 * sprData->manual.height);
+    offset.x += fontSize.x;
     node = node->next;
     ++i;
   }
