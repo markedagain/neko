@@ -6,7 +6,7 @@ Barron
 Baez
 Low
 Tai
-Lapore
+Lepore
 Ong
 Cho
 Gorinstein
@@ -73,7 +73,7 @@ Goldberg
 Zoidberg
 Stienberg
 Zuckerburg
-Jobbs
+Jobs
 Comair
 Levy
 Margolis
@@ -84,3 +84,6 @@ Rivers
 Mellor
 Miller
 Moarr
+Buum
+Jeske
+Stephens

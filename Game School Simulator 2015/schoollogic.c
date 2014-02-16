@@ -191,16 +191,14 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     6) Return a list of remaining rooms available
     *****************************************************/
     // 1) Set all spots to true
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
-    {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
        openSlot[floor][col] = TRUE;
     }
 
     // 1.5) Take out all spots without a lobby on their floor
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
-    {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
 
@@ -213,8 +211,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     }
 
     // 2) Take out all spots with a room already in them
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
-    {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
        
@@ -227,8 +224,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     }
 
     // 3) Take out all spots which do not have a room below them
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
-    {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
 
@@ -240,8 +236,7 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     }
 
     // 4) Take out all spots which do not have a building either to their left or right
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++)
-    {
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
 
@@ -255,6 +250,21 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
        && ((comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize) || col == 0)
        && (openSlot[floor][col + roomSize] == TRUE || col + roomSize > 15))
          openSlot[floor][col] = FALSE;
+    }
+
+    // 5) Check to make sure size of room does not interfere with an existing room
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       if(openSlot[floor][col] == TRUE) {
+         for(j = 0; j < roomSize; j++) {
+           if(comData->rooms.coord[floor][col + j] == NULL)
+             continue;
+           else
+            openSlot[floor][col] = FALSE;
+         }
+       }
     }
 
     /* SET ALL VALUES TO TRUE

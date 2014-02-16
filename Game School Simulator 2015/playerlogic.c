@@ -11,6 +11,7 @@
 #include "schoollogic.h"
 #include "gamemanager.h"
 #include "studentdata.h"
+#include "generictext.h"
 #include <math.h>
 
 #define GROUND_HEIGHT 24
@@ -116,6 +117,14 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if (input->keyboard.keys[KEY_P] == ISTATE_DOWN) {
     zoom_reset(self);
     pan_reset(self);
+  }
+  if (input->keyboard.keys[KEY_F1] == ISTATE_PRESSED) {
+    ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
+    genericText_setText(ent, "Engine Proof Demonstration");
+  }
+  if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
+    ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
+    genericText_setText(ent, "Alpha Presentation");
   }
   /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
     self->owner->space->systems.camera.transform.scale.x += 1.0f;

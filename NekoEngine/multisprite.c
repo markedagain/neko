@@ -18,3 +18,26 @@ void comp_multiSprite(COMPONENT *self) {
   self->events.destroy = comp_multiSprite_destroy;
   component_depend(self, COMP_TRANSFORM);
 }
+
+void multiSprite_addSprite(COMPONENT *self, ENTITY *sprite) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  list_insert_end(data->entities, sprite);
+  entity_attach(sprite, self->owner);
+}
+void multiSprite_removeSprite(COMPONENT *self, size_t index) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+  ENTITY *found;
+  size_t i = 0;
+
+  if (index >= (unsigned int)data->entities->count) {
+    printf("ERROR IN MULTISPRITE_DESTROY!!\n");
+    return;
+  }
+
+  while (i < index)
+    node = node->next;
+
+  found = (ENTITY *)list_remove(data->entities, node);
+  entity_destroy(found);
+}

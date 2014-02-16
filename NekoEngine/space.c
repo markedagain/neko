@@ -90,14 +90,22 @@ void space_getAllEntities(SPACE *space, char *name, LIST *list) {
 void space_mouseToWorld(SPACE *space, POINT *mousePos, POINT *worldPos) {
   VEC3 camTranslate = { 0 };
   int x, y;
+  float xscale = 1.0f;
+  float yscale = 1.0f;
+  float windowAspectRatio = (float)space->game->innerWindow.width / (float)space->game->innerWindow.height;
 
   space_getCamTranslate(space, &camTranslate);
 
   x = (int)mousePos->x - (int)(space->game->innerWindow.width / 2) + (int)camTranslate.x;
   y = -((int)mousePos->y - (int)(space->game->innerWindow.height / 2)) + (int)camTranslate.y;
+
+  if (windowAspectRatio > space->game->dimensions.aspectRatio)
+    xscale += windowAspectRatio - space->game->dimensions.aspectRatio;
+  if (windowAspectRatio < space->game->dimensions.aspectRatio)
+    yscale += space->game->dimensions.aspectRatio - windowAspectRatio;
   
-  worldPos->x = (int)(x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width));
-  worldPos->y = (int)(y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height));
+  worldPos->x = (int)(x / ((float)space->game->innerWindow.width / (float)space->game->dimensions.width) * xscale);
+  worldPos->y = (int)(y / ((float)space->game->innerWindow.height / (float)space->game->dimensions.height) * yscale);
 }
 
 void space_destroy(SPACE *space) {

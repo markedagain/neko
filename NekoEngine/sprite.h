@@ -35,6 +35,7 @@ void comp_sprite_destroy(COMPONENT *, void *);
 void comp_sprite_draw(COMPONENT *, void *);
 
 void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float height);
+void comp_sprite_clearMesh(COMPONENT *self);
 
 NEKO_API void comp_sprite(COMPONENT *);
 

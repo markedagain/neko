@@ -76,7 +76,10 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   spriteScale.x = comData->size.x;
   spriteScale.y = comData->size.y;
 
-  screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
+  if (((float)self->owner->space->game->innerWindow.width / (float)self->owner->space->game->innerWindow.height) <= self->owner->space->game->dimensions.aspectRatio)
+    screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
+  else
+    screenScale = (float)self->owner->space->game->innerWindow.height / self->owner->space->game->dimensions.height;
   translation.x *= screenScale;
   translation.y *= screenScale;
   spriteWidth *= screenScale;
@@ -162,4 +165,12 @@ void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float
 		-0.5f,  0.5f, 0x00FFFFFF, u1, v1);
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
+}
+
+void comp_sprite_clearMesh(COMPONENT *self) {
+  CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
+  if (comData->mesh == NULL)
+    return;
+  AEGfxMeshFree(comData->mesh);
+  comData->mesh = NULL;
 }
