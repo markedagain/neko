@@ -120,7 +120,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   }
   if (input->keyboard.keys[KEY_F1] == ISTATE_PRESSED) {
     ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
-    genericText_setText(ent, "Engine Proof\nDemon\nstration");
+    genericText_setText(ent, "Engine Proof Demonstration");
   }
   if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
     ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
