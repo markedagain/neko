@@ -4,6 +4,9 @@
 #include "sound.h"
 #include "generictext.h"
 
+#define DIGIPEN_TIME 0.1
+#define NEKOMEANSCAT_TIME 1.0
+
 void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SPLASHLOGIC *data = (CDATA_SPLASHLOGIC *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
@@ -16,7 +19,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
     if (bgSprite->color.a <= 0.75 && !data->secondLogo) {
       sprite->source = "splash";
       data->secondLogo = true;
-      data->timer = 3.0f;
+      data->timer = (float)NEKOMEANSCAT_TIME;
       sound_playSound(&self->owner->space->game->systems.sound, "logo");
     }
     if (bgSprite->color.a <= 0.0f) {
@@ -74,7 +77,7 @@ void comp_splashLogic(COMPONENT *self) {
   CDATA_SPLASHLOGIC data = { 0 };
   data.secondLogo = false;
   data.fadeBackground = false;
-  data.timer = 4.0f;
+  data.timer = (float)DIGIPEN_TIME;
   COMPONENT_INIT(self, COMP_SPLASHLOGIC, data);
   component_depend(self, COMP_TRANSFORM);
   component_depend(self, COMP_SPRITE);
