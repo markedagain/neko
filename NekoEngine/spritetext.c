@@ -26,8 +26,14 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
   int j = 0;
   LIST_NODE *node;
   char textCopy[SPRITETEXT_MAXLENGTH];
+  size_t lineLengths[SPRITETEXT_MAXLENGTH] = { 0 };
+  size_t curLine = 0;
+  size_t lines = 0;
   size_t textLength = strlen(text);
   size_t listLength = multiData->entities->count;
+
+  if (strcmp(data->text, text) == 0)
+    return;
 
   for (i = 0; i < SPRITETEXT_MAXLENGTH; ++i) {
     textCopy[i] = 0;
@@ -39,8 +45,12 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
   strcpy(data->text, text);
 
   for (i = 0; i < textLength; ++i) {
-    if (text[i] != '\n')
+    if (text[i] != '\n') {
       textCopy[j++] = text[i];
+      lineLengths[curLine]++;
+    }
+    else
+      curLine++;
   }
   textLength = strlen(textCopy); // now we have the length of the string, minus newlines
 
@@ -73,6 +83,22 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
 
   node = multiData->entities->first;
   i = 0;
+  lines = curLine + 1;
+  curLine = 0;
+
+  if (data->alignment.x == TEXTALIGN_LEFT)
+    offset.x = (float)fontSize.x / 2.0f;
+  if (data->alignment.x == TEXTALIGN_CENTER)
+    offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] - 1.0f) / 2.0f;
+  if (data->alignment.x == TEXTALIGN_RIGHT)
+    offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] + 0.5f);
+  if (data->alignment.y == TEXTALIGN_TOP)
+    offset.y = -(float)fontSize.y / 2.0f;
+  if (data->alignment.y == TEXTALIGN_MIDDLE)
+    offset.y = (((float)lines - 1.0f) / 2.0f) * (float)fontSize.y;
+  if (data->alignment.y == TEXTALIGN_BOTTOM)
+    offset.y = ((float)lines - 0.5f) * (float)fontSize.y;
+
   while (node != NULL) {
     ENTITY *ent = (ENTITY *)node->data;
     CDATA_SPRITE *sprData = (CDATA_SPRITE *)entity_getComponentData(ent, COMP_SPRITE);
@@ -86,8 +112,15 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
     vec4_copy(&sprData->color, &data->color);
     while (text[i] == '\n') {
       ++i;
-      offset.x = (float)fontSize.x / 2.0f;
-      offset.y -= (float)fontSize.y;
+      curLine++;
+      if (data->alignment.x == TEXTALIGN_LEFT)
+        offset.x = (float)fontSize.x / 2.0f;
+      if (data->alignment.x == TEXTALIGN_CENTER)
+        offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] - 1.0f) / 2.0f;
+      if (data->alignment.x == TEXTALIGN_RIGHT)
+        offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] + 0.5f);
+      //if (data->alignment.y == TEXTALIGN_TOP)
+        offset.y -= (float)fontSize.y;
     }
     sprTrans->translation.x = offset.x;
     sprTrans->translation.y = offset.y;
@@ -106,6 +139,8 @@ void comp_spriteText(COMPONENT *self) {
   data.color.g = 1;
   data.color.b = 1;
   data.color.a = 1;
+  data.alignment.x = TEXTALIGN_LEFT;
+  data.alignment.y = TEXTALIGN_TOP;
   COMPONENT_INIT(self, COMP_SPRITETEXT, data);
   self->events.initialize = comp_spriteText_initialize;
   component_depend(self, COMP_MULTISPRITE);

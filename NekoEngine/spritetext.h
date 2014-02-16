@@ -14,12 +14,25 @@
 #include "genericsprite.h"
 
 #define COMP_SPRITETEXT HASH("COMP_SPRITETEXT")
-#define SPRITETEXT_MAXLENGTH 128
+#define SPRITETEXT_MAXLENGTH 512
+
+typedef enum {
+  TEXTALIGN_LEFT    = 0,
+  TEXTALIGN_CENTER  = 1,
+  TEXTALIGN_RIGHT   = 2,
+  TEXTALIGN_TOP     = 0,
+  TEXTALIGN_MIDDLE  = 1,
+  TEXTALIGN_BOTTOM  = 2
+} TEXTALIGN;
 
 typedef struct {
   char *font;
   char text[SPRITETEXT_MAXLENGTH];
   VEC4 color;
+  struct {
+    TEXTALIGN x;
+    TEXTALIGN y;
+  } alignment;
 } CDATA_SPRITETEXT;
 
 NEKO_API void comp_spriteText_setText(COMPONENT *self, char *text);

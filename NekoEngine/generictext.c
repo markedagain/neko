@@ -12,12 +12,14 @@ void arch_genericText(ENTITY *entity) {
   entity_connect(entity, comp_spriteText);
 }
 
-ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color) {
+ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, TEXTALIGN xAlign, TEXTALIGN yAlign) {
   ENTITY *entity = space_addEntity(space, arch_genericText, name);
   CDATA_TRANSFORM *transData = ((CDATA_TRANSFORM *)entity_getComponentData(entity, COMP_TRANSFORM));
   CDATA_SPRITETEXT *textData = ((CDATA_SPRITETEXT *)entity_getComponentData(entity, COMP_SPRITETEXT));
   vec3_copy(&transData->translation, position);
   textData->font = font;
+  textData->alignment.x = xAlign;
+  textData->alignment.y = yAlign;
   //strcpy(textData->text, text);
   vec4_copy(&textData->color, color);
   genericText_setText(entity, text);
