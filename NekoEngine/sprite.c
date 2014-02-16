@@ -166,3 +166,11 @@ void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }
+
+void comp_sprite_clearMesh(COMPONENT *self) {
+  CDATA_SPRITE *comData = (CDATA_SPRITE *)self->data;
+  if (comData->mesh == NULL)
+    return;
+  AEGfxMeshFree(comData->mesh);
+  comData->mesh = NULL;
+}

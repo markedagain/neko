@@ -18,9 +18,9 @@ ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font,
   CDATA_SPRITETEXT *textData = ((CDATA_SPRITETEXT *)entity_getComponentData(entity, COMP_SPRITETEXT));
   vec3_copy(&transData->translation, position);
   textData->font = font;
-  strcpy(textData->text, text);
+  //strcpy(textData->text, text);
   vec4_copy(&textData->color, color);
-  comp_spriteText_initialize(entity_getComponent(entity, COMP_SPRITETEXT), NULL);
+  genericText_setText(entity, text);
   return entity;
 }
 
