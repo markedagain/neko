@@ -6,7 +6,7 @@
 #include "entity.h"
 #include "hash.h"
 
-#define ARCH_STUDENTACTORLOGIC HASH("ARCH_STUDENTACTORLOGIC")
+#define COMP_STUDENTACTORLOGIC HASH("COMP_STUDENTACTORLOGIC")
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_studentActorLogic(COMPONENT *self);
 
