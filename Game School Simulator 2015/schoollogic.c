@@ -117,7 +117,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
       studentData->tuition = comData->tuition;
-      printf("%s has enrolled! (%i motivation)\n", studentData->name, studentData->motivation);
+      printf("Motivation: %%%d\n", studentData->motivation);
     }
     comData->incomingStudents = 0;
   }
@@ -268,68 +268,6 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
        }
     }
 
-    /* SET ALL VALUES TO TRUE
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-      int floor = i / MAX_ROOMS_PER_FLOOR;
-      int col = i % MAX_ROOMS_PER_FLOOR;
-      openSlot[floor][col] = TRUE;
-    }
-
-    // TAKE OUT ALL SLOTS WITH ROOMS IN THEM ALREADY
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-      int floor = i / MAX_ROOMS_PER_FLOOR;
-      int col = i % MAX_ROOMS_PER_FLOOR;
-      
-      if(comData->rooms.coord[floor][col] == NULL && openSlot[floor][col] != FALSE)
-        openSlot[floor][col] = TRUE;
-      else {
-        CDATA_ROOMLOGIC *otherRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
-        for(k = 0; k < otherRoomData->size; k++)
-          openSlot[floor][col + k] = FALSE;
-        i += otherRoomData->size - 1;
-      }
-    }
-
-    // TAKE OUT ALL NON LEGAL BUILD LOCATIONS
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-      int floor = i / MAX_ROOMS_PER_FLOOR;
-      int col = i % MAX_ROOMS_PER_FLOOR;
-
-      if(comData->rooms.coord[floor][col]) {
-        lastKnownRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
-        distanceFromLastKnown = 0;
-      }
-      else {
-        distanceFromLastKnown++;
-      }
-      
-      if(openSlot[floor][col] == TRUE) {
-        if(lastKnownRoomData != NULL) {
-          // Make sure room will be connected either on the left or the right
-          if((comData->rooms.coord[floor][col + roomSize] == NULL || col + roomSize >= 16)
-          && (lastKnownRoomData->size < distanceFromLastKnown || col - 1 < 0)) {
-            openSlot[floor][col] = FALSE;
-            continue;
-          }
-        }
-        //Check for size of the room to right
-        for(j = 0; j < roomSize; j++) {
-          //printf("%i ", col+j);
-          if(comData->rooms.coord[floor][col + j]) {
-            openSlot[floor][col] = FALSE;
-            continue;
-          }
-        }
-        // Check if room below *remember that floors is reversed (2 is 1st floor 0 is 3rd floor)
-        if(floor < 2) {
-          if(comData->rooms.coord[floor + 1][col] == NULL) {
-            openSlot[floor][col] = FALSE;
-            continue;
-          }
-        }
-      }
-    }*/
-
     // 6) Return a list of remaining rooms available
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
@@ -341,43 +279,10 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
         spotPtr->y = floor;
 
         list_insert_end(legalSlots, (void *)spotPtr);
-        printf("\nFloor:%i    Col:%i   \n", floor, col);
       }
     }
 
     return legalSlots;
-
-    /*for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-        int floor = i / MAX_ROOMS_PER_FLOOR;
-        int col = i % MAX_ROOMS_PER_FLOOR;
-
-        if(openSlot[floor][col] == TRUE) {
-          // Build new room
-          floorToUse = floor;
-          colToUse = col;
-          createdRoom = 1;
-          i += MAX_FLOORS * MAX_ROOMS_PER_FLOOR; // end loop
-        }
-    }
-
-    //return since no space is found
-    if(createdRoom == 0) {
-      printf("NO SPACE TO CONSTRUCT ROOM\n");
-      return NULL;
-    }*/
-  }
-
-  //Show school layout
-  for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-    int floor = i / MAX_ROOMS_PER_FLOOR;
-    int col = i % MAX_ROOMS_PER_FLOOR;
-    //printf(" (%i,%i) ", floor, col);
-    if(comData->rooms.coord[floor][col])
-      printf(" X ");
-    else
-      printf(" 0 ");
-    if(col == 15)
-      printf("\n");
   }
 
   return NULL;
@@ -476,7 +381,7 @@ void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) 
         CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
         printf("1) ");
         printf("Name: %s %s", studentData->name.first, studentData->name.last);
-        printf(" - Tech:%i Design:%i Art:%i Motivation:%i GPA:%f\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
+        printf(" - Tech:%i Design:%i Art:%i Motivation:%%%d GPA:%1.1f\n", studentData->techSkill, studentData->designSkill, studentData->artSkill, studentData->motivation, studentData->gpa);
         printf("\n");
         studentNode = studentNode->next;
       } while(studentNode != NULL);
