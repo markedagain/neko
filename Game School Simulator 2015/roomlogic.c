@@ -28,9 +28,9 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->size = 1;
       comData->cost = 40000;
       comData->repBonus = 1;
-      comData->techBonus = 3;
-      comData->designBonus = 3;
-      comData->artBonus = 3;
+      comData->techBonus = 1;
+      comData->designBonus = 1;
+      comData->artBonus = 1;
       //Modify SchoolData
       schoolData->studentCapacity += 10;
       schoolData->money -= comData->cost;
@@ -46,9 +46,9 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->size = 2;
       comData->cost = 50000;
       comData->repBonus = 2;
-      comData->techBonus = 10;
-      comData->designBonus = 10;
-      comData->artBonus = 10;
+      comData->techBonus = 2;
+      comData->designBonus = 2;
+      comData->artBonus = 2;
       //Modify SchoolData
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -62,10 +62,10 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       //Set Values
       comData->size = 3;
       comData->cost = 75000;
-      comData->repBonus = 10;
-      comData->techBonus = 5;
-      comData->designBonus = 5;
-      comData->artBonus = 5;
+      comData->repBonus = 5;
+      comData->techBonus = 1;
+      comData->designBonus = 1;
+      comData->artBonus = 1;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;

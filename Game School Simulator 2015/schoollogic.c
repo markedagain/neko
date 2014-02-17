@@ -81,7 +81,7 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
-  printf("Students: %i/%i", comData->currentStudents, comData->studentCapacity);
+  printf("Students: %i/%i (%i incoming)", comData->currentStudents, comData->studentCapacity, comData->incomingStudents);
   printf("       Incoming: %i\n", comData->incomingStudents);
   printf("Money: $%i", comData->money);
   printf("       Tuition: $%i\n", comData->tuition);
@@ -107,7 +107,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   //Add students
   if(comData->incomingStudents > 0) {
-    for(i = 0; i <= comData->incomingStudents; i++)
+    for(i = 0; i < comData->incomingStudents; i++)
     {
       CDATA_STUDENTDATA *studentData;
       LIST_NODE *nodeptr;
@@ -117,6 +117,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
       studentData->tuition = comData->tuition;
+      printf("%s has enrolled! (%i motivation)\n", studentData->name, studentData->motivation);
     }
     comData->incomingStudents = 0;
   }
@@ -475,7 +476,7 @@ void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) 
         CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(student, COMP_STUDENTDATA);
         printf("1) ");
         printf("Name: %s %s", studentData->name.first, studentData->name.last);
-        printf(" - Tech:%i Design:%i Art:%i\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
+        printf(" - Tech:%i Design:%i Art:%i Motivation:%i GPA:%f\n", studentData->techSkill, studentData->designSkill, studentData->artSkill);
         printf("\n");
         studentNode = studentNode->next;
       } while(studentNode != NULL);

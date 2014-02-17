@@ -126,7 +126,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       break;
     }
   }
-  /*
+  
   if (mbox->entered && data->ent1 == NULL) {
     //vec3_set(&position, &input->mouse.position.x, &input->mouse.position.y, 0);
     data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");
@@ -136,7 +136,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     entity_destroy(data->ent1);
     data->ent1 = NULL;
   }
-  */
+  
   if (mbox->entered && data->ent3 == NULL) {
     vec3_set(&position, 250, 130, 0);
     data->ent3 = genericSprite_create(uiSpace, &position, NULL, "cursor/build");
