@@ -173,7 +173,6 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="roomactorlogic.h" />
     <ClInclude Include="mousebox.h" />
     <ClInclude Include="playerlogic.h" />
-    <ClInclude Include="random.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="roomlogic.h" />
     <ClInclude Include="schoollogic.h" />

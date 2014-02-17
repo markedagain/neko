@@ -135,7 +135,6 @@
     <ClInclude Include="student.h">
       <Filter>Archetypes</Filter>
     </ClInclude>
-    <ClInclude Include="random.h" />
     <ClInclude Include="room.h">
       <Filter>Archetypes</Filter>
     </ClInclude>

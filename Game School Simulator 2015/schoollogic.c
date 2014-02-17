@@ -47,7 +47,7 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
-    comData->incomingStudents += 1 + comData->reputation;
+    comData->incomingStudents += 1 + (int)(comData->reputation * .1);
     if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents)) {
       comData->incomingStudents = comData->studentCapacity - comData->currentStudents;
     }

@@ -32,7 +32,7 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->designBonus = 1;
       comData->artBonus = 1;
       //Modify SchoolData
-      schoolData->studentCapacity += 10;
+      schoolData->studentCapacity += 30;
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
       schoolData->techBonus += comData->techBonus;
