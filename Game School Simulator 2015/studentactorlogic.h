@@ -9,11 +9,11 @@
 #define COMP_STUDENTACTORLOGIC HASH("COMP_STUDENTACTORLOGIC")
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_studentActorLogic(COMPONENT *self);
-void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
 
 typedef struct {
   float timer;
   float lifetime;
+  bool setSprite;
 } CDATA_STUDENTACTOR;
 
 #endif

@@ -38,8 +38,9 @@ void studentManager_spawnStudent(COMPONENT *self) {
 
   if (count == 1) {
     VEC3 *room = (VEC3 *)pNode->data;
+    VEC3 pos = {(room->x - 7.5f) * 80.0f, GROUND_HEIGHT + (2 - room->y) * 80.0f, 0};
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-    ENTITY *studentActor = space_addEntity(fg, arch_studentActor, "pm");
+    ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
     studentManager_setStudent(studentActor, room);
     return;
   }
@@ -52,7 +53,7 @@ void studentManager_spawnStudent(COMPONENT *self) {
         VEC3 *room = (VEC3 *)pNode->data;
         VEC3 pos = {(room->x - 7.5f) * 80.0f, GROUND_HEIGHT + (2 - room->y) * 80.0f, 0};
         SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-        ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "pm", &pos);
+        ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
         studentManager_setStudent(studentActor, room);
         return;
       }
