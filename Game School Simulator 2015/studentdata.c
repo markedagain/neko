@@ -52,7 +52,7 @@ void comp_studentData_initialize(COMPONENT *self, void *event) {
 
 void comp_studentData(COMPONENT *self) {
   int lowValue = 0;
-  int highValue = 99;
+  int highValue = 20;
   
   CDATA_STUDENTDATA student = { 0 };
   
@@ -61,6 +61,7 @@ void comp_studentData(COMPONENT *self) {
   student.techSkill = randomIntRange(lowValue, highValue);
   student.artSkill = randomIntRange(lowValue, highValue);
   student.designSkill = randomIntRange(lowValue, highValue);
+  student.gpa = 4.0;
   student.motivation = randomIntRange(lowValue, highValue);
   student.yearStarted = 1989;
   student.counter = 0;
@@ -77,7 +78,7 @@ void generate_student(COMPONENT *self) {
   CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
   int gender = randomIntRange(0, 2);
   int lowValue = 0;
-  int highValue = 99;
+  int highValue = 20;
   GAME *owner = self->owner->space->game;
   TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
   unsigned int totalNames = vector_size(&namefile->lines);
@@ -112,7 +113,7 @@ void generate_student(COMPONENT *self) {
   else if(data->designSkill >= data->techSkill && data->designSkill >= data->artSkill)
     data->major = Design;
 
-  lowValue = 75;
+  lowValue = 25;
   highValue = 100;
   data->motivation = randomIntRange(lowValue, highValue);
   data->yearStarted = timeData->currentYear;
