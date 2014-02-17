@@ -8,4 +8,6 @@
 
 #define ARCH_STUDENTACTOR HASH("ARCH_STUDENTACTOR")
 
+void arch_studentActor(ENTITY *entity);
+
 #endif

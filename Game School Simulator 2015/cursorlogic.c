@@ -60,7 +60,6 @@ void comp_cursorLogic(COMPONENT *self) {
   self->events.logicUpdate = comp_cursorLogic_logicUpdate;
 }
 
-// memory leaaaak please fix! remember to free eduardo's list
 void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBuild) {
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   LIST_NODE *pNode = spots->first;
@@ -117,8 +116,15 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     gData->roomType = toBuild;
     sprite->color.a = 0.75f;
     next = pNode->next;
-    //list_remove_free(spots, pNode);
     pNode = next;
+  }
+
+  // freeing eduardo's list?
+  pNode = spots->first;
+  while(pNode) {
+    LIST_NODE *pNext = pNode->next;
+    list_remove_free(spots, pNode);
+    pNode = pNext;
   }
   list_destroy(spots);
 }

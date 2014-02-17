@@ -202,12 +202,3 @@ void check_status(COMPONENT *self) {
     }
   }
 }
-
-
-/******************************************************
-  //the following code will print "butts" if the mouse is in the 'box' defined in mousebox and the lmb is down
-  INPUT_CONTAINER *input = &self->owner->space->game->input;
-  CDATA_MOUSEBOX *data = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
-  if ((data->hover == true) && (input->mouse.left == ISTATE_DOWN))
-    printf("butts");
-******************************************************/

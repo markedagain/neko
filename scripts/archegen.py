@@ -13,6 +13,7 @@ def writeHeader(archName, f, logic):
         f.write("void comp_" + archName + "(COMPONENT *self);\n")
     else:
         f.write('\n#define ARCH_' + capName + ' HASH("ARCH_' + capName + '")\n')
+        f.write('void arch_' + archName + '(ENTITY *entity);\n')
     f.write("\n#endif\n")
 
 archName = input("Enter name (in camel case) of archetype: ")
@@ -27,12 +28,19 @@ f = open(fileName +".c", mode = 'w')
 # writing header and includes
 f.write("/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */\n")
 f.write('\n#include "' + fileName + '.h"\n')
+if logicFlag.upper() == 'Y':
+    f.write('#include "' + fileName + 'logic.h"\n')
+if transformFlag.upper() == 'Y':
+    f.write('#include "transform.h"\n')
+
 
 # writing archetype connection function
 f.write("\nvoid arch_" + archName + "(ENTITY *entity) {\n")
 f.write("entity->id = ARCH_" + capName + ";\n")
-if (transformFlag.upper() == 'Y'):
+if transformFlag.upper() == 'Y':
     f.write("entity_connect(entity, comp_transform);\n")
+if logicFlag.upper() == 'Y':
+    f.write("entity_connect(entity, comp_" + archName + "Logic);\n")
 f.write("}\n")
 
 # close c file
