@@ -23,7 +23,7 @@ f = open(fileName +".c", mode = 'w')
 
 # writing header and includes
 f.write("/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */\n")
-f.write("\n#include " + fileName + ".h\n")
+f.write('\n#include "' + fileName + '.h"\n')
 
 # writing archetype connection function
 f.write("\nvoid arch_" + archName + "(ENTITY *entity) {\n}")
