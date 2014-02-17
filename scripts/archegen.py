@@ -57,10 +57,11 @@ if logicFlag.upper() == 'Y':
     f.write('#include "' + compFile + '.h"\n')
     
     # functions
-    f.write("\nvoid comp_" + compName + "_logicUpdate(COMPONENT *self, void *event) {\n}")
-    f.write("void comp_" + compName + "(COMPONENT *self) {\n")
-    f.write("COMPONENT_INIT_NULL(self, COMP_" + compCap + ")\n")
-    f.write("self->events.logicUpdate = comp_" + compName + "_logicUpdate")
+    f.write("\nvoid comp_" + compName + "_logicUpdate(COMPONENT *self, void *event) {\n}\n")
+    f.write("\nvoid comp_" + compName + "(COMPONENT *self) {\n")
+    f.write("  COMPONENT_INIT_NULL(self, COMP_" + compCap + ")\n")
+    f.write("  self->events.logicUpdate = comp_" + compName + "_logicUpdate\n")
+    f.write("}\n")
 
     # close c file
     f.close()

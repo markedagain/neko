@@ -89,6 +89,12 @@
     <ClCompile Include="blackbarlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="studentactor.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="studentactorlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -191,6 +197,12 @@
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="blackbarlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="studentactor.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="studentactorlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

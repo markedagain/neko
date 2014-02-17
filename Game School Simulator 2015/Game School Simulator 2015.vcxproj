@@ -148,6 +148,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="splash.c" />
     <ClCompile Include="splashlogic.c" />
     <ClCompile Include="student.c" />
+    <ClCompile Include="studentactor.c" />
+    <ClCompile Include="studentactorlogic.c" />
     <ClCompile Include="studentdata.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="timemanager.c" />
@@ -178,6 +180,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="splash.h" />
     <ClInclude Include="splashlogic.h" />
     <ClInclude Include="student.h" />
+    <ClInclude Include="studentactor.h" />
+    <ClInclude Include="studentactorlogic.h" />
     <ClInclude Include="studentdata.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="timemanager.h" />
