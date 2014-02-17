@@ -1,13 +1,13 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "studentdata.h"
-#include "random.h"
 #include <string.h>
 #include <malloc.h>
 #include "../NekoEngine/vector.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/linkedlist.h"
+#include "../NekoEngine/random.h"
 #include "timemanager.h"
 #include "schoollogic.h"
 

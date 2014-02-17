@@ -31,6 +31,7 @@ void pan(COMPONENT *self, float x, float y, POINT *outPoint) {
   float newX = bg->systems.camera.transform.translation.x + x;
   float newY = bg->systems.camera.transform.translation.y + y;
   newX = (float)min(max(newX, -80.0f * 4.0f * zoom), 80.0f * 4.0f * zoom);
+  newY = (float)min(max(newY, -170.0f * 4.0F * zoom), 170.0f * 4.0f * zoom);
   bg->systems.camera.transform.translation.x = newX;
   bg->systems.camera.transform.translation.y = newY;
   mg->systems.camera.transform.translation.x = newX;

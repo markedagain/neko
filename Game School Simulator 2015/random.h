@@ -3,10 +3,7 @@
 #ifndef __RANDOM_H__
 #define __RANDOM_H__
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
-#include <malloc.h>
 #include "../NekoEngine/data.h"
 
 int randomIntRange(int a, int b) {
