@@ -300,7 +300,7 @@ void comp_schoolLogic_findRooms(COMPONENT *comp, LIST *roomList) {
 
   for (i = 0; i < 3; ++i) {
     for (j = 0; j < 15; ++j) {
-      if (i == 2 && j == 7)
+      if (j == 7)
         continue;
       if (comData->rooms.coord[i][j] != NULL) {
         VEC3 *room = (VEC3 *)malloc(sizeof(VEC3));

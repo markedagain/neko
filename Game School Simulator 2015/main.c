@@ -77,7 +77,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
-
   space_addEntity(fgSpace, arch_studentManager, "studentManager");
 
   // ui - user interface

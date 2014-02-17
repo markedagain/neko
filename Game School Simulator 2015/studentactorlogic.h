@@ -13,7 +13,10 @@ void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
 
 typedef struct {
   float timer;
+  float timer2;
   float lifetime;
+  bool setSprite;
+  float velocity;
 } CDATA_STUDENTACTOR;
 
 #endif
