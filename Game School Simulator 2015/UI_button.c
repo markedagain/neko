@@ -25,6 +25,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   VEC4 color = { 0, 0, 1, 1 };
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
+  ENTITY *camera = 0;
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
 
@@ -39,66 +40,61 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
 
-  if (mbox->left.pressed && data->ent1 == NULL) {
+  if (mbox->left.pressed) {
     VEC3 position;
     ENTITY *newButton;
     CDATA_UI_BUTTON *buttonData;
     ENTITY *text;
     VEC4 color;
-    /*float zoom = bg->systems.camera.transform.scale.x;
-    float cameraY = bg->systems.camera.transform.translation.y;
-    float newY = bg->systems.camera.transform.translation.y - 50;
-    
-    newY = (float)min(max(newY, -40.0f * 4.0f * zoom), -40.0f * 4.0f * zoom);
-    vec4_set(&color, 0.0f, 0.0f, 0.0f, 1.0f);
-    vec3_set(&position, 0, -50, 0);
-    data->ent1 = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "UI is hard", &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
-    bg->systems.camera.transform.translation.y = newY;
-    mg->systems.camera.transform.translation.y = newY;
-    fg->systems.camera.transform.translation.y = newY;
-    */
-    
-    //pan(self, 0.0f, -20.0f, NULL);
 
     switch (comData->type) {
     case BUTTON_DEFAULT:
       if(comData->showing == FALSE) {
         // LOBBY BUTTON
-        vec3_set(&position, -250, -60, 0);
+        //vec3_set(&position, -250, -60, 0);
+        vec3_set(&position, -250, 160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, -250, -50, 0);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color, TEXTALIGN_LEFT, TEXTALIGN_BOTTOM);
+        //vec3_set(&position, -250, -50, 0);
+        vec3_set(&position, 0.0f, 0.0f, 0.0f);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color,TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDLOBBY;
 
         // CLASS BUTTON
-        vec3_set(&position, -190, -60, 0);
+        //vec3_set(&position, -190, -60, 0);
+        vec3_set(&position, -190, 160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, -190, -50, 0);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        //vec3_set(&position, -190, -50, 0);
+        vec3_set(&position, 0.0f, 0.0f, 0.0f);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDCLASS;
 
         // LIBRARY BUTTON
-        vec3_set(&position, -130, -60, 0);
+        //vec3_set(&position, -130, -60, 0);
+        vec3_set(&position, -130, 160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, -130, -50, 0);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        //vec3_set(&position, -130, -50, 0);
+        vec3_set(&position, 0.0f, 0.0f, 0.0f);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDLIBRARY;
   
         // TEAMSPACE BUTTON
-        vec3_set(&position, -70, -60, 0);
+        //vec3_set(&position, -70, -60, 0);
+        vec3_set(&position, -70, 160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, -70, -50, 0);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        //vec3_set(&position, -70, -50, 0);
+        vec3_set(&position, 0.0f, 0.0f, 0.0f);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDTEAMSPACE;
 
+        //pan(self, 0.0f, -40.0f, NULL);
 
         comData->showing = TRUE;
       }
@@ -111,6 +107,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
           entity_destroy((ENTITY *)node->data);
           node = node->next;
         }
+        //pan(self, 0.0f, 40.0f, NULL);
 
         list_destroy(buttons);
         comData->showing = FALSE;
@@ -141,15 +138,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       break;
     }
   }
- 
-  if (mbox->left.pressed && data->ent1) {
-    //pan(self, 0.0f, 50.0f, NULL);
-    entity_destroy(data->ent1);
-    data->ent1 = NULL;
-  }
- 
+ /*
   if (mbox->entered && data->ent3 == NULL) {
-    vec3_set(&position, 0, -40, 0);
+    vec3_set(&position, 0, -50, 0);
     data->ent3 = genericSprite_create(ui, &position, NULL, "cursor/build");
   }
 
@@ -157,6 +148,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     entity_destroy(data->ent3);
     data->ent3 = NULL;
   }
+  */
   /*
   if(mbox->left.pressed && data->ent2 == NULL) {
     vec3_set(&position, 100, 100, 0);
