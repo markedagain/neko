@@ -28,5 +28,6 @@ void comp_playerLogic_initialize(COMPONENT *self, void *event);
 void comp_playerLogic_logicUpdate(COMPONENT *, void *);
 void comp_playerLogic_frameUpdate(COMPONENT *, void *);
 void comp_playerLogic(COMPONENT *);
+void pan(COMPONENT *self, float x, float y, POINT *outPoint);
 
 #endif
