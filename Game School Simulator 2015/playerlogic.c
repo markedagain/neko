@@ -55,6 +55,7 @@ void pan_reset(COMPONENT *self) {
   fg->systems.camera.transform.translation.y = 180.0f - 24.0f;
 }
 void zoom(COMPONENT *self, float zoom) {
+  CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   SPACE *fg = game_getSpace(self->owner->space->game, "fg");
@@ -64,13 +65,15 @@ void zoom(COMPONENT *self, float zoom) {
     
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
-  bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
   mg->systems.camera.transform.scale.x = newZoom;
   mg->systems.camera.transform.scale.y = newZoom;
-  mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
-  fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+  if (!data->yPan) {
+    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+  }
   pan(self, 0.0f, 0.0f, NULL);
 }
 void zoom_reset(COMPONENT *self) {
@@ -86,8 +89,10 @@ void zoom_reset(COMPONENT *self) {
 }
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event) {
+  CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
   pan_reset(self);
   zoom_reset(self);
+  data->yPan = false;
   //sound_playSong(&self->owner->space->game->systems.sound, "01");
 }
 
@@ -99,7 +104,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   COMPONENT *schoolLogic = (COMPONENT *)entity_getComponent((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   POINT mousePos;
-
+  
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
 
   // MANAGE INPUT
@@ -113,7 +118,15 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom(self, 0.01f);
   }
   if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
-    zoom(self, -0.01f);
+    //zoom(self, -0.01f);
+    CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
+    SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+    SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+    SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+    bg->systems.camera.transform.translation.y -= 1.0f;
+    mg->systems.camera.transform.translation.y -= 1.0f;
+    fg->systems.camera.transform.translation.y -= 1.0f;
+    data->yPan = true;
   }
   if (input->keyboard.keys[KEY_P] == ISTATE_DOWN) {
     zoom_reset(self);
@@ -125,6 +138,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   }
   if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
     ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
+    CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
+    data->yPan = false;
     genericText_setText(ent, "Alpha Presentation");
   }
   /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {

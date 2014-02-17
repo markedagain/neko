@@ -288,6 +288,26 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
   return NULL;
 }
 
+void comp_schoolLogic_findRooms(COMPONENT *comp, LIST *roomList) {
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(comp->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
+  int i, j;
+
+  for (i = 0; i < 3; ++i) {
+    for (j = 0; j < 15; ++j) {
+      if (i == 2 && j == 7)
+        continue;
+      if (comData->rooms.coord[i][j] != NULL) {
+        VEC3 *room = (VEC3 *)malloc(sizeof(VEC3));
+        CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[i][j], COMP_ROOMLOGIC);
+        room->x = (float)j;
+        room->y = (float)i;
+        room->z = (float)roomData->size;
+        list_insert_end(roomList, room);
+      }
+    }
+  }
+}
+
 void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, int floorToUse, int colToUse) {
   ENTITY *newRoom;
   ENTITY *newRoomActor;

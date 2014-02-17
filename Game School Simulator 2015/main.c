@@ -22,6 +22,8 @@
 #include "UI_student.h"
 #include "splash.h"
 #include "blackbar.h"
+#include "studentactor.h"
+#include "studentmanager.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -76,6 +78,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
 
+  space_addEntity(fgSpace, arch_studentManager, "studentManager");
+
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
@@ -99,7 +103,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
 
   vec3_set(&position, 0, -50, 0);
   space_addEntityAtPosition(uiSpace, arch_uibase, "UI", &position);
-  vec3_set(&position, 0, -170, 0);
+  vec3_set(&position, 0, -180, 0);
   space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
   /*vec3_set(&position, 280, 70, 0);
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
@@ -112,7 +116,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   vec3_set(&position, -318, 112, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Dynamic sprite-based text rendering\n - Draws each character manually\n - Support for different \"fonts\"\n - Supports newlines", &color);*/
   space_addEntity(uiSpace, arch_cursor, "cursor");
-
   splashSpace = game_addSpace(game, "splash");
   vec3_set(&position, 0.0f, 0.0f, 0.0f);
   vec4_set(&color, 1.0f, 1.0f, 1.0f, 1.0f);
