@@ -1,7 +1,7 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#ifndef __STUDENTACTOR__
-#define __STUDENTACTOR__
+#ifndef __ARCH_STUDENTACTOR__
+#define __ARCH_STUDENTACTOR__
 
 #include "entity.h"
 #include "hash.h"

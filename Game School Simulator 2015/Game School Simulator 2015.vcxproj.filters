@@ -95,6 +95,12 @@
     <ClCompile Include="studentactorlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="studentmanager.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="studentmanagerlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -203,6 +209,12 @@
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="studentactorlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="studentmanager.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="studentmanagerlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

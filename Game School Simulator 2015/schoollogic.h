@@ -47,5 +47,6 @@ void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic(COMPONENT *);
+void comp_schoolLogic_findRooms(COMPONENT *comp, LIST *roomList);
 
 #endif

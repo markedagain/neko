@@ -23,6 +23,7 @@
 #include "splash.h"
 #include "blackbar.h"
 #include "studentactor.h"
+#include "studentmanager.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -77,7 +78,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // fg - foreground, students
   fgSpace = game_addSpace(game, "fg");
 
-  space_addEntity(fgSpace, arch_studentActor, "pm");
+  space_addEntity(fgSpace, arch_studentManager, "studentManager");
 
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");

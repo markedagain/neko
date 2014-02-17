@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "studentactorlogic.h"
 #include "genericsprite.h"
 #include "multisprite.h"
@@ -19,7 +21,7 @@ void comp_studentActorLogic(COMPONENT *self) {
 
 void comp_studentActorLogic_initialize(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM); 
-  VEC3 pos = trans->translation;
+  VEC3 pos = { 0 };
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   ENTITY *legs = genericSprite_create(self->owner->space, &pos, NULL, "student/male/legs/01");
   ENTITY *head = genericSprite_create(self->owner->space, &pos, NULL, "student/male/head/01");
@@ -33,7 +35,5 @@ void comp_studentActorLogic_initialize(COMPONENT *self, void *event) {
   multiSprite_addSprite(multiSprite, face);
   multiSprite_addSprite(multiSprite, body);
   multiSprite_addSprite(multiSprite, hair);
-
-  trans->translation.y = 100.0f;
   data->lifetime = 10.0f;
 }

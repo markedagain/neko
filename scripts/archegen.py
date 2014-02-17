@@ -3,8 +3,12 @@
 def writeHeader(archName, f, logic):
     capName = archName.upper()
     f.write("/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */\n")
-    f.write("\n#ifndef __" + capName + "__\n")
-    f.write("#define __" + capName + "__\n")
+    if (logic):
+        f.write("\n#ifndef __COMP_" + capName + "__\n")
+        f.write("#define __COMP_" + capName + "__\n")
+    else:
+        f.write("\n#ifndef __ARCH_" + capName + "__\n")
+        f.write("#define __ARCH_" + capName + "__\n")
     f.write('\n#include "entity.h"\n')
     f.write('#include "hash.h"\n')
     if logic:
@@ -38,9 +42,9 @@ if transformFlag.upper() == 'Y':
 f.write("\nvoid arch_" + archName + "(ENTITY *entity) {\n")
 f.write("entity->id = ARCH_" + capName + ";\n")
 if transformFlag.upper() == 'Y':
-    f.write("entity_connect(entity, comp_transform);\n")
+    f.write("  entity_connect(entity, comp_transform);\n")
 if logicFlag.upper() == 'Y':
-    f.write("entity_connect(entity, comp_" + archName + "Logic);\n")
+    f.write("  entity_connect(entity, comp_" + archName + "Logic);\n")
 f.write("}\n")
 
 # close c file
@@ -69,7 +73,8 @@ if logicFlag.upper() == 'Y':
     f = open(compFile + ".c", mode = 'w')
 
     # includes
-    f.write('#include "' + compFile + '.h"\n')
+    f.write("/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */\n")
+    f.write('\n#include "' + compFile + '.h"\n')
     
     # functions
     f.write("\nvoid comp_" + compName + "_logicUpdate(COMPONENT *self, void *event) {\n}\n")

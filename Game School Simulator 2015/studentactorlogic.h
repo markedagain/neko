@@ -1,7 +1,7 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#ifndef __STUDENTACTORLOGIC__
-#define __STUDENTACTORLOGIC__
+#ifndef __COMP_STUDENTACTORLOGIC__
+#define __COMP_STUDENTACTORLOGIC__
 
 #include "entity.h"
 #include "hash.h"
