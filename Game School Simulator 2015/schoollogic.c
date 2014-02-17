@@ -36,14 +36,14 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
-  // ENTITY *currMoney = 0;
-  // char buffer[20];
-  // VEC3 position = { 10, 10, 0 };
-  // VEC4 color = { 0, 0, 1, 1 };
+  //int currMoney = 0;
+  //ENTITY *moneyUI = 0;
+  //char buffer[20];
+  VEC3 position = { 10, 10, 0 };
+  VEC4 color = { 0, 0, 1, 1 };
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
-  // SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
-  // int prevMoney = comData->money;
+  //SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
 
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity) {
@@ -87,17 +87,23 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   printf("       Tuition: $%i\n", comData->tuition);
   printf("Rep: %i", comData->reputation);
   printf("              Alumni: %i\n", comData->alumni->count);
-  /*
-  if(!currMoney) {
-    sprintf(buffer,"%d", comData->money);
-    vec3_set(&position, -318, -100, 0);
-    currMoney = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color);
+/*
+  // Display $$$ on screen
+  if(!moneyUI) {
+    sprintf(buffer,"$%d", comData->money);
+    currMoney = comData->money;
+    vec3_set(&position, 290, 180, 0);
+    moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
-  else {
-    sprintf(buffer, "%d", comData->money);
-    genericText_setText(currMoney, buffer);
+  else if (currMoney != comData->money) {
+    entity_destroy(moneyUI);
+    moneyUI = NULL;
+    // sprintf(buffer,"$%d", comData->money);
+    // moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    currMoney = comData->money;
+
   }
-  */
+*/
 }
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {

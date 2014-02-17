@@ -47,54 +47,49 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     ENTITY *text;
     VEC4 color;
 
+    pan_reset(self);
+    zoom_reset(self);
+    playerData->yPan = true;
+    pan(self, 0.0f, -40.0f, NULL);
+
     switch (comData->type) {
     case BUTTON_DEFAULT:
       if(comData->showing == FALSE) {
         // LOBBY BUTTON
-        //vec3_set(&position, -250, -60, 0);
-        vec3_set(&position, -250, 160, 0);
+        vec3_set(&position, -250, -160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        //vec3_set(&position, -250, -50, 0);
         vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color,TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDLOBBY;
 
         // CLASS BUTTON
-        //vec3_set(&position, -190, -60, 0);
-        vec3_set(&position, -190, 160, 0);
+        vec3_set(&position, -190, -160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        //vec3_set(&position, -190, -50, 0);
         vec3_set(&position, 0.0f, 0.0f, 0.0f);
         text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDCLASS;
 
         // LIBRARY BUTTON
-        //vec3_set(&position, -130, -60, 0);
-        vec3_set(&position, -130, 160, 0);
+        vec3_set(&position, -130, -160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        //vec3_set(&position, -130, -50, 0);
         vec3_set(&position, 0.0f, 0.0f, 0.0f);
         text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDLIBRARY;
   
         // TEAMSPACE BUTTON
-        //vec3_set(&position, -70, -60, 0);
-        vec3_set(&position, -70, 160, 0);
+        vec3_set(&position, -70, -160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
         buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        //vec3_set(&position, -70, -50, 0);
         vec3_set(&position, 0.0f, 0.0f, 0.0f);
         text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDTEAMSPACE;
-
-        //pan(self, 0.0f, -40.0f, NULL);
 
         comData->showing = TRUE;
       }
@@ -107,10 +102,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
           entity_destroy((ENTITY *)node->data);
           node = node->next;
         }
-        //pan(self, 0.0f, 40.0f, NULL);
 
         list_destroy(buttons);
         comData->showing = FALSE;
+        playerData->yPan = false;
       }
       break;
 
