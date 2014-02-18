@@ -37,7 +37,12 @@ typedef struct cdata_studentData_t {
   int artSkill;
   int designSkill;
   float gpa;
+  float techIncrease;
+  float designIncrease;
+  float artIncrease;
+  float gradePoints;
   int motivation;
+  int lifeModifier;
   int yearStarted;
   int semesterStarted;
   int tuition;

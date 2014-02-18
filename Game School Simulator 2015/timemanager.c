@@ -28,8 +28,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     }
 
     if(comData->monthCounter == 6 || comData->monthCounter == 12) {
-      comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
       comData->currentSemester++;
+      comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
     }
 
     if(comData->monthCounter >= 12) {

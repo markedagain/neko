@@ -10,10 +10,12 @@
 #include "../Nekoengine/spritetext.h"
 #include "../NekoEngine/generictext.h"
 #include "../NekoEngine/entity.h"
+#include "random.h"
 #include <math.h>
 #include <string.h>
 #include "roomactorlogic.h"
 #include "roomactor.h"
+#include "timemanager.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
@@ -75,22 +77,15 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
-    float techIncrease = comData->techBonus * (float)studentData->motivation / 100.0f;
-    float designIncrease = comData->designBonus * (float)studentData->motivation / 100.0f;
-    float artIncrease = comData->artBonus * (float)studentData->motivation / 100.0f;
+    // Calculate increase (calculated as float because its used to calculate GPA)
+    studentData->techIncrease += comData->techBonus * (float)studentData->motivation / 100.0f;
+    studentData->designIncrease += comData->designBonus * (float)studentData->motivation / 100.0f;
+    studentData->artIncrease += comData->artBonus * (float)studentData->motivation / 100.0f;
 
     // Skills
-    studentData->techSkill += (int)techIncrease;
-    studentData->designSkill += (int)designIncrease;
-    studentData->artSkill += (int)artIncrease;
-
-    // GPA
-    if(studentData->major == Tech)
-      studentData->gpa = ((float)techIncrease / comData->techBonus) * 4.0f;
-    if(studentData->major == Design)
-      studentData->gpa = ((float)designIncrease / comData->designBonus) * 4.0f;
-    if(studentData->major == Art)
-      studentData->gpa = ((float)artIncrease / comData->artBonus) * 4.0f;
+    studentData->techSkill += (int)(comData->techBonus * (float)studentData->motivation / 100.0f);
+    studentData->designSkill += (int)(comData->designBonus * (float)studentData->motivation / 100.0f);
+    studentData->artSkill += (int)(comData->artBonus * (float)studentData->motivation / 100.0f);
 
     studentPtr = studentPtr->next;
   }
@@ -122,8 +117,11 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
-
+  LIST_NODE *studentPtr;
+  CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   int i = 0;
+  int lowValue = -50;
+  int highValue = 50;
 
   //Add students
   if(comData->incomingStudents > 0) {
@@ -141,6 +139,48 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     }
     comData->incomingStudents = 0;
   }
+
+  studentPtr = comData->students->first;
+  for(i = 0; i < comData->students->count; i++) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+
+    // GPA
+    if(studentData->major == Tech) {
+      int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
+      studentData->gradePoints += ((float)studentData->techIncrease / (comData->techBonus * 6)) * 4.0f;
+      if(semestersPassed != 0) {
+        studentData->gpa = studentData->gradePoints / semestersPassed;
+      }
+    }
+    if(studentData->major == Design) {
+      int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
+      studentData->gradePoints += ((float)studentData->designIncrease / (comData->designBonus * 6)) * 4.0f;
+      if(semestersPassed != 0) {
+        studentData->gpa = studentData->gradePoints / semestersPassed;
+      }
+    }
+    if(studentData->major == Art) {
+      int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
+      studentData->gradePoints += ((float)studentData->artIncrease / (comData->artBonus * 6)) * 4.0f;
+      if(semestersPassed != 0) {
+        studentData->gpa = studentData->gradePoints / semestersPassed;
+      }
+    }
+    studentData->techIncrease = 0;
+    studentData->designIncrease = 0;
+    studentData->artIncrease = 0;
+
+    // Life
+    studentData->lifeModifier = randomIntRange(lowValue, highValue);
+    studentData->motivation += studentData->lifeModifier;
+    if(studentData->motivation < 0)
+      studentData->motivation = 0;
+    if(studentData->motivation > 100)
+      studentData->motivation = 100;
+
+    studentPtr = studentPtr->next;
+  }
+
 }
 
 void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
