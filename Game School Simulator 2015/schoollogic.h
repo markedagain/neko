@@ -16,6 +16,8 @@ typedef struct cdata_schoolLogic_t {
   char *schoolName;
   long int money;
   int tuition;
+  float minIncomingGpa;
+  float minGpa;
   int studentCapacity;
   int currentStudents;
   int incomingStudents;

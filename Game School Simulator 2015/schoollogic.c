@@ -179,8 +179,22 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->motivation = 100;
 
     studentPtr = studentPtr->next;
-  }
 
+    // Drop students below the min GPA (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+    if(studentData->gpa < comData->minGpa) {
+      printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
+      comData->currentStudents--;
+      list_remove(comData->students, studentData->listNodePtr);
+      continue;
+    }
+    // Drop students whos motivation has reached 0 (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+    else if(studentData->motivation == 0) {
+      printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
+      comData->currentStudents--;
+      list_remove(comData->students, studentData->listNodePtr);
+      continue;
+    }
+  }
 }
 
 void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -495,6 +509,8 @@ void comp_schoolLogic(COMPONENT *self) {
   data.schoolName = "Eduardo's Super Awesome Game School";
   data.money = 100000;
   data.tuition = 3000;
+  data.minIncomingGpa = 2.0f;
+  data.minGpa = 1.8f;
   data.studentCapacity = 0;
   data.currentStudents = 0;
   data.incomingStudents = 0;
