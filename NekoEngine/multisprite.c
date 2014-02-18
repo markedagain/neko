@@ -41,3 +41,22 @@ void multiSprite_removeSprite(COMPONENT *self, size_t index) {
   found = (ENTITY *)list_remove(data->entities, node);
   entity_destroy(found);
 }
+
+void multiSprite_setColor(COMPONENT *self, VEC4 *color) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+
+  while (node) {
+    vec4_copy(&((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->color, color);
+    node = node->next;
+  }
+}
+void multiSprite_setAlpha(COMPONENT *self, float alpha) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+
+  while (node) {
+    ((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->color.a = alpha;
+    node = node->next;
+  }
+}

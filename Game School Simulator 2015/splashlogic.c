@@ -40,9 +40,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
         genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "title", "fonts/gothic/28", "Game School Simulator 2015", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
         vec3_set(&position, 0.0f, 180.0f - 4.0f - 28.0f, 0.0f);
-        genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "subtitle", "fonts/gothic/16", "Stupid Dumb Bullshit\nAlso Game of the Year\nalso just rad", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "pressstart", "fonts/gothic/16", "PRESS START\nOR SOME DUMB SHIT\nI DON'T EVEN CARE", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+        genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "subtitle", "fonts/gothic/16", "Best Game Ever\nAlso Game of the Year\nalso just rad", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
         simSpace->systems.time.scale = 0.0166666666666667f;
         sound_playSong(&self->owner->space->game->systems.sound, "01");
 
