@@ -36,9 +36,10 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   
   // Graduate
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
+    int repIncrease = (int)(5 * (comData->gpa / 4.0f));
     schoolLogic->currentStudents--;
-    schoolLogic->reputation++;
-    printf("\n%s %s has graduated! +1 Rep\n", comData->name.first, comData->name.last);
+    schoolLogic->reputation += repIncrease;
+    printf("\n%s %s has graduated! +%i Rep\n", comData->name.first, comData->name.last, repIncrease);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
     comData->graduated = true;
