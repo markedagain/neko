@@ -22,5 +22,7 @@ NEKO_API void comp_multiSprite(COMPONENT *self);
 
 NEKO_API void multiSprite_addSprite(COMPONENT *self, ENTITY *sprite);
 NEKO_API void multiSprite_removeSprite(COMPONENT *self, size_t index);
+NEKO_API void multiSprite_setColor(COMPONENT *self, VEC4 *color);
+NEKO_API void multiSprite_setAlpha(COMPONENT *self, float alpha);
 
 #endif
