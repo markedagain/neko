@@ -452,6 +452,30 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
+int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
+  switch (type) {
+    case ROOMTYPE_LOBBY:
+      return 100000;
+
+    case ROOMTYPE_CLASS:
+      return 40000;
+
+    case ROOMTYPE_LIBRARY:
+      return 50000;
+
+    case ROOMTYPE_TEAMSPACE:
+      return 75000;
+
+    case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    default:
+      printf("ERROR: Unkown room!!\n");
+      break;
+  }
+  return 0;
+}
+
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;
     if(comData->roomList->first != NULL) {
@@ -508,7 +532,7 @@ void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Eduardo's Super Awesome Game School";
   data.money = 100000;
-  data.tuition = 3000;
+  data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;
@@ -522,6 +546,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.techBonus = 1;
   data.designBonus = 1;
   data.artBonus = 1;
+  data.motivationBonus = 0;
   data.roomConstructed = FALSE;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
