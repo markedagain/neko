@@ -5,16 +5,17 @@
 #include "studentactor.h"
 #include "transform.h"
 #include "studentactorlogic.h"
-#include <stdlib.h>
+#include "random.h"
 
 #define GROUND_HEIGHT 24
+#define SPAWN_TIMER 5.0f
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
 
   data->timer += (float)updateEvent->dt;
-  if(data->timer > 3.0f) {
+  if(data->timer > SPAWN_TIMER) {
     studentManager_spawnStudent(self);
     data->timer = 0.0f;
   }
@@ -38,23 +39,25 @@ void studentManager_spawnStudent(COMPONENT *self) {
 
   if (count == 1) {
     VEC3 *room = (VEC3 *)pNode->data;
-    VEC3 pos = {(room->x - 7.5f) * 80.0f, GROUND_HEIGHT + (2 - room->y) * 80.0f, 0};
+    VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
-    studentManager_setStudent(studentActor, room);
+    studentManager_setStudent(studentActor, room, &pos);
+    studentManager_deleteList(roomList);
     return;
   }
   
   else {
     while (pNode) {
       ++listCurr;
-      choice = rand() % count;//randomIntRange(1, count);
+      choice = randomIntRange(1, count);
       if (choice == 1) {
         VEC3 *room = (VEC3 *)pNode->data;
-        VEC3 pos = {(room->x - 7.5f) * 80.0f, GROUND_HEIGHT + (2 - room->y) * 80.0f, 0};
+        VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
         SPACE *fg = game_getSpace(self->owner->space->game, "fg");
         ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
-        studentManager_setStudent(studentActor, room);
+        studentManager_setStudent(studentActor, room, &pos);
+        studentManager_deleteList(roomList);
         return;
       }
       pNode = pNode->next;
@@ -64,11 +67,22 @@ void studentManager_spawnStudent(COMPONENT *self) {
   }
 }
 
-void studentManager_setStudent(ENTITY *studentActor, VEC3 *room) {
+void studentManager_deleteList(LIST *list) {
+  LIST_NODE *pNode = list->first;
+  while (pNode) {
+    LIST_NODE *pNext = pNode->next;
+    list_remove_free(list, pNode);
+    pNode = pNext;
+  }
+}
+
+void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos) {
   CDATA_TRANSFORM *studentTrans = (CDATA_TRANSFORM *)entity_getComponentData(studentActor, COMP_TRANSFORM);
   CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
 
-  actorData->lifetime = 10.0f;
+  actorData->lifetime = 5.0f;
+  actorData->roomSize = room->z * 80.0f;
+  actorData->origin = pos->x;
 }
 
 void comp_studentManagerLogic(COMPONENT *self) {

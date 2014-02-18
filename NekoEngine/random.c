@@ -7,15 +7,13 @@
 int randomIntRange(int a, int b) {
   int value, c;
   
-  if (a == 0) {
-    value = rand() % b + 1;
-    return value;
-    }
-  else {
-    c = b - a;
-    value = rand() % c + a + 1;
-    return value;
-    }
+  if (a == b)
+    return a;
+
+  c = b - a;
+
+  value = rand() % (c + 1) + a;
+  return value;
  }
  
 float randomFloatRange(float a, float b) {

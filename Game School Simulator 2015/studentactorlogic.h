@@ -17,6 +17,9 @@ typedef struct {
   float lifetime;
   bool setSprite;
   float velocity;
+  float roomSize;
+  float origin;
+  bool fadeIn;
 } CDATA_STUDENTACTOR;
 
 #endif
