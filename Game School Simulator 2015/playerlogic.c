@@ -103,6 +103,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   COMPONENT *schoolLogic = (COMPONENT *)entity_getComponent((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   POINT mousePos;
+  double elapsedTime = self->owner->space->game->systems.time.elapsed;
   
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
 

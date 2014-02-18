@@ -46,6 +46,7 @@ typedef struct game_t {
       unsigned short currentFramesPerSecond;
       double frameRate;
       double dt;
+      double elapsed;
     } time;
     SOUNDSYSTEM sound;
   } systems;

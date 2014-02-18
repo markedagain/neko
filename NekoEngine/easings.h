@@ -39,6 +39,14 @@ typedef enum {
   BOUNCE_INOUT
 } EASING;
 
+/*
+
+t = current time
+b = start value
+c = change in value (end value - beginning value)
+d = duration
+
+*/
 NEKO_API float e_linear(float t, float b, float c, float d);
 NEKO_API float e_quad_in(float t, float b, float c, float d);
 NEKO_API float e_quad_out(float t, float b, float c, float d);
