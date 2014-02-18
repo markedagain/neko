@@ -146,6 +146,7 @@ xcopy /y "$(SolutionDir)lib\*.dll" "$(SolutionDir)tools\"</Command>
     <ClCompile Include="component.c" />
     <ClCompile Include="data.c" />
     <ClCompile Include="dictionary.c" />
+    <ClCompile Include="easings.c" />
     <ClCompile Include="entity.c" />
     <ClCompile Include="event.c" />
     <ClCompile Include="game.c" />
