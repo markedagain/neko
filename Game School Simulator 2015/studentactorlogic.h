@@ -10,6 +10,7 @@
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_studentActorLogic(COMPONENT *self);
 void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
+void comp_studentActorLogic_flipSprite(COMPONENT *self);
 
 typedef struct {
   float timer;
@@ -20,6 +21,7 @@ typedef struct {
   float roomSize;
   float origin;
   bool fadeIn;
+  bool fadeOut;
 } CDATA_STUDENTACTOR;
 
 #endif

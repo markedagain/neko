@@ -8,7 +8,9 @@
 #include "random.h"
 
 #define GROUND_HEIGHT 24
-#define SPAWN_TIMER 5.0f
+#define SPAWN_TIMER 2.0f
+
+// this totally works except it derps out if you build a building just as a new student spawns
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
