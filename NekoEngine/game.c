@@ -15,7 +15,7 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
-#define FULLSCREEN true
+#define FULLSCREEN false
 
 GAME *__game = NULL; // UGHHHHHHH
 WINDOWPLACEMENT g_wpPrev = { sizeof(g_wpPrev) }; // UGHHHHHHHHHHHHHHhhhhhhh

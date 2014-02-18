@@ -71,13 +71,27 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     comData->money -= roomData->upkeep;
   }
 
-  // Add student stats
+  // Modify student stats
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
-    studentData->techSkill += (int)(1 + comData->techBonus * ((float)studentData->motivation / 100.0));
-    studentData->designSkill += (int)(1 + comData->designBonus * ((float)studentData->motivation / 100.0));
-    studentData->artSkill += (int)(1 + comData->artBonus * ((float)studentData->motivation / 100.0));
+    float techIncrease = comData->techBonus * (float)studentData->motivation / 100.0f;
+    float designIncrease = comData->designBonus * (float)studentData->motivation / 100.0f;
+    float artIncrease = comData->artBonus * (float)studentData->motivation / 100.0f;
+
+    // Skills
+    studentData->techSkill += (int)techIncrease;
+    studentData->designSkill += (int)designIncrease;
+    studentData->artSkill += (int)artIncrease;
+
+    // GPA
+    if(studentData->major == Tech)
+      studentData->gpa = ((float)techIncrease / comData->techBonus) * 4.0f;
+    if(studentData->major == Design)
+      studentData->gpa = ((float)designIncrease / comData->designBonus) * 4.0f;
+    if(studentData->major == Art)
+      studentData->gpa = ((float)artIncrease / comData->artBonus) * 4.0f;
+
     studentPtr = studentPtr->next;
   }
 
