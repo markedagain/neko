@@ -286,6 +286,27 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_LBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_LEFT] = 1;
+    break;
+
+  case WM_LBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_LEFT] = -1;
+    break;
+
+  case WM_RBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = 1;
+    break;
+
+  case WM_RBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = -1;
+    break;
+
+  case WM_MBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = 1;
+    break;
+
+  case WM_MBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = -1;
     break;
 
   case WM_MOUSEMOVE:

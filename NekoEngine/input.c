@@ -10,6 +10,8 @@ void input_initialize(INPUT_CONTAINER *input) {
   for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buttons[i] = ISTATE_UP;
     input->mouse.handled[i] = 0;
+    input->mouse.buffer[i] = 0;
+    input->mouse.quickClicked[i] = false;
   }
   input->mouse.position.x = 0;
   input->mouse.position.y = 0;
@@ -26,11 +28,29 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_DOWN || input->keyboard.keys[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
-    unsigned int map[3] = { VK_LBUTTON, VK_MBUTTON, VK_RBUTTON };
-    if (GetAsyncKeyState(map[i]))
-      input->mouse.buttons[i] = (input->mouse.buttons[i] == ISTATE_UP || input->mouse.buttons[i] == ISTATE_RELEASED ? ISTATE_PRESSED : ISTATE_DOWN);
-    else
-      input->mouse.buttons[i] = (input->mouse.buttons[i] == ISTATE_DOWN || input->mouse.buttons[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
+    if (input->mouse.quickClicked[i] == true) {
+      input->mouse.quickClicked[i] = false;
+      input->mouse.buttons[i] = ISTATE_RELEASED;
+    }
+    else {
+      if (input->mouse.buttons[i] == ISTATE_PRESSED)
+        input->mouse.buttons[i] = ISTATE_DOWN;
+      if (input->mouse.buttons[i] == ISTATE_RELEASED)
+        input->mouse.buttons[i] = ISTATE_UP;
+      if (input->mouse.buffer[i] == 1)
+        input->mouse.buttons[i] = ISTATE_PRESSED;
+    }
+    if (input->mouse.buffer[i] == -1) {
+      if (input->mouse.buttons[i] == ISTATE_PRESSED || input->mouse.buttons[i] == ISTATE_DOWN)
+        input->mouse.buttons[i] = ISTATE_RELEASED;
+      else {
+        input->mouse.buttons[i] = ISTATE_PRESSED;
+        input->mouse.quickClicked[i] = true;
+      }
+    }
+  }
+  for (i = 0; i < MBUTTON_LAST; ++i) {
+    input->mouse.buffer[i] = false;
   }
   input->mouse.wheel.direction = input->mouse.wheel.delta > 0 ? 1 : input->mouse.wheel.delta < 0 ? -1 : 0;
   GetCursorPos(&input->mouse.position);
