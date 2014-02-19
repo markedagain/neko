@@ -1,6 +1,6 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
-#include "easings.h"
+#include "easing.h"
 #include <math.h>
 
 float e_linear(float t, float b, float c, float d) {
