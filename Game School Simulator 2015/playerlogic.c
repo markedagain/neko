@@ -182,6 +182,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         data->zoomVelocity = 0.0f;
     }
   }
+  /*
   if (input->mouse.handled[MBUTTON_LEFT] == 0) {
     if (input->mouse.left == ISTATE_PRESSED) {
       //input->mouse.handled[MBUTTON_LEFT] = true;
@@ -207,7 +208,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   else {
     data->dragging = false;
     input_unlockMouse(input);
-  }
+  }*/
 
 
 

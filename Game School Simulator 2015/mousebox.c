@@ -17,7 +17,7 @@ void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
 void comp_mouseBox(COMPONENT *self) {
   CDATA_MOUSEBOX data = { 0 };
   COMPONENT_INIT(self, COMP_MOUSEBOX, data);
-  self->events.logicUpdate = comp_mouseBox_logicUpdate;
+  self->events.frameUpdate = comp_mouseBox_logicUpdate;
   self->events.initialize = comp_mouseBox_initialize;
 }
 

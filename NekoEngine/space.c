@@ -141,7 +141,7 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
     do {
       COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
 
-      if (component->events.logicUpdate == NULL) {
+      if (component->events.ids[event] == NULL) {
         ++i;
         continue;
       }
@@ -157,7 +157,7 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
 void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
   LIST_NODE *entityNode;
   entityNode = space->entities->last;
-  do {
+  while (entityNode) {
     ENTITY *entity = (ENTITY *)(entityNode->data);
     unsigned int i = 0;
     unsigned int componentCount = vector_size(&entity->components);
@@ -166,20 +166,18 @@ void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
       entityNode = entityNode->prev;
       continue;
     }
-    do {
+    while (i < componentCount) {
       COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
 
-      if (component->events.logicUpdate == NULL) {
+      if (component->events.ids[event] == NULL) {
         ++i;
         continue;
       }
       component_doEvent(component, event, data);
       ++i;
     }
-    while (i < componentCount);
     entityNode = entityNode->prev;
   }
-  while (entityNode != NULL);
 }
 
 void space_tick(SPACE *space, EDATA_UPDATE *data) {
@@ -190,7 +188,7 @@ void space_tick(SPACE *space, EDATA_UPDATE *data) {
   if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {
     logicUpdateData.dt = space->systems.time.dt;
     logicUpdateData.elapsedTime = 0; // TODO: FIX
-    space_invokeEvent(space, EV_LOGICUPDATE, &logicUpdateData);
+    space_invokeEventReverseways(space, EV_LOGICUPDATE, &logicUpdateData);
     stopwatch_start(&space->systems.time.stopwatch);
   }
 }
