@@ -143,24 +143,16 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
   entityNode = space->entities->first;
   while (entityNode != NULL) {
     ENTITY *entity = (ENTITY *)(entityNode->data);
-    unsigned int i = 0;
-    unsigned int componentCount = vector_size(&entity->components);
-
-    if (componentCount == 0 || entity->destroying) {
-      entityNode = entityNode->next;
-      continue;
-    }
-    while (i < componentCount) {
-      COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
-
-      if (component->events.ids[event] == NULL) {
-        ++i;
-        continue;
-      }
-      component_doEvent(component, event, data);
-      ++i;
-    }
+    entity_invokeEvent(entity, event, data);
     entityNode = entityNode->next;
+  }
+  if (event == EV_DRAW) {
+    entityNode = space->newEntities->first;
+    while (entityNode != NULL) {
+      ENTITY *entity = (ENTITY *)(entityNode->data);
+      entity_invokeEvent(entity, event, data);
+      entityNode = entityNode->next;
+    }
   }
 }
 
@@ -184,6 +176,15 @@ void space_tick(SPACE *space, EDATA_UPDATE *data) {
     node = node->next;
   }
   list_empty(space->newEntities);
+
+  node = space->entities->first;
+  while (node) {
+    int i = 0;
+    for (i = 0; i < EV_LAST; ++i)
+      ((ENTITY *)node->data)->handled[i] = false;
+    node = node->next;
+  }
+
   space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
   stopwatch_stop(&space->systems.time.stopwatch);
   space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);

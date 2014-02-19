@@ -21,6 +21,7 @@ typedef struct entity_t {
   VECTOR children;
   LIST_NODE *node;
   unsigned char destroying;
+  bool handled[EV_LAST];
 } ENTITY;
 
 typedef void (*entity_callback)(ENTITY *);

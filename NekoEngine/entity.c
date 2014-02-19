@@ -9,12 +9,16 @@
 #include "vector.h"
 #include "component.h"
 
-ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name) {
+ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name)
+ {
   ENTITY *entity = (ENTITY *)malloc(sizeof(ENTITY));
+  int i;
   entity->id = 0;
   entity->parent = NULL;
   entity->space = NULL;
   entity->name[0] = 0;
+  for (i = 0; i < EV_LAST; ++i)
+    entity->handled[i] = false;
   if (name != NULL)
     strcpy(entity->name, name);
   vector_init(&entity->components);
@@ -31,6 +35,7 @@ void entity_attach(ENTITY *child, ENTITY *parent) {
     return;
   child->parent = parent;
   vector_append(&parent->children, child);
+  entity_invokeEvent(child, EV_LOGICUPDATE, NULL);
 }
 
 void entity_detach(ENTITY *child, ENTITY *parent) {
@@ -74,8 +79,10 @@ void entity_invokeEvent(ENTITY *entity, EVENT_TYPE event, void *data) {
   unsigned int i = 0;
   unsigned int componentCount = vector_size(&entity->components);
 
-  if (componentCount == 0 || entity->destroying)
+  if (componentCount == 0 || entity->destroying || entity->handled[event]) {
+    entity->handled[event] = true;
     return;
+  }
   while (i < componentCount) {
     COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
 
