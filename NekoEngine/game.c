@@ -58,6 +58,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->systems.time.dt = 0;
   game->systems.time.currentFramesPerSecond = 0;
   game->systems.time.elapsedFrames = 0;
+  game->systems.time.elapsed = 0;
   game->initialized = true;
   input_initialize(&game->input);
   sound_initialize(&game->systems.sound, &game->data.sounds);
@@ -192,6 +193,7 @@ bool game_loop(GAME *game) {
   stopwatch_stop(&game->systems.time.stopwatch);
   game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
   if (game->systems.time.dt >= game->systems.time.frameRate) {
+    game->systems.time.elapsed += game->systems.time.dt;
     stopwatch_lap(&game->systems.time.stopwatch);
     if (AESysGetWindowHandle() == GetActiveWindow()) {
       input_update(&game->input, NULL);
@@ -284,6 +286,27 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_LBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_LEFT] = 1;
+    break;
+
+  case WM_LBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_LEFT] = -1;
+    break;
+
+  case WM_RBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = 1;
+    break;
+
+  case WM_RBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = -1;
+    break;
+
+  case WM_MBUTTONDOWN:
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = 1;
+    break;
+
+  case WM_MBUTTONUP:
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = -1;
     break;
 
   case WM_MOUSEMOVE:

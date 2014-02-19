@@ -128,6 +128,8 @@ typedef struct inputContainer_t {
       };
       INPUT_STATE buttons[MBUTTON_LAST];
     };
+    int buffer[MBUTTON_LAST];
+    bool quickClicked[MBUTTON_LAST];
     int handled[MBUTTON_LAST];
     struct {
       int delta;

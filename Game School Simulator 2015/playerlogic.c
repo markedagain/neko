@@ -103,6 +103,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   COMPONENT *schoolLogic = (COMPONENT *)entity_getComponent((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   POINT mousePos;
+  double elapsedTime = self->owner->space->game->systems.time.elapsed;
   
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
 
@@ -131,15 +132,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom_reset(self);
     pan_reset(self);
   }
-  if (input->keyboard.keys[KEY_F1] == ISTATE_PRESSED) {
-    ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
-    genericText_setText(ent, "Engine Proof Demonstration");
-  }
   if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
-    ENTITY *ent = space_getEntity(self->owner->space, "subtitle");
-    CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
     data->yPan = false;
-    genericText_setText(ent, "Alpha Presentation");
   }
   /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
     self->owner->space->systems.camera.transform.scale.x += 1.0f;

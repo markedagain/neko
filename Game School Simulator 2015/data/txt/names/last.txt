@@ -50,12 +50,12 @@ Lopez
 Rodriguez
 Cruz
 Shooter
-O'mally
+O'Mally
 Johnson
 Jackson
 Erickson
 Christianson
-TOlken
+Tolkien
 Smith
 Gates
 Cummings
@@ -87,3 +87,10 @@ Moarr
 Buum
 Jeske
 Stephens
+Spollen
+Straub
+Holkins
+Kurtz
+Rorie
+Scharn
+Schilling
