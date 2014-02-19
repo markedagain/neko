@@ -112,7 +112,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   spaceNode = game->spaces->first;
   do {
     SPACE *space = (SPACE *)(spaceNode->data);
-    if (space->entities->count == 0 || !space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
+    if (/*space->entities->count == 0 || */!space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
       spaceNode = spaceNode->next;
       continue;
     }
@@ -129,16 +129,15 @@ void game_tick(GAME *game) {
   if (game->spaces->count == 0)
     return;
   spaceNode = game->spaces->last;
-  do {
+  while (spaceNode != NULL) {
     SPACE *space = (SPACE*)spaceNode->data;
-    if (space->entities->count == 0 || !space->active || space->destroying) {
+    if (/*space->entities->count == 0 || */!space->active || space->destroying) {
       spaceNode = spaceNode->prev;
       continue;
     }
     space_tick(space, &updateEvent);
     spaceNode = spaceNode->prev;
   }
-  while (spaceNode != NULL);
   game_cleanup(game);
 }
 
@@ -284,29 +283,29 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 
   case WM_CREATE:
     break;
-
+#define INPUT_FRAMEBUFFER 2
   case WM_LBUTTONDOWN:
-    __game->input.mouse.buffer[MBUTTON_LEFT] = 1;
+    __game->input.mouse.buffer[MBUTTON_LEFT] = INPUT_FRAMEBUFFER;
     break;
 
   case WM_LBUTTONUP:
-    __game->input.mouse.buffer[MBUTTON_LEFT] = -1;
+    __game->input.mouse.buffer[MBUTTON_LEFT] = -INPUT_FRAMEBUFFER;
     break;
 
   case WM_RBUTTONDOWN:
-    __game->input.mouse.buffer[MBUTTON_RIGHT] = 1;
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = INPUT_FRAMEBUFFER;
     break;
 
   case WM_RBUTTONUP:
-    __game->input.mouse.buffer[MBUTTON_RIGHT] = -1;
+    __game->input.mouse.buffer[MBUTTON_RIGHT] = -INPUT_FRAMEBUFFER;
     break;
 
   case WM_MBUTTONDOWN:
-    __game->input.mouse.buffer[MBUTTON_MIDDLE] = 1;
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = INPUT_FRAMEBUFFER;
     break;
 
   case WM_MBUTTONUP:
-    __game->input.mouse.buffer[MBUTTON_MIDDLE] = -1;
+    __game->input.mouse.buffer[MBUTTON_MIDDLE] = -INPUT_FRAMEBUFFER;
     break;
 
   case WM_MOUSEMOVE:

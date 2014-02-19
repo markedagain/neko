@@ -21,6 +21,7 @@ typedef struct entity_t {
   VECTOR children;
   LIST_NODE *node;
   unsigned char destroying;
+  bool handled[EV_LAST];
 } ENTITY;
 
 typedef void (*entity_callback)(ENTITY *);
@@ -31,6 +32,7 @@ NEKO_API void entity_attach(ENTITY *, ENTITY *);
 NEKO_API void *entity_connect(ENTITY *, component_callback);
 NEKO_API COMPONENT *entity_getComponent(ENTITY *, unsigned int);
 NEKO_API void *entity_getComponentData(ENTITY *, unsigned int);
+void entity_invokeEvent(ENTITY *entity, EVENT_TYPE event, void *data);
 NEKO_API void entity_destroy(ENTITY *);
 void __entity_destroy(ENTITY *);
 

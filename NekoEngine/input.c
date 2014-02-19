@@ -28,6 +28,21 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_DOWN || input->keyboard.keys[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
+    if (input->mouse.buffer[i] > 0) {
+      input->mouse.buttons[i] = ISTATE_PRESSED;
+      input->mouse.buffer[i]--;
+    }
+    if (input->mouse.buffer[i] < 0) {
+      input->mouse.buttons[i] = ISTATE_RELEASED;
+      input->mouse.buffer[i]++;
+    }
+    if (input->mouse.buffer[i] == 0) {
+      if (input->mouse.buttons[i] == ISTATE_PRESSED)
+        input->mouse.buttons[i] = ISTATE_DOWN;
+      if (input->mouse.buttons[i] == ISTATE_RELEASED)
+        input->mouse.buttons[i] = ISTATE_UP;
+    }
+    /*
     if (input->mouse.quickClicked[i] == true) {
       input->mouse.quickClicked[i] = false;
       input->mouse.buttons[i] = ISTATE_RELEASED;
@@ -48,6 +63,7 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
         input->mouse.quickClicked[i] = true;
       }
     }
+    */
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buffer[i] = false;

@@ -24,6 +24,7 @@
 #include "blackbar.h"
 #include "studentactor.h"
 #include "studentmanager.h"
+#include "background.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -56,7 +57,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // bg - background, sky, clouds, etc.
   bgSpace = game_addSpace(game, "bg");
   vec3_set(&position, 0, 360 - 24, 0);
-  genericSprite_create(bgSpace, &position, "backdrop", "backgrounds/basic");
+  space_addEntityAtPosition(bgSpace, arch_background, "backdrop", &position);
+  //genericSprite_create(bgSpace, &position, "backdrop", "backgrounds/basic");
 
   // mg - midground, rooms
   mgSpace = game_addSpace(game, "mg");

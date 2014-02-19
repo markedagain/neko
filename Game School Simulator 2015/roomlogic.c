@@ -3,7 +3,7 @@
 #include "roomlogic.h"
 #include "schoollogic.h"
 
-void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
+void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_SCHOOLLOGIC);
@@ -96,6 +96,10 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
   comData->frameCounter++;
 }
 
+void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
+  
+}
+
 
 void comp_roomLogic(COMPONENT *self) {
   CDATA_ROOMLOGIC data;
@@ -111,4 +115,5 @@ void comp_roomLogic(COMPONENT *self) {
 
   COMPONENT_INIT(self, COMP_ROOMLOGIC, data);
   self->events.logicUpdate = comp_roomLogic_logicUpdate;
+  self->events.frameUpdate = comp_roomLogic_frameUpdate;
 }
