@@ -184,14 +184,14 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     if(studentData->gpa < comData->minGpa) {
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
-      list_remove(comData->students, studentData->listNodePtr);
+      entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
     // Drop students whos motivation has reached 0 (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
     else if(studentData->motivation == 0) {
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comData->currentStudents--;
-      list_remove(comData->students, studentData->listNodePtr);
+      entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
   }
