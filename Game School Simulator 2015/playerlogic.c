@@ -210,6 +210,20 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     input_unlockMouse(input);
   }*/
 
+  if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
+    data->dragging = false;
+    input_unlockMouse(input);
+  }
+  if (data->dragging) {
+    POINT panned;
+    float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
+    xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
+    pan(self, xdiff, 0.0f, &panned);
+    if (panned.x != 0)
+      data->dragOrigin.x = input->mouse.position.x;
+    input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
+  }
+
 
 
   //Change Tuition

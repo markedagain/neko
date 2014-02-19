@@ -107,6 +107,9 @@
     <ClCompile Include="managescreen.c">
       <Filter>Archetypes</Filter>
     </ClCompile>
+    <ClCompile Include="backgroundlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -227,6 +230,9 @@
     </ClInclude>
     <ClInclude Include="managescreen.h">
       <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="backgroundlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

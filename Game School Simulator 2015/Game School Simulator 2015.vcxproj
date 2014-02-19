@@ -129,6 +129,7 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="background.c" />
+    <ClCompile Include="backgroundlogic.c" />
     <ClCompile Include="blackbar.c" />
     <ClCompile Include="blackbarlogic.c" />
     <ClCompile Include="cursor.c" />
@@ -165,6 +166,7 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="UI_student.c" />
     <ClCompile Include="UI_studentLogic.c" />
     <ClInclude Include="background.h" />
+    <ClInclude Include="backgroundlogic.h" />
     <ClInclude Include="blackbar.h" />
     <ClInclude Include="blackbarlogic.h" />
     <ClInclude Include="cursor.h" />

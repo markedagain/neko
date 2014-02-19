@@ -2,7 +2,6 @@
 
 #include "input.h"
 #include "../AlphaEngine/AESystem.h"
-#include <stdio.h>
 
 void input_initialize(INPUT_CONTAINER *input) {
   int i;
@@ -69,8 +68,6 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
   for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buffer[i] = false;
   }
-  if (input->mouse.buttons[0] != 0 && input->mouse.buttons[0] != 2)
-    printf("%i %i %i\n", input->mouse.buttons[0], input->mouse.buttons[1], input->mouse.buttons[2]);
   input->mouse.wheel.direction = input->mouse.wheel.delta > 0 ? 1 : input->mouse.wheel.delta < 0 ? -1 : 0;
   GetCursorPos(&input->mouse.position);
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);
