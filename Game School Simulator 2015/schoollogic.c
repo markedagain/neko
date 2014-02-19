@@ -48,10 +48,10 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   //SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
 
   // Calculate incomingStudents
-  if(comData->currentStudents < comData->studentCapacity) {
+  if(comData->currentStudents < comData->studentCapacity + comData->expectedGraduates) {
     comData->incomingStudents += 1 + (int)(comData->reputation * .1);
-    if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents)) {
-      comData->incomingStudents = comData->studentCapacity - comData->currentStudents;
+    if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents) + comData->expectedGraduates) {
+      comData->incomingStudents = comData->studentCapacity - comData->currentStudents + comData->expectedGraduates;
     }
   }
   else {
@@ -180,20 +180,30 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     studentPtr = studentPtr->next;
 
-    // Drop students below the min GPA (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+    // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa) {
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
-    // Drop students whos motivation has reached 0 (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+
+    // Drop students whos motivation has reached 0 
     else if(studentData->motivation == 0) {
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
+  }
+
+  comData->expectedGraduates = 0;
+
+  studentPtr = comData->students->first;
+  for(i = 0; i < comData->students->count; i++) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+    if(studentData->semesterStarted == timeData->currentSemester - 7 && !studentData->graduated)
+      comData->expectedGraduates++;
   }
 }
 
@@ -538,6 +548,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.studentCapacity = 0;
   data.currentStudents = 0;
   data.incomingStudents = 0;
+  data.expectedGraduates = 0;
   data.students = list_create();
   data.alumni = list_create();
   data.roomMaintainance = 0;

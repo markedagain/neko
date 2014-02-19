@@ -21,6 +21,7 @@ typedef struct cdata_schoolLogic_t {
   int studentCapacity;
   int currentStudents;
   int incomingStudents;
+  int expectedGraduates;
   LIST *students;
   LIST *alumni;
   int roomMaintainance;
