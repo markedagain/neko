@@ -70,6 +70,24 @@ void *entity_getComponentData(ENTITY *entity, unsigned int componentId) {
   return component->data;
 }
 
+void entity_invokeEvent(ENTITY *entity, EVENT_TYPE event, void *data) {
+  unsigned int i = 0;
+  unsigned int componentCount = vector_size(&entity->components);
+
+  if (componentCount == 0 || entity->destroying)
+    return;
+  while (i < componentCount) {
+    COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
+
+    if (component->events.ids[event] == NULL) {
+      ++i;
+      continue;
+    }
+    component_doEvent(component, event, data);
+    ++i;
+  }
+}
+
 void entity_destroy(ENTITY *entity) {
   //unsigned int childrenCount;
   //unsigned int i;

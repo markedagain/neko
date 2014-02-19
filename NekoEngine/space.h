@@ -33,6 +33,7 @@ typedef struct sysSound_t {
 typedef struct space_t {
   char name[32];
   LIST *entities;
+  LIST *newEntities;
   struct {
     SYS_TIME time;
     SYS_CAMERA camera;

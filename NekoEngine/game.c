@@ -112,7 +112,7 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   spaceNode = game->spaces->first;
   do {
     SPACE *space = (SPACE *)(spaceNode->data);
-    if (space->entities->count == 0 || !space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
+    if (/*space->entities->count == 0 || */!space->active || space->destroying || (!space->visible && event == EV_DRAW)) {
       spaceNode = spaceNode->next;
       continue;
     }
@@ -131,7 +131,7 @@ void game_tick(GAME *game) {
   spaceNode = game->spaces->last;
   while (spaceNode != NULL) {
     SPACE *space = (SPACE*)spaceNode->data;
-    if (space->entities->count == 0 || !space->active || space->destroying) {
+    if (/*space->entities->count == 0 || */!space->active || space->destroying) {
       spaceNode = spaceNode->prev;
       continue;
     }

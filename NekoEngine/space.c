@@ -13,6 +13,7 @@
 SPACE *space_create(char *name) {
   SPACE *space = (SPACE *)malloc(sizeof(SPACE));
   space->entities = list_create();
+  space->newEntities = list_create();
   space->systems.time.dt = 0;
   space->systems.time.scale = 1.0f;
   space->systems.time.currentTime = 0;
@@ -47,7 +48,8 @@ ENTITY *space_addEntity(SPACE *space, void (*archetypeFunction)(ENTITY *), char 
         component->events.initialize(component, NULL);
     }
   }
-  entity->node = list_insert_end(space->entities, (void *)entity);
+  //entity->node = list_insert_end(space->entities, (void *)entity);
+  list_insert_end(space->newEntities, entity);
   return entity;
 }
 
@@ -62,9 +64,14 @@ ENTITY *space_addEntityAtPosition(SPACE *space, void (*archetypeFunction)(ENTITY
 
 ENTITY *space_getEntity(SPACE *space, char *name) {
   LIST_NODE *node;
-  if (space->entities->count == 0)
-    return NULL;
   node = space->entities->first;
+  while (node != NULL) {
+    ENTITY *entity = (ENTITY *)node->data;
+    if (strcmp(entity->name, name) == 0)
+      return entity;
+    node = node->next;
+  }
+  node = space->newEntities->first;
   while (node != NULL) {
     ENTITY *entity = (ENTITY *)node->data;
     if (strcmp(entity->name, name) == 0)
@@ -76,9 +83,14 @@ ENTITY *space_getEntity(SPACE *space, char *name) {
 
 void space_getAllEntities(SPACE *space, char *name, LIST *list) {
   LIST_NODE *node;
-  if (space->entities->count == 0)
-    return;
   node = space->entities->first;
+  while (node != NULL) {
+    ENTITY *entity = (ENTITY *)node->data;
+    if (strcmp(entity->name, name) == 0)
+      list_insert_end(list, entity);
+    node = node->next;
+  }
+  node = space->newEntities->first;
   while (node != NULL) {
     ENTITY *entity = (ENTITY *)node->data;
     if (strcmp(entity->name, name) == 0)
@@ -129,41 +141,13 @@ void space_destroy(SPACE *space) {
 void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
   LIST_NODE *entityNode;
   entityNode = space->entities->first;
-  do {
+  while (entityNode != NULL) {
     ENTITY *entity = (ENTITY *)(entityNode->data);
     unsigned int i = 0;
     unsigned int componentCount = vector_size(&entity->components);
 
     if (componentCount == 0 || entity->destroying) {
       entityNode = entityNode->next;
-      continue;
-    }
-    do {
-      COMPONENT *component = (COMPONENT *)vector_get(&entity->components, i);
-
-      if (component->events.ids[event] == NULL) {
-        ++i;
-        continue;
-      }
-      component_doEvent(component, event, data);
-      ++i;
-    }
-    while (i < componentCount);
-    entityNode = entityNode->next;
-  }
-  while (entityNode != NULL);
-}
-
-void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
-  LIST_NODE *entityNode;
-  entityNode = space->entities->last;
-  while (entityNode) {
-    ENTITY *entity = (ENTITY *)(entityNode->data);
-    unsigned int i = 0;
-    unsigned int componentCount = vector_size(&entity->components);
-
-    if (componentCount == 0 || entity->destroying) {
-      entityNode = entityNode->prev;
       continue;
     }
     while (i < componentCount) {
@@ -176,21 +160,49 @@ void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
       component_doEvent(component, event, data);
       ++i;
     }
+    entityNode = entityNode->next;
+  }
+}
+
+void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
+  LIST_NODE *entityNode;
+  entityNode = space->entities->last;
+  while (entityNode) {
+    ENTITY *entity = (ENTITY *)(entityNode->data);
+    entity_invokeEvent(entity, event, data);
     entityNode = entityNode->prev;
   }
 }
 
 void space_tick(SPACE *space, EDATA_UPDATE *data) {
   EDATA_UPDATE logicUpdateData;
+  LIST_NODE *node = space->newEntities->first;
+  bool logicUpdated = false;
+  while (node) {
+    ENTITY *entity = (ENTITY *)node->data;
+    entity->node = list_insert_end(space->entities, entity);
+    node = node->next;
+  }
+  list_empty(space->newEntities);
   space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
   stopwatch_stop(&space->systems.time.stopwatch);
   space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);
   if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {
+    logicUpdated = true;
     logicUpdateData.dt = space->systems.time.dt;
     logicUpdateData.elapsedTime = 0; // TODO: FIX
     space_invokeEventReverseways(space, EV_LOGICUPDATE, &logicUpdateData);
     stopwatch_start(&space->systems.time.stopwatch);
   }
+  node = space->newEntities->first;
+  while (node) {
+    ENTITY *entity = (ENTITY *)node->data;
+    entity_invokeEvent(entity, EV_FRAMEUPDATE, data);
+    if (logicUpdated)
+      entity_invokeEvent(entity, EV_LOGICUPDATE, &logicUpdateData);
+    node = node->next;
+  }
+  
 }
 
 void __space_destroy(SPACE *space) {
