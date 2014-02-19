@@ -129,6 +129,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       playerData->gameMode = BUILD;
       break;
 
+    case BUTTON_MANAGEMENT:
+      space_addEntity(self->owner->space, arch_manageScreen, "manageScreen");
+      break;
+
     default:
       break;
     }

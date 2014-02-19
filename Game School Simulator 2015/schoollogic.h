@@ -21,6 +21,7 @@ typedef struct cdata_schoolLogic_t {
   int studentCapacity;
   int currentStudents;
   int incomingStudents;
+  int expectedGraduates;
   LIST *students;
   LIST *alumni;
   int roomMaintainance;
@@ -31,6 +32,9 @@ typedef struct cdata_schoolLogic_t {
   int artBonus;
   int motivationBonus;
   BOOL roomConstructed;
+  long int currMoney;
+  ENTITY *moneyUI;
+  char buffer[20];
   union {
     ENTITY *coord[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
   } rooms;
