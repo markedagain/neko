@@ -92,7 +92,7 @@ void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const
   TEXTFILE *textfile;
   char storeKey[80];
   char *data = NULL;
-  char *dataStart;
+  char *dataStart = NULL;
   size_t count, i, bufferPos = 0;
   char buffer[TEXTFILE_LINELENGTH] = { 0 };
 
@@ -132,6 +132,8 @@ void data_loadTextfileFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const
     strcpy(newLine, buffer);
     vector_append(&textfile->lines, newLine);
   }
+
+  free(dataStart);
 
   printf("Loaded TXT %s from pak\n", storeKey);
   dict_set(&dataContainer->textfiles, storeKey, textfile);
@@ -227,7 +229,10 @@ void data_loadSpriteFromPak(DATACONTAINER *dataContainer, PAK_FILE *pak, const c
   sprite->width = (unsigned int)atoi((char *)vector_get(&lines, 3));
   sprite->height = (unsigned int)atoi((char *)vector_get(&lines, 4));
 
-  vector_free(&lines);
+  vector_destroy(&lines);
+
+  free(dataStart);
+
   printf("Loaded SPR %s from pak\n", storeKey);
   if (!existing)
     dict_set(&dataContainer->sprites, storeKey, sprite);
@@ -507,8 +512,40 @@ void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem) {
       }
     }
   }
-  vector_clear(&files);
   pak_close(pak);
 
-  vector_free(&files);
+  vector_destroy(&files);
+}
+
+void data_destroy(DATACONTAINER *dataContainer) {
+  unsigned int i;
+
+  for (i = 0; i < dataContainer->sounds.used; ++i) {
+    SOUND *sound = (SOUND *)dataContainer->sounds.values[i];
+    if (sound->inMemory)
+      FMOD_Sound_Release(sound->data);
+    free(sound);
+  }
+  dict_free(&dataContainer->sounds);
+
+  for (i = 0; i < dataContainer->textfiles.used; ++i) {
+    TEXTFILE *textfile = (TEXTFILE *)dataContainer->textfiles.values[i];
+    vector_destroy(&textfile->lines);
+    free(textfile);
+  }
+  dict_free(&dataContainer->textfiles);
+
+  for (i = 0; i < dataContainer->textures.used; ++i) {
+    TEXTURE *texture = (TEXTURE *)dataContainer->textures.values[i];
+    AEGfxTextureUnload(texture->data);
+    free(texture);
+  }
+  dict_free(&dataContainer->textures);
+
+  for (i = 0; i < dataContainer->sprites.used; ++i) {
+    SPRITE *sprite = (SPRITE *)dataContainer->sprites.values[i];
+    //AEGfxTextureUnload(sprite->texture->data);
+    free(sprite);
+  }
+  dict_free(&dataContainer->sprites);
 }

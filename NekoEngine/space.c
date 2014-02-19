@@ -208,6 +208,7 @@ void space_tick(SPACE *space, EDATA_UPDATE *data) {
 
 void __space_destroy(SPACE *space) {
   list_destroy(space->entities);
+  list_destroy(space->newEntities);
   list_remove_free(space->game->spaces, space->node);
 }
 

@@ -26,6 +26,7 @@ NEKO_API void *vector_get(VECTOR *, size_t);
 NEKO_API void *vector_pop(VECTOR *, size_t);
 NEKO_API int vector_index(VECTOR *, void *);
 NEKO_API void vector_remove(VECTOR *, void *);
+NEKO_API void vector_destroy(VECTOR *v);
 
 void vector_grow(VECTOR *, size_t);
 

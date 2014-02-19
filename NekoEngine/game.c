@@ -142,12 +142,12 @@ void game_tick(GAME *game) {
 }
 
 void game_cleanup(GAME *game) {
-  while (game->destroyingEntities->count > 0) {
+  while (game->destroyingEntities->first) {
     ENTITY *entity = (ENTITY *)(game->destroyingEntities->last->data);
     __entity_destroy(entity);
     list_remove(game->destroyingEntities, game->destroyingEntities->last);
   }
-  while (game->destroyingSpaces->count > 0) {
+  while (game->destroyingSpaces->first) {
     SPACE *space = (SPACE *)(game->destroyingSpaces->last->data);
     __space_destroy(space);
     list_remove(game->destroyingSpaces, game->destroyingSpaces->last);
@@ -163,11 +163,11 @@ void game_start(GAME *game) {
 
   stopwatch_start(&game->systems.time.stopwatch);
   stopwatch_start(&game->systems.time.secondsStopwatch);
+
   while(gameRunning) {
     gameRunning = game_loop(game);
   }
 
-  AESysExit();
   game_destroy(game);
 }
 
@@ -217,8 +217,29 @@ bool game_loop(GAME *game) {
 }
 
 void game_destroy(GAME *game) {
-  sound_destroy(&game->systems.sound);
+  LIST_NODE *node;
+  //int i;
   // TODO
+
+  node = game->spaces->first;
+  while (node) {
+    SPACE *space = (SPACE *)node->data;
+    space_destroy(space);
+    node = node->next;
+  }
+
+  game_cleanup(game);
+
+
+  list_destroy(game->spaces);
+  list_destroy(game->destroyingEntities);
+  list_destroy(game->destroyingSpaces);
+
+  data_destroy(&game->data);
+
+  sound_destroy(&game->systems.sound);
+  free(game);
+  AESysExit();
 }
 
 void game_resize(GAME *game, unsigned int width, unsigned int height, bool fullscreen) {

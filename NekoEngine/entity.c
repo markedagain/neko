@@ -48,6 +48,7 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
 
   component = (COMPONENT *)malloc(sizeof(COMPONENT));
   component->owner = entity;
+  component->data = NULL;
   componentFunction(component);
 
   /* TODO: dependency check */
@@ -141,7 +142,7 @@ void __entity_destroy(ENTITY *entity) {
     if (component->data != NULL)
       free(component->data);
   }
-  vector_free(&entity->components);
+  vector_destroy(&entity->components);
   vector_free(&entity->children);
 
   list_remove_free(entity->space->entities, entity->node);

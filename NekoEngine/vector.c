@@ -25,6 +25,14 @@ void vector_free(VECTOR *v) {
   free(v->data);
 }
 
+void vector_destroy(VECTOR *v) {
+  size_t i;
+  for (i = 0; i < v->used; ++i) {
+    free(vector_get(v, i));
+  }
+  free(v->data);
+}
+
 void vector_clear(VECTOR *v) {
   size_t i;
   for (i = 0; i < v->used; ++i) {

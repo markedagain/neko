@@ -72,4 +72,6 @@ NEKO_API void file_windowsToUnix(char *string);
 
 NEKO_API void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem);
 
+NEKO_API void data_destroy(DATACONTAINER *dataContainer);
+
 #endif
