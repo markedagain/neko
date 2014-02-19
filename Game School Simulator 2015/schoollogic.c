@@ -29,23 +29,31 @@ void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
-  /*EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-  INPUT_CONTAINER *input = &self->owner->space->game->input;
-  */
-  //printf(">>> %hu FPS <<<\n", self->owner->space->game->systems.time.currentFramesPerSecond);
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  VEC3 position;
+  VEC4 color;  
+  // Display $$$ on screen
+  if (comData->currMoney != comData->money) {    
+    if (!comData->moneyUI) {
+      vec3_set(&position, 270, 180, 0);
+      vec4_set(&color, 0, 0, 1, 1 );
+      sprintf(comData->buffer, "$%li", comData->money);
+      comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    }
+    sprintf(comData->buffer, "$%li", comData->money);
+    genericText_setText(comData->moneyUI, comData->buffer);
+    // sprintf(buffer,"$%d", comData->money);
+    // moneyUI = 
+    comData->currMoney = comData->money;
+  }
 }
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
-  //int currMoney = 0;
-  //ENTITY *moneyUI = 0;
-  //char buffer[20];
-  VEC3 position = { 10, 10, 0 };
-  VEC4 color = { 0, 0, 1, 1 };
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
-  //SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
 
   // Calculate incomingStudents
   if(comData->currentStudents < comData->studentCapacity + comData->expectedGraduates) {
@@ -96,25 +104,18 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   printf("       Tuition: $%i\n", comData->tuition);
   printf("Rep: %i", comData->reputation);
   printf("              Alumni: %i\n", comData->alumni->count);
-/*
-  // Display $$$ on screen
-  if(!moneyUI) {
-    sprintf(buffer,"$%d", comData->money);
-    currMoney = comData->money;
-    vec3_set(&position, 290, 180, 0);
-    moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
-  }
-  else if (currMoney != comData->money) {
-    entity_destroy(moneyUI);
-    moneyUI = NULL;
-    // sprintf(buffer,"$%d", comData->money);
-    // moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
-    currMoney = comData->money;
 
-  }
-*/
 }
+/*
+void comp_schoolLogic_updateMoneyText(COMPONENT *self) {
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  VEC3 position;
+  VEC4 color;
+  if (!comData
 
+  genericText_setText(comData->moneyUI, comData->buffer);
+}
+*/
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
@@ -559,6 +560,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.artBonus = 1;
   data.motivationBonus = 0;
   data.roomConstructed = FALSE;
+  data.currMoney = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;

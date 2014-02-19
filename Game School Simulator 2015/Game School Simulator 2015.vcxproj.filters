@@ -101,6 +101,12 @@
     <ClCompile Include="studentmanagerlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="managescreenlogic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="managescreen.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -215,6 +221,12 @@
     </ClInclude>
     <ClInclude Include="studentmanagerlogic.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="managescreenlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="managescreen.h">
+      <Filter>Archetypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
