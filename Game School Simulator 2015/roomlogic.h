@@ -30,6 +30,7 @@ typedef struct cdata_roomlogic_t {
 
 } CDATA_ROOMLOGIC;
 
+void comp_roomLogic_frameUpdate(COMPONENT *, void *);
 void comp_roomLogic_logicUpdate(COMPONENT *, void *);
 void comp_roomLogic(COMPONENT *);
 
