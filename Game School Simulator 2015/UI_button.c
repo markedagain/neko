@@ -13,8 +13,8 @@
 #include "roomlogic.h"
 #include "UI_build.h"
 #include "schoollogic.h"
+#include "managescreen.h"
 
-// code is breaking and eduardo is screaming
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
@@ -106,6 +106,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         list_destroy(buttons);
         comData->showing = FALSE;
         playerData->yPan = false;
+        //void comp_UI_button_cancelBuildMode(self);
       }
       break;
 
@@ -166,4 +167,25 @@ void comp_UI_button(COMPONENT *self) {
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;
+}
+
+
+// this doesn't work yet
+void comp_UI_button_cancelBuildMode(COMPONENT *self) {
+  LIST_NODE *node;
+  LIST *buttons = list_create();
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  ENTITY *player = space_getEntity(ui, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  space_getAllEntities(self->owner->space, "buildButton", buttons);
+  node = buttons->first;
+  while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+  }
+  
+  list_destroy(buttons);
+  comData->showing = FALSE;
+  playerData->yPan = false;
 }

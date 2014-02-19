@@ -13,7 +13,7 @@ typedef enum {
   BUTTON_BUILDLOBBY,
   BUTTON_BUILDCLASS,
   BUTTON_BUILDLIBRARY,
-  BUTTON_BUILDTEAMSPACE
+  BUTTON_BUILDTEAMSPACE,
   BUTTON_MANAGEMENT
 } BUTTON_TYPE;
 
@@ -28,5 +28,6 @@ typedef struct{
 
 void UI_buttonUpdate(COMPONENT *self, void *event);
 void comp_UI_button(COMPONENT *self);
+void comp_UI_button_cancelBuildMode(COMPONENT *self);
 
 #endif
