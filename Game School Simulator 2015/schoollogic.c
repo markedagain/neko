@@ -56,10 +56,10 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   LIST_NODE *roomPtr;
 
   // Calculate incomingStudents
-  if(comData->currentStudents < comData->studentCapacity) {
+  if(comData->currentStudents < comData->studentCapacity + comData->expectedGraduates) {
     comData->incomingStudents += 1 + (int)(comData->reputation * .1);
-    if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents)) {
-      comData->incomingStudents = comData->studentCapacity - comData->currentStudents;
+    if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents) + comData->expectedGraduates) {
+      comData->incomingStudents = comData->studentCapacity - comData->currentStudents + comData->expectedGraduates;
     }
   }
   else {
@@ -181,20 +181,30 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     studentPtr = studentPtr->next;
 
-    // Drop students below the min GPA (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+    // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa) {
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
-      list_remove(comData->students, studentData->listNodePtr);
+      entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
-    // Drop students whos motivation has reached 0 (come back later to CHECK FOR MEMORY LEAKS!!!!!!!!!!!!!!!!!!!!!!)
+
+    // Drop students whos motivation has reached 0 
     else if(studentData->motivation == 0) {
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comData->currentStudents--;
-      list_remove(comData->students, studentData->listNodePtr);
+      entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       continue;
     }
+  }
+
+  comData->expectedGraduates = 0;
+
+  studentPtr = comData->students->first;
+  for(i = 0; i < comData->students->count; i++) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+    if(studentData->semesterStarted == timeData->currentSemester - 7 && !studentData->graduated)
+      comData->expectedGraduates++;
   }
 }
 
@@ -453,6 +463,30 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
+int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
+  switch (type) {
+    case ROOMTYPE_LOBBY:
+      return 100000;
+
+    case ROOMTYPE_CLASS:
+      return 40000;
+
+    case ROOMTYPE_LIBRARY:
+      return 50000;
+
+    case ROOMTYPE_TEAMSPACE:
+      return 75000;
+
+    case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    default:
+      printf("ERROR: Unkown room!!\n");
+      break;
+  }
+  return 0;
+}
+
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;
     if(comData->roomList->first != NULL) {
@@ -509,12 +543,13 @@ void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Eduardo's Super Awesome Game School";
   data.money = 100000;
-  data.tuition = 3000;
+  data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;
   data.currentStudents = 0;
   data.incomingStudents = 0;
+  data.expectedGraduates = 0;
   data.students = list_create();
   data.alumni = list_create();
   data.roomMaintainance = 0;
@@ -523,6 +558,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.techBonus = 1;
   data.designBonus = 1;
   data.artBonus = 1;
+  data.motivationBonus = 0;
   data.roomConstructed = FALSE;
   data.currMoney = 0;
 

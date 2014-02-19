@@ -12,18 +12,17 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
   if(comData->frameCounter == 0) {
     switch (comData->type) {
     case ROOMTYPE_LOBBY:
-      printf("New lobby created\n");
       //Set Values
       comData->size = 2;
       comData->repBonus = 5;
       comData->cost = 100000;
+      comData->upkeep = 10000;
       //Modify SchoolData
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
       break;
 
     case ROOMTYPE_CLASS:
-      printf("New classroom created\n");
       //Set Values
       comData->size = 1;
       comData->cost = 40000;
@@ -31,6 +30,7 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->techBonus = 1;
       comData->designBonus = 1;
       comData->artBonus = 1;
+      comData->upkeep = 15000;
       //Modify SchoolData
       schoolData->studentCapacity += 30;
       schoolData->money -= comData->cost;
@@ -41,7 +41,6 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       break;
 
     case ROOMTYPE_LIBRARY:
-      printf("New library created.\n");
       //Set Values
       comData->size = 2;
       comData->cost = 50000;
@@ -49,6 +48,7 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->techBonus = 2;
       comData->designBonus = 2;
       comData->artBonus = 2;
+      comData->upkeep = 20000;
       //Modify SchoolData
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -58,7 +58,6 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       break;
 
     case ROOMTYPE_TEAMSPACE:
-      printf("New team space created\n");
       //Set Values
       comData->size = 3;
       comData->cost = 75000;
@@ -66,12 +65,26 @@ void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
       comData->techBonus = 1;
       comData->designBonus = 1;
       comData->artBonus = 1;
+      comData->upkeep = 30000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
       schoolData->techBonus += comData->techBonus;
       schoolData->designBonus += comData->designBonus;
       schoolData->artBonus += comData->artBonus;
+      break;
+
+    case ROOMTYPE_CAFETERIA:
+      //Set Values
+      comData->size = 3;
+      comData->cost = 100000;
+      comData->repBonus = 5;
+      comData->motivationBonus = 5;
+      comData->upkeep = -10000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
       break;
 
     default:
