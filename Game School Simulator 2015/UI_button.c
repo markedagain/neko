@@ -13,6 +13,7 @@
 #include "roomlogic.h"
 #include "UI_build.h"
 #include "schoollogic.h"
+#include "managescreen.h"
 
 // code is breaking and eduardo is screaming
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
