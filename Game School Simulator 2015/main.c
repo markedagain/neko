@@ -28,7 +28,7 @@
 
 #pragma comment (lib, "../lib/neko.lib")
 
-#if 1
+#if _CHECK_LEAKS
 #pragma comment (lib, "C:\\Program Files (x86)\\Visual Leak Detector\\lib\\Win32\\vld.lib")
 #include <vld.h>
 #endif
