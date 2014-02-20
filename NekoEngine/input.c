@@ -2,7 +2,6 @@
 
 #include "input.h"
 #include "../AlphaEngine/AESystem.h"
-#include <stdio.h>
 
 void input_initialize(INPUT_CONTAINER *input) {
   int i;
@@ -30,12 +29,10 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
     if (input->mouse.buffer[i] > 0) {
-      printf("%i\n", input->mouse.buffer[i]);
       input->mouse.buttons[i] = ISTATE_PRESSED;
       input->mouse.buffer[i]--;
     }
     if (input->mouse.buffer[i] < 0) {
-      printf("%i\n", input->mouse.buffer[i]);
       input->mouse.buttons[i] = ISTATE_RELEASED;
       input->mouse.buffer[i]++;
     }

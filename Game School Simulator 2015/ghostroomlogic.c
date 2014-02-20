@@ -5,6 +5,7 @@
 #include "playerlogic.h"
 #include "cursorlogic.h"
 
+// fix all mboxes to handle things
 void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
