@@ -50,6 +50,7 @@ void studentManager_spawnStudent(COMPONENT *self) {
   }
   
   else {
+    // change this to be less poopy
     while (pNode) {
       ++listCurr;
       choice = randomIntRange(1, count);

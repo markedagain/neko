@@ -170,7 +170,7 @@ void comp_UI_button(COMPONENT *self) {
 }
 
 
-// this doesn't work yet
+// this doesn't work yet but please make it work
 void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   LIST_NODE *node;
   LIST *buttons = list_create();
