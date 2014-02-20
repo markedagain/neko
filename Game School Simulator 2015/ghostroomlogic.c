@@ -37,6 +37,7 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
       entity_destroy(groom);
       pNode = pNode->next;
     }
+    list_destroy(ghostrooms);
   }
 }
 

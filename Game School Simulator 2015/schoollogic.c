@@ -212,7 +212,7 @@ void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData
   
 }
 
-LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize) {
+void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, LIST *legalSlots) {
   int i = 0;
   CDATA_ROOMLOGIC *lastKnownRoomData = NULL;
   int distanceFromLastKnown = 47;
@@ -220,46 +220,42 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
 
   if(comData->roomConstructed == TRUE) {
     printf("\n1 RPS (Room Per Second)!!!... its the law.\n");
-    return NULL;
+    return;
   }
 
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
     if(comData->rooms.coord[2][7] == NULL) {
-      LIST *legalSlots = list_create();
       POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 2;
       list_insert_end(legalSlots, (void *)spotPtr);
-      return legalSlots;
+      return;
     }
     else if(comData->rooms.coord[1][7] == NULL) {
-      LIST *legalSlots = list_create();
       POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 1;
       list_insert_end(legalSlots, (void *)spotPtr);
-      return legalSlots;
+      return;
     }
     else if(comData->rooms.coord[0][7] == NULL) {
-      LIST *legalSlots = list_create();
       POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         
       spotPtr->x = 7;
       spotPtr->y = 0;
       list_insert_end(legalSlots, (void *)spotPtr);
-      return legalSlots;
+      return;
     }
     else {
       printf("NO MORE SPACE\n");
-      return NULL;
+      return;
     }
   }
   else { // IF NOT A LOBBY
     BOOL openSlot[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
-    LIST *legalSlots = list_create();
     int createdRoom = 0;
     int j = 0;
     int k = 0;
@@ -357,9 +353,10 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
       int floor = i / MAX_ROOMS_PER_FLOOR;
       int col = i % MAX_ROOMS_PER_FLOOR;
-      POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
+      
         
       if(openSlot[floor][col] == TRUE) {
+        POINT *spotPtr = (POINT *)malloc(sizeof(POINT));
         spotPtr->x = col;
         spotPtr->y = floor;
 
@@ -367,10 +364,10 @@ LIST* comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int ro
       }
     }
 
-    return legalSlots;
+    return;
   }
 
-  return NULL;
+  return;
 }
 
 void comp_schoolLogic_findRooms(COMPONENT *comp, LIST *roomList) {
@@ -566,4 +563,5 @@ void comp_schoolLogic(COMPONENT *self) {
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
   self->events.frameUpdate = comp_schoolLogic_frameUpdate;
   self->events.initialize = comp_schoolLogic_initialize;
+  self->events.destroy = comp_schoolLogic_destroy;
 }

@@ -67,15 +67,16 @@ void studentManager_spawnStudent(COMPONENT *self) {
         pNode = roomList->first;
     }
   }
+  studentManager_deleteList(roomList);
 }
 
 void studentManager_deleteList(LIST *list) {
   LIST_NODE *pNode = list->first;
   while (pNode) {
-    LIST_NODE *pNext = pNode->next;
-    list_remove_free(list, pNode);
-    pNode = pNext;
+    free(pNode->data);
+    pNode = pNode->next;
   }
+  list_destroy(list);
 }
 
 void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos) {

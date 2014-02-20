@@ -24,7 +24,6 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   int roomSize;
   ROOM_TYPE toBuild;
-  LIST *buildSpaces;
   CDATA_TRANSFORM *cursorSpriteTransform = (CDATA_TRANSFORM *)entity_getComponentData(space_getEntity(game_getSpace(self->owner->space->game, "cursor"), "cursorSprite"), COMP_TRANSFORM);
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
@@ -36,10 +35,11 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if (playerData->gameMode == BUILD) {
     if (data->gameMode != BUILD) {
+      LIST *buildSpaces = list_create();
       toBuild = playerData->roomType;
       roomSize = comp_schoolLogic_getRoomSize(toBuild);
-      buildSpaces = comp_schoolLogic_findBuildSpots(self, toBuild, roomSize);
-      if (buildSpaces == NULL) {
+      comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
+      if (buildSpaces->first == NULL) {
         playerData->gameMode = DEFAULT;
         data->gameMode = DEFAULT;
       }
@@ -47,10 +47,20 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
         createGhostRooms(self, buildSpaces, roomSize, toBuild);
         data->gameMode = BUILD;
       }
+      comp_cursorLogic_deleteList(buildSpaces);
     }
   }
 }
 
+
+void comp_cursorLogic_deleteList(LIST *buildSpaces) {
+  LIST_NODE *pNode = buildSpaces->first;
+  while (pNode) {
+    free(pNode->data);
+    pNode = pNode->next;
+  }
+  list_destroy(buildSpaces);
+}
 
 void comp_cursorLogic(COMPONENT *self) {
   CDATA_CURSORLOGIC data = { 0 };
@@ -120,13 +130,5 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     pNode = next;
   }
 
-  // freeing eduardo's list?
-  pNode = spots->first;
-  while(pNode) {
-    LIST_NODE *pNext = pNode->next;
-    list_remove_free(spots, pNode);
-    pNode = pNext;
-  }
-  list_destroy(spots);
 }
 
