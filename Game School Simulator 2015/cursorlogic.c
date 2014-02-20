@@ -107,6 +107,7 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/template3";
       break;
+
     default:
       break;
     }

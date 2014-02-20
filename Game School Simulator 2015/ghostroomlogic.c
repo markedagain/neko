@@ -40,14 +40,10 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
   }
 }
 
-void comp_ghostRoomLogic_initialize(COMPONENT *self, void *event) {
-  CDATA_GHOSTROOMLOGIC *data = (CDATA_GHOSTROOMLOGIC *)self->data;
-  data->constructed = false;
-}
 
 void comp_ghostRoomLogic(COMPONENT *self) {
   CDATA_GHOSTROOMLOGIC data = { 0 };
+  data.constructed = false;
   COMPONENT_INIT(self, COMP_GHOSTROOMLOGIC, data);
   self->events.logicUpdate = comp_ghostRoomLogic_logicUpdate;
-  self->events.initialize = comp_ghostRoomLogic_initialize;
 }
