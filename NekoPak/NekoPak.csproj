@@ -35,9 +35,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug and Check Leaks|AnyCPU'">
     <OutputPath>bin\Debug and Check Leaks\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug + Leak Check|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Leak Check|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug + Leak Check\</OutputPath>
+    <OutputPath>bin\Leak Check\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

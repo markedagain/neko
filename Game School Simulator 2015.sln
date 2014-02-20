@@ -72,11 +72,11 @@ Global
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Any CPU.ActiveCfg = Debug + Leak Check|Any CPU
-		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Any CPU.Build.0 = Debug + Leak Check|Any CPU
-		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Mixed Platforms.ActiveCfg = Debug + Leak Check|Any CPU
-		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Mixed Platforms.Build.0 = Debug + Leak Check|Any CPU
-		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Win32.ActiveCfg = Debug + Leak Check|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Any CPU.ActiveCfg = Leak Check|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Any CPU.Build.0 = Leak Check|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Mixed Platforms.ActiveCfg = Leak Check|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Mixed Platforms.Build.0 = Leak Check|Any CPU
+		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Leak Check|Win32.ActiveCfg = Leak Check|Any CPU
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{965C661E-D6AA-4104-85B8-087BA80A33FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
