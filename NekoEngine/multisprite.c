@@ -3,12 +3,8 @@
 #include "multisprite.h"
 
 void comp_multiSprite_destroy(COMPONENT *self, void *event) {
-  /*CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
-  LIST_NODE *node = data->entities->first;
-  while (node != NULL) {
-    entity_destroy((ENTITY *)node->data);
-    node = node->next;
-  }*/
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  list_destroy(data->entities);
 }
 
 void comp_multiSprite(COMPONENT *self) {

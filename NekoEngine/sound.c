@@ -42,6 +42,7 @@ void sound_loadSoundFromMemory(SOUNDSYSTEM *system, char *name, const char *data
   audioInfo.length = size;
   strcpy(sound->filename, name);
   sound->size = size;
+  sound->inMemory = true;
   FMOD_System_CreateSound(system->system, data, FMOD_OPENMEMORY, &audioInfo, &sound->data);
   dict_set(system->sounds, name, sound);
 }

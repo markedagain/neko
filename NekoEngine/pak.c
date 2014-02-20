@@ -211,6 +211,7 @@ PAK_SECTION *pak_getSection(PAK_FILE *pak, const char *filename) {
       return section;
     }
   }
+  free(section);
   free(files);
   return NULL;
 }
@@ -231,6 +232,7 @@ void *pak_load(PAK_FILE *pak, const char *filename, size_t *size) {
   buffer = malloc(section->size);
   *size = section->size;
   fread(buffer, sizeof(char), section->size, pak->handle);
+  free(section);
   return buffer;
 }
 

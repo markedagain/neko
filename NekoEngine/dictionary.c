@@ -49,3 +49,8 @@ void *dict_get(DICT *dict, const char *key) {
 void dict_remove(DICT *dict, const char *key) {
   // THIS SPACE INTENTIONALLY LEFT BLANK
 }
+
+void dict_destroy(DICT *dict) {
+  dict_free(dict);
+  free(dict);
+}
