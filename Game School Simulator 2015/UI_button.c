@@ -101,7 +101,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
     // cancel button 
     case BUTTON_CANCEL:
-      {/*
+      /*{
       LIST_NODE *node;
       LIST *buttons = list_create();
       space_getAllEntities(self->owner->space, "buildButton", buttons);
@@ -111,11 +111,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         node = node->next;
       }
 
-      list_destroy(buttons);
-      comData->type = BUTTON_CANCEL;
-      playerData->yPan = false;*/
+      list_destroy(buttons);*/
+      comData->type = BUTTON_BUILD;
+      //playerData->yPan = false;
       comp_UI_button_cancelBuildMode(self);
-      }
+      //}
     break;
 
     case BUTTON_BUILDLOBBY:
@@ -124,6 +124,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       break;
 
     case BUTTON_BUILDCLASS:
+      printf("butties");
       playerData->roomType = ROOMTYPE_CLASS;
       playerData->gameMode = GM_BUILD;
       break;
@@ -186,13 +187,27 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   ENTITY *player = space_getEntity(ui, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  LIST *ghostrooms = list_create();
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+
+  // destroying all room buttons
   space_getAllEntities(self->owner->space, "buildButton", buttons);
   node = buttons->first;
   while (node) {
     entity_destroy((ENTITY *)node->data);
     node = node->next;
   }
-  
   list_destroy(buttons);
+
+  // detroying all ghostrooms
+  space_getAllEntities(mg, "ghostRoom", ghostrooms);
+  node = ghostrooms->first;
+  while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+  }
+  list_destroy(ghostrooms);
+
+  playerData->gameMode = GM_DEFAULT;
   playerData->yPan = false;
 }
