@@ -201,7 +201,8 @@ void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime) {
     logicUpdateData.dt = space->systems.time.dt;
     logicUpdateData.elapsedTime = 0; // TODO: FIX
     space_invokeEventReverseways(space, EV_LOGICUPDATE, &logicUpdateData);
-    stopwatch_start(&space->systems.time.stopwatch);
+    //stopwatch_start(&space->systems.time.stopwatch);
+    stopwatch_restart(&space->systems.time.stopwatch);
   }
   node = space->newEntities->first;
   while (node) {
