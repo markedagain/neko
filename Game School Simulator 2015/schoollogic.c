@@ -305,22 +305,15 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
        }
     }
 
-    // 3) Take out all spots which do not have a room below them
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-       int floor = i / MAX_ROOMS_PER_FLOOR;
-       int col = i % MAX_ROOMS_PER_FLOOR;
-
-       // Remember that the top floor is 0 and bottom floor is 2
-       if(openSlot[floor][col] == TRUE && openSlot[floor + 1][col] == TRUE && floor != 2)
-         openSlot[floor][col] = FALSE;
-       if((col == 7 || col == 8) && floor != 2)
-         openSlot[floor][col] = FALSE;
-    }
-
     // 4) Take out all spots which do not have a building either to their left or right
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
+
+       if(col == 0) {
+         lastFilledCol = -1;
+         lastFilledColSize = -1;
+       }
 
        if(comData->rooms.coord[floor][col]) {
          lastKnownRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
@@ -329,8 +322,27 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
        }
 
        if (openSlot[floor][col] == TRUE
-       && ((comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize) || col == 0)
+       && (comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize)
        && (openSlot[floor][col + roomSize] == TRUE || col + roomSize > 15))
+         openSlot[floor][col] = FALSE;
+    }
+
+    // 3) Take out all spots which do not have a room below them
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       // Check every slot of the desired room
+       for(j = 0; j < roomSize; j++) {
+         // Remember that the top floor is 0 and bottom floor is 2
+         if(openSlot[floor][col] == TRUE && openSlot[floor + 1][col + j] == TRUE && floor != 2)
+         {
+           openSlot[floor][col] = FALSE;
+         }
+       }
+
+       // Take out Lobby slots
+       if((col == 7 || col == 8) && floor != 2)
          openSlot[floor][col] = FALSE;
     }
 
@@ -435,13 +447,19 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     sprite->source = "rooms/frontdoor";
     break;
   case(ROOMTYPE_CLASS):
-    sprite->source = "rooms/template";
+    sprite->source = "rooms/class";
     break;
   case(ROOMTYPE_LIBRARY):
-    sprite->source = "rooms/template2";
+    sprite->source = "rooms/library";
     break;
   case(ROOMTYPE_TEAMSPACE):
-    sprite->source = "rooms/template3";
+    sprite->source = "rooms/teamspace";
+    break;
+  case(ROOMTYPE_CAFETERIA):
+    sprite->source = "rooms/cafeteria";
+    break;
+  case(ROOMTYPE_STORE):
+    sprite->source = "rooms/store";
     break;
   default:
     sprite->source = "rooms/template";
@@ -450,11 +468,11 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS)
+  if(type == ROOMTYPE_CLASS || ROOMTYPE_STORE)
     return 1;
   else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
     return 2;
-  else if(type == ROOMTYPE_TEAMSPACE)
+  else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA)
     return 3;
 
   return 1;
@@ -475,6 +493,9 @@ int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
       return 75000;
 
     case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    case ROOMTYPE_STORE:
       return 100000;
 
     default:
