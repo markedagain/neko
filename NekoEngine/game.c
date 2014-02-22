@@ -125,6 +125,9 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
 void game_tick(GAME *game) {
   EDATA_UPDATE updateEvent = { 0 };
   LIST_NODE *spaceNode;
+  LARGE_INTEGER stopTime;
+
+  QueryPerformanceCounter(&stopTime);
 
   if (game->spaces->count == 0)
     return;
@@ -135,7 +138,7 @@ void game_tick(GAME *game) {
       spaceNode = spaceNode->prev;
       continue;
     }
-    space_tick(space, &updateEvent);
+    space_tick(space, &updateEvent, &stopTime);
     spaceNode = spaceNode->prev;
   }
   game_cleanup(game);

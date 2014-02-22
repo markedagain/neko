@@ -8,6 +8,9 @@ void stopwatch_start(STOPWATCH *sw) {
 void stopwatch_stop(STOPWATCH *sw) {
   QueryPerformanceCounter(&sw->stop);
 }
+void stopwatch_stopAt(STOPWATCH *sw, LARGE_INTEGER *time) {
+  sw->stop = *time;
+}
 void stopwatch_lap(STOPWATCH *sw) {
   sw->start = sw->stop;
 }
