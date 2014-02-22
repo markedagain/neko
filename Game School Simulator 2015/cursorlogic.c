@@ -106,16 +106,16 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
     switch (toBuild) {
     case ROOMTYPE_LOBBY:
-      sprite->source = "rooms/template2";
+      sprite->source = "rooms/frontdoor";
       break;
     case ROOMTYPE_CLASS:
-      sprite->source = "rooms/template";
+      sprite->source = "rooms/class";
       break;
     case ROOMTYPE_LIBRARY:
-      sprite->source = "rooms/template2";
+      sprite->source = "rooms/library";
       break;
     case ROOMTYPE_TEAMSPACE:
-      sprite->source = "rooms/template3";
+      sprite->source = "rooms/teamspace";
       break;
 
     default:
