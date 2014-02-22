@@ -124,6 +124,13 @@ void space_destroy(SPACE *space) {
   LIST_NODE *node;
   space->destroying = 1;
   list_insert_end(space->game->destroyingSpaces, space);
+  node = space->newEntities->first;
+  while (node) {
+    ENTITY *entity = (ENTITY *)node->data;
+    entity->node = list_insert_end(space->entities, entity);
+    node = node->next;
+  }
+  list_empty(space->newEntities);
   if (space->entities->count == 0)
     return;
   node = space->entities->first;
