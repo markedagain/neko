@@ -8,6 +8,7 @@
 #include "../NekoEngine/sprite.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "playerlogic.h"
 #include "roomlogic.h"
 #include "UI_build.h"
@@ -36,7 +37,8 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
 
-  if (mbox->left.pressed && data->ent1 == NULL && !data->triggered) {
+  if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
+    char titleBuffer[40];
     char gpaBuffer[40];
     char tuitionBuffer[40];
     VEC3 position = { 0, 0, 0 };
@@ -46,21 +48,31 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     printf("%f\n", comData->minGpa);
     sprintf(gpaBuffer, "Min GPA: %f", comData->minGpa);
     sprintf(tuitionBuffer, "Tuition: $%i", comData->tuition);
-    data->ent1 = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
+    
+    data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
+    data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     vec3_set(&position, 0, -10, 0);
-    data->ent2 = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", tuitionBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    vec3_set(&position, 0, 0, 0);
-    // data->ent3 = space_addEntityAtPosition(uiSpace, arch_managescreen, "manage_screen", &position);
+    data->tuition = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", tuitionBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    vec3_set(&position, 0, 100, 0);
+    data->titleText = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", titleBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+
+    //vec3_set(&position, -50, 70, 0);
+    //data->leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
+    //vec3_set(&position, -50, 70, 0);
+    //data->rightGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_right");
   }
-  else if (mbox->left.pressed && data->ent1 && !data->triggered) {
+  else if (mbox->left.pressed && data->gpa && !data->triggered) {
     data->triggered = true;
-    entity_destroy(data->ent1);
+    entity_destroy(data->gpa);
     printf("%i\n", comData->tuition);
-    data->ent1 = NULL;
-    entity_destroy(data->ent2);
-    data->ent2 = NULL;
-    // entity_destroy(data->ent3);
-    // data->ent3 = NULL;
+    data->gpa = NULL;
+    entity_destroy(data->tuition);
+    data->tuition = NULL;
+    entity_destroy(data->manageWindow);
+    data->manageWindow = NULL;
+    entity_destroy(data->titleText);
+    data->titleText = NULL;
   }
   else if (!mbox->left.pressed)
     data->triggered = false;

@@ -13,9 +13,9 @@ void arch_manageScreen(ENTITY *entity) {
   entity->id = ARCH_MANAGESCREEN;
 
   entity_connect(entity, comp_transform);
-  entity_connect(entity, comp_manageScreenLogic);
+  sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_manageScreenLogic);
-  sprite->source = "backgrounds/white_box";
+  sprite->source = "backgrounds/manage_screen_box";
 
 }
