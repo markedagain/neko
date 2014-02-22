@@ -12,6 +12,7 @@ typedef struct{
   ENTITY *ent1;
   ENTITY *ent2;
   ENTITY *ent3;
+  bool triggered;
 } CDATA_MANAGEMENT;
 
 void comp_managementUpdate(COMPONENT *self, void *event);

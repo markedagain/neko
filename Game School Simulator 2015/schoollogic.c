@@ -36,10 +36,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
-      vec3_set(&position, 270, 180, 0);
+      vec3_set(&position, 320, 180, 0);
       vec4_set(&color, 0, 0, 1, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
-      comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+      comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
@@ -146,21 +146,21 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
 
     // GPA
-    if(studentData->major == Tech) {
+    if(studentData->major == M_TECH) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->techIncrease / (comData->techBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
-    if(studentData->major == Design) {
+    if(studentData->major == M_DESIGN) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->designIncrease / (comData->designBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
-    if(studentData->major == Art) {
+    if(studentData->major == M_ART) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->artIncrease / (comData->artBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
