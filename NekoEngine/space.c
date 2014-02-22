@@ -173,7 +173,7 @@ void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
   }
 }
 
-void space_tick(SPACE *space, EDATA_UPDATE *data) {
+void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime) {
   EDATA_UPDATE logicUpdateData;
   LIST_NODE *node = space->newEntities->first;
   bool logicUpdated = false;
@@ -193,7 +193,8 @@ void space_tick(SPACE *space, EDATA_UPDATE *data) {
   }
 
   space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
-  stopwatch_stop(&space->systems.time.stopwatch);
+  //stopwatch_stop(&space->systems.time.stopwatch);
+  stopwatch_stopAt(&space->systems.time.stopwatch, stopTime);
   space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);
   if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {
     logicUpdated = true;
