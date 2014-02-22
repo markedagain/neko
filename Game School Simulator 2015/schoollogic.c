@@ -455,6 +455,12 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   case(ROOMTYPE_TEAMSPACE):
     sprite->source = "rooms/teamspace";
     break;
+  case(ROOMTYPE_CAFETERIA):
+    sprite->source = "rooms/cafeteria";
+    break;
+  case(ROOMTYPE_STORE):
+    sprite->source = "rooms/store";
+    break;
   default:
     sprite->source = "rooms/template";
     break;
@@ -462,11 +468,11 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS)
+  if(type == ROOMTYPE_CLASS || ROOMTYPE_STORE)
     return 1;
   else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
     return 2;
-  else if(type == ROOMTYPE_TEAMSPACE)
+  else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA)
     return 3;
 
   return 1;
@@ -487,6 +493,9 @@ int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
       return 75000;
 
     case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    case ROOMTYPE_STORE:
       return 100000;
 
     default:

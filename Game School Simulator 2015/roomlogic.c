@@ -87,6 +87,19 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
       schoolData->motivationBonus += comData->motivationBonus;
       break;
 
+    case ROOMTYPE_STORE:
+      //Set Values
+      comData->size = 1;
+      comData->cost = 75000;
+      comData->repBonus = 1;
+      comData->motivationBonus = 2;
+      comData->upkeep = -20000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
     default:
       printf("ERROR: Unkown room created!!\n");
       break;
