@@ -56,7 +56,7 @@ NEKO_API void space_destroy(SPACE *space);
 NEKO_API void space_getCamTranslate(SPACE *space, VEC3 *camTranslate);
 void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data);
 void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data);
-void space_tick(SPACE *space, EDATA_UPDATE *data);
+void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime);
 void __space_destroy(SPACE *space);
 
 #endif
