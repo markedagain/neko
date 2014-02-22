@@ -19,6 +19,7 @@ typedef struct {
   bool entered;
   bool exited;
 
+  bool ghost;
   bool active;
   bool manual;
 

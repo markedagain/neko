@@ -140,7 +140,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     self->owner->space->systems.camera.transform.scale.y += 1.0f;
   } */
   if (input->keyboard.keys[KEY_N] == ISTATE_PRESSED) {
-    data->gameMode = DEFAULT;
+    data->gameMode = GM_DEFAULT;
   }
   /*
   if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {

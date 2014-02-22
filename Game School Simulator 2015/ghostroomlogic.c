@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "ghostroomlogic.h"
 #include "mousebox.h"
 #include "../NekoEngine/component.h"
@@ -26,8 +28,8 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     LIST *ghostrooms = list_create();
     LIST_NODE *pNode;
 
-    playerData->gameMode = DEFAULT;
-    cursorData->gameMode = DEFAULT;
+    playerData->gameMode = GM_DEFAULT;
+    cursorData->gameMode = GM_DEFAULT;
 
     comp_schoolLogic_constructRoom(self, gData->roomType, gData->roomSize, gData->point.y, gData->point.x);
 

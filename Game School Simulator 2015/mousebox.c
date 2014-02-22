@@ -35,6 +35,7 @@ void comp_mouseBox_initialize(COMPONENT *self, void *event) {
   comData->active = true;
 }
 
+
 void set_box(COMPONENT *self, float left, float top, float right, float bot) {
   CDATA_MOUSEBOX *data = (CDATA_MOUSEBOX *)self->data;
 
@@ -44,6 +45,7 @@ void set_box(COMPONENT *self, float left, float top, float right, float bot) {
   data->box.botRight.y = bot;
 }
 
+// this is not tested
 void adjust_box(COMPONENT *self) {
   CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;
   SPRITE *sprite = NULL;

@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "UI_button.h"
 #include "mousebox.h"
 #include "../NekoEngine/transform.h"
@@ -53,7 +55,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     pan(self, 0.0f, -40.0f, NULL);
 
     switch (comData->type) {
-    case BUTTON_DEFAULT:
+
+    // build button
+    case BUTTON_BUILD:
       if(comData->showing == FALSE) {
         // LOBBY BUTTON
         vec3_set(&position, -250, -160, 0);
@@ -81,7 +85,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
         entity_attach(text, newButton);
         buttonData->type = BUTTON_BUILDLIBRARY;
-  
+ 
         // TEAMSPACE BUTTON
         vec3_set(&position, -70, -160, 0);
         newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
@@ -93,6 +97,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
         comData->showing = TRUE;
       }
+
+
       else {
         LIST_NODE *node;
         LIST *buttons = list_create();
@@ -112,22 +118,22 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
     case BUTTON_BUILDLOBBY:
       playerData->roomType = ROOMTYPE_LOBBY;
-      playerData->gameMode = BUILD;
+      playerData->gameMode = GM_BUILD;
       break;
 
     case BUTTON_BUILDCLASS:
       playerData->roomType = ROOMTYPE_CLASS;
-      playerData->gameMode = BUILD;
+      playerData->gameMode = GM_BUILD;
       break;
 
     case BUTTON_BUILDLIBRARY:
       playerData->roomType = ROOMTYPE_LIBRARY;
-      playerData->gameMode = BUILD;
+      playerData->gameMode = GM_BUILD;
       break;
 
     case BUTTON_BUILDTEAMSPACE:
       playerData->roomType = ROOMTYPE_TEAMSPACE;
-      playerData->gameMode = BUILD;
+      playerData->gameMode = GM_BUILD;
       break;
 
     case BUTTON_MANAGEMENT:

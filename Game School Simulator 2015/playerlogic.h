@@ -11,8 +11,8 @@
 #define COMP_PLAYERLOGIC HASH("COMP_PLAYERLOGIC")
 
 typedef enum {
-  DEFAULT = 0,
-  BUILD
+  GM_DEFAULT = 0,
+  GM_BUILD
 } GMODE;
 
 typedef struct {

@@ -33,19 +33,19 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   cursorSpriteTransform->translation.y = trans->translation.y;
 
 
-  if (playerData->gameMode == BUILD) {
-    if (data->gameMode != BUILD) {
+  if (playerData->gameMode == GM_BUILD) {
+    if (data->gameMode != GM_BUILD) {
       LIST *buildSpaces = list_create();
       toBuild = playerData->roomType;
       roomSize = comp_schoolLogic_getRoomSize(toBuild);
       comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
       if (buildSpaces->first == NULL) {
-        playerData->gameMode = DEFAULT;
-        data->gameMode = DEFAULT;
+        playerData->gameMode = GM_DEFAULT;
+        data->gameMode = GM_DEFAULT;
       }
       else {
         createGhostRooms(self, buildSpaces, roomSize, toBuild);
-        data->gameMode = BUILD;
+        data->gameMode = GM_BUILD;
       }
       comp_cursorLogic_deleteList(buildSpaces);
     }
