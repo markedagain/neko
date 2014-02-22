@@ -42,6 +42,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
 
+  // if clicked on
   if (mbox->left.pressed) {
     VEC3 position;
     ENTITY *newButton;
@@ -54,67 +55,68 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     playerData->yPan = true;
     pan(self, 0.0f, -40.0f, NULL);
 
+    // execute different things based on button type
     switch (comData->type) {
 
     // build button
     case BUTTON_BUILD:
-      if(comData->showing == FALSE) {
-        // LOBBY BUTTON
-        vec3_set(&position, -250, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDLOBBY;
+      // CREATE LOBBY BUTTON
+      vec3_set(&position, -250, -160, 0);
+      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+      vec3_set(&position, 0.0f, 0.0f, 0.0f);
+      text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+      entity_attach(text, newButton);
+      buttonData->type = BUTTON_BUILDLOBBY;
 
-        // CLASS BUTTON
-        vec3_set(&position, -190, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDCLASS;
+      // CREATE CLASS BUTTON
+      vec3_set(&position, -190, -160, 0);
+      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+      vec3_set(&position, 0.0f, 0.0f, 0.0f);
+      text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+      entity_attach(text, newButton);
+      buttonData->type = BUTTON_BUILDCLASS;
 
-        // LIBRARY BUTTON
-        vec3_set(&position, -130, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDLIBRARY;
+      // CREATE LIBRARY BUTTON
+      vec3_set(&position, -130, -160, 0);
+      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+      vec3_set(&position, 0.0f, 0.0f, 0.0f);
+      text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+      entity_attach(text, newButton);
+      buttonData->type = BUTTON_BUILDLIBRARY;
  
-        // TEAMSPACE BUTTON
-        vec3_set(&position, -70, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDTEAMSPACE;
+      // CREATE TEAMSPACE BUTTON
+      vec3_set(&position, -70, -160, 0);
+      newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
+      buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+      vec3_set(&position, 0.0f, 0.0f, 0.0f);
+      text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+      entity_attach(text, newButton);
+      buttonData->type = BUTTON_BUILDTEAMSPACE;
 
-        comData->showing = TRUE;
+      comData->type = BUTTON_CANCEL;
+    break;
+
+    // cancel button 
+    case BUTTON_CANCEL:
+      {/*
+      LIST_NODE *node;
+      LIST *buttons = list_create();
+      space_getAllEntities(self->owner->space, "buildButton", buttons);
+      node = buttons->first;
+      while (node) {
+        entity_destroy((ENTITY *)node->data);
+        node = node->next;
       }
 
-
-      else {
-        LIST_NODE *node;
-        LIST *buttons = list_create();
-        space_getAllEntities(self->owner->space, "buildButton", buttons);
-        node = buttons->first;
-        while (node) {
-          entity_destroy((ENTITY *)node->data);
-          node = node->next;
-        }
-
-        list_destroy(buttons);
-        comData->showing = FALSE;
-        playerData->yPan = false;
-        //void comp_UI_button_cancelBuildMode(self);
+      list_destroy(buttons);
+      comData->type = BUTTON_CANCEL;
+      playerData->yPan = false;*/
+      comp_UI_button_cancelBuildMode(self);
       }
-      break;
+    break;
 
     case BUTTON_BUILDLOBBY:
       playerData->roomType = ROOMTYPE_LOBBY;
@@ -192,6 +194,5 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   }
   
   list_destroy(buttons);
-  comData->showing = FALSE;
   playerData->yPan = false;
 }

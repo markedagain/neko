@@ -1,7 +1,6 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "mousebox.h"
-#include <stdio.h>
 
 void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;

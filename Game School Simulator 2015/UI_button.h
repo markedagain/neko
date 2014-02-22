@@ -15,7 +15,8 @@ typedef enum {
   BUTTON_BUILDCLASS,
   BUTTON_BUILDLIBRARY,
   BUTTON_BUILDTEAMSPACE,
-  BUTTON_MANAGEMENT
+  BUTTON_MANAGEMENT,
+  BUTTON_CANCEL
 } BUTTON_TYPE;
 
 typedef struct{
@@ -23,7 +24,6 @@ typedef struct{
   ENTITY *ent2;
   ENTITY *ent3;
   BUTTON_TYPE type;
-  BOOL showing;
 
 } CDATA_UI_BUTTON;
 
