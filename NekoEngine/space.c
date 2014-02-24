@@ -194,8 +194,9 @@ void space_tick(SPACE *space, EDATA_UPDATE *data, EDATA_UPDATE *logicData, bool 
 
   space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
 
-  if (logicUpdate)
+  if (logicUpdate) {
     space_invokeEventReverseways(space, EV_LOGICUPDATE, logicData);
+  }
 
   node = space->newEntities->first;
   while (node) {

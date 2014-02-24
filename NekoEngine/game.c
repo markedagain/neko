@@ -15,7 +15,7 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
-#define FULLSCREEN false
+#define FULLSCREEN true
 
 GAME *__game = NULL; // UGHHHHHHH
 WINDOWPLACEMENT g_wpPrev = { sizeof(g_wpPrev) }; // UGHHHHHHHHHHHHHHhhhhhhh
@@ -133,6 +133,7 @@ void game_tick(GAME *game, bool logicUpdate) {
 
   if (game->spaces->count == 0)
     return;
+
   spaceNode = game->spaces->last;
   while (spaceNode != NULL) {
     SPACE *space = (SPACE*)spaceNode->data;
@@ -144,6 +145,10 @@ void game_tick(GAME *game, bool logicUpdate) {
     spaceNode = spaceNode->prev;
   }
   game_cleanup(game);
+
+  input_reset_frame(&game->input);
+  //if (logicUpdate || game->systems.time.scale == 0)
+  input_reset_logic(&game->input);
 }
 
 void game_cleanup(GAME *game) {
@@ -218,7 +223,6 @@ bool game_loop(GAME *game) {
     if (logicUpdate)
       stopwatch_lap(&game->systems.time.logicStopwatch);
     game_tick(game, logicUpdate);
-    input_reset(&game->input);
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
     AESysFrameEnd();
