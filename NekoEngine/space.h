@@ -13,7 +13,6 @@
 typedef struct sysTime_t {
   STOPWATCH stopwatch;
   double dt;
-  float scale;
   double currentTime;
 } SYS_TIME;
 
@@ -34,6 +33,7 @@ typedef struct space_t {
   char name[32];
   LIST *entities;
   LIST *newEntities;
+  LIST *createdEntities;
   struct {
     SYS_TIME time;
     SYS_CAMERA camera;
@@ -56,7 +56,7 @@ NEKO_API void space_destroy(SPACE *space);
 NEKO_API void space_getCamTranslate(SPACE *space, VEC3 *camTranslate);
 void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data);
 void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data);
-void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime);
+void space_tick(SPACE *space, EDATA_UPDATE *data, EDATA_UPDATE *logicData, bool logicUpdate);
 void __space_destroy(SPACE *space);
 
 #endif

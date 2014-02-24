@@ -41,12 +41,14 @@ typedef struct game_t {
     struct {
       STOPWATCH stopwatch;
       STOPWATCH secondsStopwatch;
+      STOPWATCH logicStopwatch;
       unsigned char framesPerSecond;
       unsigned short elapsedFrames;
       unsigned short currentFramesPerSecond;
       double frameRate;
       double dt;
       double elapsed;
+      double scale;
     } time;
     SOUNDSYSTEM sound;
   } systems;
@@ -62,7 +64,7 @@ NEKO_API void game_destroy(GAME *);
 NEKO_API SPACE *game_addSpace(GAME *, char *);
 NEKO_API SPACE *game_getSpace(GAME *, char *);
 void game_invokeEvent(GAME *, EVENT_TYPE, void *);
-void game_tick(GAME *, LARGE_INTEGER *stopTime);
+void game_tick(GAME *, bool logicUpdate);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);

@@ -69,8 +69,6 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
   /*for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buffer[i] = false;
   }*/
-  if (input->mouse.left != ISTATE_UP)
-    printf("%i\n", input->mouse.left);
   input->mouse.wheel.direction = input->mouse.wheel.delta > 0 ? 1 : input->mouse.wheel.delta < 0 ? -1 : 0;
   GetCursorPos(&input->mouse.position);
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);

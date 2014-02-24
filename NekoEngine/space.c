@@ -14,8 +14,8 @@ SPACE *space_create(char *name) {
   SPACE *space = (SPACE *)malloc(sizeof(SPACE));
   space->entities = list_create();
   space->newEntities = list_create();
+  space->createdEntities = list_create();
   space->systems.time.dt = 0;
-  space->systems.time.scale = 1.0f;
   space->systems.time.currentTime = 0;
   space->systems.camera.transform.translation.x = 0.0f;
   space->systems.camera.transform.translation.y = 0.0f;
@@ -173,10 +173,10 @@ void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
   }
 }
 
-void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime) {
-  EDATA_UPDATE logicUpdateData;
-  LIST_NODE *node = space->newEntities->first;
-  bool logicUpdated = false;
+void space_tick(SPACE *space, EDATA_UPDATE *data, EDATA_UPDATE *logicData, bool logicUpdate) {
+  LIST_NODE *node;
+
+  node = space->newEntities->first;
   while (node) {
     ENTITY *entity = (ENTITY *)node->data;
     entity->node = list_insert_end(space->entities, entity);
@@ -193,31 +193,24 @@ void space_tick(SPACE *space, EDATA_UPDATE *data, LARGE_INTEGER *stopTime) {
   }
 
   space_invokeEventReverseways(space, EV_FRAMEUPDATE, data);
-  //stopwatch_stop(&space->systems.time.stopwatch);
-  stopwatch_stopAt(&space->systems.time.stopwatch, stopTime);
-  space->systems.time.dt = stopwatch_delta(&space->systems.time.stopwatch);
-  if (space->systems.time.scale != 0 && space->systems.time.dt >= space->game->systems.time.frameRate / space->systems.time.scale) {
-    logicUpdated = true;
-    logicUpdateData.dt = space->systems.time.dt;
-    logicUpdateData.elapsedTime = 0; // TODO: FIX
-    space_invokeEventReverseways(space, EV_LOGICUPDATE, &logicUpdateData);
-    //stopwatch_start(&space->systems.time.stopwatch);
-    stopwatch_lap(&space->systems.time.stopwatch);
-  }
+
+  if (logicUpdate)
+    space_invokeEventReverseways(space, EV_LOGICUPDATE, logicData);
+
   node = space->newEntities->first;
   while (node) {
     ENTITY *entity = (ENTITY *)node->data;
     entity_invokeEvent(entity, EV_FRAMEUPDATE, data);
-    if (logicUpdated)
-      entity_invokeEvent(entity, EV_LOGICUPDATE, &logicUpdateData);
+    if (logicUpdate)
+      entity_invokeEvent(entity, EV_LOGICUPDATE, &logicData);
     node = node->next;
   }
-  
 }
 
 void __space_destroy(SPACE *space) {
   list_destroy(space->entities);
   list_destroy(space->newEntities);
+  list_destroy(space->createdEntities);
   list_remove_free(space->game->spaces, space->node);
 }
 
