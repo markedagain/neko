@@ -11,9 +11,6 @@ void stopwatch_stop(STOPWATCH *sw) {
 void stopwatch_stopAt(STOPWATCH *sw, LARGE_INTEGER *time) {
   sw->stop = *time;
 }
-void stopwatch_restart(STOPWATCH *sw) {
-  sw->start = sw->stop;
-}
 void stopwatch_lap(STOPWATCH *sw) {
   sw->start = sw->stop;
 }

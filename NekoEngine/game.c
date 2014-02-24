@@ -122,12 +122,11 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   while (spaceNode != NULL);
 }
 
-void game_tick(GAME *game) {
+void game_tick(GAME *game, LARGE_INTEGER *stopTime) {
   EDATA_UPDATE updateEvent = { 0 };
   LIST_NODE *spaceNode;
-  LARGE_INTEGER stopTime;
 
-  QueryPerformanceCounter(&stopTime);
+  QueryPerformanceCounter(stopTime);
 
   if (game->spaces->count == 0)
     return;
@@ -138,7 +137,7 @@ void game_tick(GAME *game) {
       spaceNode = spaceNode->prev;
       continue;
     }
-    space_tick(space, &updateEvent, &stopTime);
+    space_tick(space, &updateEvent, stopTime);
     spaceNode = spaceNode->prev;
   }
   game_cleanup(game);
@@ -205,7 +204,7 @@ bool game_loop(GAME *game) {
     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     sound_update(&game->systems.sound);
-    game_tick(game);
+    game_tick(game, &game->systems.time.stopwatch.stop);
     input_reset(&game->input);
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
@@ -307,7 +306,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 
   case WM_CREATE:
     break;
-#define INPUT_FRAMEBUFFER 2
+#define INPUT_FRAMEBUFFER 1
   case WM_LBUTTONDOWN:
     __game->input.mouse.buffer[MBUTTON_LEFT] = INPUT_FRAMEBUFFER;
     break;

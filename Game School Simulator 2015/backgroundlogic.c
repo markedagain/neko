@@ -14,7 +14,7 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     input_lockMouse(input);
     playerData->dragOrigin.x = input->mouse.position.x;
     playerData->dragOrigin.y = input->mouse.position.y;
-    input->mouse.handled[MBUTTON_LEFT] = 2;
+    input->mouse.handled[MBUTTON_LEFT] = 1;
 
   }
 }

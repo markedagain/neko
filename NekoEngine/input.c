@@ -2,6 +2,7 @@
 
 #include "input.h"
 #include "../AlphaEngine/AESystem.h"
+#include <stdio.h>
 
 void input_initialize(INPUT_CONTAINER *input) {
   int i;
@@ -28,15 +29,15 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_DOWN || input->keyboard.keys[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
-    if (input->mouse.buffer[i] > 0) {
+    if (input->mouse.buffer[i] == 1) {
       input->mouse.buttons[i] = ISTATE_PRESSED;
-      input->mouse.buffer[i]--;
+      input->mouse.buffer[i] = 0;
     }
-    if (input->mouse.buffer[i] < 0) {
+    else if (input->mouse.buffer[i] == -1) {
       input->mouse.buttons[i] = ISTATE_RELEASED;
-      input->mouse.buffer[i]++;
+      input->mouse.buffer[i] = 0;
     }
-    if (input->mouse.buffer[i] == 0) {
+    else {
       if (input->mouse.buttons[i] == ISTATE_PRESSED)
         input->mouse.buttons[i] = ISTATE_DOWN;
       if (input->mouse.buttons[i] == ISTATE_RELEASED)
@@ -68,6 +69,8 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
   /*for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buffer[i] = false;
   }*/
+  if (input->mouse.left != ISTATE_UP)
+    printf("%i\n", input->mouse.left);
   input->mouse.wheel.direction = input->mouse.wheel.delta > 0 ? 1 : input->mouse.wheel.delta < 0 ? -1 : 0;
   GetCursorPos(&input->mouse.position);
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);

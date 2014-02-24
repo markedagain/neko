@@ -4,8 +4,8 @@
 #include "sound.h"
 #include "generictext.h"
 
-#define DIGIPEN_TIME 0.1
-#define NEKOMEANSCAT_TIME 1.0
+#define DIGIPEN_TIME 3.0
+#define NEKOMEANSCAT_TIME 2.0
 
 void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SPLASHLOGIC *data = (CDATA_SPLASHLOGIC *)self->data;
@@ -42,7 +42,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         //vec3_set(&position, 0.0f, 180.0f - 4.0f - 28.0f, 0.0f);
         //genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "subtitle", "fonts/gothic/16", "Alpha presentation", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
         simSpace->systems.time.scale = 0.0166666666666667f;
-        sound_playSong(&self->owner->space->game->systems.sound, "02");
+        sound_playSong(&self->owner->space->game->systems.sound, "03");
 
         //////////////////////////////////////////
         sprite->color.a = 0;
