@@ -117,6 +117,12 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
       break;
+    case ROOMTYPE_CAFETERIA:
+      sprite->source = "rooms/cafeteria";
+      break;
+    case ROOMTYPE_STORE:
+      sprite->source = "rooms/store";
+      break;
 
     default:
       break;

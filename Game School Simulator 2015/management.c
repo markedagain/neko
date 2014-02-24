@@ -8,6 +8,12 @@
 #include "../NekoEngine/sprite.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "playerlogic.h"
+#include "roomlogic.h"
+#include "UI_build.h"
+#include "schoollogic.h"
+#include "managescreen.h"
 
 
 void comp_managementUpdate(COMPONENT *self, void *event) {
@@ -15,14 +21,10 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-  VEC2 dimensions = { 40.0f, 20.0f };
-  VEC3 position = { 10, 10, 0 };
-  VEC4 color = { 0, 0, 1, 1 };
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
-
-  /*if (mbox->left.down) {
-    input->mouse.handled[MBUTTON_LEFT] = true;
-  }*/
+  ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
 
   if (mbox->over) {
     sprite->color.r = min(sprite->color.r + 0.05f, 1);
@@ -34,38 +36,51 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     sprite->color.b = min(sprite->color.b + 0.05f, 1);
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
-  
-  /*if (mbox->entered && data->ent1 == NULL) {
-    //vec3_set(&position, &input->mouse.position.x, &input->mouse.position.y, 0);
-    data->ent1 = genericSprite_createBlank(uiSpace, &position, &dimensions, &color, "why dad");;
-    sprite->color.r = sprite->color.r + 0.5f;
-  }
-  if (mbox->exited && data->ent1) {
-    entity_destroy(data->ent1);
-    data->ent1 = NULL;
-  }*/
-  
-  if (mbox->entered && data->ent3 == NULL) {
-    vec3_set(&position, 250, 70, 0);
-    data->ent3 = genericSprite_create(uiSpace, &position, NULL, "cursor/management");
-  }
-  else if (mbox->exited && data->ent3) {
-    entity_destroy(data->ent3);
-    data->ent3 = NULL;
-  }
 
-  if(mbox->left.pressed && data->ent2 == NULL) {
-    vec3_set(&position, 50, 20, 20);
-    data->ent2 = genericSprite_create(uiSpace, &position, NULL, "backgrounds/i_love_you");
+  if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
+    char titleBuffer[40];
+    char gpaBuffer[40];
+    char tuitionBuffer[40];
+    VEC3 position = { 0, 0, 0 };
+    VEC4 color = { 0, 0, 1, 1 };
+
+    data->triggered = true;
+    printf("%f\n", comData->minGpa);
+    sprintf(gpaBuffer, "Min GPA: %f", comData->minGpa);
+    sprintf(tuitionBuffer, "Tuition: $%i", comData->tuition);
+    strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
+    
+    data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
+    data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    vec3_set(&position, 0, -10, 0);
+    data->tuition = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", tuitionBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    vec3_set(&position, 0, 100, 0);
+    data->titleText = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", titleBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+
+    //vec3_set(&position, -50, 70, 0);
+    //data->leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
+    //vec3_set(&position, -50, 70, 0);
+    //data->rightGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_right");
   }
-  else if(mbox->left.pressed && data->ent2) {
-    entity_destroy(data->ent2);
-    data->ent2 = NULL;
+  else if (mbox->left.pressed && data->gpa && !data->triggered) {
+    data->triggered = true;
+    entity_destroy(data->gpa);
+    printf("%i\n", comData->tuition);
+    data->gpa = NULL;
+    entity_destroy(data->tuition);
+    data->tuition = NULL;
+    entity_destroy(data->manageWindow);
+    data->manageWindow = NULL;
+    entity_destroy(data->titleText);
+    data->titleText = NULL;
   }
-}
+  else if (!mbox->left.pressed)
+    data->triggered = false;
+  }
 
 void comp_management(COMPONENT *self) {
   CDATA_MANAGEMENT data = { 0 };
+  data.triggered = false;
   COMPONENT_INIT(self, COMP_MANAGEMENT, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_managementUpdate;

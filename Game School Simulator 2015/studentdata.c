@@ -93,14 +93,14 @@ void generate_student(COMPONENT *self) {
     totalNames = vector_size(&namefile->lines);
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
-    data->gender = Male;
+    data->gender = GEN_MALE;
   }
   else {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
     totalNames = vector_size(&namefile->lines);
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
-    data->gender = Female;
+    data->gender = GEN_FEMALE;
   }
 
   data->techSkill = randomIntRange(lowValue, highValue);
@@ -108,11 +108,11 @@ void generate_student(COMPONENT *self) {
   data->designSkill = randomIntRange(lowValue, highValue);
 
   if(data->techSkill >= data->artSkill && data->techSkill >= data->designSkill)
-    data->major = Tech;
+    data->major = M_TECH;
   else if(data->artSkill >= data->designSkill && data->artSkill >= data->techSkill)
-    data->major = Art;
+    data->major = M_ART;
   else if(data->designSkill >= data->techSkill && data->designSkill >= data->artSkill)
-    data->major = Design;
+    data->major = M_DESIGN;
 
   lowValue = 25;
   highValue = 100;
