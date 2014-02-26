@@ -5,6 +5,7 @@
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
+#include "roomlogic.h"
 
 #define COMP_UI_BUTTON HASH("COMP_UI_BUTTON")
 
@@ -15,7 +16,6 @@ typedef enum {
   BUTTON_BUILDCLASS,
   BUTTON_BUILDLIBRARY,
   BUTTON_BUILDTEAMSPACE,
-  BUTTON_MANAGEMENT,
   BUTTON_CANCEL
 } BUTTON_TYPE;
 
@@ -30,5 +30,7 @@ typedef struct{
 void UI_buttonUpdate(COMPONENT *self, void *event);
 void comp_UI_button(COMPONENT *self);
 void comp_UI_button_cancelBuildMode(COMPONENT *self);
+void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild);
+void UI_button_deleteList(LIST *buildSpaces);
 
 #endif

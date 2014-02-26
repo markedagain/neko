@@ -16,6 +16,7 @@
 #include "UI_build.h"
 #include "schoollogic.h"
 #include "managescreen.h"
+#include "ghostroomlogic.h"
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -97,7 +98,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       buttonData->type = BUTTON_BUILDTEAMSPACE;
 
       comData->type = BUTTON_CANCEL;
-    break;
+      break;
 
     // cancel button 
     case BUTTON_CANCEL:
@@ -116,31 +117,22 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       //playerData->yPan = false;
       comp_UI_button_cancelBuildMode(self);
       //}
-    break;
+      break;
 
     case BUTTON_BUILDLOBBY:
-      playerData->roomType = ROOMTYPE_LOBBY;
-      playerData->gameMode = GM_BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
       break;
 
     case BUTTON_BUILDCLASS:
-      printf("butties");
-      playerData->roomType = ROOMTYPE_CLASS;
-      playerData->gameMode = GM_BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_CLASS);
       break;
 
     case BUTTON_BUILDLIBRARY:
-      playerData->roomType = ROOMTYPE_LIBRARY;
-      playerData->gameMode = GM_BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_LIBRARY);
       break;
 
     case BUTTON_BUILDTEAMSPACE:
-      playerData->roomType = ROOMTYPE_TEAMSPACE;
-      playerData->gameMode = GM_BUILD;
-      break;
-
-    case BUTTON_MANAGEMENT:
-      space_addEntity(self->owner->space, arch_manageScreen, "manageScreen");
+      UI_button_createGhostRooms(self, ROOMTYPE_TEAMSPACE);
       break;
 
     default:
@@ -208,6 +200,82 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   }
   list_destroy(ghostrooms);
 
-  playerData->gameMode = GM_DEFAULT;
   playerData->yPan = false;
+}
+
+// just changed this, please check for mem leaks
+void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
+  LIST *buildSpaces = list_create();
+  int roomSize = comp_schoolLogic_getRoomSize(toBuild);
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  LIST_NODE *pNode;
+  float squareSize = 80.0f;
+
+  comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
+  pNode = buildSpaces->first;
+
+  while (pNode) {
+    ENTITY *created;
+    LIST_NODE *next;
+    CDATA_GHOSTROOMLOGIC *gData;
+    CDATA_SPRITE *sprite;
+    POINT *data = (POINT *)pNode->data;
+    LONG x = data->x;
+    LONG y = data->y;
+    float top = (3 - y) * squareSize;
+    float left = (x - 8) * squareSize;
+    VEC3 middle;
+    middle.y = top - squareSize / 2.0f;
+    middle.z = 0;
+      
+    switch (roomSize) {
+    case (1):
+      middle.x = left + squareSize / 2.0f;
+      break;
+    case (2):
+      middle.x = left + squareSize;
+      break;
+    case (3):
+      middle.x = left + squareSize * 1.5f;
+      break;
+    }
+
+    created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);
+    gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
+    sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
+    switch (toBuild) {
+    case ROOMTYPE_LOBBY:
+      sprite->source = "rooms/frontdoor";
+      break;
+    case ROOMTYPE_CLASS:
+      sprite->source = "rooms/class";
+      break;
+    case ROOMTYPE_LIBRARY:
+      sprite->source = "rooms/library";
+      break;
+    case ROOMTYPE_TEAMSPACE:
+      sprite->source = "rooms/teamspace";
+      break;
+
+    default:
+      break;
+    }
+    gData->point.x = x;
+    gData->point.y = y;
+    gData->roomSize = roomSize;
+    gData->roomType = toBuild;
+    sprite->color.a = 0.75f;
+    next = pNode->next;
+    pNode = next;
+  }
+  UI_button_deleteList(buildSpaces);
+}
+
+void UI_button_deleteList(LIST *buildSpaces) {
+  LIST_NODE *pNode = buildSpaces->first;
+  while (pNode) {
+    free(pNode->data);
+    pNode = pNode->next;
+  }
+  list_destroy(buildSpaces);
 }
