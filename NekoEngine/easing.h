@@ -6,37 +6,38 @@
 #include "neko.h"
 
 typedef enum {
-  LINEAR,
-  QUAD_IN,
-  QUAD_OUT,
-  QUAD_INOUT,
-  CUBIC_IN,
-  CUBIC_OUT,
-  CUBIC_INOUT,
-  QUARTIC_IN,
-  QUARTIC_OUT,
-  QUARTIC_INOUT,
-  QUINTIC_IN,
-  QUINTIC_OUT,
-  QUINTIC_INOUT,
-  SINE_IN,
-  SINE_OUT,
-  SINE_INOUT,
-  CIRCULAR_IN,
-  CIRCULAR_OUT,
-  CIRCULAR_INOUT,
-  EXPONENTIAL_IN,
-  EXPONENTIAL_OUT,
-  EXPONENTIAL_INOUT,
-  ELASTIC_IN,
-  ELASTIC_OUT,
-  ELASTIC_INOUT,
-  BACK_IN,
-  BACK_OUT,
-  BACK_INOUT,
-  BOUNCE_IN,
-  BOUNCE_OUT,
-  BOUNCE_INOUT
+  EASING_LINEAR,
+  EASING_QUAD_IN,
+  EASING_QUAD_OUT,
+  EASING_QUAD_INOUT,
+  EASING_CUBIC_IN,
+  EASING_CUBIC_OUT,
+  EASING_CUBIC_INOUT,
+  EASING_QUARTIC_IN,
+  EASING_QUARTIC_OUT,
+  EASING_QUARTIC_INOUT,
+  EASING_QUINTIC_IN,
+  EASING_QUINTIC_OUT,
+  EASING_QUINTIC_INOUT,
+  EASING_SINE_IN,
+  EASING_SINE_OUT,
+  EASING_SINE_INOUT,
+  EASING_EXPONENTIAL_IN,
+  EASING_EXPONENTIAL_OUT,
+  EASING_EXPONENTIAL_INOUT,
+  EASING_CIRCULAR_IN,
+  EASING_CIRCULAR_OUT,
+  EASING_CIRCULAR_INOUT,
+  EASING_ELASTIC_IN,
+  EASING_ELASTIC_OUT,
+  EASING_ELASTIC_INOUT,
+  EASING_BACK_IN,
+  EASING_BACK_OUT,
+  EASING_BACK_INOUT,
+  EASING_BOUNCE_IN,
+  EASING_BOUNCE_OUT,
+  EASING_BOUNCE_INOUT,
+  EASING_LAST
 } EASING;
 
 /*
@@ -79,30 +80,8 @@ NEKO_API float e_bounce_in(float t, float b, float c, float d);
 NEKO_API float e_bounce_out(float t, float b, float c, float d);
 NEKO_API float e_bounce_inOut(float t, float b, float c, float d);
 
-/*typedef int (* easing_function)(int, int);
-easing_function easings[] = {
-  e_linear,
-  e_quad_in,
-  e_quad_out,
-  e_quad_inout,
-  e_cubic_in,
-  e_cubic_out,
-  e_cubic_inout,
-  e_quartic_in,
-  e_quartic_out,
-  e_quartic_inout,
-  e_quintic_in,
-  e_quintic_out,
-  e_quintic_inout,
-  e_sine_in,
-  e_sine_out,
-  e_sine_inout,
-  e_back_in,
-  e_back_out,
-  e_back_inout,
-  e_bounce_in,
-  e_bounce_out,
-  e_bounce_inout
-}*/
+typedef float (* EASING_FUNCTION)(float currentTime, float startValue, float endValue, float duration);
+
+EASING_FUNCTION easings[EASING_LAST];
 
 #endif
