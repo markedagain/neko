@@ -59,20 +59,52 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     // build button
     case BUTTON_BUILD:
       // CREATE LOBBY BUTTON
-      vec3_set(&position, -250, -160, 0);
+      vec3_set(&position, -300, -160, 0);
       UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
 
       // CREATE CLASS BUTTON
-      vec3_set(&position, -190, -160, 0);
+      vec3_set(&position, -249, -160, 0);
       UI_button_createRoomButton(self, BUTTON_BUILDCLASS, &position, &color, "Classroom");
 
       // CREATE LIBRARY BUTTON
-      vec3_set(&position, -130, -160, 0);
+      vec3_set(&position, -198, -160, 0);
       UI_button_createRoomButton(self, BUTTON_BUILDLIBRARY, &position, &color, "Library");
  
       // CREATE TEAMSPACE BUTTON
-      vec3_set(&position, -70, -160, 0);
+      vec3_set(&position, -147, -160, 0);
       UI_button_createRoomButton(self, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
+
+      // CREATE CAFETERIA BUTTON
+      vec3_set(&position, -96, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDCAFETERIA, &position, &color, "Cafeteria");
+
+      // CREATE STORE BUTTON
+      vec3_set(&position, -45, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDSTORE, &position, &color, "Store");
+
+      // CREATE OFFICES BUTTON
+      vec3_set(&position, 45, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDOFFICES, &position, &color, "Offices");
+
+      // CREATE AUDITORIUM BUTTON
+      vec3_set(&position, 96, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDAUDITORIUM, &position, &color, "Auditorium");
+
+      // CREATE TUTORING BUTTON
+      vec3_set(&position, 147, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDTUTORING, &position, &color, "Tutoring");
+
+      // CREATE WIFI BUTTON
+      vec3_set(&position, 198, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDWIFI, &position, &color, "Wifi");
+
+      // CREATE CAFETERIA BUTTON
+      vec3_set(&position, 249, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDRECREATION, &position, &color, "Recreation");
+
+      // CREATE Figure BUTTON
+      vec3_set(&position, 300, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDFIGURE, &position, &color, "Figure");
 
       comData->type = BUTTON_CANCEL;
       break;
@@ -98,6 +130,40 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     case BUTTON_BUILDTEAMSPACE:
       UI_button_createGhostRooms(self, ROOMTYPE_TEAMSPACE);
       break;
+
+    case BUTTON_BUILDCAFETERIA:
+      UI_button_createGhostRooms(self, ROOMTYPE_CAFETERIA);
+      break;
+
+    case BUTTON_BUILDSTORE:
+      UI_button_createGhostRooms(self, ROOMTYPE_STORE);
+      break;
+
+    case BUTTON_BUILDOFFICES:
+      UI_button_createGhostRooms(self, ROOMTYPE_OFFICES);
+      break;
+
+    case BUTTON_BUILDAUDITORIUM:
+      UI_button_createGhostRooms(self, ROOMTYPE_AUDITORIUM);
+      break;
+
+    case BUTTON_BUILDTUTORING:
+      UI_button_createGhostRooms(self, ROOMTYPE_TUTORING);
+      break;
+
+    case BUTTON_BUILDWIFI:
+      UI_button_createGhostRooms(self, ROOMTYPE_WIFI);
+      break;
+
+    case BUTTON_BUILDRECREATION:
+      UI_button_createGhostRooms(self, ROOMTYPE_RECREATION);
+      break;
+
+    case BUTTON_BUILDFIGURE:
+      UI_button_createGhostRooms(self, ROOMTYPE_FIGURE);
+      break;
+
+
 
     default:
       break;
@@ -208,9 +274,9 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
     switch (toBuild) {
-    case ROOMTYPE_LOBBY:
-      sprite->source = "rooms/frontdoor";
-      break;
+      case ROOMTYPE_LOBBY:
+        sprite->source = "rooms/frontdoor";
+        break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
       break;
@@ -219,6 +285,33 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
       break;
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
+      break;
+    case ROOMTYPE_CAFETERIA:
+      sprite->source = "rooms/cafeteria";
+      break;
+    case ROOMTYPE_STORE:
+      sprite->source = "rooms/store";
+      break;
+    case ROOMTYPE_OFFICES:
+      sprite->source = "rooms/offices";
+      break;
+    case ROOMTYPE_AUDITORIUM:
+      sprite->source = "rooms/auditorium";
+      break;
+    case ROOMTYPE_TUTORING:
+      sprite->source = "rooms/tutoring";
+      break;
+    case ROOMTYPE_WIFI:
+      sprite->source = "rooms/wifi";
+      break;
+    case ROOMTYPE_RECREATION:
+      sprite->source = "rooms/recreation";
+      break;
+    case ROOMTYPE_FIGURE:
+      sprite->source = "rooms/figure";
+      break;
+    case ROOMTYPE_POTTERY:
+      sprite->source = "rooms/library";
       break;
 
     default:
