@@ -468,7 +468,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS || ROOMTYPE_STORE)
+  if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE)
     return 1;
   else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
     return 2;
