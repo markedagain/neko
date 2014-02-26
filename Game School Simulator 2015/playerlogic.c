@@ -139,9 +139,6 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     self->owner->space->systems.camera.transform.scale.x += 1.0f;
     self->owner->space->systems.camera.transform.scale.y += 1.0f;
   } */
-  if (input->keyboard.keys[KEY_N] == ISTATE_PRESSED) {
-    data->gameMode = DEFAULT;
-  }
   /*
   if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
     ENTITY *ent = space_getEntity(self->owner->space, "TEST1");

@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "UI_button.h"
 #include "mousebox.h"
 #include "../NekoEngine/transform.h"
@@ -14,6 +16,7 @@
 #include "UI_build.h"
 #include "schoollogic.h"
 #include "managescreen.h"
+#include "ghostroomlogic.h"
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -40,98 +43,60 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
 
+  // if clicked on
   if (mbox->left.pressed) {
     VEC3 position;
-    ENTITY *newButton;
-    CDATA_UI_BUTTON *buttonData;
-    ENTITY *text;
     VEC4 color;
 
-    pan_reset(self);
-    zoom_reset(self);
+    //pan_reset(self);
+    //zoom_reset(self);
     playerData->yPan = true;
     pan(self, 0.0f, -40.0f, NULL);
 
+    // execute different things based on button type
     switch (comData->type) {
-    case BUTTON_DEFAULT:
-      if(comData->showing == FALSE) {
-        // LOBBY BUTTON
-        vec3_set(&position, -250, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Lobby", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDLOBBY;
 
-        // CLASS BUTTON
-        vec3_set(&position, -190, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Class", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDCLASS;
+    // build button
+    case BUTTON_BUILD:
+      // CREATE LOBBY BUTTON
+      vec3_set(&position, -250, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
 
-        // LIBRARY BUTTON
-        vec3_set(&position, -130, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Library", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDLIBRARY;
-  
-        // TEAMSPACE BUTTON
-        vec3_set(&position, -70, -160, 0);
-        newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", &position);
-        buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
-        vec3_set(&position, 0.0f, 0.0f, 0.0f);
-        text = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Team", &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-        entity_attach(text, newButton);
-        buttonData->type = BUTTON_BUILDTEAMSPACE;
+      // CREATE CLASS BUTTON
+      vec3_set(&position, -190, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDCLASS, &position, &color, "Classroom");
 
-        comData->showing = TRUE;
-      }
-      else {
-        LIST_NODE *node;
-        LIST *buttons = list_create();
-        space_getAllEntities(self->owner->space, "buildButton", buttons);
-        node = buttons->first;
-        while (node) {
-          entity_destroy((ENTITY *)node->data);
-          node = node->next;
-        }
+      // CREATE LIBRARY BUTTON
+      vec3_set(&position, -130, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDLIBRARY, &position, &color, "Library");
+ 
+      // CREATE TEAMSPACE BUTTON
+      vec3_set(&position, -70, -160, 0);
+      UI_button_createRoomButton(self, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
 
-        list_destroy(buttons);
-        comData->showing = FALSE;
-        playerData->yPan = false;
-        //void comp_UI_button_cancelBuildMode(self);
-      }
+      comData->type = BUTTON_CANCEL;
+      break;
+
+    // cancel button 
+    case BUTTON_CANCEL:
+      comData->type = BUTTON_BUILD;
+      comp_UI_button_cancelBuildMode(self);
       break;
 
     case BUTTON_BUILDLOBBY:
-      playerData->roomType = ROOMTYPE_LOBBY;
-      playerData->gameMode = BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
       break;
 
     case BUTTON_BUILDCLASS:
-      playerData->roomType = ROOMTYPE_CLASS;
-      playerData->gameMode = BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_CLASS);
       break;
 
     case BUTTON_BUILDLIBRARY:
-      playerData->roomType = ROOMTYPE_LIBRARY;
-      playerData->gameMode = BUILD;
+      UI_button_createGhostRooms(self, ROOMTYPE_LIBRARY);
       break;
 
     case BUTTON_BUILDTEAMSPACE:
-      playerData->roomType = ROOMTYPE_TEAMSPACE;
-      playerData->gameMode = BUILD;
-      break;
-
-    case BUTTON_MANAGEMENT:
-      space_addEntity(self->owner->space, arch_manageScreen, "manageScreen");
+      UI_button_createGhostRooms(self, ROOMTYPE_TEAMSPACE);
       break;
 
     default:
@@ -178,14 +143,117 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   ENTITY *player = space_getEntity(ui, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  LIST *ghostrooms = list_create();
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+
+  // destroying all room buttons
   space_getAllEntities(self->owner->space, "buildButton", buttons);
   node = buttons->first;
   while (node) {
     entity_destroy((ENTITY *)node->data);
     node = node->next;
   }
-  
   list_destroy(buttons);
-  comData->showing = FALSE;
+
+  // detroying all ghostrooms
+  space_getAllEntities(mg, "ghostRoom", ghostrooms);
+  node = ghostrooms->first;
+  while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+  }
+  list_destroy(ghostrooms);
+
   playerData->yPan = false;
+}
+
+// just changed this, please check for mem leaks
+void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
+  LIST *buildSpaces = list_create();
+  int roomSize = comp_schoolLogic_getRoomSize(toBuild);
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  LIST_NODE *pNode;
+  float squareSize = 80.0f;
+
+  comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
+  pNode = buildSpaces->first;
+
+  while (pNode) {
+    ENTITY *created;
+    LIST_NODE *next;
+    CDATA_GHOSTROOMLOGIC *gData;
+    CDATA_SPRITE *sprite;
+    POINT *data = (POINT *)pNode->data;
+    LONG x = data->x;
+    LONG y = data->y;
+    float top = (3 - y) * squareSize;
+    float left = (x - 8) * squareSize;
+    VEC3 middle;
+    middle.y = top - squareSize / 2.0f;
+    middle.z = 0;
+      
+    switch (roomSize) {
+    case (1):
+      middle.x = left + squareSize / 2.0f;
+      break;
+    case (2):
+      middle.x = left + squareSize;
+      break;
+    case (3):
+      middle.x = left + squareSize * 1.5f;
+      break;
+    }
+
+    created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);
+    gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
+    sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
+    switch (toBuild) {
+    case ROOMTYPE_LOBBY:
+      sprite->source = "rooms/frontdoor";
+      break;
+    case ROOMTYPE_CLASS:
+      sprite->source = "rooms/class";
+      break;
+    case ROOMTYPE_LIBRARY:
+      sprite->source = "rooms/library";
+      break;
+    case ROOMTYPE_TEAMSPACE:
+      sprite->source = "rooms/teamspace";
+      break;
+
+    default:
+      break;
+    }
+    gData->point.x = x;
+    gData->point.y = y;
+    gData->roomSize = roomSize;
+    gData->roomType = toBuild;
+    sprite->color.a = 0.75f;
+    next = pNode->next;
+    pNode = next;
+  }
+  UI_button_deleteList(buildSpaces);
+}
+
+void UI_button_deleteList(LIST *buildSpaces) {
+  LIST_NODE *pNode = buildSpaces->first;
+  while (pNode) {
+    free(pNode->data);
+    pNode = pNode->next;
+  }
+  list_destroy(buildSpaces);
+}
+
+void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
+  ENTITY *newButton = 0;
+  CDATA_UI_BUTTON *buttonData;
+  ENTITY *text;
+  VEC3 textPos;
+
+  newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", position);
+  buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+  vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
+  text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  entity_attach(text, newButton);
+  buttonData->type = type;
 }
