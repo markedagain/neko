@@ -45,19 +45,20 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   // if clicked on
   if (mbox->left.pressed) {
-    VEC3 position;
-    VEC4 color;
-
-    pan_reset(self);
-    zoom_reset(self);
-    playerData->yPan = true;
-    pan(self, 0.0f, -40.0f, NULL);
-
     // execute different things based on button type
     switch (comData->type) {
 
     // build button
     case BUTTON_BUILD:
+    {
+      VEC3 position;
+      VEC4 color;
+      COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+      // fix this
+      playerLogic_setZoom(playerLogic, 0.75f);
+      playerData->yPan = true;
+      playerLogic_pan(playerLogic, 0.0f, -40.0f, NULL);
+      
       // CREATE LOBBY BUTTON
       vec3_set(&position, -250, -160, 0);
       UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
@@ -76,11 +77,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       comData->type = BUTTON_CANCEL;
       break;
-
+    }
     // cancel button 
     case BUTTON_CANCEL:
       comData->type = BUTTON_BUILD;
       comp_UI_button_cancelBuildMode(self);
+      UI_button_destroyGhostRooms(self);
       break;
 
     case BUTTON_BUILDLOBBY:
@@ -103,27 +105,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       break;
     }
   }
- /*
-  if (mbox->entered && data->ent3 == NULL) {
-    vec3_set(&position, 0, -50, 0);
-    data->ent3 = genericSprite_create(ui, &position, NULL, "cursor/build");
-  }
-
-  else if (mbox->exited && data->ent3) {
-    entity_destroy(data->ent3);
-    data->ent3 = NULL;
-  }
-  */
-  /*
-  if(mbox->left.pressed && data->ent2 == NULL) {
-    vec3_set(&position, 100, 100, 0);
-    data->ent2 = genericSprite_create(ui, &position, NULL, "backgrounds/i_love_you");
-  }
-  else if(mbox->left.pressed && data->ent2) {
-    entity_destroy(data->ent2);
-    data->ent2 = NULL;
-  }
-  */
 }
 
 void comp_UI_button(COMPONENT *self) {
@@ -134,40 +115,6 @@ void comp_UI_button(COMPONENT *self) {
   self->events.logicUpdate = comp_UI_buttonUpdate;
 }
 
-
-// this doesn't work yet but please make it work
-void comp_UI_button_cancelBuildMode(COMPONENT *self) {
-  LIST_NODE *node;
-  LIST *buttons = list_create();
-  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
-  ENTITY *player = space_getEntity(ui, "player");
-  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
-  LIST *ghostrooms = list_create();
-  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-
-  // destroying all room buttons
-  space_getAllEntities(self->owner->space, "buildButton", buttons);
-  node = buttons->first;
-  while (node) {
-    entity_destroy((ENTITY *)node->data);
-    node = node->next;
-  }
-  list_destroy(buttons);
-
-  // detroying all ghostrooms
-  space_getAllEntities(mg, "ghostRoom", ghostrooms);
-  node = ghostrooms->first;
-  while (node) {
-    entity_destroy((ENTITY *)node->data);
-    node = node->next;
-  }
-  list_destroy(ghostrooms);
-
-  playerData->yPan = false;
-}
-
-// just changed this, please check for mem leaks
 void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   LIST *buildSpaces = list_create();
   int roomSize = comp_schoolLogic_getRoomSize(toBuild);
@@ -233,6 +180,41 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     pNode = next;
   }
   UI_button_deleteList(buildSpaces);
+}
+
+void comp_UI_button_cancelBuildMode(COMPONENT *self) {
+  LIST_NODE *node;
+  LIST *buttons = list_create();
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  ENTITY *player = space_getEntity(ui, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+
+  // destroying all room buttons
+  space_getAllEntities(self->owner->space, "buildButton", buttons);
+  node = buttons->first;
+  while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+  }
+  list_destroy(buttons);
+
+  playerData->yPan = false;
+}
+
+void UI_button_destroyGhostRooms(COMPONENT *self) {
+  LIST *ghostrooms = list_create();
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  LIST_NODE *node;
+
+  // detroying all ghostrooms
+  space_getAllEntities(mg, "ghostRoom", ghostrooms);
+  node = ghostrooms->first;
+  while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+  }
+  list_destroy(ghostrooms);
 }
 
 void UI_button_deleteList(LIST *buildSpaces) {

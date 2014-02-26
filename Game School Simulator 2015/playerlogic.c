@@ -53,6 +53,8 @@ void pan_reset(COMPONENT *self) {
   fg->systems.camera.transform.translation.x = 0.0f;
   fg->systems.camera.transform.translation.y = 180.0f - 24.0f;
 }
+
+
 void zoom(COMPONENT *self, float zoom) {
   CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
@@ -242,4 +244,25 @@ void comp_playerLogic(COMPONENT *self) {
   self->events.initialize = comp_playerLogic_initialize;
   self->events.logicUpdate = comp_playerLogic_logicUpdate;
   self->events.frameUpdate = comp_playerLogic_frameUpdate;
+}
+
+void playerLogic_zoom(COMPONENT *playerLogic, float zoomAmt) {
+  zoom(playerLogic, zoomAmt);
+}
+
+void playerLogic_pan(COMPONENT *playerLogic, float x, float y, POINT *outPoint) {
+  pan(playerLogic, x, y, outPoint);
+}
+
+void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom) {
+  SPACE *bg = game_getSpace(playerLogic->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(playerLogic->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(playerLogic->owner->space->game, "fg");
+
+  bg->systems.camera.transform.scale.x = newZoom;
+  bg->systems.camera.transform.scale.y = newZoom;
+  mg->systems.camera.transform.scale.x = newZoom;
+  mg->systems.camera.transform.scale.y = newZoom;
+  fg->systems.camera.transform.scale.x = newZoom;
+  fg->systems.camera.transform.scale.y = newZoom;
 }

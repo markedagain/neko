@@ -33,5 +33,6 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self);
 void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild);
 void UI_button_deleteList(LIST *buildSpaces);
 void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
+void UI_button_destroyGhostRooms(COMPONENT *self);
 
 #endif
