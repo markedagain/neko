@@ -48,8 +48,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     VEC3 position;
     VEC4 color;
 
-    //pan_reset(self);
-    //zoom_reset(self);
+    pan_reset(self);
+    zoom_reset(self);
     playerData->yPan = true;
     pan(self, 0.0f, -40.0f, NULL);
 
