@@ -48,7 +48,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     printf("%f\n", comData->minGpa);
     sprintf(gpaBuffer, "Min GPA: %f", comData->minGpa);
     sprintf(tuitionBuffer, "Tuition: $%i", comData->tuition);
-    strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
+    strncpy(titleBuffer, "MANAGEMENT SCREEN", _countof(titleBuffer));
     
     data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
     data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
