@@ -3,10 +3,22 @@
 #include "backgroundlogic.h"
 #include "mousebox.h"
 #include "playerlogic.h"
+#include "poptext.h"
+#include "sound.h"
 
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
+  if (mbox->left.pressed && !input->mouse.handled[MBUTTON_LEFT]) {
+    VEC3 pos = { 0 };
+    POINT mousePos;
+    VEC4 col = { 1.0f, 1.0f, 1.0f, 1.0f };
+    space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
+    pos.x = (float)mousePos.x;
+    pos.y = (float)mousePos.y;
+    popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col);
+    sound_playSound(&self->owner->space->game->systems.sound, "oh");
+  }
   if (mbox->left.down && !input->mouse.handled[MBUTTON_LEFT]) {
     ENTITY *player = space_getEntity(game_getSpace(self->owner->space->game, "ui"), "player");
     CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
@@ -15,7 +27,6 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     playerData->dragOrigin.x = input->mouse.position.x;
     playerData->dragOrigin.y = input->mouse.position.y;
     input->mouse.handled[MBUTTON_LEFT] = true;
-
   }
 }
 

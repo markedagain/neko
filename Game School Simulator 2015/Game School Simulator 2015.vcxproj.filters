@@ -110,6 +110,12 @@
     <ClCompile Include="UI_student.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
+    <ClCompile Include="poptext.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="poptextlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -236,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="UI_student.h">
       <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="poptext.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="poptextlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
