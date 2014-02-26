@@ -15,7 +15,7 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
-#define FULLSCREEN true
+#define FULLSCREEN false
 
 GAME *__game = NULL; // UGHHHHHHH
 WINDOWPLACEMENT g_wpPrev = { sizeof(g_wpPrev) }; // UGHHHHHHHHHHHHHHhhhhhhh
@@ -59,6 +59,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   game->systems.time.currentFramesPerSecond = 0;
   game->systems.time.elapsedFrames = 0;
   game->systems.time.elapsed = 0;
+  game->systems.time.scale = 1.0;
   game->initialized = true;
   input_initialize(&game->input);
   sound_initialize(&game->systems.sound, &game->data.sounds);
@@ -122,26 +123,32 @@ void game_invokeEvent(GAME * game, EVENT_TYPE event, void *data) {
   while (spaceNode != NULL);
 }
 
-void game_tick(GAME *game) {
-  EDATA_UPDATE updateEvent = { 0 };
+void game_tick(GAME *game, bool logicUpdate) {
+  EDATA_UPDATE frameUpdateEvent = { 0 };
+  EDATA_UPDATE logicUpdateEvent = { 0 };
   LIST_NODE *spaceNode;
-  LARGE_INTEGER stopTime;
 
-  QueryPerformanceCounter(&stopTime);
+  frameUpdateEvent.dt = stopwatch_delta(&game->systems.time.stopwatch);
+  logicUpdateEvent.dt = game->systems.time.dt;
 
   if (game->spaces->count == 0)
     return;
+
   spaceNode = game->spaces->last;
   while (spaceNode != NULL) {
     SPACE *space = (SPACE*)spaceNode->data;
-    if (/*space->entities->count == 0 || */!space->active || space->destroying) {
+    if (!space->active || space->destroying) {
       spaceNode = spaceNode->prev;
       continue;
     }
-    space_tick(space, &updateEvent, &stopTime);
+    space_tick(space, &frameUpdateEvent, &logicUpdateEvent, logicUpdate);
     spaceNode = spaceNode->prev;
   }
   game_cleanup(game);
+
+  input_reset_frame(&game->input);
+  //if (logicUpdate || game->systems.time.scale == 0)
+  input_reset_logic(&game->input);
 }
 
 void game_cleanup(GAME *game) {
@@ -165,7 +172,8 @@ void game_start(GAME *game) {
   AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 
   stopwatch_start(&game->systems.time.stopwatch);
-  stopwatch_start(&game->systems.time.secondsStopwatch);
+  stopwatch_startAt(&game->systems.time.secondsStopwatch, &game->systems.time.stopwatch.start);
+  stopwatch_startAt(&game->systems.time.logicStopwatch, &game->systems.time.stopwatch.start);
 
   while(gameRunning) {
     gameRunning = game_loop(game);
@@ -177,6 +185,11 @@ void game_start(GAME *game) {
 bool game_loop(GAME *game) {
   RECT clientRect;
   POINT cursorPos;
+  bool logicUpdate;
+  double deltaTime;
+
+  stopwatch_stop(&game->systems.time.stopwatch);
+
   GetClientRect(AESysGetWindowHandle(), &clientRect);
   GetCursorPos(&cursorPos);
   ScreenToClient(AESysGetWindowHandle(), &cursorPos);
@@ -192,10 +205,9 @@ bool game_loop(GAME *game) {
   /*if (AESysGetWindowHandle() != GetActiveWindow())
     printf("AAAAA\n");*/
 
-  stopwatch_stop(&game->systems.time.stopwatch);
-  game->systems.time.dt = stopwatch_delta(&game->systems.time.stopwatch);
-  if (game->systems.time.dt >= game->systems.time.frameRate) {
-    game->systems.time.elapsed += game->systems.time.dt;
+  deltaTime = stopwatch_delta(&game->systems.time.stopwatch);
+  if (deltaTime >= game->systems.time.frameRate) {
+    game->systems.time.elapsed += deltaTime;
     stopwatch_lap(&game->systems.time.stopwatch);
     if (AESysGetWindowHandle() == GetActiveWindow()) {
       input_update(&game->input, NULL);
@@ -205,8 +217,12 @@ bool game_loop(GAME *game) {
     if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
       return false;
     sound_update(&game->systems.sound);
-    game_tick(game);
-    input_reset(&game->input);
+    stopwatch_stopAt(&game->systems.time.logicStopwatch, &game->systems.time.stopwatch.start);
+    game->systems.time.dt = stopwatch_delta(&game->systems.time.logicStopwatch);
+    logicUpdate = game->systems.time.scale != 0 && game->systems.time.dt >= game->systems.time.frameRate / game->systems.time.scale;
+    if (logicUpdate)
+      stopwatch_lap(&game->systems.time.logicStopwatch);
+    game_tick(game, logicUpdate);
     AESysFrameStart();
     game_invokeEvent(game, EV_DRAW, NULL);
     AESysFrameEnd();
@@ -307,7 +323,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 
   case WM_CREATE:
     break;
-#define INPUT_FRAMEBUFFER 2
+#define INPUT_FRAMEBUFFER 1
   case WM_LBUTTONDOWN:
     __game->input.mouse.buffer[MBUTTON_LEFT] = INPUT_FRAMEBUFFER;
     break;

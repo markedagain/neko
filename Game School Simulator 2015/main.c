@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   simSpace = game_addSpace(game, "sim");
   simSpace->visible = false;
   //simSpace->systems.time.scale = 0.0166666666666667f;
-  simSpace->systems.time.scale = 0.0f;
+  //simSpace->systems.time.scale = 0.0f;
 
   space_addEntity(simSpace, arch_gameManager, "gameManager");
 
@@ -108,16 +108,12 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   entity_attach(ent3, ent2);
   */
 
-  vec3_set(&position, 0, -50, 0);
-  space_addEntityAtPosition(uiSpace, arch_uibase, "UI", &position);
   vec3_set(&position, 0, -180, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
   // sets the button type to build
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
   /*vec3_set(&position, 280, 70, 0);
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
-  vec3_set(&position, 280, 10, 0);
-  space_addEntityAtPosition(uiSpace, arch_uistudent, "students_button", &position);*/
   /*vec3_set(&position, -318, 180, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);
   vec3_set(&position, -318, 160, 0);

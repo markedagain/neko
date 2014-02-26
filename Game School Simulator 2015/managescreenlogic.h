@@ -7,6 +7,17 @@
 #include "hash.h"
 
 #define COMP_MANAGESCREENLOGIC HASH("COMP_MANAGESCREENLOGIC")
+
+typedef struct{
+  ENTITY *leftGPA;
+  ENTITY *rightGPA;
+  ENTITY *leftTuition;
+  ENTITY *rightTuition;
+  ENTITY *boxGPA;
+  ENTITY *boxTuition;
+  bool triggered;
+} CDATA_MANAGESCREEN;
+
 void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_manageScreenLogic(COMPONENT *self);
 

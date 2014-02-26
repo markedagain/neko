@@ -36,10 +36,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
-      vec3_set(&position, 270, 180, 0);
+      vec3_set(&position, 320, 180, 0);
       vec4_set(&color, 0, 0, 1, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
-      comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+      comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
@@ -146,21 +146,21 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
 
     // GPA
-    if(studentData->major == Tech) {
+    if(studentData->major == M_TECH) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->techIncrease / (comData->techBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
-    if(studentData->major == Design) {
+    if(studentData->major == M_DESIGN) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->designIncrease / (comData->designBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
-    if(studentData->major == Art) {
+    if(studentData->major == M_ART) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       studentData->gradePoints += ((float)studentData->artIncrease / (comData->artBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
@@ -305,22 +305,15 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
        }
     }
 
-    // 3) Take out all spots which do not have a room below them
-    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
-       int floor = i / MAX_ROOMS_PER_FLOOR;
-       int col = i % MAX_ROOMS_PER_FLOOR;
-
-       // Remember that the top floor is 0 and bottom floor is 2
-       if(openSlot[floor][col] == TRUE && openSlot[floor + 1][col] == TRUE && floor != 2)
-         openSlot[floor][col] = FALSE;
-       if((col == 7 || col == 8) && floor != 2)
-         openSlot[floor][col] = FALSE;
-    }
-
     // 4) Take out all spots which do not have a building either to their left or right
     for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
        int floor = i / MAX_ROOMS_PER_FLOOR;
        int col = i % MAX_ROOMS_PER_FLOOR;
+
+       if(col == 0) {
+         lastFilledCol = -1;
+         lastFilledColSize = -1;
+       }
 
        if(comData->rooms.coord[floor][col]) {
          lastKnownRoomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[floor][col], COMP_ROOMLOGIC);
@@ -329,8 +322,27 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
        }
 
        if (openSlot[floor][col] == TRUE
-       && ((comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize) || col == 0)
+       && (comData->rooms.coord[floor][col - 1] == NULL && col - 1 > lastFilledCol + lastFilledColSize)
        && (openSlot[floor][col + roomSize] == TRUE || col + roomSize > 15))
+         openSlot[floor][col] = FALSE;
+    }
+
+    // 3) Take out all spots which do not have a room below them
+    for(i = 0; i < MAX_FLOORS * MAX_ROOMS_PER_FLOOR; i++) {
+       int floor = i / MAX_ROOMS_PER_FLOOR;
+       int col = i % MAX_ROOMS_PER_FLOOR;
+
+       // Check every slot of the desired room
+       for(j = 0; j < roomSize; j++) {
+         // Remember that the top floor is 0 and bottom floor is 2
+         if(openSlot[floor][col] == TRUE && openSlot[floor + 1][col + j] == TRUE && floor != 2)
+         {
+           openSlot[floor][col] = FALSE;
+         }
+       }
+
+       // Take out Lobby slots
+       if((col == 7 || col == 8) && floor != 2)
          openSlot[floor][col] = FALSE;
     }
 
@@ -443,6 +455,12 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   case(ROOMTYPE_TEAMSPACE):
     sprite->source = "rooms/teamspace";
     break;
+  case(ROOMTYPE_CAFETERIA):
+    sprite->source = "rooms/cafeteria";
+    break;
+  case(ROOMTYPE_STORE):
+    sprite->source = "rooms/store";
+    break;
   default:
     sprite->source = "rooms/template";
     break;
@@ -450,11 +468,11 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS)
+  if(type == ROOMTYPE_CLASS || ROOMTYPE_STORE)
     return 1;
   else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
     return 2;
-  else if(type == ROOMTYPE_TEAMSPACE)
+  else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA)
     return 3;
 
   return 1;
@@ -475,6 +493,9 @@ int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
       return 75000;
 
     case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    case ROOMTYPE_STORE:
       return 100000;
 
     default:

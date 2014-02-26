@@ -17,7 +17,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     comData->frameCounter++;
 
     // New month every x frames (1 FPS)
-    if(comData->frameCounter >= 1) {
+    if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond / 1) {
       comData->months++;
       printf("\n\n\n\n\n\n");
       printf("Month: %i  Semester: %i  Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);

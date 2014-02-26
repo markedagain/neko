@@ -13,6 +13,7 @@ typedef struct stopwatch_t {
 void stopwatch_start(STOPWATCH *);
 void stopwatch_stop(STOPWATCH *);
 void stopwatch_stopAt(STOPWATCH *sw, LARGE_INTEGER *time);
+void stopwatch_startAt(STOPWATCH *sw, LARGE_INTEGER *time);
 void stopwatch_lap(STOPWATCH *);
 double stopwatch_delta(STOPWATCH *);
 

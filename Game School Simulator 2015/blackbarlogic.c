@@ -45,9 +45,9 @@ void comp_blackBarLogic_frameUpdate(COMPONENT *self, void *event) {
   }
 
   if (mbox->left.down)
-    input->mouse.handled[MBUTTON_LEFT] = 2;
+    input->mouse.handled[MBUTTON_LEFT] = true;
   if (mbox->right.down)
-    input->mouse.handled[MBUTTON_RIGHT] = 2;
+    input->mouse.handled[MBUTTON_RIGHT] = true;
 }
 
 void comp_blackBarLogic_initialize(COMPONENT *self, void *event) {

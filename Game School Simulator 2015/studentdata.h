@@ -3,22 +3,16 @@
 #ifndef __COMP_STUDENTDATA_H__
 #define __COMP_STUDENTDATA_H__
 
-#ifndef __STUDENT_GENDER__
-#define __STUDENT_GENDER__
 typedef enum {
-  Male,
-  Female,
-  } gender;
-#endif
+  GEN_MALE,
+  GEN_FEMALE,
+  } GENDER;
 
-#ifndef __STUDENT_MAJOR__
-#define __STUDENT_MAJOR__
 typedef enum {
-  Tech,
-  Art,
-  Design,
-  } major;
-#endif
+  M_TECH,
+  M_ART,
+  M_DESIGN,
+  } MAJOR;
 
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
@@ -31,8 +25,8 @@ typedef struct cdata_studentData_t {
     char *first;
     char *last;
   } name;
-  gender gender;
-  major major;
+  GENDER gender;
+  MAJOR major;
   int techSkill;
   int artSkill;
   int designSkill;

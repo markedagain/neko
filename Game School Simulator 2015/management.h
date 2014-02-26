@@ -9,9 +9,16 @@
 #define COMP_MANAGEMENT HASH("COMP_MANAGEMENT")
 
 typedef struct{
-  ENTITY *ent1;
-  ENTITY *ent2;
-  ENTITY *ent3;
+  ENTITY *gpa;
+  ENTITY *tuition;
+  ENTITY *manageWindow;
+  ENTITY *titleText;
+  ENTITY *currMoney;
+  ENTITY *currCosts;
+  ENTITY *currStudents;
+  ENTITY *studentMax;
+  ENTITY *incomingStudents;
+  bool triggered;
 } CDATA_MANAGEMENT;
 
 void comp_managementUpdate(COMPONENT *self, void *event);

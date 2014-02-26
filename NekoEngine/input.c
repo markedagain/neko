@@ -2,6 +2,7 @@
 
 #include "input.h"
 #include "../AlphaEngine/AESystem.h"
+#include <stdio.h>
 
 void input_initialize(INPUT_CONTAINER *input) {
   int i;
@@ -9,7 +10,7 @@ void input_initialize(INPUT_CONTAINER *input) {
     input->keyboard.keys[i] = ISTATE_UP;
   for (i = 0; i < MBUTTON_LAST; ++i) {
     input->mouse.buttons[i] = ISTATE_UP;
-    input->mouse.handled[i] = 0;
+    input->mouse.handled[i] = false;
     input->mouse.buffer[i] = 0;
     input->mouse.quickClicked[i] = false;
   }
@@ -28,15 +29,15 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
       input->keyboard.keys[i] = (input->keyboard.keys[i] == ISTATE_DOWN || input->keyboard.keys[i] == ISTATE_PRESSED ? ISTATE_RELEASED : ISTATE_UP);
   }
   for (i = 0; i < MBUTTON_LAST; ++i) {
-    if (input->mouse.buffer[i] > 0) {
+    if (input->mouse.buffer[i] == 1) {
       input->mouse.buttons[i] = ISTATE_PRESSED;
-      input->mouse.buffer[i]--;
+      input->mouse.buffer[i] = 0;
     }
-    if (input->mouse.buffer[i] < 0) {
+    else if (input->mouse.buffer[i] == -1) {
       input->mouse.buttons[i] = ISTATE_RELEASED;
-      input->mouse.buffer[i]++;
+      input->mouse.buffer[i] = 0;
     }
-    if (input->mouse.buffer[i] == 0) {
+    else {
       if (input->mouse.buttons[i] == ISTATE_PRESSED)
         input->mouse.buttons[i] = ISTATE_DOWN;
       if (input->mouse.buttons[i] == ISTATE_RELEASED)
@@ -73,14 +74,15 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);
 }
 
-void input_reset(INPUT_CONTAINER *input) {
+void input_reset_logic(INPUT_CONTAINER *input) {
   int i;
+  for (i = 0; i < MBUTTON_LAST; ++i)
+    input->mouse.handled[i] = false;
+}
+
+void input_reset_frame(INPUT_CONTAINER *input) {
   input->mouse.wheel.delta = 0;
   input->mouse.wheel.direction = 0;
-  for (i = 0; i < MBUTTON_LAST; ++i) {
-    input->mouse.handled[i]--;
-    if (input->mouse.handled[i] < 0) input->mouse.handled[i] = 0;
-  }
 }
 
 void input_setMousePos(INPUT_CONTAINER *input, int x, int y) {

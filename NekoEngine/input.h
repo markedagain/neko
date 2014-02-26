@@ -130,7 +130,7 @@ typedef struct inputContainer_t {
     };
     int buffer[MBUTTON_LAST];
     bool quickClicked[MBUTTON_LAST];
-    int handled[MBUTTON_LAST];
+    bool handled[MBUTTON_LAST];
     struct {
       int delta;
       int direction;
@@ -144,7 +144,8 @@ typedef struct inputContainer_t {
 
 void input_initialize(INPUT_CONTAINER *input);
 void input_update(INPUT_CONTAINER *input, HWND *window);
-void input_reset(INPUT_CONTAINER *input);
+void input_reset_logic(INPUT_CONTAINER *input);
+void input_reset_frame(INPUT_CONTAINER *input);
 NEKO_API void input_setMousePos(INPUT_CONTAINER *input, int x, int y);
 NEKO_API void input_lockMouse(INPUT_CONTAINER *input);
 NEKO_API void input_unlockMouse(INPUT_CONTAINER *input);
