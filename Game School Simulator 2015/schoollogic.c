@@ -51,6 +51,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
+  int totalUpkeep;
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
@@ -76,10 +77,14 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   //Lose money
   //Go through list of rooms and pay upkeep
   roomPtr = comData->roomList->first;
-  for(i = 0; i < comData->roomList->count; i++) {
+  for(i = 0, totalUpkeep = 0; i < comData->roomList->count; i++) {
     CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(roomPtr->data, COMP_ROOMLOGIC);
     comData->money -= roomData->upkeep;
+    totalUpkeep += roomData->upkeep;
   }
+  
+  if (comData->roomMaintenance != totalUpkeep)
+    comData->roomMaintenance = totalUpkeep;
 
   // Modify student stats
   studentPtr = comData->students->first;
@@ -609,7 +614,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.expectedGraduates = 0;
   data.students = list_create();
   data.alumni = list_create();
-  data.roomMaintainance = 0;
+  data.roomMaintenance = 0;
   data.roomList = list_create();
   data.reputation = 0;
   data.techBonus = 1;
