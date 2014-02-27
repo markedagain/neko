@@ -8,8 +8,6 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
-#include <math.h>
-#include <stdio.h>
 #include "ghostroom.h"
 #include "playerlogic.h"
 #include "roomlogic.h"
@@ -17,6 +15,9 @@
 #include "schoollogic.h"
 #include "managescreen.h"
 #include "ghostroomlogic.h"
+#include <stdio.h>
+
+#define BUILDENDPOS 136.0f
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -28,9 +29,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   VEC4 color = { 0, 0, 1, 1 };
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
-  ENTITY *camera = 0;
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+
+  al_update(&data->actions, updateEvent->dt);
 
   if (mbox->over) {
     sprite->color.r = min(sprite->color.r + 0.05f, 1);
@@ -54,10 +57,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       VEC3 position;
       VEC4 color;
       COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
-      // fix this
-      playerData->yPan = true;
-      playerLogic_setZoom(playerLogic, 0.75f);
-      playerLogic_setVerticalPos(playerLogic, -20.0f);
+      //playerLogic_setZoom(playerLogic, 0.75f);
+      //playerLogic_setCamVerticalPos(playerLogic, 100.0f);
+      comp_UI_button_panDown(self);
       
       // CREATE LOBBY BUTTON
       vec3_set(&position, -300, -160, 0);
@@ -110,6 +112,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       comData->type = BUTTON_CANCEL;
       break;
     }
+
     // cancel button 
     case BUTTON_CANCEL:
       comData->type = BUTTON_BUILD;
@@ -165,7 +168,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       UI_button_createGhostRooms(self, ROOMTYPE_FIGURE);
       break;
 
-
+    case BUTTON_DEFAULT:
+      break;
 
     default:
       break;
@@ -173,9 +177,85 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   }
 }
 
+static void panDown_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+
+  playerLogic_setCamVerticalPos(playerLogic, data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * (BUILDENDPOS - data->startY));
+}
+
+static void zoomOut_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+
+  playerLogic_setZoom(playerLogic, data->startZoom + action_getEase(action, EASING_CIRCULAR_OUT) * (0.75f - data->startZoom));
+}
+
+void comp_UI_button_panDown(COMPONENT *self) {
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  ENTITY *player = space_getEntity(ui, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+
+  //playerLogic_setZoom(playerLogic, 0.75f);
+  data->startZoom = mg->systems.camera.transform.scale.x;
+  data->startY = mg->systems.camera.transform.translation.y;
+  playerData->yPan = true;
+  //playerLogic_setCamVerticalPos(playerLogic, 100.0f);
+  al_pushFront(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
+  al_pushFront(&data->actions, action_create(self, zoomOut_update, NULL, NULL, false, 0.4f));
+}
+
+static void panUp_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+  
+  // ALSO NOT WORKING MAN
+  /*float gameHeight = (float)self->owner->space->game->dimensions.height;
+  float zoom = self->owner->space->systems.camera.transform.scale.x;
+  float origin = (0.5f * ((1.0f / zoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;*/
+
+  playerLogic_setCamVerticalPos(playerLogic, data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * 80.0f);
+}
+
+
+static void panUp_onEnd(ACTION *action) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  ENTITY *player = space_getEntity(ui, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+
+  playerData->yPan = false;
+}
+
+void comp_UI_button_panUp(COMPONENT *self) {
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+  ENTITY *player = space_getEntity(ui, "player");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+
+  printf("panuuuup");
+  data->startY = mg->systems.camera.transform.translation.y;
+  al_pushFront(&data->actions, action_create(self, panUp_update, NULL, panUp_onEnd, false, 0.4f));
+}
+
 void comp_UI_button(COMPONENT *self) {
   CDATA_UI_BUTTON data = { 0 };
   data.type = BUTTON_DEFAULT;
+  al_init(&data.actions);
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;
@@ -292,7 +372,7 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   }
   list_destroy(buttons);
 
-  playerData->yPan = false;
+  comp_UI_button_panUp(self);
 }
 
 void UI_button_destroyGhostRooms(COMPONENT *self) {
@@ -332,3 +412,4 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   entity_attach(text, newButton);
   buttonData->type = type;
 }
+

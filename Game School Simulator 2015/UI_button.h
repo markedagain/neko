@@ -6,6 +6,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
 #include "roomlogic.h"
+#include "actionlist.h"
 
 #define COMP_UI_BUTTON HASH("COMP_UI_BUTTON")
 
@@ -33,7 +34,9 @@ typedef struct{
   ENTITY *ent2;
   ENTITY *ent3;
   BUTTON_TYPE type;
-
+  ALIST actions;
+  float startY;
+  float startZoom;
 } CDATA_UI_BUTTON;
 
 void UI_buttonUpdate(COMPONENT *self, void *event);
@@ -43,5 +46,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild);
 void UI_button_deleteList(LIST *buildSpaces);
 void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
 void UI_button_destroyGhostRooms(COMPONENT *self);
+void comp_UI_button_panDown(COMPONENT *self);
+void comp_UI_button_panUp(COMPONENT *self);
 
 #endif

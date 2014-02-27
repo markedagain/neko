@@ -15,6 +15,7 @@
 #include <math.h>
 
 #define GROUND_HEIGHT 24
+#define BUILDENDPOS 136.0f
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -74,6 +75,12 @@ void zoom(COMPONENT *self, float zoom) {
     bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
     mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
     fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+  }
+  else {
+    // THIS DOESN'T WORK MAN
+    //bg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
+    //mg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
+    //fg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
   }
   pan(self, 0.0f, 0.0f, NULL);
 }
@@ -254,9 +261,11 @@ void playerLogic_pan(COMPONENT *playerLogic, float x, float y, POINT *outPoint) 
 }
 
 void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom) {
+  CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)playerLogic->data;
   SPACE *bg = game_getSpace(playerLogic->owner->space->game, "bg");
   SPACE *mg = game_getSpace(playerLogic->owner->space->game, "mg");
   SPACE *fg = game_getSpace(playerLogic->owner->space->game, "fg");
+  float gameHeight = (float)playerLogic->owner->space->game->dimensions.height;
 
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
@@ -264,9 +273,19 @@ void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom) {
   mg->systems.camera.transform.scale.y = newZoom;
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
+  if (!data->yPan) {
+    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
+  }
+  else {
+    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
+    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
+    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
+  }
 }
 
-void playerLogic_setVerticalPos(COMPONENT *playerLogic, float newY) {
+void playerLogic_setCamVerticalPos(COMPONENT *playerLogic, float newY) {
   SPACE *bg = game_getSpace(playerLogic->owner->space->game, "bg");
   SPACE *mg = game_getSpace(playerLogic->owner->space->game, "mg");
   SPACE *fg = game_getSpace(playerLogic->owner->space->game, "fg");
