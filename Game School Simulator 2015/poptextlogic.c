@@ -4,27 +4,68 @@
 #include "transform.h"
 #include "multisprite.h"
 
-void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+static void rise_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  data->timer -= (float)updateEvent->dt;
-  if (data->timer <= 0.5f) {
-    COMPONENT *multi = entity_getComponent(self->owner, COMP_MULTISPRITE);
-    data->alpha -= 0.08f;
-    if (data->alpha < 0.0f)
-      data->alpha = 0.0f;
-    multiSprite_setAlpha(multi, data->alpha);
+  trans->translation.y = data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * 32.0f;//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
+}
+
+static void rise_onStart(ACTION *action) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  data->startY = trans->translation.y;
+}
+
+static void fade_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  COMPONENT *multi = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
+  multiSprite_setAlpha(multi, 1.0f - action_getEase(action, EASING_QUAD_OUT));
+}
+
+static void destroySelf_onEnd(ACTION *action) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  entity_destroy(self->owner);
+}
+
+void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
+  CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+
+  if (!data->started) {
+    data->started = true;
+
+    switch (data->type) {
+    case POPTYPE_DEFAULT:
+      al_pushFront(&data->actions, action_create(self, rise_update, rise_onStart, NULL, true, 0.6f));
+      break;
+
+    case POPTYPE_STAY:
+      break;
+
+    case POPTYPE_GROW:
+      break;
+    }
+    al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f));
   }
-  if (data->timer <= 0.0f && data->alpha <= 0.0f)
-    entity_destroy(self->owner);
-  trans->translation.y += 0.5f;
+
+  al_update(&data->actions, updateEvent->dt);
+}
+
+void comp_popTextLogic_destroy(COMPONENT *self, void *event) {
+  CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
+  al_destroy(&data->actions);
 }
 
 void comp_popTextLogic(COMPONENT *self) {
-  CDATA_POPTEXT data = { 0 };
-  data.timer = 1.0f;
-  data.alpha = 1.0f;
+  CDATA_POPTEXT data;
+  data.type = POPTYPE_DEFAULT;
+  al_init(&data.actions);
+  data.started = false;
   COMPONENT_INIT(self, COMP_POPTEXTLOGIC, data);
   self->events.logicUpdate = comp_popTextLogic_logicUpdate;
+  self->events.destroy = comp_popTextLogic_destroy;
 }

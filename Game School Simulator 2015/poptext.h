@@ -5,10 +5,11 @@
 
 #include "entity.h"
 #include "hash.h"
+#include "poptextlogic.h"
 
 #define ARCH_POPTEXT HASH("ARCH_POPTEXT")
 void arch_popText(ENTITY *entity);
 
-ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color);
+ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, POPTYPE popType, float timer);
 
 #endif

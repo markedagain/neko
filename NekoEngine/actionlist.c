@@ -2,7 +2,6 @@
 
 #include <stddef.h>
 #include <stdlib.h>
-#include "vector.h"
 #include "actionlist.h"
 
 void al_init(ALIST *actionList) {
@@ -10,76 +9,137 @@ void al_init(ALIST *actionList) {
   actionList->timeElapsed = 0.0;
   actionList->percentDone = 0.0;
   actionList->blocking = 0;
-  actionList->lanes = 0;
-  vector_init(&actionList->actions);
+  actionList->actions = list_create();
 }
 
-void al_free(ALIST *actionList) {
-  vector_free(&actionList->actions);
+void al_destroy(ALIST *actionList) {
+  LIST_NODE *node = actionList->actions->first;
+  while (node) {
+    ACTION *action = (ACTION *)node->data;
+    if (action->hasStarted && action->onEnd)
+      (*action->onEnd)(action);
+    free(action);
+    node = node->next;
+  }
+  list_destroy(actionList->actions);
 }
 
 /* loop through an action list and execute action functions as needed */
-void al_update(ALIST *actionList, float deltaTime) {
+void al_update(ALIST *actionList, double deltaTime) {
   int i = 0;
-  unsigned int lanes = 0;
-  int size = vector_size(&actionList->actions);
+  int size = actionList->actions->count;
   int actionsFinished = 0;
-  int* finished = NULL;
-  for (i = 0; i < size; ++i) {
-    ACTION *action = (ACTION *)(vector_get(&actionList->actions, i));
-    if (lanes & action->lanes)
-      continue;
+  LIST *finished = NULL;
+  ACTION *action = al_begin(actionList);
+  while (action) {
     if (!action->hasStarted) {
-      action->hasStarted = 1;
-      (*(action->onStart))(action);
+      action->hasStarted = true;
+      if (action->onStart)
+        (*(action->onStart))(action);
     }
-    (*(action->update))(action, deltaTime);
-    if (action->isBlocking)
-      lanes |= action->lanes;
+    action->elapsed += (float)deltaTime;
+    if (action->update)
+      (*(action->update))(action, deltaTime);
+    if (action->elapsed >= action->duration)
+      action->isFinished = true;
 
     if (action->isFinished) {
-      (*(action->onEnd))(action);
-      if (!actionsFinished) {
-        actionsFinished = 1;
-        finished = (int *)calloc(size, sizeof(int));
-      }
-      finished[i] = 1;
+      if (action->onEnd)
+        (*(action->onEnd))(action);
+      if (!actionsFinished)
+        finished = list_create();
+      ++actionsFinished;
+      list_insert_end(finished, action);
     }
+    if (action->isBlocking && !action->isFinished)
+      break;
+    if (!action->node->next)
+      break;
+    action = (ACTION *)action->node->next->data;
   }
-  if (actionsFinished) {
-    for (i = size - 1; i >= 0; --i)
-      if (finished[i])
-        vector_pop(&actionList->actions, i);
-    free(finished);
+  if (finished) {
+    LIST_NODE *node = finished->first;
+    while (node) {
+      ACTION *a = (ACTION *)node->data;
+      free(al_remove(actionList, a));
+      node = node->next;
+    }
+    list_destroy(finished);
   }
 }
 
-void al_append(ALIST *actionList, ACTION *action) {
+void al_pushFront(ALIST *actionList, ACTION *action) {
+  LIST_NODE *node = list_insert_beginning(actionList->actions, action);
   action->owner = actionList;
-  vector_append(&actionList->actions, (void *)action);
+  action->node = node;
+}
+
+void al_pushBack(ALIST *actionList, ACTION *action) {
+  LIST_NODE *node = list_insert_end(actionList->actions, action);
+  action->owner = actionList;
+  action->node = node;
+}
+
+void al_insertBefore(ALIST *actionList, ACTION *afterAction, ACTION *action) {
+  LIST_NODE *afterNode = list_getNode(actionList->actions, afterAction);
+  LIST_NODE *node;
+
+  if (afterNode == NULL)
+    return;
+
+  node = list_insert_before(actionList->actions, afterNode, action);
+  action->owner = actionList;
+  action->node = node;
+}
+
+void al_insertAfter(ALIST *actionList, ACTION *beforeAction, ACTION *action) {
+  LIST_NODE *beforeNode = list_getNode(actionList->actions, beforeAction);
+  LIST_NODE *node;
+
+  if (beforeNode == NULL)
+    return;
+
+  node = list_insert_after(actionList->actions, beforeNode, action);
+  action->owner = actionList;
+  action->node = node;
 }
 
 ACTION *al_remove(ALIST *actionList, ACTION *action) {
-  vector_pop(&actionList->actions, vector_index(&actionList->actions, (void *)action));
-  return NULL; /* needed? */
+  return (ACTION *)list_remove(actionList->actions, action->node);
 }
 
 ACTION *al_begin(ALIST *actionList) {
-  return NULL;
+  return actionList->actions->count == 0 ? NULL : (ACTION *)actionList->actions->first->data;
 }
 
 ACTION *al_end(ALIST *actionList) {
-  return NULL;
+  return actionList->actions->count == 0 ? NULL : (ACTION *)actionList->actions->last->data;
 }
 
 int al_isEmpty(ALIST *actionList) {
-  return 0;
+  return actionList->actions->count == 0;
 }
 
-float al_timeLeft(ALIST *actionList) {
-  return 0;
+ACTION *action_create(void *data, ACTION_UPDATE update, ACTION_ONSTART onStart, ACTION_ONEND onEnd, bool blocking, float duration) {
+  ACTION *action = (ACTION *)malloc(sizeof(ACTION));
+  action->data = data;
+  action->update = update;
+  action->onStart = onStart;
+  action->onEnd = onEnd;
+  action->isBlocking = blocking;
+  action->isFinished = false;
+  action->elapsed = 0.0f;
+  action->duration = duration;
+  action->hasStarted = false;
+  action->owner = NULL;
+  action->node = NULL;
+  return action;
 }
 
-ACTION *action_init(ACTION *action) {
-  return NULL;
+float action_ease(ACTION *action, EASING easing, float startValue, float endValue) {
+  return (*(easings[easing]))(action->elapsed, startValue, endValue, action->duration);
+}
+
+float action_getEase(ACTION *action, EASING easing) {
+  return action_ease(action, easing, 0.0f, 1.0f);
 }

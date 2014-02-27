@@ -3,6 +3,41 @@
 #include "easing.h"
 #include <math.h>
 
+EASING_FUNCTION easings[EASING_LAST] = {
+  e_linear,
+  e_quad_in,
+  e_quad_out,
+  e_quad_inOut,
+  e_cubic_in,
+  e_cubic_out,
+  e_cubic_inOut,
+  e_quartic_in,
+  e_quartic_out,
+  e_quartic_inOut,
+  e_quintic_in,
+  e_quintic_out,
+  e_quintic_inOut,
+  e_sine_in,
+  e_sine_out,
+  e_sine_inOut,
+  e_exponential_in,
+  e_exponential_out,
+  e_exponential_inOut,
+  e_circular_in,
+  e_circular_out,
+  e_circular_inOut,
+  e_elastic_in,
+  e_elastic_out,
+  e_elastic_inOut,
+  e_back_in,
+  e_back_out,
+  e_back_inOut,
+  e_bounce_in,
+  e_bounce_out,
+  e_bounce_inOut
+};
+
+
 float e_linear(float t, float b, float c, float d) {
   return c * t / d + b;
 }

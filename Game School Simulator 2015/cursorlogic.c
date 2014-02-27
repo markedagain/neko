@@ -15,15 +15,8 @@
 void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  CDATA_CURSORLOGIC *data = (CDATA_CURSORLOGIC *)entity_getComponentData(self->owner, COMP_CURSORLOGIC);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   POINT mousePos;
-  SPACE *mgSpace = game_getSpace(self->owner->space->game, "mg");
-  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
-  ENTITY *player = space_getEntity(uiSpace, "player");
-  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-  int roomSize;
-  ROOM_TYPE toBuild;
   CDATA_TRANSFORM *cursorSpriteTransform = (CDATA_TRANSFORM *)entity_getComponentData(space_getEntity(game_getSpace(self->owner->space->game, "cursor"), "cursorSprite"), COMP_TRANSFORM);
 
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
@@ -31,40 +24,11 @@ void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
   trans->translation.y = (float)mousePos.y;
   cursorSpriteTransform->translation.x = trans->translation.x;
   cursorSpriteTransform->translation.y = trans->translation.y;
-
-
-  if (playerData->gameMode == BUILD) {
-    if (data->gameMode != BUILD) {
-      LIST *buildSpaces = list_create();
-      toBuild = playerData->roomType;
-      roomSize = comp_schoolLogic_getRoomSize(toBuild);
-      comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
-      if (buildSpaces->first == NULL) {
-        playerData->gameMode = DEFAULT;
-        data->gameMode = DEFAULT;
-      }
-      else {
-        createGhostRooms(self, buildSpaces, roomSize, toBuild);
-        data->gameMode = BUILD;
-      }
-      comp_cursorLogic_deleteList(buildSpaces);
-    }
-  }
 }
 
-
-void comp_cursorLogic_deleteList(LIST *buildSpaces) {
-  LIST_NODE *pNode = buildSpaces->first;
-  while (pNode) {
-    free(pNode->data);
-    pNode = pNode->next;
-  }
-  list_destroy(buildSpaces);
-}
 
 void comp_cursorLogic(COMPONENT *self) {
-  CDATA_CURSORLOGIC data = { 0 };
-  COMPONENT_INIT(self, COMP_CURSORLOGIC, data);
+  COMPONENT_INIT_NULL(self, COMP_CURSORLOGIC);
   component_depend(self, COMP_TRANSFORM);
   component_depend(self, COMP_SPRITE);
   self->events.logicUpdate = comp_cursorLogic_logicUpdate;
@@ -105,9 +69,9 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
     gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
     switch (toBuild) {
-    case ROOMTYPE_LOBBY:
-      sprite->source = "rooms/frontdoor";
-      break;
+      case ROOMTYPE_LOBBY:
+        sprite->source = "rooms/frontdoor";
+        break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
       break;
@@ -122,6 +86,27 @@ void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBu
       break;
     case ROOMTYPE_STORE:
       sprite->source = "rooms/store";
+      break;
+    case ROOMTYPE_OFFICES:
+      sprite->source = "rooms/offices";
+      break;
+    case ROOMTYPE_AUDITORIUM:
+      sprite->source = "rooms/auditorium";
+      break;
+    case ROOMTYPE_TUTORING:
+      sprite->source = "rooms/tutoring";
+      break;
+    case ROOMTYPE_WIFI:
+      sprite->source = "rooms/wifi";
+      break;
+    case ROOMTYPE_RECREATION:
+      sprite->source = "rooms/recreation";
+      break;
+    case ROOMTYPE_FIGURE:
+      sprite->source = "rooms/figure";
+      break;
+    case ROOMTYPE_POTTERY:
+      sprite->source = "rooms/library";
       break;
 
     default:

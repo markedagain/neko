@@ -50,6 +50,8 @@ LIST_NODE *list_insert_beginning(LIST *list, void *data) {
   newNode->next = list->first;
   if (list->first != NULL)
     list->first->prev = newNode;
+  else
+    list->last = newNode;
   list->first = newNode;
   list->count++;
   return newNode;
@@ -216,6 +218,44 @@ LIST_NODE *list_find(LIST *list, int(* func)(void *, void *), void *data) {
   node = list->first;
   while (node) {
     if (func(node->data, data) > 0)
+      return node;
+    node = node->next;
+  }
+  return NULL;
+}
+
+
+void *list_get(LIST *list, int offset) {
+  LIST_NODE *node = list_getNodeFromOffset(list, offset);
+  return (node == NULL ? NULL : node->data);
+}
+
+LIST_NODE *list_getNodeFromOffset(LIST *list, int offset) {
+  LIST_NODE *node = list->first;
+  int i = 0;
+  if (offset >= list->count)
+    return NULL;
+  while (node && i < offset) {
+    node = node->next;
+    ++i;
+  }
+  return node;
+}
+
+void *list_removeAt(LIST *list, int offset) {
+  LIST_NODE *node = list_getNodeFromOffset(list, offset);
+  void *data;
+  if (node == NULL)
+    return NULL;
+  data = node->data;
+  list_remove(list, node);
+  return data;
+}
+
+LIST_NODE *list_getNode(LIST *list, void *data) {
+  LIST_NODE *node = list->first;
+  while (node) {
+    if (node->data == data)
       return node;
     node = node->next;
   }

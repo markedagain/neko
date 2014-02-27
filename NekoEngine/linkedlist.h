@@ -29,5 +29,9 @@ NEKO_API void list_empty(LIST *);
 NEKO_API void list_destroy(LIST *);
 NEKO_API int list_foreach(LIST *list, int(* func)(void *));
 NEKO_API LIST_NODE *list_find(LIST *list, int(* func)(void *, void *), void *data);
+NEKO_API void *list_get(LIST *list, int offset);
+NEKO_API LIST_NODE *list_getNodeFromOffset(LIST *list, int offset);
+NEKO_API void *list_removeAt(LIST *list, int offset);
+NEKO_API LIST_NODE *list_getNode(LIST *list, void *data);
 
 #endif

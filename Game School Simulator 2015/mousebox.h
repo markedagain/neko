@@ -8,7 +8,6 @@
 #include "../NekoEngine/transform.h"
 #include "../NekoEngine/sprite.h"
 #include "../NekoEngine/game.h"
-#include <math.h>
 
 #define COMP_MOUSEBOX HASH("COMP_MOUSEBOX")
 
@@ -19,6 +18,7 @@ typedef struct {
   bool entered;
   bool exited;
 
+  bool ghost;
   bool active;
   bool manual;
 
@@ -33,6 +33,9 @@ typedef struct {
     bool released;
     bool down;
   } right;
+
+  bool pressHandle;
+  bool releaseHandle;
 } CDATA_MOUSEBOX;
 
 

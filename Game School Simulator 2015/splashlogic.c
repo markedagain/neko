@@ -4,8 +4,8 @@
 #include "sound.h"
 #include "generictext.h"
 
-#define DIGIPEN_TIME 3.0
-#define NEKOMEANSCAT_TIME 2.0
+#define DIGIPEN_TIME 1.0
+#define NEKOMEANSCAT_TIME 1.0
 
 void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SPLASHLOGIC *data = (CDATA_SPLASHLOGIC *)self->data;
