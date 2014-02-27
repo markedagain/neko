@@ -26,9 +26,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   VEC2 dimensions = { 40.0f, 20.0f };
   VEC3 position = { 10, 10, 0 };
   VEC4 color = { 0, 0, 1, 1 };
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
   ENTITY *camera = 0;
+  ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
 
@@ -163,7 +166,26 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       UI_button_createGhostRooms(self, ROOMTYPE_FIGURE);
       break;
 
+    case BUTTON_GPA_INCREMENT:
+      if (managementData->minGpa >= (float)4.0)
+        managementData->minGpa = (float)4.0;
+      else
+        managementData->minGpa += (float)0.2;
+      break;
 
+    case BUTTON_GPA_DECREMENT:
+      if (managementData->minGpa <= (float)0.2)
+        managementData->minGpa = (float)0.2;
+      else
+        managementData->minGpa -= (float)0.2;
+      break;
+
+    case BUTTON_TUITION_INCREMENT:
+      managementData->tuition += 500;
+      break;
+
+    case BUTTON_TUITION_DECREMENT:
+      managementData->tuition -= 500;
 
     default:
       break;
@@ -344,6 +366,20 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   VEC3 textPos;
 
   newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", position);
+  buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+  vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
+  text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  entity_attach(text, newButton);
+  buttonData->type = type;
+}
+
+void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
+  ENTITY *newButton = 0;
+  CDATA_UI_BUTTON *buttonData;
+  ENTITY *text;
+  VEC3 textPos;
+
+  newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "managementButton", position);
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);

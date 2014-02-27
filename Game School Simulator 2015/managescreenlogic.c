@@ -38,10 +38,17 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     genericText_setText(managementData->studentInc, managementData->studentIncBuffer);
   }
 
+  // Tuition
+  if (comData->tuition != managementData->currTuition) {
+    managementData->currTuition = comData->tuition;
+    sprintf(managementData->tuitionBuffer, "Tuition: $%i", comData->tuition);
+    genericText_setText(managementData->tuition, managementData->tuitionBuffer);
+  }
+
   // Minimum GPA
   if (comData->minGpa != managementData->currMinGpa) {
     managementData->currMinGpa = comData->minGpa;
-    sprintf(managementData->gpaBuffer, "Min GPA: %f", comData->minGpa);
+    sprintf(managementData->gpaBuffer, "Min GPA: %g", comData->minGpa);
     genericText_setText(managementData->gpa, managementData->gpaBuffer);
   }
 
