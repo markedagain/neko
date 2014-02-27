@@ -1,7 +1,6 @@
 /* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
 
 #include "mousebox.h"
-#include <stdio.h>
 
 void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;
@@ -35,6 +34,7 @@ void comp_mouseBox_initialize(COMPONENT *self, void *event) {
   comData->active = true;
 }
 
+
 void set_box(COMPONENT *self, float left, float top, float right, float bot) {
   CDATA_MOUSEBOX *data = (CDATA_MOUSEBOX *)self->data;
 
@@ -44,6 +44,7 @@ void set_box(COMPONENT *self, float left, float top, float right, float bot) {
   data->box.botRight.y = bot;
 }
 
+// this is not tested
 void adjust_box(COMPONENT *self) {
   CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;
   SPRITE *sprite = NULL;
@@ -191,13 +192,13 @@ void check_status(COMPONENT *self) {
     // check for right mouse input
     switch (input->mouse.right) {
       case ISTATE_DOWN:
-        data->left.down = true;
+        data->right.down = true;
         break;
       case ISTATE_PRESSED:
-        data->left.pressed = true;
+        data->right.pressed = true;
         break;
       case ISTATE_RELEASED:
-        data->left.released = true;
+        data->right.released = true;
         break;
     }
   }

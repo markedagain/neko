@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "ghostroomlogic.h"
 #include "mousebox.h"
 #include "../NekoEngine/component.h"
@@ -22,12 +24,8 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     ENTITY *cursor = space_getEntity(ui, "cursor");
     ENTITY *player = space_getEntity(ui, "player");
     CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-    CDATA_CURSORLOGIC *cursorData = (CDATA_CURSORLOGIC *)entity_getComponentData(cursor, COMP_CURSORLOGIC);
     LIST *ghostrooms = list_create();
     LIST_NODE *pNode;
-
-    playerData->gameMode = DEFAULT;
-    cursorData->gameMode = DEFAULT;
 
     comp_schoolLogic_constructRoom(self, gData->roomType, gData->roomSize, gData->point.y, gData->point.x);
 

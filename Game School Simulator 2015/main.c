@@ -20,6 +20,7 @@
 #include "UI_build.h"
 #include "UI_manage.h"
 #include "UI_student.h"
+#include "UI_button.h"
 #include "splash.h"
 #include "blackbar.h"
 #include "studentactor.h"
@@ -45,8 +46,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   VEC3 position;
   VEC4 color = { 1, 0, 0, 1 };
   VEC2 dimensions = { 40.0f, 20.0f };
-  /*ENTITY *ent1;
-  ENTITY *ent2;
+  ENTITY *ent1;
+  /*ENTITY *ent2;
   ENTITY *ent3;*/
 
   game = game_create(instanceH, show);
@@ -108,8 +109,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   */
 
   vec3_set(&position, 0, -180, 0);
-  space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
-  vec3_set(&position, 0, 180, 0);
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
+  // sets the button type to build
+  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
+  /*vec3_set(&position, 280, 70, 0);
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
   /*vec3_set(&position, -318, 180, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);

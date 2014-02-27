@@ -15,8 +15,5 @@ void comp_cursorLogic(COMPONENT *);
 void comp_cursorLogic_deleteList(LIST *buildSpaces);
 void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE roomType);
 
-typedef struct {
-  GMODE gameMode;
-} CDATA_CURSORLOGIC;
 
 #endif
