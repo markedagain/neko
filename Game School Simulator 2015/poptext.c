@@ -24,8 +24,6 @@ ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, cha
   textData->alignment.x = TEXTALIGN_CENTER;
   textData->alignment.y = TEXTALIGN_BOTTOM;
   popTextData->type = popType;
-  popTextData->timer = timer;
-  popTextData->maxTimer = timer;
   vec4_copy(&textData->color, color);
   comp_spriteText_setText(comText, text);
   return entity;

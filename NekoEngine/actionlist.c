@@ -25,7 +25,7 @@ void al_destroy(ALIST *actionList) {
 }
 
 /* loop through an action list and execute action functions as needed */
-void al_update(ALIST *actionList, float deltaTime) {
+void al_update(ALIST *actionList, double deltaTime) {
   int i = 0;
   int size = actionList->actions->count;
   int actionsFinished = 0;
@@ -37,7 +37,7 @@ void al_update(ALIST *actionList, float deltaTime) {
       if (action->onStart)
         (*(action->onStart))(action);
     }
-    action->elapsed += deltaTime;
+    action->elapsed += (float)deltaTime;
     if (action->update)
       (*(action->update))(action, deltaTime);
     if (action->elapsed >= action->duration)

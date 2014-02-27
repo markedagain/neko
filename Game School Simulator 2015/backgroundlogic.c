@@ -12,11 +12,11 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed && !input->mouse.handled[MBUTTON_LEFT]) {
     VEC3 pos = { 0 };
     POINT mousePos;
-    VEC4 col = { 1.0f, 1.0f, 1.0f, 1.0f };
+    VEC4 col = { 0.0f, 0.0f, 0.0f, 1.0f };
     space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
     pos.x = (float)mousePos.x;
     pos.y = (float)mousePos.y;
-    popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col, POPTYPE_GROW, 1.0f);
+    popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col, POPTYPE_DEFAULT, 1.0f);
     sound_playSound(&self->owner->space->game->systems.sound, "oh");
   }
   if (mbox->left.down && !input->mouse.handled[MBUTTON_LEFT]) {

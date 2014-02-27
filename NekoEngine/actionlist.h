@@ -17,7 +17,7 @@ typedef struct actionList_t {
 
 typedef struct action_t {
   void *data;
-  void (* update)(struct action_t *, float);
+  void (* update)(struct action_t *, double);
   void (* onStart)(struct action_t *);
   void (* onEnd)(struct action_t *);
   bool isFinished;
@@ -29,13 +29,13 @@ typedef struct action_t {
   LIST_NODE *node;
 } ACTION;
 
-typedef void (* ACTION_UPDATE)(ACTION *, float deltaTime);
+typedef void (* ACTION_UPDATE)(ACTION *, double deltaTime);
 typedef void (* ACTION_ONSTART)(ACTION *);
 typedef void (* ACTION_ONEND)(ACTION *);
 
 NEKO_API void al_init(ALIST *);
 NEKO_API void al_destroy(ALIST *);
-NEKO_API void al_update(ALIST *, float deltaTime);
+NEKO_API void al_update(ALIST *, double deltaTime);
 NEKO_API void al_pushFront(ALIST *actionList, ACTION *action);
 NEKO_API void al_pushBack(ALIST *actionList, ACTION *action);
 NEKO_API void al_insertBefore(ALIST *actionList, ACTION *afterAction, ACTION *action);
