@@ -9,15 +9,23 @@
 #define COMP_MANAGEMENT HASH("COMP_MANAGEMENT")
 
 typedef struct{
+  char gpaBuffer[40];
+  char tuitionBuffer[40];
+  char costsBuffer[40];
+  char studentPopBuffer[40];
+  char studentIncBuffer[40];
+  int currStudentInc;
+  int currUpkeep;
+  int currStudentPop;
+  float currMinGpa;
   ENTITY *gpa;
   ENTITY *tuition;
   ENTITY *manageWindow;
   ENTITY *titleText;
   ENTITY *currMoney;
   ENTITY *currCosts;
-  ENTITY *currStudents;
-  ENTITY *studentMax;
-  ENTITY *incomingStudents;
+  ENTITY *studentPop;
+  ENTITY *studentInc;
   bool triggered;
 } CDATA_MANAGEMENT;
 

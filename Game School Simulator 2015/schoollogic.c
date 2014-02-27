@@ -443,36 +443,54 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   actorCompData->type = roomType;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
-  case(ROOMTYPE_LOBBY):
-    sprite->source = "rooms/frontdoor";
-    break;
-  case(ROOMTYPE_CLASS):
-    sprite->source = "rooms/class";
-    break;
-  case(ROOMTYPE_LIBRARY):
-    sprite->source = "rooms/library";
-    break;
-  case(ROOMTYPE_TEAMSPACE):
-    sprite->source = "rooms/teamspace";
-    break;
-  case(ROOMTYPE_CAFETERIA):
-    sprite->source = "rooms/cafeteria";
-    break;
-  case(ROOMTYPE_STORE):
-    sprite->source = "rooms/store";
-    break;
-  default:
-    sprite->source = "rooms/template";
-    break;
+    case ROOMTYPE_LOBBY:
+        sprite->source = "rooms/frontdoor";
+        break;
+    case ROOMTYPE_CLASS:
+      sprite->source = "rooms/class";
+      break;
+    case ROOMTYPE_LIBRARY:
+      sprite->source = "rooms/library";
+      break;
+    case ROOMTYPE_TEAMSPACE:
+      sprite->source = "rooms/teamspace";
+      break;
+    case ROOMTYPE_CAFETERIA:
+      sprite->source = "rooms/cafeteria";
+      break;
+    case ROOMTYPE_STORE:
+      sprite->source = "rooms/store";
+      break;
+    case ROOMTYPE_OFFICES:
+      sprite->source = "rooms/offices";
+      break;
+    case ROOMTYPE_AUDITORIUM:
+      sprite->source = "rooms/auditorium";
+      break;
+    case ROOMTYPE_TUTORING:
+      sprite->source = "rooms/tutoring";
+      break;
+    case ROOMTYPE_WIFI:
+      sprite->source = "rooms/wifi";
+      break;
+    case ROOMTYPE_RECREATION:
+      sprite->source = "rooms/recreation";
+      break;
+    case ROOMTYPE_FIGURE:
+      sprite->source = "rooms/figure";
+      break;
+    case ROOMTYPE_POTTERY:
+      sprite->source = "rooms/library";
+      break;
   }
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE)
+  if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE || type == ROOMTYPE_OFFICES || type == ROOMTYPE_TUTORING || type == ROOMTYPE_WIFI)
     return 1;
-  else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY)
+  else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY || type == ROOMTYPE_RECREATION || type == ROOMTYPE_FIGURE || type == ROOMTYPE_POTTERY)
     return 2;
-  else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA)
+  else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA || type == ROOMTYPE_AUDITORIUM)
     return 3;
 
   return 1;
@@ -496,7 +514,28 @@ int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
       return 100000;
 
     case ROOMTYPE_STORE:
-      return 100000;
+      return 75000;
+
+    case ROOMTYPE_OFFICES:
+      return 50000;
+
+    case ROOMTYPE_AUDITORIUM:
+      return 150000;
+
+    case ROOMTYPE_TUTORING:
+      return 30000;
+
+    case ROOMTYPE_WIFI:
+      return 20000;
+
+    case ROOMTYPE_RECREATION:
+      return 30000;
+
+    case ROOMTYPE_FIGURE:
+      return 30000;
+
+    case ROOMTYPE_POTTERY:
+      return 60000;
 
     default:
       printf("ERROR: Unkown room!!\n");

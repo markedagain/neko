@@ -99,6 +99,107 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
       schoolData->reputation += comData->repBonus;
       schoolData->motivationBonus += comData->motivationBonus;
       break;
+    
+    case ROOMTYPE_OFFICES:
+      //Set Values
+      comData->size = 1;
+      comData->cost = 50000;
+      comData->repBonus = 1;
+      comData->techBonus = 2;
+      comData->designBonus = 2;
+      comData->artBonus = 2;
+      comData->upkeep = 40000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->techBonus += comData->techBonus;
+      schoolData->designBonus += comData->designBonus;
+      schoolData->artBonus += comData->artBonus;
+      break;
+
+    case ROOMTYPE_AUDITORIUM:
+      //Set Values
+      comData->size = 3;
+      comData->cost = 150000;
+      comData->repBonus = 10;
+      comData->motivationBonus = 2;
+      comData->upkeep = 50000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
+    case ROOMTYPE_TUTORING:
+      //Set Values
+      comData->size = 1;
+      comData->cost = 30000;
+      comData->repBonus = 1;
+      comData->techBonus = 1;
+      comData->designBonus = 1;
+      comData->artBonus = 1;
+      comData->motivationBonus = 2;
+      comData->upkeep = 25000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->techBonus += comData->techBonus;
+      schoolData->designBonus += comData->designBonus;
+      schoolData->artBonus += comData->artBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
+    case ROOMTYPE_WIFI:
+      //Set Values
+      comData->size = 1;
+      comData->cost = 20000;
+      comData->techBonus = 5;
+      comData->repBonus = 2;
+      comData->motivationBonus = 2;
+      comData->upkeep = 60000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->techBonus += comData->techBonus;
+      schoolData->reputation += comData->repBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
+    case ROOMTYPE_RECREATION:
+      //Set Values
+      comData->size = 2;
+      comData->cost = 30000;
+      comData->designBonus = 5;
+      comData->motivationBonus = 4;
+      comData->upkeep = 45000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->designBonus += comData->designBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
+    case ROOMTYPE_FIGURE:
+      //Set Values
+      comData->size = 2;
+      comData->cost = 30000;
+      comData->artBonus = 5;
+      comData->motivationBonus = 4;
+      comData->upkeep = 45000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      schoolData->reputation += comData->repBonus;
+      schoolData->artBonus += comData->artBonus;
+      schoolData->motivationBonus += comData->motivationBonus;
+      break;
+
+    case ROOMTYPE_POTTERY:
+      //Set Values
+      comData->size = 2;
+      comData->cost = 60000;
+      comData->upkeep = 15000;
+      //Modify SchoolLogic
+      schoolData->money -= comData->cost;
+      break;
 
     default:
       printf("ERROR: Unkown room created!!\n");

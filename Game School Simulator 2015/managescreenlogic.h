@@ -9,13 +9,24 @@
 #define COMP_MANAGESCREENLOGIC HASH("COMP_MANAGESCREENLOGIC")
 
 typedef struct{
-  ENTITY *leftGPA;
-  ENTITY *rightGPA;
-  ENTITY *leftTuition;
-  ENTITY *rightTuition;
-  ENTITY *boxGPA;
-  ENTITY *boxTuition;
-  bool triggered;
+  char gpaBuffer[40];
+  char tuitionBuffer[40];
+  char costsBuffer[40];
+  char studentPopBuffer[40];
+  char studentIncBuffer[40];
+  int currStudentInc;
+  int currUpkeep;
+  int currStudentPop;
+  float currMinGpa;
+  ENTITY *gpa;
+  ENTITY *tuition;
+  ENTITY *manageWindow;
+  ENTITY *titleText;
+  ENTITY *currMoney;
+  ENTITY *currCosts;
+  ENTITY *studentPop;
+  ENTITY *studentInc;
+  bool updateTriggered;
 } CDATA_MANAGESCREEN;
 
 void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event);
