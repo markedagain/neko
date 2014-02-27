@@ -435,8 +435,6 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   buttonData->type = type;
 }
 
-<<<<<<< HEAD
-=======
 void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
   ENTITY *newButton = 0;
   CDATA_UI_BUTTON *buttonData;
@@ -450,4 +448,3 @@ void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *p
   entity_attach(text, newButton);
   buttonData->type = type;
 }
->>>>>>> 8821ce77ae4b99fd60e6aced03e2dce133a50776
