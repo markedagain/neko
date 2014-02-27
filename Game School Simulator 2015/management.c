@@ -49,21 +49,14 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     /*
     if (data->studentPopBuffer == 0) {
       sprintf(data->studentPopBuffer, "Student Population: %i / %i", comData->currentStudents, comData->studentCapacity);
-      sprintf(data->costsBuffer, "Upkeep: -$%i", comData->roomMaintainance);
+      sprintf(data->costsBuffer, "Upkeep: -$%i", comData->roomMaintenance);
       sprintf(data->studentIncBuffer, "Incoming Students: %i", comData->incomingStudents);
     }
     */
     strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
-    vec3_set(&position, 0, 0, 0);
-    data->manageWindow = space_addEntityAtPosition(self->owner->space, arch_manageScreen, "manage_screen", &position);
-    data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    printf("%f\n", comData->minGpa);
-    sprintf(gpaBuffer, "Min GPA: %f", comData->minGpa);
-    sprintf(tuitionBuffer, "Tuition: $%i", comData->tuition);
-    strncpy(titleBuffer, "MANAGEMENT SCREEN", _countof(titleBuffer));
-    
+    vec3_set(&position, 0, 0, 0);    
     data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
-    data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     vec3_set(&position, 0, -10, 0);
     data->tuition = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->tuitionBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     vec3_set(&position, 0, 100, 0);

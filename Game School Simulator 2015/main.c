@@ -112,7 +112,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
   // sets the button type to build
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
-  /*vec3_set(&position, 280, 70, 0);
+  vec3_set(&position, 0, 180, 0);
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
   /*vec3_set(&position, -318, 180, 0);
   genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", "Game School Simulator 2015", &color);
