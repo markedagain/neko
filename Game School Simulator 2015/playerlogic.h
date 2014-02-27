@@ -29,5 +29,6 @@ void pan(COMPONENT *self, float x, float y, POINT *outPoint);
 void playerLogic_zoom(COMPONENT *playerLogic, float zoomAmt);
 void playerLogic_pan(COMPONENT *playerLogic, float x, float y, POINT *outPoint);
 void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom);
+void playerLogic_setVerticalPos(COMPONENT *playerLogic, float newY);
 
 #endif

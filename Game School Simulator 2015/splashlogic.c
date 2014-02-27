@@ -43,7 +43,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         //vec3_set(&position, 0.0f, 180.0f - 4.0f - 28.0f, 0.0f);
         //genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "subtitle", "fonts/gothic/16", "Alpha presentation", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
         //simSpace->systems.time.scale = 0.0166666666666667f;
-        sound_playSong(&self->owner->space->game->systems.sound, "03");
+        sound_playSong(&self->owner->space->game->systems.sound, "01");
 
         //////////////////////////////////////////
         sprite->color.a = 0;

@@ -55,9 +55,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       VEC4 color;
       COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
       // fix this
-      playerLogic_setZoom(playerLogic, 0.75f);
       playerData->yPan = true;
-      playerLogic_pan(playerLogic, 0.0f, -40.0f, NULL);
+      playerLogic_setZoom(playerLogic, 0.75f);
+      playerLogic_setVerticalPos(playerLogic, -20.0f);
       
       // CREATE LOBBY BUTTON
       vec3_set(&position, -250, -160, 0);

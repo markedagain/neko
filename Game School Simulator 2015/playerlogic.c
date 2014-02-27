@@ -125,10 +125,9 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     SPACE *bg = game_getSpace(self->owner->space->game, "bg");
     SPACE *mg = game_getSpace(self->owner->space->game, "mg");
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-    bg->systems.camera.transform.translation.y -= 1.0f;
-    mg->systems.camera.transform.translation.y -= 1.0f;
-    fg->systems.camera.transform.translation.y -= 1.0f;
-    data->yPan = true;
+    bg->systems.camera.transform.rotation += 0.2f;
+    mg->systems.camera.transform.rotation += 0.2f;
+    fg->systems.camera.transform.rotation += 0.2f;
   }
   if (input->keyboard.keys[KEY_P] == ISTATE_DOWN) {
     zoom_reset(self);
@@ -265,4 +264,14 @@ void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom) {
   mg->systems.camera.transform.scale.y = newZoom;
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
+}
+
+void playerLogic_setVerticalPos(COMPONENT *playerLogic, float newY) {
+  SPACE *bg = game_getSpace(playerLogic->owner->space->game, "bg");
+  SPACE *mg = game_getSpace(playerLogic->owner->space->game, "mg");
+  SPACE *fg = game_getSpace(playerLogic->owner->space->game, "fg");
+
+  bg->systems.camera.transform.translation.y = newY;
+  mg->systems.camera.transform.translation.y = newY;
+  fg->systems.camera.transform.translation.y = newY;
 }

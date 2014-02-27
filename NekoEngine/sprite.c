@@ -33,6 +33,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   VEC3 spriteScale = { 0 };
   VEC3 screenScaleVec = { 0 };
   VEC3 camScale = { 0 };
+  VEC3 camTranslate = { 0 };
+  float camRotation = self->owner->space->systems.camera.transform.rotation;
   float screenScale;
   int screenWidth = self->owner->space->game->innerWindow.width;
   int screenHeight = self->owner->space->game->innerWindow.height;
@@ -46,6 +48,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   float u, v;
 
   vec3_copy(&translation, &trans->world.translation);
+  vec3_copy(&camTranslate, &self->owner->space->systems.camera.transform.translation);
 
   if (!comData->visible)
     return;
@@ -89,6 +92,7 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
 
   spriteRadius = (float)(sqrt(spriteWidth * spriteWidth + spriteHeight * spriteHeight));
 
+  // remember, up above you already apply camScale to create the 'zooming' effect
   matrix3_identity(&transform);
   matrix3_scale(&transform, &baseScale);
   matrix3_scale(&transform, &spriteScale);
@@ -97,7 +101,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   matrix3_scale(&transform, &screenScaleVec);
   matrix3_rotate(&transform, trans->world.rotation);
   matrix3_translate(&transform, &translation);
-
+  matrix3_rotate(&transform, camRotation);
+  
   if(vec3_magnitude(&translation) > screenRadius + spriteRadius) {
     return;
   }
