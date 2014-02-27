@@ -15,7 +15,6 @@
 #include "schoollogic.h"
 #include "managescreen.h"
 #include "ghostroomlogic.h"
-#include <stdio.h>
 
 #define BUILDENDPOS 136.0f
 
@@ -214,6 +213,7 @@ void comp_UI_button_panDown(COMPONENT *self) {
   al_pushFront(&data->actions, action_create(self, zoomOut_update, NULL, NULL, false, 0.4f));
 }
 
+// doesn't pan up based on where it is
 static void panUp_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
