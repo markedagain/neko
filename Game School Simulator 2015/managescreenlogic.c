@@ -26,15 +26,46 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
+  ENTITY *updateData = space_getEntity(uiSpace, "manage_button");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
+  CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(updateData, COMP_MANAGEMENT);
+
+  // Check if current management values have changed for...
+  // Incoming Students
+  if (comData->incomingStudents != managementData->currStudentInc) {
+    managementData->currStudentInc = comData->incomingStudents;
+    sprintf(managementData->studentIncBuffer, "Incoming Students: %i", comData->incomingStudents);
+    genericText_setText(managementData->studentInc, managementData->studentIncBuffer);
+  }
+
+  // Minimum GPA
+  if (comData->minGpa != managementData->currMinGpa) {
+    managementData->currMinGpa = comData->minGpa;
+    sprintf(managementData->gpaBuffer, "Min GPA: %f", comData->minGpa);
+    genericText_setText(managementData->gpa, managementData->gpaBuffer);
+  }
+
+  // Student Population
+  if (comData->currentStudents != managementData->currStudentPop) {
+    managementData->currStudentPop = comData->currentStudents;
+    sprintf(managementData->studentPopBuffer, "Student Population: %i / %i", comData->currentStudents, comData->studentCapacity);
+    genericText_setText(managementData->studentPop, managementData->studentPopBuffer);
+  }
+
+  // Upkeep Costs
+  if (comData->roomMaintainance != managementData->currUpkeep) {
+    managementData->currUpkeep = comData->roomMaintainance;
+    sprintf(managementData->costsBuffer, "Upkeep: -$%i", comData->roomMaintainance);
+    genericText_setText(managementData->currCosts, managementData->costsBuffer);
+  }
 }
 
 void comp_manageScreenLogic(COMPONENT *self) {
   VEC3 position = { 0, 0, 0 };
   VEC4 color = { 0, 0, 1, 1 };
   CDATA_MANAGESCREEN data = { 0 };
+
   // SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
-  
   vec3_set(&position, -50, 70, 0);
   //data.leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
   vec3_set(&position, -50, 70, 0);
