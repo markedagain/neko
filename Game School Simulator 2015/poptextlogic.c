@@ -11,6 +11,13 @@ static void rise_update(ACTION *action, double dt) {
   trans->translation.y = data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * 32.0f;//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
 }
 
+static void riseStay_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  trans->translation.y = data->startY + action_getEase(action, EASING_QUINTIC_OUT) * 32.0f;//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
+}
+
 static void rise_onStart(ACTION *action) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
@@ -44,6 +51,7 @@ void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
       break;
 
     case POPTYPE_STAY:
+      al_pushFront(&data->actions, action_create(self, riseStay_update, rise_onStart, NULL, true, 0.6f));
       break;
 
     case POPTYPE_GROW:
