@@ -16,6 +16,7 @@ typedef struct{
   char studentIncBuffer[40];
   int currStudentInc;
   int currUpkeep;
+  int currTuition;
   int currStudentPop;
   float currMinGpa;
   ENTITY *gpa;

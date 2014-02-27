@@ -52,5 +52,6 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
 void UI_button_destroyGhostRooms(COMPONENT *self);
 void comp_UI_button_panDown(COMPONENT *self);
 void comp_UI_button_panUp(COMPONENT *self);
+void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
 
 #endif

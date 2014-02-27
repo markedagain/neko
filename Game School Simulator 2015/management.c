@@ -45,7 +45,6 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     VEC4 color = { 0, 0, 1, 1 };
 
     data->triggered = true;
-    sprintf(data->tuitionBuffer, "Tuition: $%i", comData->tuition);
     strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
     vec3_set(&position, 0, 0, 0);    
     data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
@@ -64,9 +63,18 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     //data->leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
     //vec3_set(&position, -50, 70, 0);
     //data->rightGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_right");
-    //UI_button_createRoomButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increment GPA");
+    vec3_set(&position, -100, 70, 0);
+    UI_button_createManagementButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increase GPA");
+    vec3_set(&position, 100, 70, 0);
+    UI_button_createManagementButton(self, BUTTON_GPA_DECREMENT, &position, &color, "Decrease GPA");
+    vec3_set(&position, -100, 0, 0);
+    UI_button_createManagementButton(self, BUTTON_TUITION_INCREMENT, &position, &color, "Increase Tuition");
+    vec3_set(&position, 100, 0, 0);
+    UI_button_createManagementButton(self, BUTTON_TUITION_DECREMENT, &position, &color, "Decrease Tuition");
   }
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
+    LIST_NODE *node;
+    LIST *buttons = list_create(); 
     data->triggered = true;
     entity_destroy(data->gpa);
     data->gpa = NULL;
@@ -82,6 +90,13 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     data->studentPop = NULL;
     entity_destroy(data->studentInc);
     data->studentInc = NULL;
+    space_getAllEntities(self->owner->space, "managementButton", buttons);
+    node = buttons->first;
+    while (node) {
+      entity_destroy((ENTITY *)node->data);
+      node = node->next;
+    }
+    list_destroy(buttons);
   }
   else if (!mbox->left.pressed)
     data->triggered = false;
