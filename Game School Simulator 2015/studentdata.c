@@ -10,6 +10,11 @@
 #include "../NekoEngine/random.h"
 #include "timemanager.h"
 #include "schoollogic.h"
+#define HEAD_COUNT 5
+#define FACE_COUNT 5
+#define HAIR_COUNT 5
+#define BODY_COUNT 5
+#define LEGS_COUNT 5
 
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -87,6 +92,11 @@ void generate_student(COMPONENT *self) {
   char *firstname;
 
   data->name.last = lastname;
+  data->head = randomIntRange(1, HEAD_COUNT);
+  data->face = randomIntRange(1, FACE_COUNT);
+  data->hair = randomIntRange(1, HAIR_COUNT);
+  data->body = randomIntRange(1, BODY_COUNT);
+  data->legs = randomIntRange(1, LEGS_COUNT);
 
   if(gender == 1) {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_male");
@@ -114,9 +124,7 @@ void generate_student(COMPONENT *self) {
   else if(data->designSkill >= data->techSkill && data->designSkill >= data->artSkill)
     data->major = M_DESIGN;
 
-  lowValue = 25;
-  highValue = 100;
-  data->motivation = randomIntRange(lowValue, highValue);
+  data->motivation = randomIntRange(25, 100);
   data->yearStarted = timeData->currentYear;
   data->semesterStarted = timeData->currentSemester;
 }

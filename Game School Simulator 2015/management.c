@@ -12,6 +12,7 @@
 #include "playerlogic.h"
 #include "roomlogic.h"
 #include "UI_build.h"
+#include "UI_button.h"
 #include "schoollogic.h"
 #include "managescreen.h"
 
@@ -45,14 +46,6 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
 
     data->triggered = true;
     sprintf(data->tuitionBuffer, "Tuition: $%i", comData->tuition);
-    // THIS DOES NOTHING
-    /*
-    if (data->studentPopBuffer == 0) {
-      sprintf(data->studentPopBuffer, "Student Population: %i / %i", comData->currentStudents, comData->studentCapacity);
-      sprintf(data->costsBuffer, "Upkeep: -$%i", comData->roomMaintenance);
-      sprintf(data->studentIncBuffer, "Incoming Students: %i", comData->incomingStudents);
-    }
-    */
     strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
     vec3_set(&position, 0, 0, 0);    
     data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
@@ -71,6 +64,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     //data->leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
     //vec3_set(&position, -50, 70, 0);
     //data->rightGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_right");
+    //UI_button_createRoomButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increment GPA");
   }
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
     data->triggered = true;
