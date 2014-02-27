@@ -50,6 +50,8 @@ LIST_NODE *list_insert_beginning(LIST *list, void *data) {
   newNode->next = list->first;
   if (list->first != NULL)
     list->first->prev = newNode;
+  else
+    list->last = newNode;
   list->first = newNode;
   list->count++;
   return newNode;
