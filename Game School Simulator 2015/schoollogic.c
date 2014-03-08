@@ -430,6 +430,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
   comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   comData->roomConstructed = TRUE;
+  comData->slotsUsed += roomSize;
 
   // CREATE ACTOR
   switch (roomSize) {
