@@ -182,32 +182,47 @@ void check_status(COMPONENT *self) {
       case ISTATE_DOWN:
         if (!input->mouse.handled[MBUTTON_LEFT]) {
           data->left.down = true;
-          input->mouse.handled[MBUTTON_LEFT] = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_LEFT] = true;
         }
         break;
       case ISTATE_PRESSED:
         if (!input->mouse.handled[MBUTTON_LEFT]) {
           data->left.pressed = true;
-          input->mouse.handled[MBUTTON_LEFT] = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_LEFT] = true;
         }
         break;
       case ISTATE_RELEASED:
         if (!input->mouse.handled[MBUTTON_LEFT]) {
           data->left.released = true;
-          input->mouse.handled[MBUTTON_LEFT] = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_LEFT] = true;
         }
         break;
     }
     // check for right mouse input
     switch (input->mouse.right) {
       case ISTATE_DOWN:
-        data->right.down = true;
+        if (!input->mouse.handled[MBUTTON_RIGHT]) {
+          data->right.down = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_RIGHT] = true;
+        }
         break;
       case ISTATE_PRESSED:
-        data->right.pressed = true;
+        if (!input->mouse.handled[MBUTTON_RIGHT]) {
+          data->right.pressed = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_RIGHT] = true;
+        }
         break;
       case ISTATE_RELEASED:
-        data->right.released = true;
+        if (!input->mouse.handled[MBUTTON_RIGHT]) {
+          data->right.released = true;
+          if (!data->ghost)
+            input->mouse.handled[MBUTTON_RIGHT] = true;
+        }
         break;
     }
   }
