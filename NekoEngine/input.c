@@ -18,6 +18,8 @@ void input_initialize(INPUT_CONTAINER *input) {
   input->mouse.position.y = 0;
   input->mouse.wheel.delta = 0;
   input->mouse.wheel.direction = 0;
+  for (i = 0; i < INPUT_MAX_ASCII_KEYS_PER_FRAME + 1; ++i)
+    input->keyboard.ascii[i] = 0;
 }
 
 void input_update(INPUT_CONTAINER *input, HWND *window) {
@@ -43,32 +45,7 @@ void input_update(INPUT_CONTAINER *input, HWND *window) {
       if (input->mouse.buttons[i] == ISTATE_RELEASED)
         input->mouse.buttons[i] = ISTATE_UP;
     }
-    /*
-    if (input->mouse.quickClicked[i] == true) {
-      input->mouse.quickClicked[i] = false;
-      input->mouse.buttons[i] = ISTATE_RELEASED;
-    }
-    else {
-      if (input->mouse.buttons[i] == ISTATE_PRESSED)
-        input->mouse.buttons[i] = ISTATE_DOWN;
-      if (input->mouse.buttons[i] == ISTATE_RELEASED)
-        input->mouse.buttons[i] = ISTATE_UP;
-      if (input->mouse.buffer[i] == 1)
-        input->mouse.buttons[i] = ISTATE_PRESSED;
-    }
-    if (input->mouse.buffer[i] == -1) {
-      if (input->mouse.buttons[i] == ISTATE_PRESSED || input->mouse.buttons[i] == ISTATE_DOWN)
-        input->mouse.buttons[i] = ISTATE_RELEASED;
-      else {
-        input->mouse.buttons[i] = ISTATE_PRESSED;
-        input->mouse.quickClicked[i] = true;
-      }
-    }
-    */
   }
-  /*for (i = 0; i < MBUTTON_LAST; ++i) {
-    input->mouse.buffer[i] = false;
-  }*/
   input->mouse.wheel.direction = input->mouse.wheel.delta > 0 ? 1 : input->mouse.wheel.delta < 0 ? -1 : 0;
   GetCursorPos(&input->mouse.position);
   ScreenToClient(AESysGetWindowHandle(), &input->mouse.position);
@@ -78,6 +55,8 @@ void input_reset_logic(INPUT_CONTAINER *input) {
   int i;
   for (i = 0; i < MBUTTON_LAST; ++i)
     input->mouse.handled[i] = false;
+  for (i = 0; i < INPUT_MAX_ASCII_KEYS_PER_FRAME; ++i)
+    input->keyboard.ascii[i] = 0;
 }
 
 void input_reset_frame(INPUT_CONTAINER *input) {
