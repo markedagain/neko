@@ -42,7 +42,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     char titleBuffer[40];
     VEC3 position = { 0, 0, 0 };
-    VEC4 color = { 0, 0, 1, 1 };
+    VEC4 color = { 0, 0, 0, 1 };
 
     data->triggered = true;
     strncpy(titleBuffer, "MANAGEMENT SCREEN 4 UR BUM", _countof(titleBuffer));
@@ -63,14 +63,14 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     //data->leftGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_left");
     //vec3_set(&position, -50, 70, 0);
     //data->rightGPA = genericSprite_create(uiSpace, &position, NULL, "cursor/manage_button_right");
-    vec3_set(&position, -100, 70, 0);
-    UI_button_createManagementButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increase GPA");
-    vec3_set(&position, 100, 70, 0);
-    UI_button_createManagementButton(self, BUTTON_GPA_DECREMENT, &position, &color, "Decrease GPA");
-    vec3_set(&position, -100, 0, 0);
-    UI_button_createManagementButton(self, BUTTON_TUITION_INCREMENT, &position, &color, "Increase Tuition");
-    vec3_set(&position, 100, 0, 0);
-    UI_button_createManagementButton(self, BUTTON_TUITION_DECREMENT, &position, &color, "Decrease Tuition");
+    vec3_set(&position, 100, 50, 0);
+    UI_button_createManagementButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increase\nGPA");
+    vec3_set(&position, -100, 50, 0);
+    UI_button_createManagementButton(self, BUTTON_GPA_DECREMENT, &position, &color, "Decrease\nGPA");
+    vec3_set(&position, 100, -10, 0);
+    UI_button_createManagementButton(self, BUTTON_TUITION_INCREMENT, &position, &color, "Increase\nTuition");
+    vec3_set(&position, -100, -10, 0);
+    UI_button_createManagementButton(self, BUTTON_TUITION_DECREMENT, &position, &color, "Decrease\nTuition");
   }
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
     LIST_NODE *node;

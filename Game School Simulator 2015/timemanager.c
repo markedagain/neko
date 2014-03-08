@@ -25,11 +25,11 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comData->frameCounter = 0;
       comData->monthCounter++;
       schoolData->roomConstructed = FALSE;
-    }
 
-    if(comData->monthCounter == 6 || comData->monthCounter == 12) {
-      comData->currentSemester++;
-      comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
+      if(comData->monthCounter == 6 || comData->monthCounter == 12) {
+        comData->currentSemester++;
+        comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
+      }
     }
 
     if(comData->monthCounter >= 12) {
