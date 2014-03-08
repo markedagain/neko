@@ -502,53 +502,6 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
-int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
-  switch (type) {
-    case ROOMTYPE_LOBBY:
-      return 100000;
-
-    case ROOMTYPE_CLASS:
-      return 40000;
-
-    case ROOMTYPE_LIBRARY:
-      return 50000;
-
-    case ROOMTYPE_TEAMSPACE:
-      return 75000;
-
-    case ROOMTYPE_CAFETERIA:
-      return 100000;
-
-    case ROOMTYPE_STORE:
-      return 75000;
-
-    case ROOMTYPE_OFFICES:
-      return 50000;
-
-    case ROOMTYPE_AUDITORIUM:
-      return 150000;
-
-    case ROOMTYPE_TUTORING:
-      return 30000;
-
-    case ROOMTYPE_WIFI:
-      return 20000;
-
-    case ROOMTYPE_RECREATION:
-      return 30000;
-
-    case ROOMTYPE_FIGURE:
-      return 30000;
-
-    case ROOMTYPE_POTTERY:
-      return 60000;
-
-    default:
-      printf("ERROR: Unkown room!!\n");
-      break;
-  }
-  return 0;
-}
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;

@@ -199,6 +199,14 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
     case BUTTON_TUITION_DECREMENT:
       managementData->tuition -= 500;
+      break;
+
+    case BUTTON_NEWGAME:
+      {
+      SPACE *menu = game_getSpace(self->owner->space->game, "menu");
+      space_destroy(menu);
+      }
+      break;
 
     default:
       break;
@@ -438,6 +446,9 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   CDATA_UI_BUTTON *buttonData;
   ENTITY *text;
   VEC3 textPos;
+  SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  CDATA_SPRITE *sprite;
 
   newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", position);
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
@@ -445,6 +456,12 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   entity_attach(text, newButton);
   buttonData->type = type;
+  sprite = (CDATA_SPRITE *)entity_getComponentData(newButton, COMP_SPRITE);
+
+  /*if (schoolData->money < comp_roomLogic_getRoomCost(type)) {
+
+  }*/
+
 }
 
 void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
