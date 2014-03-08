@@ -8,14 +8,14 @@ static void rise_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  trans->translation.y = data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * 32.0f;//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, data->startY, 32.0f);
 }
 
 static void riseStay_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
-  trans->translation.y = data->startY + action_getEase(action, EASING_QUINTIC_OUT) * 32.0f;//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
+  trans->translation.y = action_ease(action, EASING_QUINTIC_OUT, data->startY, 32.0f);//action_ease(action, EASING_QUAD_OUT, data->startY, data->startY + 0.8f);
 }
 
 static void rise_onStart(ACTION *action) {
