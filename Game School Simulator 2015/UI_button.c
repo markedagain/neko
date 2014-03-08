@@ -458,9 +458,7 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   buttonData->type = type;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newButton, COMP_SPRITE);
 
-  /*if (schoolData->money < comp_roomLogic_getRoomCost(type)) {
-
-  }*/
+  UI_button_updateBuildButtons(self->owner->space);
 
 }
 
@@ -476,4 +474,27 @@ void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *p
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   entity_attach(text, newButton);
   buttonData->type = type;
+}
+
+
+void UI_button_updateBuildButtons(SPACE *ui) {
+  SPACE *sim = game_getSpace(ui->game, "sim");
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  LIST *buildButtons = list_create();
+  LIST_NODE *node;
+  CDATA_UI_BUTTON *buttonData;
+
+  // loop through all build buttons and update their active or non active ness
+  space_getAllEntities(ui, "buildButton", buildButtons);
+  node = buildButtons->first;
+
+  while (node) {
+    buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(node->data, COMP_UI_BUTTON);
+    if (schoolData->money < comp_roomLogic_getRoomCost(buttonData->type)) {
+      CDATA_MOUSEBOX *buttonBox = entity_getComponentData(node->data, COMP_MOUSEBOX);
+      buttonBox->active = false;
+    }
+    node = node->next;
+  }
+  list_destroy(buildButtons);
 }
