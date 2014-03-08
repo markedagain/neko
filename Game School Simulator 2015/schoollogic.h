@@ -25,11 +25,15 @@ typedef struct cdata_schoolLogic_t {
   LIST *students;
   LIST *alumni;
   int roomMaintenance;
+  int slotsUsed;
   LIST *roomList;
   int reputation;
   int techBonus;
   int designBonus;
   int artBonus;
+  int semTech;
+  int semDesign;
+  int semArt;
   int motivationBonus;
   BOOL roomConstructed;
   long int currMoney;
