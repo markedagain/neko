@@ -500,6 +500,14 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   }
 }
 
+void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType){
+  SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
+  SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+
+
+}
+
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE || type == ROOMTYPE_OFFICES || type == ROOMTYPE_TUTORING || type == ROOMTYPE_WIFI)
     return 1;

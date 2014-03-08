@@ -27,8 +27,10 @@ typedef enum {
 typedef struct cdata_roomlogic_t {
   ROOM_TYPE type;
   int cost;
+  int upgradeCost;
   int upkeep;
   int size;
+  int level;
   int techBonus;
   int designBonus;
   int artBonus;
@@ -40,7 +42,10 @@ typedef struct cdata_roomlogic_t {
 
 void comp_roomLogic_frameUpdate(COMPONENT *, void *);
 void comp_roomLogic_logicUpdate(COMPONENT *, void *);
+void comp_roomLogic_createRoom(COMPONENT *self);
+void comp_roomLogic_upgradeRoom(COMPONENT *self);
 void comp_roomLogic(COMPONENT *);
 int comp_roomLogic_getRoomCost(ROOM_TYPE type);
+int comp_roomLogic_getRoomUpgradeCost(ROOM_TYPE type);
 
 #endif
