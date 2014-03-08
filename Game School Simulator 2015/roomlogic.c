@@ -15,7 +15,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
       //Set Values
       comData->size = 2;
       comData->repBonus = 5;
-      comData->cost = 100000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_LOBBY);
       comData->upkeep = 10000;
       //Modify SchoolData
       schoolData->money -= comData->cost;
@@ -25,7 +25,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_CLASS:
       //Set Values
       comData->size = 1;
-      comData->cost = 40000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_CLASS);
       comData->repBonus = 1;
       comData->techBonus = 1;
       comData->designBonus = 1;
@@ -43,7 +43,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_LIBRARY:
       //Set Values
       comData->size = 2;
-      comData->cost = 50000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_LIBRARY);
       comData->repBonus = 2;
       comData->techBonus = 2;
       comData->designBonus = 2;
@@ -60,7 +60,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_TEAMSPACE:
       //Set Values
       comData->size = 3;
-      comData->cost = 75000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_TEAMSPACE);
       comData->repBonus = 5;
       comData->techBonus = 1;
       comData->designBonus = 1;
@@ -77,7 +77,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_CAFETERIA:
       //Set Values
       comData->size = 3;
-      comData->cost = 100000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_CAFETERIA);
       comData->repBonus = 5;
       comData->motivationBonus = 5;
       comData->upkeep = -10000;
@@ -90,7 +90,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_STORE:
       //Set Values
       comData->size = 1;
-      comData->cost = 75000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_STORE);
       comData->repBonus = 1;
       comData->motivationBonus = 2;
       comData->upkeep = -20000;
@@ -103,7 +103,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_OFFICES:
       //Set Values
       comData->size = 1;
-      comData->cost = 50000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_OFFICES);
       comData->repBonus = 1;
       comData->techBonus = 2;
       comData->designBonus = 2;
@@ -120,7 +120,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_AUDITORIUM:
       //Set Values
       comData->size = 3;
-      comData->cost = 150000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_AUDITORIUM);
       comData->repBonus = 10;
       comData->motivationBonus = 2;
       comData->upkeep = 50000;
@@ -133,7 +133,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_TUTORING:
       //Set Values
       comData->size = 1;
-      comData->cost = 30000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_TUTORING);
       comData->repBonus = 1;
       comData->techBonus = 1;
       comData->designBonus = 1;
@@ -152,7 +152,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_WIFI:
       //Set Values
       comData->size = 1;
-      comData->cost = 20000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_WIFI);
       comData->techBonus = 5;
       comData->repBonus = 2;
       comData->motivationBonus = 2;
@@ -167,7 +167,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_RECREATION:
       //Set Values
       comData->size = 2;
-      comData->cost = 30000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_RECREATION);
       comData->designBonus = 5;
       comData->motivationBonus = 4;
       comData->upkeep = 45000;
@@ -181,7 +181,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_FIGURE:
       //Set Values
       comData->size = 2;
-      comData->cost = 30000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_FIGURE);
       comData->artBonus = 5;
       comData->motivationBonus = 4;
       comData->upkeep = 45000;
@@ -195,7 +195,7 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_POTTERY:
       //Set Values
       comData->size = 2;
-      comData->cost = 60000;
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_POTTERY);
       comData->upkeep = 15000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
@@ -230,4 +230,50 @@ void comp_roomLogic(COMPONENT *self) {
   COMPONENT_INIT(self, COMP_ROOMLOGIC, data);
   self->events.logicUpdate = comp_roomLogic_logicUpdate;
   self->events.frameUpdate = comp_roomLogic_frameUpdate;
+}
+
+int comp_roomLogic_getRoomCost(ROOM_TYPE type) {
+    switch (type) {
+    case ROOMTYPE_LOBBY:
+      return 100000;
+
+    case ROOMTYPE_CLASS:
+      return 40000;
+
+    case ROOMTYPE_LIBRARY:
+      return 50000;
+
+    case ROOMTYPE_TEAMSPACE:
+      return 75000;
+
+    case ROOMTYPE_CAFETERIA:
+      return 100000;
+
+    case ROOMTYPE_STORE:
+      return 75000;
+    
+    case ROOMTYPE_OFFICES:
+      return 50000;
+
+    case ROOMTYPE_AUDITORIUM:
+      return 150000;
+
+    case ROOMTYPE_TUTORING:
+      return 30000;
+
+    case ROOMTYPE_WIFI:
+      return 20000;
+
+    case ROOMTYPE_RECREATION:
+      return 30000;
+
+    case ROOMTYPE_FIGURE:
+      return 30000;
+
+    case ROOMTYPE_POTTERY:
+      return 60000;
+
+    default:
+      return 0;
+  }
 }
