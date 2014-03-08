@@ -41,6 +41,7 @@ typedef struct{
   ALIST actions;
   float startY;
   float startZoom;
+  float origin;
 } CDATA_UI_BUTTON;
 
 void UI_buttonUpdate(COMPONENT *self, void *event);
@@ -53,5 +54,6 @@ void UI_button_destroyGhostRooms(COMPONENT *self);
 void comp_UI_button_panDown(COMPONENT *self);
 void comp_UI_button_panUp(COMPONENT *self);
 void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
+void comp_UI_destroy(COMPONENT *self, void *event);
 
 #endif

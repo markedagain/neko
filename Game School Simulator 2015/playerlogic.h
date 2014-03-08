@@ -18,6 +18,7 @@ typedef struct {
   bool dragging;
   POINT dragOrigin;
   float zoomVelocity;
+  float yLock;
   bool yPan;
 } CDATA_PLAYERLOGIC;
 
