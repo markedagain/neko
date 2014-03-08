@@ -103,6 +103,10 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
+  comData->semTech += comData->techBonus;
+  comData->semDesign += comData->designBonus;
+  comData->semArt += comData->artBonus;
+
   printf("Students: %i/%i (%i incoming)", comData->currentStudents, comData->studentCapacity, comData->incomingStudents);
   printf("       Incoming: %i\n", comData->incomingStudents);
   printf("Money: $%i", comData->money);
@@ -146,6 +150,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     comData->incomingStudents = 0;
   }
 
+  // LOOP THROUGH STUDENTS
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
@@ -153,22 +158,22 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     // GPA
     if(studentData->major == M_TECH) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->techIncrease / (comData->techBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->techIncrease / (float)comData->semTech) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
     if(studentData->major == M_DESIGN) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->designIncrease / (comData->designBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->designIncrease / (float)comData->semDesign) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
     if(studentData->major == M_ART) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->artIncrease / (comData->artBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->artIncrease / (float)comData->semArt) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
@@ -187,7 +192,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentPtr = studentPtr->next;
 
     // Drop students below the min GPA 
-    if(studentData->gpa < comData->minGpa) {
+    if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -202,6 +207,10 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       continue;
     }
   }
+
+  comData->semTech = 0;
+  comData->semDesign = 0;
+  comData->semArt = 0;
 
   comData->expectedGraduates = 0;
 
