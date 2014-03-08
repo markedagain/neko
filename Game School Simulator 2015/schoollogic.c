@@ -44,9 +44,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     }
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
-    // sprintf(buffer,"$%d", comData->money);
-    // moneyUI = 
     comData->currMoney = comData->money;
+    // update build buttons
+    UI_button_updateBuildButtons(uiSpace);
   }
 }
 
@@ -502,8 +502,6 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       sprite->source = "rooms/library";
       break;
   }
-  // update build buttons
-  UI_button_updateBuildButtons(ui);
 }
 
 void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType){
