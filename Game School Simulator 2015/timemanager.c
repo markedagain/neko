@@ -2,6 +2,7 @@
 
 #include "timemanager.h"
 #include "schoollogic.h"
+#include "UI_button.h"
 #include "../NekoEngine/input.h"
 
 
@@ -18,13 +19,19 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
     // New month every x frames (1 FPS)
     if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond / 1) {
+      SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+      
       comData->months++;
       printf("\n\n\n\n\n\n");
       printf("Month: %i  Semester: %i  Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);
+      
+      // Monthly functions //
       comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
       comData->frameCounter = 0;
       comData->monthCounter++;
       schoolData->roomConstructed = FALSE;
+
+      UI_button_updateBuildButtons(ui);
 
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {
         comData->currentSemester++;

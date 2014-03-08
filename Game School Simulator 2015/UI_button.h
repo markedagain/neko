@@ -30,7 +30,10 @@ typedef enum {
   BUTTON_GPA_INCREMENT,
   BUTTON_GPA_DECREMENT,
   BUTTON_TUITION_INCREMENT,
-  BUTTON_TUITION_DECREMENT
+  BUTTON_TUITION_DECREMENT,
+  BUTTON_NEWGAME,
+  BUTTON_OPTIONS,
+  BUTTON_EXIT
 } BUTTON_TYPE;
 
 typedef struct{
@@ -55,5 +58,6 @@ void comp_UI_button_panDown(COMPONENT *self);
 void comp_UI_button_panUp(COMPONENT *self);
 void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
 void comp_UI_destroy(COMPONENT *self, void *event);
+void UI_button_updateBuildButtons(SPACE *ui);
 
 #endif

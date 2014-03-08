@@ -55,7 +55,6 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
 void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, int floorToUse, int colToUse);
 void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType);
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type);
-int comp_schoolLogic_getRoomCost(ROOM_TYPE type);
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);

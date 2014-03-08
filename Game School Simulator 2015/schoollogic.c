@@ -16,6 +16,7 @@
 #include "roomactorlogic.h"
 #include "roomactor.h"
 #include "timemanager.h"
+#include "UI_button.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
@@ -423,6 +424,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   CDATA_ACTORLOGIC *actorCompData;
   SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
   SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
+  SPACE *ui = game_getSpace(ptr->owner->space->game, "ui");
   ENTITY *entity = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
   VEC3 middle;
@@ -456,6 +458,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
+
+  // set sprite
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
@@ -498,6 +502,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       sprite->source = "rooms/library";
       break;
   }
+  // update build buttons
+  UI_button_updateBuildButtons(ui);
 }
 
 void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType){
@@ -519,53 +525,6 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
-int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
-  switch (type) {
-    case ROOMTYPE_LOBBY:
-      return 100000;
-
-    case ROOMTYPE_CLASS:
-      return 40000;
-
-    case ROOMTYPE_LIBRARY:
-      return 50000;
-
-    case ROOMTYPE_TEAMSPACE:
-      return 75000;
-
-    case ROOMTYPE_CAFETERIA:
-      return 100000;
-
-    case ROOMTYPE_STORE:
-      return 75000;
-
-    case ROOMTYPE_OFFICES:
-      return 50000;
-
-    case ROOMTYPE_AUDITORIUM:
-      return 150000;
-
-    case ROOMTYPE_TUTORING:
-      return 30000;
-
-    case ROOMTYPE_WIFI:
-      return 20000;
-
-    case ROOMTYPE_RECREATION:
-      return 30000;
-
-    case ROOMTYPE_FIGURE:
-      return 30000;
-
-    case ROOMTYPE_POTTERY:
-      return 60000;
-
-    default:
-      printf("ERROR: Unkown room!!\n");
-      break;
-  }
-  return 0;
-}
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;
