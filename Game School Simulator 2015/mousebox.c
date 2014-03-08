@@ -180,13 +180,22 @@ void check_status(COMPONENT *self) {
     // check for left mouse input
     switch (input->mouse.left) {
       case ISTATE_DOWN:
-        data->left.down = true;
+        if (!input->mouse.handled[MBUTTON_LEFT]) {
+          data->left.down = true;
+          input->mouse.handled[MBUTTON_LEFT] = true;
+        }
         break;
       case ISTATE_PRESSED:
-        data->left.pressed = true;
+        if (!input->mouse.handled[MBUTTON_LEFT]) {
+          data->left.pressed = true;
+          input->mouse.handled[MBUTTON_LEFT] = true;
+        }
         break;
       case ISTATE_RELEASED:
-        data->left.released = true;
+        if (!input->mouse.handled[MBUTTON_LEFT]) {
+          data->left.released = true;
+          input->mouse.handled[MBUTTON_LEFT] = true;
+        }
         break;
     }
     // check for right mouse input

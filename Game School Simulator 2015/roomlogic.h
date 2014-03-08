@@ -41,5 +41,6 @@ typedef struct cdata_roomlogic_t {
 void comp_roomLogic_frameUpdate(COMPONENT *, void *);
 void comp_roomLogic_logicUpdate(COMPONENT *, void *);
 void comp_roomLogic(COMPONENT *);
+int comp_roomLogic_getRoomCost(ROOM_TYPE type);
 
 #endif
