@@ -40,7 +40,7 @@ if transformFlag.upper() == 'Y':
 
 # writing archetype connection function
 f.write("\nvoid arch_" + archName + "(ENTITY *entity) {\n")
-f.write("entity->id = ARCH_" + capName + ";\n")
+f.write("  entity->id = ARCH_" + capName + ";\n")
 if transformFlag.upper() == 'Y':
     f.write("  entity_connect(entity, comp_transform);\n")
 if logicFlag.upper() == 'Y':

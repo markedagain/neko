@@ -191,6 +191,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="gamemanager.c" />
     <ClCompile Include="ghostroom.c" />
     <ClCompile Include="ghostroomlogic.c" />
+    <ClCompile Include="inspectionscreen.c" />
+    <ClCompile Include="inspectionscreenlogic.c" />
     <ClCompile Include="management.c" />
     <ClCompile Include="managescreen.c" />
     <ClCompile Include="managescreenlogic.c" />
@@ -230,6 +232,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="gamemanager.h" />
     <ClInclude Include="ghostroom.h" />
     <ClInclude Include="ghostroomlogic.h" />
+    <ClInclude Include="inspectionscreen.h" />
+    <ClInclude Include="inspectionscreenlogic.h" />
     <ClInclude Include="management.h" />
     <ClInclude Include="managescreen.h" />
     <ClInclude Include="managescreenlogic.h" />

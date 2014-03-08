@@ -13,6 +13,7 @@
 #include "studentdata.h"
 #include "generictext.h"
 #include <math.h>
+#include <stdio.h>
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -72,15 +73,9 @@ void zoom(COMPONENT *self, float zoom) {
   fg->systems.camera.transform.scale.x = newZoom;
   fg->systems.camera.transform.scale.y = newZoom;
   if (!data->yPan) {
-    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
-    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
-    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
-  }
-  else {
-    // THIS DOESN'T WORK MAN
-    //bg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
-    //mg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
-    //fg->systems.camera.transform.translation.y = BUILDENDPOS + (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight);
+    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180.0f - 24.0f;
+    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180.0f - 24.0f;
+    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180.0f - 24.0f;
   }
   pan(self, 0.0f, 0.0f, NULL);
 }
@@ -168,23 +163,25 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     zoom(self, 0.1f);*/
 
 
-  if (input->mouse.wheel.delta != 0) {
-    if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))
-      data->zoomVelocity += 0.004f * (float)input->mouse.wheel.delta;
-    else
-      data->zoomVelocity = 0.012f * (float)input->mouse.wheel.delta;
-  }
-  zoom(self, data->zoomVelocity);
-  if (data->zoomVelocity != 0.0f) {
-    if (data->zoomVelocity > 0) {
-      data->zoomVelocity -= 0.0008f;
-      if (data->zoomVelocity < 0.0005f)
-        data->zoomVelocity = 0.0f;
+  if(!data->yPan) {
+    if (input->mouse.wheel.delta != 0) {
+      if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))
+        data->zoomVelocity += 0.004f * (float)input->mouse.wheel.delta;
+      else
+        data->zoomVelocity = 0.012f * (float)input->mouse.wheel.delta;
     }
-    if (data->zoomVelocity < 0) {
-      data->zoomVelocity += 0.0008f;
-      if (data->zoomVelocity > -0.0005f)
-        data->zoomVelocity = 0.0f;
+    zoom(self, data->zoomVelocity);
+    if (data->zoomVelocity != 0.0f) {
+      if (data->zoomVelocity > 0) {
+        data->zoomVelocity -= 0.0008f;
+        if (data->zoomVelocity < 0.0005f)
+          data->zoomVelocity = 0.0f;
+      }
+      if (data->zoomVelocity < 0) {
+        data->zoomVelocity += 0.0008f;
+        if (data->zoomVelocity > -0.0005f)
+          data->zoomVelocity = 0.0f;
+      }
     }
   }
 
@@ -245,6 +242,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
 void comp_playerLogic(COMPONENT *self) {
   CDATA_PLAYERLOGIC data = { 0 };
+  data.yLock = 180.0f - 24.0f;
   COMPONENT_INIT(self, COMP_PLAYERLOGIC, data);
   component_depend(self, COMP_TRANSFORM);
   self->events.initialize = comp_playerLogic_initialize;
@@ -277,11 +275,6 @@ void playerLogic_setZoom(COMPONENT *playerLogic, float newZoom) {
     bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
     mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
     fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + 180 - 24;
-  }
-  else {
-    bg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
-    mg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
-    fg->systems.camera.transform.translation.y = (0.5f * ((1.0f / newZoom) * gameHeight)) - (0.5f * gameHeight) + BUILDENDPOS;
   }
 }
 
