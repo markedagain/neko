@@ -127,6 +127,7 @@
     </ClCompile>
     <ClCompile Include="newsfeed.c">
       <Filter>Archetypes</Filter>
+    </ClCompile>
     <ClCompile Include="menuscreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -277,6 +278,7 @@
     </ClInclude>
     <ClInclude Include="newsfeedlogic.h">
       <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="main.h" />
     <ClInclude Include="menuscreen.h">
       <Filter>Archetypes\ui_elements</Filter>
