@@ -27,6 +27,8 @@
 #include "studentmanager.h"
 #include "background.h"
 #include "newsfeed.h"
+#include "main.h"
+#include "menuscreen.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -93,6 +95,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   space_addEntity(uiSpace, arch_player, "player");
   space_addEntity(uiSpace, arch_newsFeed, "newsfeed");
 
+  // create the main menu
+  createMainMenu(game);
+
   /*
   vec3_set(&position, 100.0f, 40.0f, 0);
   vec2_set(&dimensions, 100.0f, 40.0f);
@@ -139,4 +144,12 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   game_start(game);
 
   return 1;
+}
+
+
+void createMainMenu(GAME *game) {
+  SPACE *menu = game_addSpace(game, "menu");
+  VEC3 position = { 0 };
+
+  space_addEntityAtPosition(menu, arch_menuScreen, "menuscreen", &position);
 }

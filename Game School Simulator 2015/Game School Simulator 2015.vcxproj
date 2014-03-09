@@ -198,6 +198,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="managescreenlogic.c" />
     <ClCompile Include="newsfeed.c" />
     <ClCompile Include="newsfeedlogic.c" />
+    <ClCompile Include="menuscreen.c" />
+    <ClCompile Include="menuscreenlogic.c" />
     <ClCompile Include="poptext.c" />
     <ClCompile Include="poptextlogic.c" />
     <ClCompile Include="roomactor.c" />
@@ -236,11 +238,14 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="ghostroomlogic.h" />
     <ClInclude Include="inspectionscreen.h" />
     <ClInclude Include="inspectionscreenlogic.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="management.h" />
     <ClInclude Include="managescreen.h" />
     <ClInclude Include="managescreenlogic.h" />
     <ClInclude Include="newsfeed.h" />
     <ClInclude Include="newsfeedlogic.h" />
+    <ClInclude Include="menuscreen.h" />
+    <ClInclude Include="menuscreenlogic.h" />
     <ClInclude Include="poptext.h" />
     <ClInclude Include="poptextlogic.h" />
     <ClInclude Include="roomactor.h" />

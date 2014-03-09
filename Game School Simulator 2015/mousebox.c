@@ -5,6 +5,11 @@
 void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
+  
+  // if inactive, don't do anything
+  if (!comData->active)
+    return;
+
   if (comData->manual == false)
     set_box_sprite(self);
   else
