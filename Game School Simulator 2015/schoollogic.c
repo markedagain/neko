@@ -460,8 +460,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
-
-  // set sprite
+  actorCompData->posX = colToUse;
+  actorCompData->posY = floorToUse;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:

@@ -33,5 +33,6 @@ NEKO_API void *list_get(LIST *list, int offset);
 NEKO_API LIST_NODE *list_getNodeFromOffset(LIST *list, int offset);
 NEKO_API void *list_removeAt(LIST *list, int offset);
 NEKO_API LIST_NODE *list_getNode(LIST *list, void *data);
+NEKO_API void list_copy(LIST *destination, LIST *source);
 
 #endif

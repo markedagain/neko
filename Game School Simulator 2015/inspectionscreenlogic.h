@@ -5,9 +5,29 @@
 
 #include "entity.h"
 #include "hash.h"
+#include "roomlogic.h"
 
 #define COMP_INSPECTIONSCREENLOGIC HASH("COMP_INSPECTIONSCREENLOGIC")
+
+typedef struct cdata_inspectionScreen_t {
+  bool active;
+  bool posActive;
+  ROOM_TYPE type;
+  char roomTypeBuffer[20];
+  char bonusBuffer[128];
+  char upkeepBuffer[20];
+  ENTITY *roomType;
+  ENTITY *bonuses;
+  ENTITY *upkeep;
+  ENTITY *upgradeBox;
+  bool triggered;
+  int posX;
+  int posY;
+  int bonusSum;
+  } CDATA_INSPECTIONSCREEN;
+
 void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_inspectionScreenLogic(COMPONENT *self);
+void comp_inspectionScreenLogic_initialize(COMPONENT *self, void *event);
 
 #endif
