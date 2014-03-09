@@ -16,10 +16,15 @@ typedef struct cdata_inspectionScreen_t {
   char roomTypeBuffer[20];
   char bonusBuffer[128];
   char upkeepBuffer[20];
+  char upgradeCostBuffer[20];
+  char upgradeMessageBuffer[64];
+  char levelBuffer[20];
+  ENTITY *upgradeCost;
   ENTITY *roomType;
   ENTITY *bonuses;
   ENTITY *upkeep;
-  ENTITY *upgradeBox;
+  ENTITY *upgradeButton;
+  ENTITY *level;
   bool triggered;
   int posX;
   int posY;

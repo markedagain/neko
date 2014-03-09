@@ -604,6 +604,8 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
+  data.schoolName = "Eduardo's Super Awesome Game School";
+  data.money = 2500000;
   data.schoolName = "Eduardo's Game School";
   data.money = 250000;
   data.tuition = 12000;

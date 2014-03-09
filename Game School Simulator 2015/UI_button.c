@@ -15,6 +15,7 @@
 #include "schoollogic.h"
 #include "managescreen.h"
 #include "ghostroomlogic.h"
+#include "inspectionscreenlogic.h"
 
 #define BUILDENDPOS 120.0f
 
@@ -33,6 +34,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 
   al_update(&data->actions, updateEvent->dt);
@@ -179,7 +181,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_DEFAULT:
         break;
-      
+
       case BUTTON_GPA_INCREMENT:
         if (managementData->minGpa >= (float)4.0)
           managementData->minGpa = (float)4.0;
@@ -199,7 +201,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         break;
 
       case BUTTON_TUITION_DECREMENT:
-        managementData->tuition -= 500;
+        if (managementData->tuition <= 0)
+          managementData->tuition = 500;
+        else
+         managementData->tuition -= 500;
+        break;
+
+      case BUTTON_ROOM_UPGRADE:
+        comp_roomLogic_upgradeRoom(self);
+        inspectData->triggered = true;
         break;
 
       case BUTTON_NEWGAME:
@@ -478,6 +488,19 @@ void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *p
   buttonData->type = type;
 }
 
+void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
+  ENTITY *newButton = 0;
+  CDATA_UI_BUTTON *buttonData;
+  ENTITY *text;
+  VEC3 textPos;
+
+  newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "upgradeButton", position);
+  buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
+  vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
+  text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  entity_attach(text, newButton);
+  buttonData->type = type;
+}
 
 void UI_button_updateBuildButtons(SPACE *ui) {
   SPACE *sim = game_getSpace(ui->game, "sim");
