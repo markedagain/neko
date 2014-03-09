@@ -6,9 +6,9 @@
 
 char *pushStrings[STRINGS_LAST] = {
   "Welcome to: %s!",
-  "%s %s has enrolled!",
-  "%s %s has droped out!",
-  "%s %s has graduated!",
+  "%i students have enrolled!",
+  "%i students have droped out!",
+  "%i students have graduated!",
   "Semester %i has started!",
   "Its %i, happy new year!"
 };
