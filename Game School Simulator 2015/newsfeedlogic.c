@@ -13,30 +13,49 @@ char *pushStrings[STRINGS_LAST] = {
   "Its %i, happy new year!"
 };
 
+void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
+  int i;
+  char textBuffer[80] = {0};
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
+  VEC3 pos = {-300, -130, 0};
+  VEC4 color = {0, 0, 0, 1};
+
+  for(i = 0; i < 5; i++) {
+    pos.y += 10;
+    comData->lines[i] = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
+  }
+}
+
 void comp_newsfeedlogic_push(COMPONENT *ptr, char *string) {
-  LIST_NODE *messageNode;
+  //LIST_NODE *messageNode;
   char textBuffer[80];
-  ENTITY *textSprite;
   SPACE *uiSpace = game_getSpace(ptr->owner->space->game, "ui");
   ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)entity_getComponentData(newsFeed, COMP_NEWSFEEDLOGIC);
 
-  VEC3 pos = {-300, -120, 0};
-  VEC4 color = {0, 0, 0, 1};
-  textSprite = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
+  // Place the message in its sprite
+  if(comData->messages->count < 5) {
+    int i;
+
+    if(comData->messages->count != 0) {
+      for(i = 0; i < comData->messages->count; i++) {
+        CDATA_SPRITETEXT *spriteText = (CDATA_SPRITETEXT *) entity_getComponentData(comData->lines[comData->messages->count - i - 1], COMP_SPRITETEXT);
+        genericText_setText(comData->lines[comData->messages->count - i], spriteText->text);
+      }
+    }
+  }
+  else {
+    int i;
+    for(i = 0; i < 4; i++) {
+      CDATA_SPRITETEXT *spriteText = (CDATA_SPRITETEXT *) entity_getComponentData(comData->lines[4 - i - 1], COMP_SPRITETEXT);
+      genericText_setText(comData->lines[4 - i], spriteText->text);
+    }
+  }
 
   sprintf(textBuffer, string);
-  genericText_setText(textSprite, textBuffer);
-  list_insert_end(comData->messages, textSprite);
-
-  messageNode = comData->messages->first;
-  do {
-    ENTITY *message = (ENTITY *) messageNode->data;
-    CDATA_TRANSFORM *transform = (CDATA_TRANSFORM *)entity_getComponentData(message, COMP_TRANSFORM);
-    VEC3 pos = {transform->translation.x, transform->translation.y + 10, transform->translation.z};
-    transform->translation = pos;
-    messageNode = messageNode->next;
-  } while(messageNode != NULL);
+  genericText_setText(comData->lines[0], textBuffer);
+  list_insert_end(comData->messages, textBuffer);
 }
 
 void comp_newsfeedlogic_destroy(COMPONENT *self, void *event){
@@ -49,4 +68,5 @@ void comp_newsfeedlogic(COMPONENT *self) {
   data.messages = list_create();
 
   COMPONENT_INIT(self, COMP_NEWSFEEDLOGIC, data);
+  self->events.initialize = comp_newsfeedlogic_initialize;
 }
