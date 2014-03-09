@@ -196,7 +196,7 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
       break;
     }
     position = trans->translation;
-    popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 3.0f);
+    popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
   
     pStudent = pStudent->next;
   }
