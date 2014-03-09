@@ -11,11 +11,13 @@
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_studentManagerLogic(COMPONENT *self);
 void studentManager_spawnStudent(COMPONENT *self);
-void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData) ;
+void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr);
 void studentManager_deleteList(LIST *list);
+void comp_studentManagerLogic_destroy(COMPONENT *self, void *event);
 
 typedef struct {
   float timer;
+  LIST *drawnStudents;
 } CDATA_STUDENTMANAGER;
 
 #endif

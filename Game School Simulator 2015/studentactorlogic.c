@@ -4,6 +4,7 @@
 #include "genericsprite.h"
 #include "multisprite.h"
 #include "random.h"
+#include "studentmanagerlogic.h"
 
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
@@ -55,8 +56,11 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   else if (data->fadeOut) {
     COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
     data->timer += (float)updateEvent->dt;
-    if (data->timer > FADE_TIME)
+    if (data->timer > FADE_TIME) {
+      CDATA_STUDENTMANAGER *managerData = (CDATA_STUDENTMANAGER *)entity_getComponentData(space_getEntity(self->owner->space, "studentManager"), COMP_STUDENTMANAGERLOGIC);
+      list_remove(managerData->drawnStudents, list_getNode(managerData->drawnStudents, data->studentPtr));
       entity_destroy(self->owner);
+    }
     multiSprite_setAlpha(multiSprite, 1 - data->timer / FADE_TIME);
   }
 

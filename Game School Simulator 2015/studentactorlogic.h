@@ -22,6 +22,7 @@ typedef struct {
   float origin;
   bool fadeIn;
   bool fadeOut;
+  ENTITY *studentPtr;
   char legs[30];
   char head[30];
   char face[30];
