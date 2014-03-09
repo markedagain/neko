@@ -13,6 +13,7 @@ void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
 void comp_studentActorLogic_flipSprite(COMPONENT *self);
 
 typedef struct {
+  int ID;
   float timer;
   float timer2;
   float lifetime;

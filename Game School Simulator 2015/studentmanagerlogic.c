@@ -8,10 +8,12 @@
 #include "random.h"
 #include "multisprite.h"
 #include "genericsprite.h"
+#include "poptext.h"
 #include <stdio.h>
 
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 2.0f
+#define MAX_STUDENTS 1000
 
 // this totally works except it derps out if you build a building just as a new student spawns
 
@@ -45,7 +47,7 @@ void studentManager_spawnStudent(COMPONENT *self) {
   list_copy(studentList, schoolData->students);
   pNode = data->drawnStudents->first;
   while (pNode) {
-    list_remove(studentList, list_getNode(studentList, pNode->data));
+    list_remove(studentList, list_getNode(studentList, ((COMPLETE_STUDENT *)pNode->data)->simStudent));
     pNode = pNode->next;
   }
 
@@ -78,12 +80,20 @@ void studentManager_spawnStudent(COMPONENT *self) {
 
   // spawn the student
   {
+    COMPLETE_STUDENT *newStudent = (COMPLETE_STUDENT *)malloc(sizeof(COMPLETE_STUDENT));
     VEC3 *room = (VEC3 *)pNode->data;
     VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
-    list_insert_end(data->drawnStudents, studentPtr);
-    studentManager_setStudent(studentActor, room, &pos, studentData, studentPtr->data);
+    int ID = data->currID;
+    if (data->currID > MAX_STUDENTS) {
+      data->currID = 1;
+      ID = 1;
+    }
+    newStudent->simStudent = (ENTITY *)studentPtr->data;
+    newStudent->studentActor = studentActor;
+    list_insert_end(data->drawnStudents, newStudent);
+    studentManager_setStudent(studentActor, room, &pos, studentData, (ENTITY *)(studentPtr->data), ID);
   }
 
   studentManager_deleteList(roomList);
@@ -99,7 +109,7 @@ void studentManager_deleteList(LIST *list) {
   list_destroy(list);
 }
 
-void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr) {
+void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr, int ID) {
   CDATA_TRANSFORM *studentTrans = (CDATA_TRANSFORM *)entity_getComponentData(studentActor, COMP_TRANSFORM);
   CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
   char spriteName[30];
@@ -142,7 +152,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
     strcpy(actorData->hair, spriteName);
   }
 
-
+  actorData->ID = ID;
   actorData->lifetime = 5.0f;
   actorData->roomSize = room->z * 80.0f;
   actorData->origin = pos->x;
@@ -160,4 +170,49 @@ void comp_studentManagerLogic_destroy(COMPONENT *self, void *event) {
   CDATA_STUDENTMANAGER* data = (CDATA_STUDENTMANAGER *)self->data;
 
   list_destroy(data->drawnStudents);
+}
+
+void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
+  CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+  LIST_NODE *pStudent = data->drawnStudents->first;
+  VEC3 position;
+  char buffer[20];
+  VEC4 color = { 0, 0, 0, 1.0f };
+
+  while (pStudent) {
+    ENTITY *simStudent = ((COMPLETE_STUDENT *)pStudent->data)->simStudent;
+    ENTITY *studentActor = ((COMPLETE_STUDENT *)pStudent->data)->studentActor;
+    CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(studentActor, COMP_TRANSFORM);
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(simStudent, COMP_STUDENTDATA);
+    switch (studentData->major) {
+    case M_TECH:
+      sprintf(buffer, "Tech + %f", studentData->techIncrease);
+      break;
+    case M_ART:
+      sprintf(buffer, "Art + %f", studentData->techIncrease);
+      break;
+    case M_DESIGN:
+      sprintf(buffer, "Design + %f", studentData->techIncrease);
+      break;
+    }
+    position = trans->translation;
+    popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 3.0f);
+  
+    pStudent = pStudent->next;
+  }
+
+}
+
+// find the student actor then return its node
+LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *actor) {
+  CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+  LIST_NODE *pStudent = data->drawnStudents->first;
+
+  while (pStudent) {
+    if (((COMPLETE_STUDENT *)(pStudent->data))->studentActor == actor)
+      return pStudent;
+    pStudent = pStudent->next;
+  }
+
+  return NULL;
 }

@@ -4,7 +4,7 @@
 #include "schoollogic.h"
 #include "../NekoEngine/input.h"
 #include "newsfeedlogic.h"
-
+#include "studentmanagerlogic.h"
 
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -34,7 +34,12 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       // NEW SEMESTER
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {
         char message[80];
+        SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+        ENTITY *studentManager = space_getEntity(fg, "studentManager");
+        COMPONENT *studentManagerLogic = (COMPONENT *)entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
         comData->currentSemester++;
+        // create pop text above student's heads
+        comp_studentManagerLogic_statGainText(studentManagerLogic);
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
         sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
         comp_newsfeedlogic_push(self, message);
