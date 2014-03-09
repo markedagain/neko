@@ -35,7 +35,6 @@ typedef struct cdata_roomlogic_t {
   int motivationBonus;
   int repBonus;
   int frameCounter;
-
 } CDATA_ROOMLOGIC;
 
 void comp_roomLogic_frameUpdate(COMPONENT *, void *);

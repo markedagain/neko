@@ -5,9 +5,13 @@
 #include "playerlogic.h"
 #include "poptext.h"
 #include "sound.h"
+#include "inspectionscreenlogic.h"
 
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   if (mbox->left.pressed && !input->mouse.handled[MBUTTON_LEFT]) {
     VEC3 pos = { 0 };
@@ -18,6 +22,9 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     pos.y = (float)mousePos.y;
     popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col, POPTYPE_DEFAULT, 1.0f);
     sound_playSound(&self->owner->space->game->systems.sound, "oh");
+    
+    //if (inspectData->active == true)
+    //  inspectData->active = false;
   }
   if (mbox->left.down && !input->mouse.handled[MBUTTON_LEFT]) {
     ENTITY *player = space_getEntity(game_getSpace(self->owner->space->game, "ui"), "player");
