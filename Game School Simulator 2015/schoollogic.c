@@ -17,10 +17,10 @@
 #include "roomactor.h"
 #include "timemanager.h"
 #include "UI_button.h"
+#include "newsfeedlogic.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-  printf("\n\n\n\n\n\nWelcome To: %s\n\n\n\n\n\n", comData->schoolName);
 }
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -33,7 +33,16 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   VEC3 position;
-  VEC4 color;  
+  VEC4 color;
+
+  if(comData->counter == 0) {
+    char message[40];
+    sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
+    comp_newsfeedlogic_push(self, message);
+  }
+
+  ++comData->counter;
+
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
@@ -578,7 +587,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Eduardo's Super Awesome Game School";
+  data.schoolName = "Eduardo's Game School";
   data.money = 250000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
@@ -598,6 +607,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.motivationBonus = 0;
   data.roomConstructed = FALSE;
   data.currMoney = 0;
+  data.counter = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;

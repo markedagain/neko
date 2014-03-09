@@ -37,6 +37,7 @@ typedef struct cdata_schoolLogic_t {
   int motivationBonus;
   BOOL roomConstructed;
   long int currMoney;
+  int counter;
   ENTITY *moneyUI;
   char buffer[20];
   union {

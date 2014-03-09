@@ -9,14 +9,25 @@
 
 #define COMP_NEWSFEEDLOGIC HASH("COMP_NEWSFEEDLOGIC")
 
+typedef enum {
+  STINGS_WELCOME,
+  STRINGS_ENROLL,
+  STRINGS_DROP,
+  STRINGS_GRAD,
+  STRINGS_LAST
+} STRINGS;
+
 typedef struct cdata_newsfeedlogic_t {
   char textBuffer[80];
   ENTITY *textSprite;
 
 } CDATA_NEWSFEEDLOGIC;
 
+char *pushStrings[STRINGS_LAST];
+
 void comp_newsfeedlogic_initialize(COMPONENT *, void *);
 void comp_newsfeedlogic_logicUpdate(COMPONENT *, void *);
+void comp_newsfeedlogic_push(COMPONENT *ptr, char *string);
 void comp_newsfeedlogic(COMPONENT *);
 
 #endif
