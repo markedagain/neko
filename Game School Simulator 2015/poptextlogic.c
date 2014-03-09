@@ -47,17 +47,17 @@ void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
 
     switch (data->type) {
     case POPTYPE_DEFAULT:
-      al_pushFront(&data->actions, action_create(self, rise_update, rise_onStart, NULL, true, 0.6f));
+      al_pushFront(&data->actions, action_create(self, rise_update, rise_onStart, NULL, true, 0.5f * data->duration));
       break;
 
     case POPTYPE_STAY:
-      al_pushFront(&data->actions, action_create(self, riseStay_update, rise_onStart, NULL, true, 0.6f));
+      al_pushFront(&data->actions, action_create(self, riseStay_update, rise_onStart, NULL, true, 0.5f * data->duration));
       break;
 
     case POPTYPE_GROW:
       break;
     }
-    al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f));
+    al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f * data->duration));
   }
 
   al_update(&data->actions, updateEvent->dt);
