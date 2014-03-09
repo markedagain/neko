@@ -23,8 +23,8 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col, POPTYPE_DEFAULT, 1.0f);
     sound_playSound(&self->owner->space->game->systems.sound, "oh");
     
-    //if (inspectData->active == true)
-    //  inspectData->active = false;
+    if (inspectData->active == true)
+      inspectData->active = false;
   }
 
   if (mbox->left.down) {
