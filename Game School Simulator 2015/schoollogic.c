@@ -458,6 +458,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   comData->roomConstructed = TRUE;
   comData->slotsUsed += roomSize;
+  if (roomType != ROOMTYPE_LOBBY)
+    ++comData->roomCount;
 
   // CREATE ACTOR
   switch (roomSize) {
@@ -607,6 +609,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.alumni = list_create();
   data.roomMaintenance = 0;
   data.roomList = list_create();
+  data.roomCount = 0;
   data.reputation = 0;
   data.techBonus = 1;
   data.designBonus = 1;

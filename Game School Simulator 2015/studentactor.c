@@ -11,8 +11,5 @@ void arch_studentActor(ENTITY *entity) {
 
   entity_connect(entity, comp_transform);
   entity_connect(entity, comp_multiSprite);
-  //sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_studentActorLogic);
-
-  //sprite->source = "student/male/hair/01";
 }
