@@ -13,7 +13,7 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
   INPUT_CONTAINER *input = &self->owner->space->game->input;
-  if (mbox->left.pressed && !input->mouse.handled[MBUTTON_LEFT]) {
+  if (mbox->left.pressed) {
     VEC3 pos = { 0 };
     POINT mousePos;
     VEC4 col = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -26,7 +26,8 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     //if (inspectData->active == true)
     //  inspectData->active = false;
   }
-  if (mbox->left.down && !input->mouse.handled[MBUTTON_LEFT]) {
+
+  if (mbox->left.down) {
     ENTITY *player = space_getEntity(game_getSpace(self->owner->space->game, "ui"), "player");
     CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
     playerData->dragging = true;

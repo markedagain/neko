@@ -16,6 +16,7 @@
 #include "roomactorlogic.h"
 #include "roomactor.h"
 #include "timemanager.h"
+#include "UI_button.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
@@ -37,15 +38,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
       vec3_set(&position, 320, 180, 0);
-      vec4_set(&color, 0, 0, 1, 1 );
+      vec4_set(&color, .1f, 1, .1f, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
-    // sprintf(buffer,"$%d", comData->money);
-    // moneyUI = 
     comData->currMoney = comData->money;
+    // update build buttons
+    UI_button_updateBuildButtons(uiSpace);
   }
 }
 
@@ -103,6 +104,10 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
+  comData->semTech += comData->techBonus;
+  comData->semDesign += comData->designBonus;
+  comData->semArt += comData->artBonus;
+
   printf("Students: %i/%i (%i incoming)", comData->currentStudents, comData->studentCapacity, comData->incomingStudents);
   printf("       Incoming: %i\n", comData->incomingStudents);
   printf("Money: $%i", comData->money);
@@ -146,6 +151,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     comData->incomingStudents = 0;
   }
 
+  // LOOP THROUGH STUDENTS
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
@@ -153,22 +159,22 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     // GPA
     if(studentData->major == M_TECH) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->techIncrease / (comData->techBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->techIncrease / (float)comData->semTech) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
     if(studentData->major == M_DESIGN) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->designIncrease / (comData->designBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->designIncrease / (float)comData->semDesign) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
     if(studentData->major == M_ART) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
-      studentData->gradePoints += ((float)studentData->artIncrease / (comData->artBonus * 6)) * 4.0f;
       if(semestersPassed != 0) {
+        studentData->gradePoints += ((float)studentData->artIncrease / (float)comData->semArt) * 4.0f;
         studentData->gpa = studentData->gradePoints / semestersPassed;
       }
     }
@@ -187,7 +193,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentPtr = studentPtr->next;
 
     // Drop students below the min GPA 
-    if(studentData->gpa < comData->minGpa) {
+    if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -202,6 +208,10 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       continue;
     }
   }
+
+  comData->semTech = 0;
+  comData->semDesign = 0;
+  comData->semArt = 0;
 
   comData->expectedGraduates = 0;
 
@@ -414,6 +424,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   CDATA_ACTORLOGIC *actorCompData;
   SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
   SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
+  SPACE *ui = game_getSpace(ptr->owner->space->game, "ui");
   ENTITY *entity = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
   VEC3 middle;
@@ -430,6 +441,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
   comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   comData->roomConstructed = TRUE;
+  comData->slotsUsed += roomSize;
 
   // CREATE ACTOR
   switch (roomSize) {
@@ -492,6 +504,14 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   }
 }
 
+void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType){
+  SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
+  SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+
+
+}
+
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE || type == ROOMTYPE_OFFICES || type == ROOMTYPE_TUTORING || type == ROOMTYPE_WIFI)
     return 1;
@@ -503,53 +523,6 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
-int comp_schoolLogic_getRoomCost(ROOM_TYPE type) {
-  switch (type) {
-    case ROOMTYPE_LOBBY:
-      return 100000;
-
-    case ROOMTYPE_CLASS:
-      return 40000;
-
-    case ROOMTYPE_LIBRARY:
-      return 50000;
-
-    case ROOMTYPE_TEAMSPACE:
-      return 75000;
-
-    case ROOMTYPE_CAFETERIA:
-      return 100000;
-
-    case ROOMTYPE_STORE:
-      return 75000;
-
-    case ROOMTYPE_OFFICES:
-      return 50000;
-
-    case ROOMTYPE_AUDITORIUM:
-      return 150000;
-
-    case ROOMTYPE_TUTORING:
-      return 30000;
-
-    case ROOMTYPE_WIFI:
-      return 20000;
-
-    case ROOMTYPE_RECREATION:
-      return 30000;
-
-    case ROOMTYPE_FIGURE:
-      return 30000;
-
-    case ROOMTYPE_POTTERY:
-      return 60000;
-
-    default:
-      printf("ERROR: Unkown room!!\n");
-      break;
-  }
-  return 0;
-}
 
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;
@@ -606,7 +579,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Eduardo's Super Awesome Game School";
-  data.money = 100000;
+  data.money = 250000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;

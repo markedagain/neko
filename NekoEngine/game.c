@@ -318,6 +318,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
   //HDC dc; // device context
   //PAINTSTRUCT ps;
   //RECT rect;
+  int i;
   
   switch (msg) {
 
@@ -349,6 +350,17 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_MOUSEMOVE:
+    break;
+
+  case WM_CHAR:
+    if ((int)wparam < 32 && (int)wparam >= 127)
+      break;
+    i = 0;
+    while (__game->input.keyboard.ascii[i] != 0 && i < INPUT_MAX_ASCII_KEYS_PER_FRAME)
+      ++i;
+    if (i >= INPUT_MAX_ASCII_KEYS_PER_FRAME)
+      break;
+    __game->input.keyboard.ascii[i] = (char)wparam;
     break;
 
   /*case WM_PAINT:

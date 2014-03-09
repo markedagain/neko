@@ -6,6 +6,8 @@
 #include <Windows.h>
 #include "neko.h"
 
+#define INPUT_MAX_ASCII_KEYS_PER_FRAME 8
+
 typedef enum keyboardKey_t {
   KEY_0 = 0x30,
   KEY_1,
@@ -139,6 +141,7 @@ typedef struct inputContainer_t {
   } mouse;
   struct {
     INPUT_STATE keys[KEY_LAST];
+    char ascii[INPUT_MAX_ASCII_KEYS_PER_FRAME + 1];
   } keyboard;
 } INPUT_CONTAINER;
 

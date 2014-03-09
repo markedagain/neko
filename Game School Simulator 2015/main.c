@@ -27,6 +27,9 @@
 #include "studentmanager.h"
 #include "inspectionscreen.h"
 #include "background.h"
+#include "newsfeed.h"
+#include "main.h"
+#include "menuscreen.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -91,6 +94,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
+  space_addEntity(uiSpace, arch_newsFeed, "newsfeed");
+
+  // create the main menu
+  createMainMenu(game);
 
   /*
   vec3_set(&position, 100.0f, 40.0f, 0);
@@ -135,8 +142,17 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericSprite_create(cursorSpace, &position, "cursorSprite", "cursor/default");
   space_addEntity(cursorSpace, arch_blackbar, "blackbar1");
   space_addEntity(cursorSpace, arch_blackbar, "blackbar2");
+  
 
   game_start(game);
 
   return 1;
+}
+
+
+void createMainMenu(GAME *game) {
+  SPACE *menu = game_addSpace(game, "menu");
+  VEC3 position = { 0 };
+
+  space_addEntityAtPosition(menu, arch_menuScreen, "menuscreen", &position);
 }

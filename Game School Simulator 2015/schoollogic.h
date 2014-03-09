@@ -25,11 +25,15 @@ typedef struct cdata_schoolLogic_t {
   LIST *students;
   LIST *alumni;
   int roomMaintenance;
+  int slotsUsed;
   LIST *roomList;
   int reputation;
   int techBonus;
   int designBonus;
   int artBonus;
+  int semTech;
+  int semDesign;
+  int semArt;
   int motivationBonus;
   BOOL roomConstructed;
   long int currMoney;
@@ -49,8 +53,8 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, LIST *legalSlots);
 void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, int floorToUse, int colToUse);
+void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType);
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type);
-int comp_schoolLogic_getRoomCost(ROOM_TYPE type);
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
