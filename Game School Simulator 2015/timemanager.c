@@ -16,7 +16,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   if(schoolData->rooms.coord[2][7]) {
     comData->frameCounter++;
 
-    // New month every x frames (1 FPS)
+    // NEW MONTH
     if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond / 1) {
       comData->months++;
       printf("\n\n\n\n\n\n");
@@ -26,12 +26,14 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comData->monthCounter++;
       schoolData->roomConstructed = FALSE;
 
+      // NEW SEMESTER
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {
         comData->currentSemester++;
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
       }
     }
 
+    // NEW YEAR
     if(comData->monthCounter >= 12) {
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
