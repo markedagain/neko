@@ -13,14 +13,6 @@ char *pushStrings[STRINGS_LAST] = {
   "Its %i, happy new year!"
 };
 
-void comp_newsfeedlogic_initialize(COMPONENT *self, void *event){
-  CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
-}
-
-void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event) {
-  CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
-}
-
 void comp_newsfeedlogic_push(COMPONENT *ptr, char *string) {
   LIST_NODE *messageNode;
   char textBuffer[80];
@@ -57,6 +49,4 @@ void comp_newsfeedlogic(COMPONENT *self) {
   data.messages = list_create();
 
   COMPONENT_INIT(self, COMP_NEWSFEEDLOGIC, data);
-  self->events.logicUpdate = comp_newsfeedlogic_logicUpdate;
-  self->events.initialize = comp_newsfeedlogic_initialize;
 }
