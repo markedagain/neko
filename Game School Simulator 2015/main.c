@@ -94,7 +94,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
-  space_addEntity(uiSpace, arch_newsFeed, "newsfeed");
+  space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
 
   // create the main menu
   createMainMenu(game);

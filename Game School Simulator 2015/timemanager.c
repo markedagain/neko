@@ -3,6 +3,7 @@
 #include "timemanager.h"
 #include "schoollogic.h"
 #include "../NekoEngine/input.h"
+#include "newsfeedlogic.h"
 
 
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
@@ -32,17 +33,23 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
       // NEW SEMESTER
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {
+        char message[80];
         comData->currentSemester++;
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
+        sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
+        comp_newsfeedlogic_push(self, message);
       }
     }
 
     // NEW YEAR
     if(comData->monthCounter >= 12) {
+      char message[80];
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
       comp_schoolLogic_updateDataYear(schoolLogic, schoolData);
       comData->monthCounter = 0;
+      sprintf(message, pushStrings[STRINGS_YEAR], comData->currentYear);
+      comp_newsfeedlogic_push(self, message);
     }
   }
 }

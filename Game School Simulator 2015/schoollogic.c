@@ -17,10 +17,10 @@
 #include "roomactor.h"
 #include "timemanager.h"
 #include "UI_button.h"
+#include "newsfeedlogic.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-  printf("\n\n\n\n\n\nWelcome To: %s\n\n\n\n\n\n", comData->schoolName);
 }
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -33,12 +33,22 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   VEC3 position;
-  VEC4 color;  
+  VEC4 color;
+
+  // WELCOME
+  if(comData->counter == 0) {
+    char message[80];
+    sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
+    comp_newsfeedlogic_push(self, message);
+  }
+
+  ++comData->counter;
+
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
       vec3_set(&position, 320, 180, 0);
-      vec4_set(&color, .1f, 1, .1f, 1 );
+      vec4_set(&color, 0, 0, 0, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
@@ -140,13 +150,16 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     {
       CDATA_STUDENTDATA *studentData;
       LIST_NODE *nodeptr;
+      char message[40];
       newStudent = space_addEntity(self->owner->space, arch_student, "Student");
       studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
       nodeptr = list_insert_end(comData->students, newStudent);
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
       studentData->tuition = comData->tuition;
-      printf("Motivation: %%%d\n", studentData->motivation);
+      
+      sprintf(message, pushStrings[STRINGS_ENROLL], studentData->name.first, studentData->name.last);
+      comp_newsfeedlogic_push(self, message);
     }
     comData->incomingStudents = 0;
   }
@@ -194,9 +207,12 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
+      char message[80];
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
+      sprintf(message, pushStrings[STRINGS_DROP], studentData->name.first, studentData->name.last);
+      comp_newsfeedlogic_push(self, message);
       continue;
     }
 
@@ -580,8 +596,8 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Eduardo's Super Awesome Game School";
-  data.money = 100000000;
+  data.schoolName = "Eduardo's Game School";
+  data.money = 250000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
@@ -601,6 +617,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.motivationBonus = 0;
   data.roomConstructed = FALSE;
   data.currMoney = 0;
+  data.counter = 0;
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
