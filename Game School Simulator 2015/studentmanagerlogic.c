@@ -175,9 +175,10 @@ void comp_studentManagerLogic_destroy(COMPONENT *self, void *event) {
 void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
   LIST_NODE *pStudent = data->drawnStudents->first;
-  VEC3 position;
+  VEC3 position = { 0 };
   char buffer[20];
   VEC4 color = { 0, 0, 0, 1.0f };
+  ENTITY *popText;
 
   while (pStudent) {
     ENTITY *simStudent = ((COMPLETE_STUDENT *)pStudent->data)->simStudent;
@@ -186,18 +187,19 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(simStudent, COMP_STUDENTDATA);
     switch (studentData->major) {
     case M_TECH:
-      sprintf(buffer, "Tech + %f", studentData->techIncrease);
+      sprintf(buffer, "Tech + %d", (int)studentData->techIncrease);
       break;
     case M_ART:
-      sprintf(buffer, "Art + %f", studentData->techIncrease);
+      sprintf(buffer, "Art + %d", (int)studentData->techIncrease);
       break;
     case M_DESIGN:
-      sprintf(buffer, "Design + %f", studentData->techIncrease);
+      sprintf(buffer, "Design + %d", (int)studentData->techIncrease);
       break;
     }
     position = trans->translation;
-    popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
-  
+    popText = popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
+    //entity_attach(popText, studentActor);
+
     pStudent = pStudent->next;
   }
 
