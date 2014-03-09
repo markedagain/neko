@@ -10,5 +10,5 @@ void arch_inspectionScreen(ENTITY *entity) {
   entity->id = ARCH_INSPECTIONSCREEN;
   entity_connect(entity, comp_transform);
   entity_connect(entity, comp_inspectionScreenLogic);
-  sprite->source = "backgrounds/manage_screen_box";
+  sprite->source = "backgrounds/inspection_screen_box";
 }
