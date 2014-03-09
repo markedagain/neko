@@ -7,8 +7,10 @@
 char *pushStrings[STRINGS_LAST] = {
   "Welcome to: %s!",
   "%s %s has enrolled!",
-  "%s has droped out!",
-  "%s has graduated!"
+  "%s %s has droped out!",
+  "%s %s has graduated!",
+  "Semester %i has started!",
+  "Its %i, happy new year!"
 };
 
 void comp_newsfeedlogic_initialize(COMPONENT *self, void *event){

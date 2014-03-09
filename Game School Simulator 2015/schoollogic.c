@@ -35,8 +35,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   VEC3 position;
   VEC4 color;
 
+  // WELCOME
   if(comData->counter == 0) {
-    char message[40];
+    char message[80];
     sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
     comp_newsfeedlogic_push(self, message);
   }
@@ -47,7 +48,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
       vec3_set(&position, 320, 180, 0);
-      vec4_set(&color, .1f, 1, .1f, 1 );
+      vec4_set(&color, 0, 0, 0, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
@@ -206,9 +207,12 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
+      char message[80];
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
+      sprintf(message, pushStrings[STRINGS_DROP], studentData->name.first, studentData->name.last);
+      comp_newsfeedlogic_push(self, message);
       continue;
     }
 
