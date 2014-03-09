@@ -261,3 +261,11 @@ LIST_NODE *list_getNode(LIST *list, void *data) {
   }
   return NULL;
 }
+
+void list_copy(LIST *destination, LIST *source) {
+  LIST_NODE *node = source->first;
+  while (node) {
+    list_insert_end(destination, node->data);
+    node = node->next;
+  }
+}

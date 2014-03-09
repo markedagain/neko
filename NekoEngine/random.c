@@ -6,7 +6,10 @@
 
 int randomIntRange(int a, int b) {
   int value, c;
-  
+
+  if (b < a)
+    return 0;
+
   if (a == b)
     return a;
 

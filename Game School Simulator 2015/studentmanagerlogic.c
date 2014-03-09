@@ -28,59 +28,66 @@ void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void studentManager_spawnStudent(COMPONENT *self) {
   LIST *roomList = list_create();
-  int count = 0;
+  LIST *studentList = list_create();
   int listCurr = 0;
   LIST_NODE *pNode;
-  int choice;
   SPACE *sim = game_getSpace(self->owner->space->game, "sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
-  LIST_NODE *studentPtr = schoolData->students->first;
-  CDATA_STUDENTDATA *studentData = 0;// = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+  LIST_NODE *studentPtr;
+  CDATA_STUDENTDATA *studentData = 0;
+  CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
+  int numStudents = 0;
+  int randomIndex = 0;
+  int roomCount = schoolData->roomCount;
+  int count = 1;
 
-  if (studentPtr) {
-    studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
-  }
-
-  comp_schoolLogic_findRooms(self, roomList);
-  
-  pNode = roomList->first;
+  // make a copy of the list of students, then remove the ones already drawn
+  list_copy(studentList, schoolData->students);
+  pNode = data->drawnStudents->first;
   while (pNode) {
-    ++count;
+    list_remove(studentList, list_getNode(studentList, pNode->data));
     pNode = pNode->next;
   }
 
-  pNode = roomList->first;
+  // roll to the random student
+  studentPtr = studentList->first;
+  // if no students, return
+  if (!studentPtr)
+    return;
+  numStudents = studentList->count;
+  randomIndex = randomIntRange(1, numStudents);
+  while (count < randomIndex) {
+    ++count;
+    studentPtr = studentPtr->next;
+  }
 
-  if (count == 1) {
+  // get the random student's data
+  studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+
+  // get all the currently built rooms' data
+  comp_schoolLogic_findRooms(self, roomList);
+  
+  // roll to random room
+  pNode = roomList->first;
+  randomIndex = randomIntRange(1, roomCount);
+  count = 1;
+  while (count < randomIndex) {
+    pNode = pNode->next;
+    ++count;
+  }
+
+  // spawn the student
+  {
     VEC3 *room = (VEC3 *)pNode->data;
     VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
-    studentManager_setStudent(studentActor, room, &pos, studentData);
-    studentManager_deleteList(roomList);
-    return;
+    list_insert_end(data->drawnStudents, studentPtr);
+    studentManager_setStudent(studentActor, room, &pos, studentData, studentPtr->data);
   }
-  
-  else {
-    // change this to be less poopy
-    while (pNode) {
-      ++listCurr;
-      choice = randomIntRange(1, count);
-      if (choice == 1) {
-        VEC3 *room = (VEC3 *)pNode->data;
-        VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
-        SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-        ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
-        studentManager_setStudent(studentActor, room, &pos, studentData);
-        studentManager_deleteList(roomList);
-        return;
-      }
-      pNode = pNode->next;
-      if (listCurr == count)
-        pNode = roomList->first;
-    }
-  }
+
   studentManager_deleteList(roomList);
+  list_destroy(studentList);
 }
 
 void studentManager_deleteList(LIST *list) {
@@ -92,42 +99,50 @@ void studentManager_deleteList(LIST *list) {
   list_destroy(list);
 }
 
-void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData) {
+void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr) {
   CDATA_TRANSFORM *studentTrans = (CDATA_TRANSFORM *)entity_getComponentData(studentActor, COMP_TRANSFORM);
   CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
-  COMPONENT *multiSprite = entity_getComponent(studentActor, COMP_MULTISPRITE);
-  VEC3 position = { 0 };
-  char spriteName[21];
-  ENTITY *legs;
-  ENTITY *head;
-  ENTITY *face;
-  ENTITY *body;
-  ENTITY *hair;
+  char spriteName[30];
 
   if (studentData == 0)
     return;
 
-  // string pool troubs
-  sprintf(spriteName, "student/male/legs/%.2d", studentData->legs);
-  legs = genericSprite_create(studentActor->space, &position, NULL, "student/male/legs/02");
+  actorData->studentPtr = studentPtr;
+
+  if (studentData->gender == GEN_MALE) {
+    sprintf(spriteName, "student/male/legs/%.2d", studentData->legs);
+    strcpy(actorData->legs, spriteName);
   
-  sprintf(spriteName, "student/male/head/%.2d", studentData->head);
-  head = genericSprite_create(studentActor->space, &position, NULL, "student/male/head/02");
+    sprintf(spriteName, "student/male/head/%.2d", studentData->head);
+    strcpy(actorData->head, spriteName);
 
-  sprintf(spriteName, "student/male/face/%.2d", studentData->face);
-  face = genericSprite_create(studentActor->space, &position, NULL, "student/male/face/02");
+    sprintf(spriteName, "student/male/face/%.2d", studentData->face);
+    strcpy(actorData->face, spriteName);
 
-  sprintf(spriteName, "student/male/body/%.2d", studentData->body);
-  body = genericSprite_create(studentActor->space, &position, NULL, "student/male/body/02");
+    sprintf(spriteName, "student/male/body/%.2d", studentData->body);
+    strcpy(actorData->body, spriteName);
 
-  sprintf(spriteName, "student/male/hair/%.2d", studentData->hair);
-  hair = genericSprite_create(studentActor->space, &position, NULL, "student/male/hair/02");
+    sprintf(spriteName, "student/male/hair/%.2d", studentData->hair);
+    strcpy(actorData->hair, spriteName);
+  }
+  else {
+    sprintf(spriteName, "student/female/legs/%.2d", studentData->legs);
+    strcpy(actorData->legs, spriteName);
+  
+    sprintf(spriteName, "student/female/head/%.2d", studentData->head);
+    strcpy(actorData->head, spriteName);
 
-  multiSprite_addSprite(multiSprite, legs);
-  multiSprite_addSprite(multiSprite, head);
-  multiSprite_addSprite(multiSprite, face);
-  multiSprite_addSprite(multiSprite, body);
-  multiSprite_addSprite(multiSprite, hair);
+    sprintf(spriteName, "student/female/face/%.2d", studentData->face);
+    strcpy(actorData->face, spriteName);
+
+    sprintf(spriteName, "student/female/body/%.2d", studentData->body);
+    strcpy(actorData->body, spriteName);
+
+    sprintf(spriteName, "student/female/hair/%.2d", studentData->hair);
+    strcpy(actorData->hair, spriteName);
+  }
+
+
   actorData->lifetime = 5.0f;
   actorData->roomSize = room->z * 80.0f;
   actorData->origin = pos->x;
@@ -135,6 +150,14 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
 void comp_studentManagerLogic(COMPONENT *self) {
   CDATA_STUDENTMANAGER data = { 0 };
+  data.drawnStudents = list_create();
   COMPONENT_INIT(self, COMP_STUDENTMANAGERLOGIC, data);
   self->events.logicUpdate = comp_studentManagerLogic_logicUpdate;
+  self->events.destroy = comp_studentManagerLogic_destroy;
+}
+
+void comp_studentManagerLogic_destroy(COMPONENT *self, void *event) {
+  CDATA_STUDENTMANAGER* data = (CDATA_STUDENTMANAGER *)self->data;
+
+  list_destroy(data->drawnStudents);
 }

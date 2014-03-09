@@ -10,6 +10,7 @@
 #include "../NekoEngine/random.h"
 #include "timemanager.h"
 #include "schoollogic.h"
+#include "newsfeedlogic.h"
 #define HEAD_COUNT 5
 #define FACE_COUNT 5
 #define HAIR_COUNT 5
@@ -41,6 +42,7 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   
   // Graduate
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
+    char message[80];
     int repIncrease = (int)(5 * (comData->gpa / 4.0f));
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
@@ -48,6 +50,8 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
     comData->graduated = true;
+    sprintf(message, pushStrings[STRINGS_GRAD], comData->name.first, comData->name.last);
+    comp_newsfeedlogic_push(self, message);
   }
 }
 
@@ -82,7 +86,7 @@ void comp_studentData(COMPONENT *self) {
 void generate_student(COMPONENT *self) {
   CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
-  int gender = randomIntRange(0, 2);
+  int gender = randomIntRange(1, 2);
   int lowValue = 0;
   int highValue = 20;
   GAME *owner = self->owner->space->game;

@@ -15,21 +15,26 @@
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
-#define FULLSCREEN false
+#define FULLSCREEN true
 
 GAME *__game = NULL; // UGHHHHHHH
 WINDOWPLACEMENT g_wpPrev = { sizeof(g_wpPrev) }; // UGHHHHHHHHHHHHHHhhhhhhh
 
 GAME *game_create(HINSTANCE instanceH, int show) {
   AESysInitInfo sysInitInfo;
-  RECT windowRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+  RECT windowRect = { 0 };
 
   GAME *game = (GAME *)malloc(sizeof(GAME));
+
+  game_configLoad(game);
+  windowRect.right = game->config.screen.width;
+  windowRect.bottom = game->config.screen.height;
+
   AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME, FALSE);
   sysInitInfo.mAppInstance    = instanceH;
   sysInitInfo.mShow        = show;
-  sysInitInfo.mWinWidth      = WINDOW_WIDTH;
-  sysInitInfo.mWinHeight      = WINDOW_HEIGHT;
+  sysInitInfo.mWinWidth      = game->config.screen.width;
+  sysInitInfo.mWinHeight      = game->config.screen.height;
   sysInitInfo.mCreateConsole    = 1;
   sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS - 1; // -1 to make Alpha not be dumb (?)
   sysInitInfo.mpWinCallBack    = __game_processWindow;
@@ -46,8 +51,8 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   game->window.width = windowRect.right - windowRect.left;
   game->window.height = windowRect.bottom - windowRect.top;
-  game->innerWindow.width = WINDOW_WIDTH;
-  game->innerWindow.height = WINDOW_HEIGHT;
+  game->innerWindow.width = game->config.screen.width;
+  game->innerWindow.height = game->config.screen.height;
 
   game->dimensions.width = NEKO_DEFAULT_GAMEWIDTH;
   game->dimensions.height = NEKO_DEFAULT_GAMEHEIGHT;
@@ -66,7 +71,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
 
   AESysInit(&sysInitInfo);
   AESysSetWindowTitle(NEKO_GAMETITLE);
-  game_resize(game, WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN);
+  game_resize(game, game->config.screen.width, game->config.screen.height, game->config.screen.full);
   
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
@@ -297,6 +302,45 @@ void game_resize(GAME *game, unsigned int width, unsigned int height, bool fulls
   if (game->initialized)
     AEGfxExit(); // TODO: Replace with better?
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
+}
+
+void game_configLoad(GAME *game) {
+  VECTOR lines;
+  char filename[128] = { 0 };
+  vector_init(&lines);
+  file_getCurrentDirectory(filename);
+  strcat(filename, "\\user.config");
+  file_readText(&lines, filename);
+  if (!vector_size(&lines)) {
+    game_configDefaults(game);
+    game_configSave(game);
+  }
+  else {
+    game->config.screen.width = atoi((char *)vector_get(&lines, 0));
+    game->config.screen.height = atoi((char *)vector_get(&lines, 1));
+    game->config.screen.full = atoi((char *)vector_get(&lines, 2));
+  }
+
+}
+
+void game_configSave(GAME *game) {
+  char filename[128] = { 0 };
+  FILE *fp;
+  file_getCurrentDirectory(filename);
+  strcat(filename, "\\user.config");
+  fp = fopen(filename, "wb");
+  if (fp) {
+    fprintf(fp, "%i\n", (int)game->config.screen.width);
+    fprintf(fp, "%i\n", (int)game->config.screen.height);
+    fprintf(fp, "%i\n", (int)game->config.screen.full);
+    fclose(fp);
+  }
+}
+
+void game_configDefaults(GAME *game) {
+  game->config.screen.width = 640;
+  game->config.screen.height = 360;
+  game->config.screen.full = true;
 }
 
 void __game_resize(GAME *game) {

@@ -27,6 +27,7 @@ typedef struct cdata_schoolLogic_t {
   int roomMaintenance;
   int slotsUsed;
   LIST *roomList;
+  int roomCount;
   int reputation;
   int techBonus;
   int designBonus;
@@ -37,6 +38,7 @@ typedef struct cdata_schoolLogic_t {
   int motivationBonus;
   BOOL roomConstructed;
   long int currMoney;
+  int counter;
   ENTITY *moneyUI;
   char buffer[20];
   union {
