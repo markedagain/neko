@@ -149,13 +149,16 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     {
       CDATA_STUDENTDATA *studentData;
       LIST_NODE *nodeptr;
+      char message[40];
       newStudent = space_addEntity(self->owner->space, arch_student, "Student");
       studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
       nodeptr = list_insert_end(comData->students, newStudent);
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
       studentData->tuition = comData->tuition;
-      printf("Motivation: %%%d\n", studentData->motivation);
+      
+      sprintf(message, pushStrings[STRINGS_ENROLL], studentData->name.first, studentData->name.last);
+      comp_newsfeedlogic_push(self, message);
     }
     comData->incomingStudents = 0;
   }

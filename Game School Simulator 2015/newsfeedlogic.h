@@ -18,14 +18,15 @@ typedef enum {
 } STRINGS;
 
 typedef struct cdata_newsfeedlogic_t {
-  char textBuffer[80];
-  ENTITY *textSprite;
+  
+  LIST *messages;
 
 } CDATA_NEWSFEEDLOGIC;
 
 char *pushStrings[STRINGS_LAST];
 
 void comp_newsfeedlogic_initialize(COMPONENT *, void *);
+void comp_newsfeedlogic_destroy(COMPONENT *, void *);
 void comp_newsfeedlogic_logicUpdate(COMPONENT *, void *);
 void comp_newsfeedlogic_push(COMPONENT *ptr, char *string);
 void comp_newsfeedlogic(COMPONENT *);
