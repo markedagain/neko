@@ -60,10 +60,10 @@ NEKO_API void data_loadTextureFromDisk(DATACONTAINER *dataContainer, const char 
 
 void data_makeKey(DATACONTAINER *dataContainer, char *storeKey, const char *filename, const char *directory, const char *extension);
 
-unsigned int file_readText(VECTOR *lines, const char *filename);
+NEKO_API unsigned int file_readText(VECTOR *lines, const char *filename);
 char *file_readBinary(const char *filename);
 
-bool file_exists(char *);
+NEKO_API bool file_exists(char *);
 NEKO_API void file_getCurrentDirectory(char *directory);
 NEKO_API bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char *extension);
 

@@ -52,6 +52,13 @@ typedef struct game_t {
     } time;
     SOUNDSYSTEM sound;
   } systems;
+  struct {
+    struct {
+      unsigned int width;
+      unsigned int height;
+      bool full;
+    } screen;
+  } config;
   bool initialized;
   bool resized;
   bool fullscreen;
@@ -68,6 +75,9 @@ void game_tick(GAME *, bool logicUpdate);
 void game_cleanup(GAME *);
 NEKO_API void game_start(GAME *);
 bool game_loop(GAME *);
+void game_configLoad(GAME *);
+NEKO_API void game_configSave(GAME *);
+void game_configDefaults(GAME *);
 NEKO_API void game_resize(GAME *, unsigned int, unsigned int, bool fullscreen);
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 void __game_resize(GAME *game);
