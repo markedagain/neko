@@ -82,7 +82,7 @@ void comp_studentData(COMPONENT *self) {
 void generate_student(COMPONENT *self) {
   CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
-  int gender = randomIntRange(0, 2);
+  int gender = randomIntRange(1, 2);
   int lowValue = 0;
   int highValue = 20;
   GAME *owner = self->owner->space->game;

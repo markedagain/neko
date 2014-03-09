@@ -14,6 +14,32 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   VEC3 pos = { 0 };
 
+  if (!data->setSprite) {
+    VEC3 position = { 0 };
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    ENTITY *legs;
+    ENTITY *head;
+    ENTITY *face;
+    ENTITY *body;
+    ENTITY *hair;
+
+    // creating the generic sprites
+    legs = genericSprite_create(self->owner->space, &position, NULL, data->legs);
+    head = genericSprite_create(self->owner->space, &position, NULL, data->head);
+    face = genericSprite_create(self->owner->space, &position, NULL, data->face);
+    body = genericSprite_create(self->owner->space, &position, NULL, data->body);
+    hair = genericSprite_create(self->owner->space, &position, NULL, data->hair);
+
+    // setting the student actor's multisprite
+    multiSprite_addSprite(multiSprite, legs);
+    multiSprite_addSprite(multiSprite, head);
+    multiSprite_addSprite(multiSprite, face);
+    multiSprite_addSprite(multiSprite, body);
+    multiSprite_addSprite(multiSprite, hair);
+
+    data->setSprite = true;
+  }
+
   // fade in when spawned before moving
   if (data->fadeIn) {
     COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
@@ -110,7 +136,11 @@ void comp_studentActorLogic_initialize(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   int velocity = randomIntRange(0, 1);
+
   data->fadeIn = true;
+  
+  
+  
   switch (velocity) {
   case (0):
     data->velocity = 1.0f;

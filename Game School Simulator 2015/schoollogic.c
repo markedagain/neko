@@ -442,6 +442,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   comData->roomConstructed = TRUE;
   comData->slotsUsed += roomSize;
+  if (roomType != ROOMTYPE_LOBBY)
+    ++comData->roomCount;
 
   // CREATE ACTOR
   switch (roomSize) {
@@ -579,7 +581,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   data.schoolName = "Eduardo's Super Awesome Game School";
-  data.money = 100000;
+  data.money = 100000000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
@@ -591,6 +593,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.alumni = list_create();
   data.roomMaintenance = 0;
   data.roomList = list_create();
+  data.roomCount = 0;
   data.reputation = 0;
   data.techBonus = 1;
   data.designBonus = 1;
