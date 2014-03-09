@@ -139,6 +139,8 @@ void comp_schoolLogic_updateMoneyText(COMPONENT *self) {
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
+  char message[80];
+  int dropCount = 0;
   CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   int i = 0;
   int lowValue = -50;
@@ -146,21 +148,22 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   //Add students
   if(comData->incomingStudents > 0) {
+    int newCount = 0;
     for(i = 0; i < comData->incomingStudents; i++)
     {
       CDATA_STUDENTDATA *studentData;
       LIST_NODE *nodeptr;
-      char message[40];
       newStudent = space_addEntity(self->owner->space, arch_student, "Student");
       studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
       nodeptr = list_insert_end(comData->students, newStudent);
       studentData->listNodePtr = nodeptr;
       comData->currentStudents++;
       studentData->tuition = comData->tuition;
-      
-      sprintf(message, pushStrings[STRINGS_ENROLL], studentData->name.first, studentData->name.last);
-      comp_newsfeedlogic_push(self, message);
+      ++newCount;
     }
+    sprintf(message, pushStrings[STRINGS_ENROLL], newCount);
+    comp_newsfeedlogic_push(self, message);
+
     comData->incomingStudents = 0;
   }
 
@@ -207,12 +210,10 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
-      char message[80];
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
-      sprintf(message, pushStrings[STRINGS_DROP], studentData->name.first, studentData->name.last);
-      comp_newsfeedlogic_push(self, message);
+      ++dropCount;
       continue;
     }
 
@@ -221,8 +222,15 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
+      ++dropCount;
       continue;
     }
+    
+    
+  }
+  if(dropCount) {
+    sprintf(message, pushStrings[STRINGS_DROP], dropCount);
+    comp_newsfeedlogic_push(self, message);
   }
 
   comData->semTech = 0;
@@ -596,6 +604,8 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
+  data.schoolName = "Eduardo's Super Awesome Game School";
+  data.money = 2500000;
   data.schoolName = "Eduardo's Game School";
   data.money = 25000000;
   data.tuition = 12000;

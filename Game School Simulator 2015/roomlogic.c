@@ -2,7 +2,7 @@
 
 #include "roomlogic.h"
 #include "schoollogic.h"
-
+#include "inspectionscreenlogic.h"
 
 void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -99,7 +99,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_CAFETERIA);
       comData->repBonus = 5;
       comData->motivationBonus = 5;
-      comData->upkeep = -10000;
+      comData->upkeep = 10000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -113,7 +113,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_STORE);
       comData->repBonus = 1;
       comData->motivationBonus = 2;
-      comData->upkeep = -20000;
+      comData->upkeep = 20000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -234,9 +234,13 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
     }
 }
 
-void comp_roomLogic_upgradeRoom(COMPONENT *self){
-  CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
-  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_SCHOOLLOGIC);
+void comp_roomLogic_upgradeRoom(COMPONENT *self) {
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[inspectData->posY][inspectData->posX], COMP_ROOMLOGIC);
 
   switch (comData->type) {
     case ROOMTYPE_LOBBY:
@@ -295,7 +299,7 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self){
       //Set Values
       comData->repBonus += 3;
       comData->motivationBonus += 3;
-      comData->upkeep += -10000;
+      comData->upkeep += 10000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
@@ -306,7 +310,7 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self){
     case ROOMTYPE_STORE:
       //Set Values
       comData->repBonus += 1;
-      comData->upkeep += -10000;
+      comData->upkeep += 10000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;

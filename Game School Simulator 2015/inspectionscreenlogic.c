@@ -4,6 +4,7 @@
 #include "inspectionscreen.h"
 #include "mousebox.h"
 #include "schoollogic.h"
+#include "UI_button.h"
 #include "../NekoEngine/generictext.h"
 #include "../Nekoengine/spritetext.h"
 #include "../NekoEngine/component.h"
@@ -26,7 +27,17 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
 
     // Is the window active?
     if (comData->active == false) {
+      LIST_NODE *node;
+      LIST *buttons = list_create(); 
       sprite->visible = false;
+      
+      space_getAllEntities(self->owner->space, "upgradeButton", buttons);
+      node = buttons->first;
+      while (node) {
+        entity_destroy((ENTITY *)node->data);
+        node = node->next;
+      }
+      list_destroy(buttons);
       
       if (comData->roomType) {
         entity_destroy(comData->bonuses);
@@ -35,6 +46,8 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         comData->roomType = NULL;
         entity_destroy(comData->upkeep);
         comData->upkeep = NULL;
+        entity_destroy(comData->level);
+        comData->level = NULL;
       }
     }
 
@@ -47,8 +60,10 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[comData->posY][comData->posX], COMP_ROOMLOGIC);
         sprintf(comData->bonusBuffer, "Tech Bonus: +%i\nDesign Bonus: +%i\nArt Bonus: +%i\nRep Bonus: +%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus);
         sprintf(comData->upkeepBuffer, "Upkeep: $%li", roomData->upkeep);
+        sprintf(comData->levelBuffer, "Level %i", roomData->level);
         genericText_setText(comData->bonuses, comData->bonusBuffer);
         genericText_setText(comData->upkeep, comData->upkeepBuffer);
+        genericText_setText(comData->level, comData->levelBuffer);
         comData->triggered = false;
       }
 
@@ -64,53 +79,73 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         comData->upkeep = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->upkeepBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
       }
 
-      //Check if the type of room has changed
+      if (!comData->level) {
+        vec3_set(&position, -318, 150, 0);
+        sprintf(comData->levelBuffer, "Level %i", roomData->level);
+        comData->level = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->levelBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+      }
+        //Check if the type of room has changed
       if (comData->type != roomData->type) {
        switch (roomData->type) {
         case (ROOMTYPE_LOBBY): 
           sprintf(comData->roomTypeBuffer, "Lobby", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_CLASS): 
           sprintf(comData->roomTypeBuffer, "Class", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Improve Desks!", NULL);
           break;
         case (ROOMTYPE_LIBRARY): 
           sprintf(comData->roomTypeBuffer, "Library", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Purchase Books!", NULL);
           break;
         case (ROOMTYPE_TEAMSPACE): 
           sprintf(comData->roomTypeBuffer, "Teamspace", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_CAFETERIA): 
           sprintf(comData->roomTypeBuffer, "Cafeteria", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_STORE): 
           sprintf(comData->roomTypeBuffer, "Store", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_OFFICES): 
           sprintf(comData->roomTypeBuffer, "Offices", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_AUDITORIUM): 
           sprintf(comData->roomTypeBuffer, "Auditorium", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_TUTORING): 
           sprintf(comData->roomTypeBuffer, "Tutoring Room", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_WIFI): 
           sprintf(comData->roomTypeBuffer, "Wi-Fi Room", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Improve Wi-Fi!", NULL);
           break;
         case (ROOMTYPE_RECREATION): 
           sprintf(comData->roomTypeBuffer, "Rec Room", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_FIGURE): 
           sprintf(comData->roomTypeBuffer, "Figure-Drawing Room", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_POTTERY): 
           sprintf(comData->roomTypeBuffer, "Pottery Room (?)", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
        }
       }  
       if(!comData->roomType) {
-        vec3_set(&position, -318, 150, 0);
+        vec3_set(&position, -318, 170, 0);
         comData->roomType = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", comData->roomTypeBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+        vec3_set(&position, -268, 20, 0);
+        UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &color, "Upgrade!");
       }
       genericText_setText(comData->roomType, comData->roomTypeBuffer);
       comData->type = roomData->type;
