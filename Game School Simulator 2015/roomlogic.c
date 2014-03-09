@@ -3,6 +3,7 @@
 #include "roomlogic.h"
 #include "schoollogic.h"
 
+
 void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
