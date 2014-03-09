@@ -26,6 +26,7 @@
 #include "studentactor.h"
 #include "studentmanager.h"
 #include "background.h"
+#include "newsfeed.h"
 #include "main.h"
 #include "menuscreen.h"
 
@@ -92,6 +93,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   // ui - user interface
   uiSpace = game_addSpace(game, "ui");
   space_addEntity(uiSpace, arch_player, "player");
+  space_addEntity(uiSpace, arch_newsFeed, "newsfeed");
 
   // create the main menu
   createMainMenu(game);
@@ -137,6 +139,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   genericSprite_create(cursorSpace, &position, "cursorSprite", "cursor/default");
   space_addEntity(cursorSpace, arch_blackbar, "blackbar1");
   space_addEntity(cursorSpace, arch_blackbar, "blackbar2");
+  
 
   game_start(game);
 

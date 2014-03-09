@@ -38,7 +38,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
       vec3_set(&position, 320, 180, 0);
-      vec4_set(&color, 0, 0, 1, 1 );
+      vec4_set(&color, .1f, 1, .1f, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }

@@ -122,6 +122,12 @@
     <ClCompile Include="inspectionscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="newsfeedlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="newsfeed.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
     <ClCompile Include="menuscreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -266,6 +272,12 @@
     </ClInclude>
     <ClInclude Include="inspectionscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="newsfeed.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="newsfeedlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="main.h" />
     <ClInclude Include="menuscreen.h">
