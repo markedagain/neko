@@ -5,14 +5,30 @@
 #include "../NekoEngine/input.h"
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
+#include "spritetext.h"
+#include "generictext.h"
 
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)self->data;
   COMPONENT *schoolLogic = entity_getComponent(self->owner, COMP_SCHOOLLOGIC);
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(self->owner, COMP_SCHOOLLOGIC);
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   
   INPUT_CONTAINER *input = &self->owner->space->game->input;
+  char buffer[80];
+
+  // Display time on screen   
+  if (!comData->timeUI) {
+    VEC3 position;
+    VEC4 color;
+    vec3_set(&position, 320, 180, 0);
+    vec4_set(&color, 0, 0, 0, 1 );
+    sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+    comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+  }
+  sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+  genericText_setText(comData->timeUI, buffer);
 
   if(schoolData->rooms.coord[2][7]) {
     comData->frameCounter++;
@@ -23,6 +39,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       
       comData->months++;
       
+      
+
       // Monthly functions //
       comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
       comData->frameCounter = 0;
@@ -55,6 +73,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comp_newsfeedlogic_push(self, message);
     }
   }
+
+
 }
 
 void comp_timeManager(COMPONENT *self) {

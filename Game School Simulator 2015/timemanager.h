@@ -15,6 +15,7 @@ typedef struct cdata_timeManager_t {
   int currentYear;
   int frameCounter;
   int monthCounter;
+  ENTITY *timeUI;
 } CDATA_TIMEMANAGER;
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);
