@@ -21,6 +21,7 @@
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
+  comData->roomFlag[ROOMTYPE_LOBBY] = 1;
 }
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -118,24 +119,8 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   comData->semDesign += comData->designBonus;
   comData->semArt += comData->artBonus;
 
-  printf("Students: %i/%i (%i incoming)", comData->currentStudents, comData->studentCapacity, comData->incomingStudents);
-  printf("       Incoming: %i\n", comData->incomingStudents);
-  printf("Money: $%i", comData->money);
-  printf("       Tuition: $%i\n", comData->tuition);
-  printf("Rep: %i", comData->reputation);
-  printf("              Alumni: %i\n", comData->alumni->count);
-
 }
-/*
-void comp_schoolLogic_updateMoneyText(COMPONENT *self) {
-  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
-  VEC3 position;
-  VEC4 color;
-  if (!comData
 
-  genericText_setText(comData->moneyUI, comData->buffer);
-}
-*/
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
@@ -495,15 +480,23 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   switch (roomType) {
     case ROOMTYPE_LOBBY:
         sprite->source = "rooms/frontdoor";
+        comData->roomFlag[ROOMTYPE_CLASS] = 1;
         break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
+        comData->roomFlag[ROOMTYPE_TEAMSPACE] = 1;
+        comData->roomFlag[ROOMTYPE_LIBRARY] = 1;
+        comData->roomFlag[ROOMTYPE_OFFICES] = 1;
       break;
     case ROOMTYPE_LIBRARY:
       sprite->source = "rooms/library";
+      comData->roomFlag[ROOMTYPE_STORE] = 1;
+      comData->roomFlag[ROOMTYPE_RECREATION] = 1;
       break;
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
+      comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
+      comData->roomFlag[ROOMTYPE_WIFI] = 1;
       break;
     case ROOMTYPE_CAFETERIA:
       sprite->source = "rooms/cafeteria";
@@ -513,6 +506,9 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       break;
     case ROOMTYPE_OFFICES:
       sprite->source = "rooms/offices";
+      comData->roomFlag[ROOMTYPE_AUDITORIUM] = 1;
+      comData->roomFlag[ROOMTYPE_TUTORING] = 1;
+      comData->roomFlag[ROOMTYPE_FIGURE] = 1;
       break;
     case ROOMTYPE_AUDITORIUM:
       sprite->source = "rooms/auditorium";
@@ -533,14 +529,6 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       sprite->source = "rooms/library";
       break;
   }
-}
-
-void comp_schoolLogic_upgradeRoom(COMPONENT *ptr, ENTITY *oldRoom, ROOM_TYPE upgradeType){
-  SPACE *simSpace = game_getSpace(ptr->owner->space->game, "sim");
-  SPACE *mg = game_getSpace(ptr->owner->space->game, "mg");
-  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
-
-
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
@@ -609,10 +597,8 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Eduardo's Super Awesome Game School";
-  data.money = 2500000;
   data.schoolName = "Eduardo's Game School";
-  data.money = 25000000;
+  data.money = 300000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;

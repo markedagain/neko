@@ -31,7 +31,6 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->repBonus = 5;
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_LOBBY);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_LOBBY);
-      comData->upkeep = 10000;
       //Modify SchoolData
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -99,7 +98,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_CAFETERIA);
       comData->repBonus = 5;
       comData->motivationBonus = 5;
-      comData->upkeep = 10000;
+      comData->upkeep = -10000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
@@ -299,7 +298,7 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
       //Set Values
       comData->repBonus += 3;
       comData->motivationBonus += 3;
-      comData->upkeep += 10000;
+      comData->upkeep -= 10000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
@@ -435,7 +434,7 @@ void comp_roomLogic(COMPONENT *self) {
 int comp_roomLogic_getRoomCost(ROOM_TYPE type) {
     switch (type) {
     case ROOMTYPE_LOBBY:
-      return 100000;
+      return 150000;
 
     case ROOMTYPE_CLASS:
       return 40000;
@@ -471,7 +470,7 @@ int comp_roomLogic_getRoomCost(ROOM_TYPE type) {
       return 30000;
 
     case ROOMTYPE_POTTERY:
-      return 60000;
+      return 1000000;
 
     default:
       return 0;
@@ -481,16 +480,16 @@ int comp_roomLogic_getRoomCost(ROOM_TYPE type) {
 int comp_roomLogic_getRoomUpgradeCost(ROOM_TYPE type) {
     switch (type) {
     case ROOMTYPE_LOBBY:
-      return 5000;
+      return 0;
 
     case ROOMTYPE_CLASS:
       return 5000;
 
     case ROOMTYPE_LIBRARY:
-      return 5000;
+      return 10000;
 
     case ROOMTYPE_TEAMSPACE:
-      return 5000;
+      return 30000;
 
     case ROOMTYPE_CAFETERIA:
       return 5000;
