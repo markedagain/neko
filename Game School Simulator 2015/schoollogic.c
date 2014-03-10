@@ -35,6 +35,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   VEC3 position;
   VEC4 color;
+  int maxIncomingStudents = 0;
 
   // WELCOME
   if(comData->counter == 0) {
@@ -59,6 +60,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // update build buttons
     UI_button_updateBuildButtons(uiSpace);
   }
+
+  // Calculate Incoming Students
+    // Set to total students possible
+  maxIncomingStudents = comData->studentCapacity - comData->currentStudents + comData->expectedGraduates;
+  comData->incomingStudents = maxIncomingStudents;
+    // Add min GPA multiplier
+  comData->incomingStudents = (int)(comData->incomingStudents * (((4.2f - comData->minGpa) / 4.0f)));
+  // Add min Tuition multiplier
+  comData->incomingStudents += (int)(maxIncomingStudents * ((27000.0f - comData->tuition) / 50000.0f));
 }
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
@@ -68,7 +78,8 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
 
-  // Calculate incomingStudents
+  // Calculate incomingStudents (NOW DONE IN LOGIC UPDATE)
+  /*
   if(comData->currentStudents < comData->studentCapacity + comData->expectedGraduates) {
     comData->incomingStudents += 1 + (int)(comData->reputation * .1);
     if(comData->incomingStudents > (comData->studentCapacity - comData->currentStudents) + comData->expectedGraduates) {
@@ -78,6 +89,7 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   else {
     comData->incomingStudents = 0;
   }
+  */
 
   //Add money
   studentPtr = comData->students->first;
