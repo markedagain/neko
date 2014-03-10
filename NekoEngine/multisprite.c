@@ -47,6 +47,7 @@ void multiSprite_setColor(COMPONENT *self, VEC4 *color) {
     node = node->next;
   }
 }
+
 void multiSprite_setAlpha(COMPONENT *self, float alpha) {
   CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
   LIST_NODE *node = data->entities->first;
@@ -55,4 +56,10 @@ void multiSprite_setAlpha(COMPONENT *self, float alpha) {
     ((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->color.a = alpha;
     node = node->next;
   }
+}
+
+float multiSprite_getAlpha(COMPONENT *self) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+  return (node ? ((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->color.a : 0.0f);
 }
