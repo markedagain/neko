@@ -607,7 +607,7 @@ void comp_schoolLogic(COMPONENT *self) {
   data.schoolName = "Eduardo's Super Awesome Game School";
   data.money = 2500000;
   data.schoolName = "Eduardo's Game School";
-  data.money = 250000;
+  data.money = 25000000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;

@@ -13,7 +13,7 @@ void arch_popText(ENTITY *entity) {
   entity_connect(entity, comp_popTextLogic);
 }
 
-ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, POPTYPE popType, float timer) {
+ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, POPTYPE popType, float duration) {
   ENTITY *entity = space_addEntity(space, arch_popText, name);
   CDATA_TRANSFORM *transData = (CDATA_TRANSFORM *)entity_getComponentData(entity, COMP_TRANSFORM);
   CDATA_SPRITETEXT *textData = (CDATA_SPRITETEXT *)entity_getComponentData(entity, COMP_SPRITETEXT);
@@ -24,6 +24,7 @@ ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, cha
   textData->alignment.x = TEXTALIGN_CENTER;
   textData->alignment.y = TEXTALIGN_BOTTOM;
   popTextData->type = popType;
+  popTextData->duration = duration;
   vec4_copy(&textData->color, color);
   comp_spriteText_setText(comText, text);
   return entity;
