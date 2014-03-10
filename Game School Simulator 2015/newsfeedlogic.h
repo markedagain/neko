@@ -23,6 +23,7 @@ typedef struct cdata_newsfeedlogic_t {
   LIST *messages;
   ENTITY *lines[5];
   double fadeOutStartTime;
+  double delayTime;
 
 } CDATA_NEWSFEEDLOGIC;
 
