@@ -176,15 +176,20 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
   LIST_NODE *pStudent = data->drawnStudents->first;
   VEC3 position = { 0 };
-  char buffer[20];
+  char buffer[30];
   VEC4 color = { 0, 0, 0, 1.0f };
   ENTITY *popText;
+  SPACE *sim = game_getSpace(studentManagerLogic->owner->space->game, "sim");
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
 
   while (pStudent) {
     ENTITY *simStudent = ((COMPLETE_STUDENT *)pStudent->data)->simStudent;
     ENTITY *studentActor = ((COMPLETE_STUDENT *)pStudent->data)->studentActor;
     CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(studentActor, COMP_TRANSFORM);
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(simStudent, COMP_STUDENTDATA);
+    CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
+    
+    // if student is still here
     switch (studentData->major) {
     case M_TECH:
       sprintf(buffer, "Tech + %d", (int)studentData->techIncrease);
@@ -205,15 +210,75 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
 }
 
 // find the student actor then return its node
-LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *actor) {
+LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *target, FIND_TYPE type) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
   LIST_NODE *pStudent = data->drawnStudents->first;
 
-  while (pStudent) {
-    if (((COMPLETE_STUDENT *)(pStudent->data))->studentActor == actor)
-      return pStudent;
-    pStudent = pStudent->next;
+  // if using an actor to search
+  if (type == FT_ACTOR) {
+    while (pStudent) {
+      if (((COMPLETE_STUDENT *)(pStudent->data))->studentActor == target)
+        return pStudent;
+      pStudent = pStudent->next;
+    }
+  }
+
+  // if using a sim to search
+  else {
+    while (pStudent) {
+      if (((COMPLETE_STUDENT *)(pStudent->data))->simStudent == target)
+        return pStudent;
+      pStudent = pStudent->next;
+    }
   }
 
   return NULL;
 }
+
+void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENTITY *student) {
+  LIST_NODE *graduateNode = comp_studentManagerLogic_findStudent(studentManagerLogic, student, FT_SIM);
+  
+  if (graduateNode) {
+    VEC3 position = { 0 };
+    ENTITY *studentActor = ((COMPLETE_STUDENT *)graduateNode->data)->studentActor;
+    CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
+    CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+    ENTITY *popText;
+    char buffer[30];
+
+    strcpy(buffer, "I Graduated!");
+    popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
+    entity_attach(popText, studentActor);
+
+    actorData->fadeOut = true;
+    list_remove(data->drawnStudents, graduateNode);
+  }
+}
+
+void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTITY *student) {
+  LIST_NODE *dropoutNode = comp_studentManagerLogic_findStudent(studentManagerLogic, student, FT_SIM);
+
+  if (dropoutNode) {
+    VEC3 position = { 0 };
+    ENTITY *studentActor = ((COMPLETE_STUDENT *)dropoutNode->data)->studentActor;
+    CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
+    CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+    ENTITY *popText;
+    char buffer[30];
+
+    strcpy(buffer, "I'm dropping out!");
+    popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
+    entity_attach(popText, studentActor);
+
+    actorData->fadeOut = true;
+    list_remove(data->drawnStudents, dropoutNode);
+  }
+}
+
+/*
+// if the student drops out
+    if (studentData->gpa < schoolData->minGpa || studentData->motivation == 0) {
+      strcpy(buffer, "I'm dropping out!");
+      actorData->fadeOut = true;
+      actorData->timer = 0.0f;
+    }*/

@@ -32,7 +32,9 @@ void studentManager_spawnStudent(COMPONENT *self);
 void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr, int ID);
 void studentManager_deleteList(LIST *list);
 void comp_studentManagerLogic_destroy(COMPONENT *self, void *event);
-LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *actor);
+LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *target, FIND_TYPE type);
 void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic);
+void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENTITY *student);
+void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTITY *student);
 
 #endif

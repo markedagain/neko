@@ -63,7 +63,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
       
       //when the student fades out, remove him from the drawnStudents list
       // this is messed uuup
-      list_remove(managerData->drawnStudents, comp_studentManagerLogic_findStudent(managerLogic, self->owner));
+      list_remove(managerData->drawnStudents, comp_studentManagerLogic_findStudent(managerLogic, self->owner, FT_ACTOR));
       entity_destroy(self->owner);
     }
     multiSprite_setAlpha(multiSprite, 1 - data->timer / FADE_TIME);

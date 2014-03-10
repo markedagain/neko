@@ -11,6 +11,7 @@
 #include "timemanager.h"
 #include "schoollogic.h"
 #include "newsfeedlogic.h"
+#include "studentmanagerlogic.h"
 #define HEAD_COUNT 5
 #define FACE_COUNT 5
 #define HAIR_COUNT 5
@@ -44,9 +45,13 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
     char message[80];
     int repIncrease = (int)(5 * (comData->gpa / 4.0f));
+    SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+    ENTITY *studentManager = space_getEntity(fg, "studentManager");
+    COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
     printf("\n%s %s has graduated! +%i Rep\n", comData->name.first, comData->name.last, repIncrease);
+    comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
     comData->graduated = true;

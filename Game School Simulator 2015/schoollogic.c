@@ -18,6 +18,7 @@
 #include "timemanager.h"
 #include "UI_button.h"
 #include "newsfeedlogic.h"
+#include "studentmanagerlogic.h"
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
@@ -210,7 +211,11 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     // Drop students below the min GPA 
     if(studentData->gpa < comData->minGpa && timeData->currentSemester - studentData->semesterStarted > 2) {
+      SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+      ENTITY *studentManager = space_getEntity(fg, "studentManager");
+      COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
+      comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentPtr);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
@@ -219,7 +224,11 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
     // Drop students whos motivation has reached 0 
     else if(studentData->motivation == 0) {
+      SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+      ENTITY *studentManager = space_getEntity(fg, "studentManager");
+      COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
+      comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentPtr);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
