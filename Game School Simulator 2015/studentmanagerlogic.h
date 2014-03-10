@@ -8,16 +8,31 @@
 #include "studentdata.h"
 
 #define COMP_STUDENTMANAGERLOGIC HASH("COMP_STUDENTMANAGERLOGIC")
-void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event);
-void comp_studentManagerLogic(COMPONENT *self);
-void studentManager_spawnStudent(COMPONENT *self);
-void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr);
-void studentManager_deleteList(LIST *list);
-void comp_studentManagerLogic_destroy(COMPONENT *self, void *event);
 
 typedef struct {
   float timer;
   LIST *drawnStudents;
+  int currID;
 } CDATA_STUDENTMANAGER;
+
+typedef struct {
+  ENTITY *simStudent;
+  ENTITY *studentActor;
+} COMPLETE_STUDENT;
+
+typedef enum {
+  FT_SIM,
+  FT_ACTOR
+}FIND_TYPE;
+
+
+void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event);
+void comp_studentManagerLogic(COMPONENT *self);
+void studentManager_spawnStudent(COMPONENT *self);
+void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC3 *pos, CDATA_STUDENTDATA *studentData, ENTITY *studentPtr, int ID);
+void studentManager_deleteList(LIST *list);
+void comp_studentManagerLogic_destroy(COMPONENT *self, void *event);
+LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, ENTITY *actor);
+void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic);
 
 #endif

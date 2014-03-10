@@ -31,11 +31,13 @@ ENTITY *entity_create(void(*archetypeFunction)(ENTITY *), char *name)
 }
 
 void entity_attach(ENTITY *child, ENTITY *parent) {
+  EDATA_UPDATE logicUpdateEvent = { 0 };
+  logicUpdateEvent.dt = child->space->game->systems.time.dt;
   if (child->destroying || parent->destroying)
     return;
   child->parent = parent;
   vector_append(&parent->children, child);
-  entity_invokeEvent(child, EV_LOGICUPDATE, NULL);
+  entity_invokeEvent(child, EV_LOGICUPDATE, &logicUpdateEvent);
 }
 
 void entity_detach(ENTITY *child, ENTITY *parent) {

@@ -10,6 +10,6 @@
 #define ARCH_POPTEXT HASH("ARCH_POPTEXT")
 void arch_popText(ENTITY *entity);
 
-ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, POPTYPE popType, float timer);
+ENTITY *popText_create(SPACE *space, VEC3 *position, char *name, char *font, char *text, VEC4 *color, POPTYPE popType, float duration);
 
 #endif

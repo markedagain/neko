@@ -41,24 +41,29 @@ static void destroySelf_onEnd(ACTION *action) {
 void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_POPTEXT *data = (CDATA_POPTEXT *)self->data;
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  CDATA_TRANSFORM *parentTrans = (self->owner->parent == NULL ? NULL : (CDATA_TRANSFORM *)entity_getComponentData(self->owner->parent, COMP_TRANSFORM));
 
   if (!data->started) {
     data->started = true;
 
     switch (data->type) {
     case POPTYPE_DEFAULT:
-      al_pushFront(&data->actions, action_create(self, rise_update, rise_onStart, NULL, true, 0.6f));
+      al_pushFront(&data->actions, action_create(self, rise_update, rise_onStart, NULL, true, 0.5f * data->duration));
       break;
 
     case POPTYPE_STAY:
-      al_pushFront(&data->actions, action_create(self, riseStay_update, rise_onStart, NULL, true, 0.6f));
+      al_pushFront(&data->actions, action_create(self, riseStay_update, rise_onStart, NULL, true, 0.5f * data->duration));
       break;
 
     case POPTYPE_GROW:
       break;
     }
-    al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f));
+    al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f * data->duration));
   }
+
+  if (parentTrans && parentTrans->scale.x < 0)
+    trans->scale.x = -1.0f;
 
   al_update(&data->actions, updateEvent->dt);
 }

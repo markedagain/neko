@@ -20,13 +20,17 @@ typedef enum {
 } STRINGS;
 
 typedef struct cdata_newsfeedlogic_t {
-  
   LIST *messages;
+  ENTITY *lines[5];
+  double fadeOutStartTime;
+  double delayTime;
 
 } CDATA_NEWSFEEDLOGIC;
 
 char *pushStrings[STRINGS_LAST];
 
+void comp_newsfeedlogic_initialize(COMPONENT *self, void *event);
+void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event);
 void comp_newsfeedlogic_destroy(COMPONENT *, void *);
 void comp_newsfeedlogic_push(COMPONENT *ptr, char *string);
 void comp_newsfeedlogic(COMPONENT *);

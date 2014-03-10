@@ -18,6 +18,7 @@ typedef struct {
   ALIST actions;
   bool started;
   float startY;
+  float duration;
 } CDATA_POPTEXT;
 
 #define COMP_POPTEXTLOGIC HASH("COMP_POPTEXTLOGIC")
