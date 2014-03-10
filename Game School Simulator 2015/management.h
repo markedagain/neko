@@ -14,19 +14,36 @@ typedef struct{
   char costsBuffer[40];
   char studentPopBuffer[40];
   char studentIncBuffer[40];
+  char reputationBuffer[40];
+  char incomeBuffer[40];
   int currStudentInc;
   int currUpkeep;
   int currTuition;
   int currStudentPop;
+  int currReputation;
+  int expectedIncome;
   float currMinGpa;
   ENTITY *gpa;
+  ENTITY *gpaTitle;
   ENTITY *tuition;
+  ENTITY *tuitionTitle;
+  ENTITY *rep;
+  ENTITY *repTitle;
   ENTITY *manageWindow;
   ENTITY *titleText;
+  ENTITY *currMoneyTitle;
+  ENTITY *currCostsTitle;
+  ENTITY *currIncomeTitle;
   ENTITY *currMoney;
   ENTITY *currCosts;
+  ENTITY *currIncome;
+  ENTITY *studentPopTitle;
+  ENTITY *studentIncTitle;
   ENTITY *studentPop;
   ENTITY *studentInc;
+  ENTITY *incomeTitle;
+  ENTITY *income;
+
   bool triggered;
 } CDATA_MANAGEMENT;
 
