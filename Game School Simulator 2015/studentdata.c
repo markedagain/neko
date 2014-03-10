@@ -43,7 +43,6 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   
   // Graduate
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
-    char message[80];
     int repIncrease = (int)(5 * (comData->gpa / 4.0f));
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentManager = space_getEntity(fg, "studentManager");
@@ -55,8 +54,6 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
     comData->graduated = true;
-    sprintf(message, pushStrings[STRINGS_GRAD], comData->name.first, comData->name.last);
-    comp_newsfeedlogic_push(self, message);
   }
 }
 

@@ -31,31 +31,38 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(updateData, COMP_MANAGEMENT);
 
   // Check if current management values have changed for...
+  // Expected Income
+  if (comData->currentStudents != managementData->currStudentPop || comData->tuition != managementData->currTuition) {
+    managementData->expectedIncome = comData->currentStudents * comData->tuition;
+    sprintf(managementData->incomeBuffer, "$%i", managementData->expectedIncome);
+    genericText_setText(managementData->income, managementData->incomeBuffer);
+  }
+  
   // Incoming Students
   if (comData->incomingStudents != managementData->currStudentInc) {
     managementData->currStudentInc = comData->incomingStudents;
-    sprintf(managementData->studentIncBuffer, "Incoming Students: %i", comData->incomingStudents);
+    sprintf(managementData->studentIncBuffer, "%i", comData->incomingStudents);
     genericText_setText(managementData->studentInc, managementData->studentIncBuffer);
   }
 
   // Tuition
   if (comData->tuition != managementData->currTuition) {
     managementData->currTuition = comData->tuition;
-    sprintf(managementData->tuitionBuffer, "Tuition: $%i", comData->tuition);
+    sprintf(managementData->tuitionBuffer, "$%i", comData->tuition);
     genericText_setText(managementData->tuition, managementData->tuitionBuffer);
   }
 
   // Minimum GPA
   if (comData->minGpa != managementData->currMinGpa) {
     managementData->currMinGpa = comData->minGpa;
-    sprintf(managementData->gpaBuffer, "Min GPA: %g", comData->minGpa);
+    sprintf(managementData->gpaBuffer, "%g", comData->minGpa);
     genericText_setText(managementData->gpa, managementData->gpaBuffer);
   }
 
   // Student Population
   if (comData->currentStudents != managementData->currStudentPop) {
     managementData->currStudentPop = comData->currentStudents;
-    sprintf(managementData->studentPopBuffer, "Student Population: %i / %i", comData->currentStudents, comData->studentCapacity);
+    sprintf(managementData->studentPopBuffer, "%i / %i", comData->currentStudents, comData->studentCapacity);
     genericText_setText(managementData->studentPop, managementData->studentPopBuffer);
   }
 
@@ -64,6 +71,13 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     managementData->currUpkeep = comData->roomMaintenance;
     sprintf(managementData->costsBuffer, "Upkeep: -$%i", comData->roomMaintenance);
     genericText_setText(managementData->currCosts, managementData->costsBuffer);
+  }
+
+  // Tuition
+  if (comData->reputation != managementData->currReputation) {
+    managementData->currReputation = comData->reputation;
+    sprintf(managementData->reputationBuffer, "Reputation: %i", comData->reputation);
+    genericText_setText(managementData->rep, managementData->reputationBuffer);
   }
 }
 

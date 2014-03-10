@@ -246,6 +246,11 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   comData->semDesign = 0;
   comData->semArt = 0;
 
+  if(comData->expectedGraduates > 0) {
+    sprintf(message, pushStrings[STRINGS_GRAD], comData->expectedGraduates);
+    comp_newsfeedlogic_push(self, message);
+  }
+
   comData->expectedGraduates = 0;
 
   studentPtr = comData->students->first;
