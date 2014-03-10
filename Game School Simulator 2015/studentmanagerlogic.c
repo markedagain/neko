@@ -196,13 +196,12 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
       sprintf(buffer, "Design + %d", (int)studentData->techIncrease);
       break;
     }
-    position = trans->translation;
+    //position = trans->translation;
     popText = popText_create(studentManagerLogic->owner->space, &position, "getStatsText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
-    //entity_attach(popText, studentActor);
+    entity_attach(popText, studentActor);
 
     pStudent = pStudent->next;
   }
-
 }
 
 // find the student actor then return its node
