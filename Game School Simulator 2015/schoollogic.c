@@ -473,6 +473,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   ENTITY *entity = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
   VEC3 middle;
+  VEC3 spawnPoint;
   float squareSize = 80.0f;
   CDATA_SPRITE *sprite;
   
@@ -502,11 +503,15 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       middle.x = (colToUse - 8.5f) * squareSize + squareSize + squareSize;
       break;
     }
-  newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
+  spawnPoint = middle;
+  spawnPoint.y += 100.0f;
+  newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &spawnPoint);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
   actorCompData->posX = colToUse;
   actorCompData->posY = floorToUse;
+  actorCompData->startY = spawnPoint.y;
+  actorCompData->targetY = middle.y;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
