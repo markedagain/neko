@@ -504,7 +504,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       break;
     }
   spawnPoint = middle;
-  spawnPoint.y += 100.0f;
+  spawnPoint.y += 200.0f;
   newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &spawnPoint);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;

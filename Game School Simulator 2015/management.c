@@ -98,7 +98,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     // Increase GPA button
     vec3_set(&position, -40, 30, 0);
     createCustomButton(increaseGPA_onEntered, NULL, increaseGPA_onPressed, increaseGPA_onExit, NULL,
-                           self->owner->space, &position, "increaseGPAButton",
+                           self->owner->space, &position, "managementButton",
                            1.0f, 1.0f,
                            true, "backgrounds/white_box", NULL, &color,
                            true, "+GPA", "fonts/gothic/12", 
@@ -107,7 +107,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     // Decrease GPA button
     vec3_set(&position, -160, 30, 0);
     createCustomButton(decreaseGPA_onEntered, NULL, decreaseGPA_onPressed, decreaseGPA_onExit, NULL,
-                           self->owner->space, &position, "decreaseGPAButton",
+                           self->owner->space, &position, "managementButton",
                            1.0f, 1.0f,
                            true, "backgrounds/white_box", NULL, &color,
                            true, "-GPA", "fonts/gothic/12", 
