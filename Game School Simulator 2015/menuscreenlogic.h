@@ -5,8 +5,15 @@
 
 #include "entity.h"
 #include "hash.h"
+#include "actionlist.h"
 
 #define COMP_MENUSCREENLOGIC HASH("COMP_MENUSCREENLOGIC")
+
+typedef struct {
+  bool pressedStart;
+  ALIST actions;
+} CDATA_MENUSCREENLOGIC;
+
 void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_menuScreenLogic(COMPONENT *self);
 void comp_menuScreenLogic_initialize(COMPONENT *self, void *event);
