@@ -16,6 +16,7 @@
 #include "managescreen.h"
 #include "ghostroomlogic.h"
 #include "inspectionscreenlogic.h"
+#include "timemanager.h"
 
 #define BUILDENDPOS 120.0f
 

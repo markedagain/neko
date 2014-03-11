@@ -22,6 +22,9 @@ typedef struct cdata_timeManager_t {
 } CDATA_TIMEMANAGER;
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);
+void comp_timeManager_pause(COMPONENT *ptr);
+void comp_timeManager_fastForward(COMPONENT *ptr);
+void comp_timeManager_slowDown(COMPONENT *ptr);
 void comp_timeManager(COMPONENT *);
 
 #endif

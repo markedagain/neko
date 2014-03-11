@@ -33,7 +33,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   if(schoolData->rooms.coord[2][7]) {
     comData->frameCounter++;
     
-    if(comData->paused == FALSE)
+    if(comData->paused)
       return;
 
     // NEW MONTH
@@ -90,11 +90,26 @@ void comp_timeManager_pause(COMPONENT *ptr) {
 }
 
 void comp_timeManager_fastForward(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
 
+  printf("%i\n", comData->secondsPerMonth);
+  if(comData->secondsPerMonth == 6)
+    comData->secondsPerMonth = 3;
+  else if(comData->secondsPerMonth == 3)
+    comData->secondsPerMonth = 2;
+  else if(comData->secondsPerMonth == 2)
+    comData->secondsPerMonth = 1;
 }
 
 void comp_timeManager_slowDown(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
 
+  if(comData->secondsPerMonth == 1)
+    comData->secondsPerMonth = 2;
+  else if(comData->secondsPerMonth == 2)
+    comData->secondsPerMonth = 3;
+  else if(comData->secondsPerMonth == 3)
+    comData->secondsPerMonth = 6;
 }
 
 void comp_timeManager(COMPONENT *self) {
