@@ -93,13 +93,14 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // Add min GPA multiplier
   comData->incomingStudents = (int)(comData->incomingStudents * (((4.2f - comData->minGpa) / 4.0f)));
     // Add min Tuition multiplier
-  comData->incomingStudents += (int)(maxIncomingStudents * ((27000.0f - comData->tuition) / 50000.0f));
+  comData->incomingStudents += (int)(maxIncomingStudents * ((21000.0f - comData->tuition) / 40000.0f));
 }
 
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
   int totalUpkeep;
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   LIST_NODE *studentPtr;
   LIST_NODE *roomPtr;
 
@@ -112,16 +113,18 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 
   //Lose money
   //Go through list of rooms and pay upkeep
-  roomPtr = comData->roomList->first;
-  for(i = 0, totalUpkeep = 0; i < comData->roomList->count; i++) {
-    CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(roomPtr->data, COMP_ROOMLOGIC);
-    comData->money -= roomData->upkeep;
-    totalUpkeep += roomData->upkeep;
-    roomPtr = roomPtr->next;
-  }
+  if(timeData->currentSemester >= 0) {
+    roomPtr = comData->roomList->first;
+    for(i = 0, totalUpkeep = 0; i < comData->roomList->count; i++) {
+      CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(roomPtr->data, COMP_ROOMLOGIC);
+      comData->money -= roomData->upkeep;
+      totalUpkeep += roomData->upkeep;
+      roomPtr = roomPtr->next;
+    }
   
-  if (comData->roomMaintenance != totalUpkeep)
-    comData->roomMaintenance = totalUpkeep;
+    if (comData->roomMaintenance != totalUpkeep)
+      comData->roomMaintenance = totalUpkeep;
+  }
 
   // Modify student stats
   studentPtr = comData->students->first;
@@ -642,8 +645,8 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   strcpy(data.schoolName, "");
-  data.money = 360000;
-  data.tuition = 12000;
+  data.money = 350000;
+  data.tuition = 5000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;

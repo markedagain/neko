@@ -24,6 +24,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_SCHOOLLOGIC);
 
+  // UPKKEP CALCULATED PER MONTH
   switch (comData->type) {
     case ROOMTYPE_LOBBY:
       //Set Values
@@ -42,7 +43,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->techBonus = 1;
       comData->designBonus = 1;
       comData->artBonus = 1;
-      comData->upkeep = 50000;
+      comData->upkeep = 10000;
       //Modify SchoolData
       schoolData->studentCapacity += 20;
       schoolData->money -= comData->cost;
@@ -59,7 +60,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->techBonus = 2;
       comData->designBonus = 2;
       comData->artBonus = 2;
-      comData->upkeep = 75000;
+      comData->upkeep = 15000;
       //Modify SchoolData
       schoolData->money -= comData->cost;
       schoolData->techBonus += comData->techBonus;
@@ -73,7 +74,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_TEAMSPACE);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_TEAMSPACE);
       comData->repBonus = 1;
-      comData->upkeep = 100000;
+      comData->upkeep = 20000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->techBonus += comData->repBonus;
@@ -85,7 +86,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_CAFETERIA);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_CAFETERIA);
       comData->motivationBonus = 5;
-      comData->upkeep = -10000;
+      comData->upkeep = -2000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->motivationBonus += comData->motivationBonus;
@@ -96,7 +97,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->size = 1;
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_STORE);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_STORE);
-      comData->upkeep = -25000;
+      comData->upkeep = -5000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       break;
@@ -109,7 +110,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->techBonus = 2;
       comData->designBonus = 2;
       comData->artBonus = 2;
-      comData->upkeep = 50000;
+      comData->upkeep = 10000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->techBonus += comData->techBonus;
@@ -123,7 +124,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_AUDITORIUM);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_AUDITORIUM);
       comData->motivationBonus = 5;
-      comData->upkeep = 120000;
+      comData->upkeep = 24000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->motivationBonus += comData->motivationBonus;
@@ -138,7 +139,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->designBonus = 1;
       comData->artBonus = 1;
       comData->motivationBonus = 1;
-      comData->upkeep = 25000;
+      comData->upkeep = 5000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->techBonus += comData->techBonus;
@@ -153,7 +154,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_WIFI);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_WIFI);
       comData->techBonus = 5;
-      comData->upkeep = 75000;
+      comData->upkeep = 15000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->techBonus += comData->techBonus;
@@ -165,7 +166,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_RECREATION);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_RECREATION);
       comData->designBonus = 5;
-      comData->upkeep = 75000;
+      comData->upkeep = 15000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->designBonus += comData->designBonus;
@@ -177,7 +178,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_FIGURE);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_FIGURE);
       comData->artBonus = 5;
-      comData->upkeep = 75000;
+      comData->upkeep = 15000;
       //Modify SchoolLogic
       schoolData->money -= comData->cost;
       schoolData->artBonus += comData->artBonus;
@@ -213,7 +214,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
 
     case ROOMTYPE_CLASS:
       //Set Values
-      comData->repBonus += 1;
       comData->techBonus += 1;
       comData->designBonus += 1;
       comData->artBonus += 1;
@@ -222,7 +222,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
       //Modify SchoolData
       schoolData->studentCapacity += 10;
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 1;
       schoolData->techBonus += 1;
       schoolData->designBonus += 1;
       schoolData->artBonus += 1;
@@ -230,7 +229,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
 
     case ROOMTYPE_LIBRARY:
       //Set Values
-      comData->repBonus += 1;
       comData->techBonus += 1;
       comData->designBonus = 1;
       comData->artBonus += 1;
@@ -238,7 +236,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
       ++comData->level;
       //Modify SchoolData
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 1;
       schoolData->techBonus += 1;
       schoolData->designBonus += 1;
       schoolData->artBonus += 1;
@@ -246,7 +243,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
 
     case ROOMTYPE_TEAMSPACE:
       //Set Values
-      comData->repBonus += 2;
       comData->techBonus += 1;
       comData->designBonus += 1;
       comData->artBonus += 1;
@@ -254,7 +250,6 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 2;
       schoolData->techBonus += 1;
       schoolData->designBonus += 1;
       schoolData->artBonus += 1;
@@ -262,37 +257,31 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
 
     case ROOMTYPE_CAFETERIA:
       //Set Values
-      comData->repBonus += 3;
       comData->motivationBonus += 3;
-      comData->upkeep -= 10000;
+      comData->upkeep -= 5000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 3;
       schoolData->motivationBonus += 3;
       break;
 
     case ROOMTYPE_STORE:
       //Set Values
-      comData->repBonus += 1;
-      comData->upkeep += 10000;
+      comData->upkeep -= 1000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 1;
       break;
     
     case ROOMTYPE_OFFICES:
       //Set Values
-      comData->repBonus += 1;
       comData->techBonus += 2;
       comData->designBonus += 2;
       comData->artBonus += 2;
-      comData->upkeep += 10000;
+      comData->upkeep += 5000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 1;
       schoolData->techBonus += 2;
       schoolData->designBonus += 2;
       schoolData->artBonus += 2;
@@ -300,28 +289,24 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
 
     case ROOMTYPE_AUDITORIUM:
       //Set Values
-      comData->repBonus += 4;
       comData->motivationBonus += 1;
-      comData->upkeep += 15000;
+      comData->upkeep += 10000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 4;
       schoolData->motivationBonus += 1;
       break;
 
     case ROOMTYPE_TUTORING:
       //Set Values
-      comData->repBonus += 1;
       comData->techBonus += 1;
       comData->designBonus += 1;
       comData->artBonus += 1;
       comData->motivationBonus += 2;
-      comData->upkeep += 3000;
+      comData->upkeep += 5000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
-      schoolData->reputation += 1;
       schoolData->techBonus += 1;
       schoolData->designBonus += 1;
       schoolData->artBonus += 1;
@@ -331,13 +316,11 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
     case ROOMTYPE_WIFI:
       //Set Values
       comData->techBonus += 3;
-      comData->motivationBonus += 2;
-      comData->upkeep += 60000;
+      comData->upkeep += 10000;
       ++comData->level;
       //Modify SchoolLogic
       schoolData->money -= comData->upgradeCost;
       schoolData->techBonus += 3;
-      schoolData->motivationBonus += 2;
       break;
 
     case ROOMTYPE_RECREATION:
