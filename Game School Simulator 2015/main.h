@@ -4,6 +4,7 @@
 #define __MAIN_H__
 
 #include "../NekoEngine/game.h"
+#include "colors.h"
 
 void createSpaces(GAME *game);
 void createMainMenu(GAME *game);
