@@ -417,6 +417,7 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_KEYDOWN:
+    __game->input.keyboard.anyKey = true;
     break;
 
   case WM_MOVE:

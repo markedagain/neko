@@ -86,6 +86,7 @@ void initializeEssentialSpaces(GAME *game) {
   /*************** MENU SPACE ****************/
   vec2_set(&dimensions, 640.0f, 360.0f);
   genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], NULL);
+  //genericSprite_create(menu, &position, "logo", "logo");
 
   /************** SPLASH SPACE ***************/
   // add splash screen
@@ -109,6 +110,11 @@ void createMainMenu(GAME *game) {
   VEC3 position = { 0 };
   VEC2 dimensions = { 640, 360 };
   space_addEntityAtPosition(menu, arch_menuScreen, "menuScreen", &position);
+  genericSprite_create(menu, &position, "logo", "logo");
+  position.y = -180.0f;
+  genericText_create(menu, &position, "copyright", "fonts/gothic/12", "Copyright (C) 2014 DigiPen (USA) Corporation. All rights reserved.", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
+  position.y = -48.0f;
+  genericText_create(menu, &position, "pressStart", "fonts/gothic/12", "Click anywhere or press any key to begin", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_TOP);
 }
 
 void startNewGame(GAME *game) {
@@ -124,6 +130,12 @@ void startNewGame(GAME *game) {
   VEC2 dimensions = { 40.0f, 20.0f };
   ENTITY *ent1;
   ENTITY *inspectBox;
+
+  simSpace->active = false;
+  bgSpace->active = false;
+  mgSpace->active = false;
+  fgSpace->active = false;
+  //uiSpace->active = false;
   
   /**************** SIM SPACE ****************/
   space_addEntity(simSpace, arch_gameManager, "gameManager");

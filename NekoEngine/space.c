@@ -147,6 +147,8 @@ void space_destroy(SPACE *space) {
 
 void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
   LIST_NODE *entityNode;
+  if (!space->active)
+    return;
   entityNode = space->entities->first;
   while (entityNode != NULL) {
     ENTITY *entity = (ENTITY *)(entityNode->data);
@@ -165,6 +167,8 @@ void space_invokeEvent(SPACE *space, EVENT_TYPE event, void *data) {
 
 void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
   LIST_NODE *entityNode;
+  if (!space->active)
+    return;
   entityNode = space->entities->last;
   while (entityNode) {
     ENTITY *entity = (ENTITY *)(entityNode->data);
@@ -175,7 +179,8 @@ void space_invokeEventReverseways(SPACE *space, EVENT_TYPE event, void *data) {
 
 void space_tick(SPACE *space, EDATA_UPDATE *data, EDATA_UPDATE *logicData, bool logicUpdate) {
   LIST_NODE *node;
-
+  if (!space->active)
+    return;
   node = space->newEntities->first;
   while (node) {
     ENTITY *entity = (ENTITY *)node->data;
