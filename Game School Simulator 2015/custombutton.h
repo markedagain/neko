@@ -17,7 +17,8 @@ ENTITY *createCustomButton(void (*onEntered)(COMPONENT *),
                            void (*destroy)(COMPONENT *),
                            SPACE *space, VEC3 *position, char *name,
                            float sizeX, float sizeY,
-                           bool customSprite, char *spriteSource, VEC4 *color,
+                           bool customSprite, char *spriteSource, 
+                           char *altSource, VEC4 *color,
                            bool hasText, char *text, char *font, 
                            VEC4 *textColor, TEXTALIGN xAlign, TEXTALIGN yAlign);
 

@@ -11,7 +11,6 @@
 #include "inspectionscreen.h"
 #include "inspectionscreenlogic.h"
 
-
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
@@ -21,6 +20,10 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
   CDATA_ACTORLOGIC *comData = (CDATA_ACTORLOGIC *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+
+  al_update(&comData->actions, updateEvent->dt);
+
 
   if (mbox->left.pressed && !inspectData->active && !comData->triggered) {
     inspectData->posActive = true;
@@ -140,7 +143,23 @@ void comp_roomActorLogic(COMPONENT *self) {
   CDATA_ACTORLOGIC data = { 0 };
   data.triggered = false;
   data.zoomedOut = FALSE;
+  al_init(&data.actions);
   COMPONENT_INIT(self, COMP_ROOMACTORLOGIC, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_roomActorLogic_logicUpdate;
+  self->events.initialize = comp_roomActorLogic_initialize;
+}
+
+static void landing_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
+
+  trans->translation.y = data->startY + action_getEase(action, EASING_EXPONENTIAL_OUT) * (data->targetY - data->startY);
+}
+
+void comp_roomActorLogic_initialize(COMPONENT *self, void *event) {
+  CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
+
+  al_pushBack(&data->actions, action_create(self, landing_update, NULL, NULL, false, 0.6f));
 }

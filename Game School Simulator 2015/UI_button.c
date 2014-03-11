@@ -18,6 +18,7 @@
 #include "inspectionscreenlogic.h"
 #include "main.h"
 #include "timemanager.h"
+#include "namescreen.h"
 
 #define BUILDENDPOS 120.0f
 
@@ -28,16 +29,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   VEC2 dimensions = { 40.0f, 20.0f };
   VEC3 position = { 10, 10, 0 };
-  VEC4 color = { 0, 0, 1, 1 };
-  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
-  ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
-  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
 
   al_update(&data->actions, updateEvent->dt);
 
@@ -68,7 +68,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         VEC3 position;
         VEC4 color;
         comp_UI_button_panDown(self);
-      
+        sound_playSound(&self->owner->space->game->systems.sound, "confirm");
         // CREATE LOBBY BUTTON
         vec3_set(&position, -300, -160, 0);
         UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
@@ -127,6 +127,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         comp_UI_button_panUp(self);
         comp_UI_button_cancelBuildMode(self);
         UI_button_destroyGhostRooms(self);
+        sound_playSound(&self->owner->space->game->systems.sound, "negative");
         break;
 
       case BUTTON_BUILDLOBBY:
@@ -210,13 +211,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         inspectData->triggered = true;
         break;
 
-      case BUTTON_NEWGAME:
-        {
-        SPACE *menu = game_getSpace(self->owner->space->game, "menu");
-        space_destroy(menu);
-        }
-        break;
-
       case BUTTON_PAUSE:
         comp_timeManager_pause(self);
         break;
@@ -227,10 +221,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_SLOWDOWN:
         comp_timeManager_slowDown(self);
-        break;
-
-      case BUTTON_EXIT:
-        self->owner->space->game->destroying = true;
         break;
 
       default:
@@ -452,7 +442,6 @@ void UI_button_destroyGhostRooms(COMPONENT *self) {
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   LIST_NODE *node;
 
-  sound_playSound(&self->owner->space->game->systems.sound, "negative");
   // detroying all ghostrooms
   space_getAllEntities(mg, "ghostRoom", ghostrooms);
   node = ghostrooms->first;

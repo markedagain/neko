@@ -3,6 +3,7 @@
 #include "splashlogic.h"
 #include "sound.h"
 #include "generictext.h"
+#include "main.h"
 
 #define DIGIPEN_TIME 1.0
 #define NEKOMEANSCAT_TIME 1.0
@@ -48,6 +49,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         //////////////////////////////////////////
         sprite->color.a = 0;
         entity_destroy(self->owner);
+        createMainMenu(self->owner->space->game);
       }
     }
     else {

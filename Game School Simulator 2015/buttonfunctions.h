@@ -7,7 +7,20 @@
 #include "hash.h"
 #include "generictext.h"
 
-void custom_onExit(COMPONENT *self);
-void custom_onHover(COMPONENT *self);
+void newGame_onEntered(COMPONENT *self);
+void newGame_onPressed(COMPONENT *self);
+void newGame_onExit(COMPONENT *self);
+void options_onEntered(COMPONENT *self);
+void options_onPressed(COMPONENT *self);
+void options_onExit(COMPONENT *self);
+void exit_onEntered(COMPONENT *self);
+void exit_onPressed(COMPONENT *self);
+void exit_onExit(COMPONENT *self);
+void increaseGPA_onEntered(COMPONENT *self);
+void increaseGPA_onPressed(COMPONENT *self);
+void increaseGPA_onExit(COMPONENT *self);
+void decreaseGPA_onEntered(COMPONENT *self);
+void decreaseGPA_onPressed(COMPONENT *self);
+void decreaseGPA_onExit(COMPONENT *self);
 
 #endif

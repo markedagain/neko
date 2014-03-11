@@ -41,6 +41,18 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     data->setSprite = true;
   }
 
+  if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    multiSprite_setVisible(multiSprite, false);
+    data->zoomedOut = true;
+  }
+
+  if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    multiSprite_setVisible(multiSprite, true);
+    data->zoomedOut = false;
+  }
+
   // fade in when spawned before moving
   if (data->fadeIn) {
     COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);

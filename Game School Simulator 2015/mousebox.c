@@ -175,6 +175,10 @@ void check_status(COMPONENT *self) {
     data->over = true;
   }
   else {
+    if (data->entered = true) {
+      data->entered = false;
+      data->exited = true;
+    }
     if (data->over == true)
       data->exited = true;
     else

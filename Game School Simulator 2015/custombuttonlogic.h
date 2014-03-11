@@ -20,7 +20,6 @@ typedef struct {
   struct {
     char source[30];
     char altSource[30];
-    VEC4 color;
   } sprite;
   ENTITY *text;
   ALIST actions;

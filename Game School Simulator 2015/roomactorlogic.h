@@ -6,6 +6,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/hash.h"
 #include "roomlogic.h"
+#include "actionlist.h"
 
 #define COMP_ROOMACTORLOGIC HASH("COMP_ROOMACTORLOGIC")
 
@@ -15,9 +16,13 @@ typedef struct cdata_actorLogic_t {
   BOOL zoomedOut;
   int posX;
   int posY;
+  float startY;
+  float targetY;
+  ALIST actions;
 } CDATA_ACTORLOGIC;
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_roomActorLogic(COMPONENT *self);
+void comp_roomActorLogic_initialize(COMPONENT *self, void *event);
 
 #endif

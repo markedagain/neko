@@ -39,13 +39,13 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   int maxIncomingStudents = 0;
 
   // WELCOME
-  if(comData->counter == 0) {
+  if(comData->counter == 1) {
     char message[80];
     sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
     comp_newsfeedlogic_push(self, message);
+    ++comData->counter;
   }
 
-  ++comData->counter;
 
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
@@ -473,6 +473,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   ENTITY *entity = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(entity, COMP_SCHOOLLOGIC);
   VEC3 middle;
+  VEC3 spawnPoint;
   float squareSize = 80.0f;
   CDATA_SPRITE *sprite;
   
@@ -502,11 +503,15 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       middle.x = (colToUse - 8.5f) * squareSize + squareSize + squareSize;
       break;
     }
-  newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &middle);
+  spawnPoint = middle;
+  spawnPoint.y += 200.0f;
+  newRoomActor = space_addEntityAtPosition(mg, arch_roomActor, "roomActor", &spawnPoint);
   actorCompData = (CDATA_ACTORLOGIC *)entity_getComponentData(newRoomActor, COMP_ROOMACTORLOGIC);
   actorCompData->type = roomType;
   actorCompData->posX = colToUse;
   actorCompData->posY = floorToUse;
+  actorCompData->startY = spawnPoint.y;
+  actorCompData->targetY = middle.y;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
@@ -635,7 +640,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Eduardo's Game School";
+  strcpy(data.schoolName, "");
   data.money = 360000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;
