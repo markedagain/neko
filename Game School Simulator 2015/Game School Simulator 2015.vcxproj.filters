@@ -131,6 +131,7 @@
     <ClCompile Include="menuscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="colors.c" />
     <ClCompile Include="newsfeed.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -289,6 +290,7 @@
     <ClInclude Include="menuscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
+    <ClInclude Include="colors.h" />
     <ClInclude Include="newsfeed.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>

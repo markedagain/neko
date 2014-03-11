@@ -103,7 +103,8 @@ void initializeEssentialSpaces(GAME *game) {
 void createMainMenu(GAME *game) {
   SPACE *menu = game_getSpace(game, "menu");
   VEC3 position = { 0 };
-
+  VEC2 dimensions = { 640, 360 };
+  genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], NULL);
   space_addEntityAtPosition(menu, arch_menuScreen, "menuscreen", &position);
 }
 
