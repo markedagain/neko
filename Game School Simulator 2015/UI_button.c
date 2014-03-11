@@ -29,16 +29,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   VEC2 dimensions = { 40.0f, 20.0f };
   VEC3 position = { 10, 10, 0 };
-  VEC4 color = { 0, 0, 1, 1 };
-  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
-  ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
-  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
 
   al_update(&data->actions, updateEvent->dt);
 

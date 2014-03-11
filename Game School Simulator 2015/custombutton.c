@@ -20,7 +20,8 @@ ENTITY *createCustomButton(void (*onEntered)(COMPONENT *),
                            void (*destroy)(COMPONENT *),
                            SPACE *space, VEC3 *position, char *name,
                            float sizeX, float sizeY,
-                           bool customSprite, char *spriteSource, VEC4 *color,
+                           bool customSprite, char *spriteSource, 
+                           char *altSource, VEC4 *color,
                            bool hasText, char *text, char *font, 
                            VEC4 *textColor, TEXTALIGN xAlign, TEXTALIGN yAlign)
 {
@@ -36,8 +37,11 @@ ENTITY *createCustomButton(void (*onEntered)(COMPONENT *),
   buttonData->destroy = destroy;
 
   // set the sprite
-  if (customSprite)
+  if (customSprite) {
     strcpy(buttonData->sprite.source, spriteSource);
+    if (altSource)
+      strcpy(buttonData->sprite.altSource, spriteSource);
+  }
   else
     strcpy(buttonData->sprite.source, "blank");
   buttonSprite->source = buttonData->sprite.source;

@@ -32,7 +32,7 @@ void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
   createCustomButton(newGame_onEntered, NULL, newGame_onPressed, newGame_onExit, NULL,
                            self->owner->space, &position, "newGameButton",
                            1.0f, 1.0f,
-                           true, "newgame", NULL,
+                           true, "newgame", NULL, NULL,
                            false, NULL, NULL, 
                            NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
@@ -42,7 +42,7 @@ void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
   createCustomButton(options_onEntered, NULL, options_onPressed, options_onExit, NULL,
                            self->owner->space, &position, "optionsButton",
                            1.0f, 1.0f,
-                           true, "options", NULL,
+                           true, "options", NULL, NULL,
                            false, NULL, NULL, 
                            NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
@@ -51,7 +51,7 @@ void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
   createCustomButton(exit_onEntered, NULL, exit_onPressed, exit_onExit, NULL,
                            self->owner->space, &position, "exitButton",
                            1.0f, 1.0f,
-                           true, "exit", NULL,
+                           true, "exit", NULL, NULL,
                            false, NULL, NULL, 
                            NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 }

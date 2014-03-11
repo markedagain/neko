@@ -16,5 +16,11 @@ void options_onExit(COMPONENT *self);
 void exit_onEntered(COMPONENT *self);
 void exit_onPressed(COMPONENT *self);
 void exit_onExit(COMPONENT *self);
+void increaseGPA_onEntered(COMPONENT *self);
+void increaseGPA_onPressed(COMPONENT *self);
+void increaseGPA_onExit(COMPONENT *self);
+void decreaseGPA_onEntered(COMPONENT *self);
+void decreaseGPA_onPressed(COMPONENT *self);
+void decreaseGPA_onExit(COMPONENT *self);
 
 #endif

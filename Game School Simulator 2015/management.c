@@ -15,6 +15,8 @@
 #include "UI_button.h"
 #include "schoollogic.h"
 #include "managescreen.h"
+#include "buttonfunctions.h"
+#include "custombutton.h"
 
 
 void comp_managementUpdate(COMPONENT *self, void *event) {
@@ -42,7 +44,8 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     char titleBuffer[40];
     VEC3 position = { 0, 0, 0 };
-    VEC4 color = { 0, 0, 0, 1 };
+    VEC4 color = { 0.7f, 0.5f, 0.5f, 1 };
+    VEC4 textColor = { 0, 0, 0, 1.0f };
 
     data->triggered = true;
     
@@ -92,13 +95,30 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     vec3_set(&position, 100, -60, 0);
     data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", data->incomeBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     
-    // Set the buttons for increasing/decreasing GPA and Tuition
+    // Increase GPA button
     vec3_set(&position, -40, 30, 0);
-    UI_button_createManagementButton(self, BUTTON_GPA_INCREMENT, &position, &color, "Increase\nGPA");
+    createCustomButton(increaseGPA_onEntered, NULL, increaseGPA_onPressed, increaseGPA_onExit, NULL,
+                           self->owner->space, &position, "increaseGPAButton",
+                           1.0f, 1.0f,
+                           true, "backgrounds/white_box", NULL, &color,
+                           true, "+GPA", "fonts/gothic/12", 
+                           &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+    
+    // Decrease GPA button
     vec3_set(&position, -160, 30, 0);
-    UI_button_createManagementButton(self, BUTTON_GPA_DECREMENT, &position, &color, "Decrease\nGPA");
+    createCustomButton(decreaseGPA_onEntered, NULL, decreaseGPA_onPressed, decreaseGPA_onExit, NULL,
+                           self->owner->space, &position, "decreaseGPAButton",
+                           1.0f, 1.0f,
+                           true, "backgrounds/white_box", NULL, &color,
+                           true, "-GPA", "fonts/gothic/12", 
+                           &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+    
+    // Increase tuition button
+    vec4_set(&color, 0, 0, 0, 1.0f);
     vec3_set(&position, -40, -50, 0);
     UI_button_createManagementButton(self, BUTTON_TUITION_INCREMENT, &position, &color, "Increase\nTuition");
+    
+    // Decrease tuition button
     vec3_set(&position, -160, -50, 0);
     UI_button_createManagementButton(self, BUTTON_TUITION_DECREMENT, &position, &color, "Decrease\nTuition");
   }
