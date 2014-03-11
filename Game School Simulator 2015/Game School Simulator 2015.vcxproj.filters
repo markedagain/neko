@@ -125,22 +125,20 @@
     <ClCompile Include="newsfeedlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="newsfeed.c">
-      <Filter>Archetypes</Filter>
-    </ClCompile>
     <ClCompile Include="menuscreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
     <ClCompile Include="menuscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
-    <ClCompile Include="custombuttonlogic.c">
-      <Filter>Components\UI_elements</Filter>
-    </ClCompile>
-    <ClCompile Include="custombutton.c">
+    <ClCompile Include="colors.c" />
+    <ClCompile Include="newsfeed.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
-    <ClCompile Include="buttonfunctions.c">
+    <ClCompile Include="studentscreen.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="studentscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
   </ItemGroup>
@@ -282,9 +280,6 @@
     <ClInclude Include="inspectionscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
-    <ClInclude Include="newsfeed.h">
-      <Filter>Archetypes</Filter>
-    </ClInclude>
     <ClInclude Include="newsfeedlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -295,13 +290,14 @@
     <ClInclude Include="menuscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
-    <ClInclude Include="custombuttonlogic.h">
-      <Filter>Components\UI_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="custombutton.h">
+    <ClInclude Include="colors.h" />
+    <ClInclude Include="newsfeed.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
-    <ClInclude Include="buttonfunctions.h">
+    <ClInclude Include="studentscreen.h">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="studentscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
   </ItemGroup>

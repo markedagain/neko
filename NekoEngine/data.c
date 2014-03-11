@@ -341,10 +341,12 @@ unsigned int file_readText(VECTOR *lines, const char *filename) {
       buffer[pos - 1] = 0;
     else
       buffer[pos] = 0;
-    line = (char *)malloc(sizeof(char) * pos);
-    strcpy(line, buffer);
-    vector_append(lines, line);
-    ++lineCount;
+    if (pos > 0) {
+      line = (char *)malloc(sizeof(char) * pos);
+      strcpy(line, buffer);
+      vector_append(lines, line);
+      ++lineCount;
+    }
   }
   while (c != EOF);
   fclose(f);

@@ -375,7 +375,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
     switch (toBuild) {
       case ROOMTYPE_LOBBY:
-        sprite->source = "rooms/frontdoor";
+        sprite->source = "rooms/lobby";
         break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";

@@ -186,11 +186,9 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="backgroundlogic.c" />
     <ClCompile Include="blackbar.c" />
     <ClCompile Include="blackbarlogic.c" />
-    <ClCompile Include="buttonfunctions.c" />
+    <ClCompile Include="colors.c" />
     <ClCompile Include="cursor.c" />
     <ClCompile Include="cursorlogic.c" />
-    <ClCompile Include="custombutton.c" />
-    <ClCompile Include="custombuttonlogic.c" />
     <ClCompile Include="gamemanager.c" />
     <ClCompile Include="ghostroom.c" />
     <ClCompile Include="ghostroomlogic.c" />
@@ -222,6 +220,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="player.c" />
     <ClCompile Include="studentmanager.c" />
     <ClCompile Include="studentmanagerlogic.c" />
+    <ClCompile Include="studentscreen.c" />
+    <ClCompile Include="studentscreenlogic.c" />
     <ClCompile Include="timemanager.c" />
     <ClCompile Include="UI_base.c" />
     <ClCompile Include="UI_build.c" />
@@ -234,11 +234,9 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="backgroundlogic.h" />
     <ClInclude Include="blackbar.h" />
     <ClInclude Include="blackbarlogic.h" />
-    <ClInclude Include="buttonfunctions.h" />
+    <ClInclude Include="colors.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
-    <ClInclude Include="custombutton.h" />
-    <ClInclude Include="custombuttonlogic.h" />
     <ClInclude Include="gamemanager.h" />
     <ClInclude Include="ghostroom.h" />
     <ClInclude Include="ghostroomlogic.h" />
@@ -270,6 +268,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="player.h" />
     <ClInclude Include="studentmanager.h" />
     <ClInclude Include="studentmanagerlogic.h" />
+    <ClInclude Include="studentscreen.h" />
+    <ClInclude Include="studentscreenlogic.h" />
     <ClInclude Include="timemanager.h" />
     <ClInclude Include="UI_base.h" />
     <ClInclude Include="UI_build.h" />

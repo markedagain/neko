@@ -12,6 +12,7 @@
 typedef struct cdata_actorLogic_t {
   ROOM_TYPE type;
   bool triggered;
+  BOOL zoomedOut;
   int posX;
   int posY;
 } CDATA_ACTORLOGIC;

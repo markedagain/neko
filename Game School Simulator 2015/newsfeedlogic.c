@@ -94,6 +94,12 @@ void comp_newsfeedlogic_push(COMPONENT *ptr, char *string) {
 
 void comp_newsfeedlogic_destroy(COMPONENT *self, void *event){
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
+  LIST_NODE *node = comData->messages->first;
+  while (node) {
+    LIST_NODE *next = node->next;
+    list_remove(comData->messages, node);
+    node = next;
+  }
   list_destroy(comData->messages);
 }
 
