@@ -257,11 +257,6 @@ void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roo
   int distanceFromLastKnown = 47;
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
 
-  if(comData->roomConstructed == TRUE) {
-    printf("\n1 RPS (Room Per Second)!!!... its the law.\n");
-    return;
-  }
-
   // CHECK FOR OPEN BUILD SITE
   if(roomType == ROOMTYPE_LOBBY) {
     if(comData->rooms.coord[2][7] == NULL) {

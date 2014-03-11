@@ -105,4 +105,5 @@ void comp_newsfeedlogic(COMPONENT *self) {
   COMPONENT_INIT(self, COMP_NEWSFEEDLOGIC, data);
   self->events.initialize = comp_newsfeedlogic_initialize;
   self->events.logicUpdate = comp_newsfeedlogic_logicUpdate;
+  self->events.destroy = comp_newsfeedlogic_destroy;
 }
