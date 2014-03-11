@@ -7,10 +7,23 @@ void comp_multiSprite_destroy(COMPONENT *self, void *event) {
   list_destroy(data->entities);
 }
 
+void comp_multiSprite_initialize(COMPONENT *self, void *event) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+  comp_transform_logicUpdate(entity_getComponent(self->owner, COMP_TRANSFORM), NULL);
+  while (node) {
+    comp_transform_logicUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
+    node = node->next;
+  }
+
+
+}
+
 void comp_multiSprite(COMPONENT *self) {
   CDATA_MULTISPRITE data = { 0 };
   data.entities = list_create();
   COMPONENT_INIT(self, COMP_MULTISPRITE, data);
+  self->events.initialize = comp_multiSprite_initialize;
   self->events.destroy = comp_multiSprite_destroy;
   component_depend(self, COMP_TRANSFORM);
 }

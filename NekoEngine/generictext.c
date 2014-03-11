@@ -27,5 +27,13 @@ ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font,
 
 void genericText_setText(ENTITY *entity, char *text) {
   COMPONENT *comText = entity_getComponent(entity, COMP_SPRITETEXT);
+  CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(entity, COMP_MULTISPRITE);
+  LIST_NODE *node;
   comp_spriteText_setText(comText, text);
+  node = multi->entities->first;
+  while (node) {
+    comp_transform_logicUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
+    node = node->next;
+  }
+
 }

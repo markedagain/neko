@@ -8,11 +8,19 @@
 #include "buttonfunctions.h"
 #include "custombutton.h"
 
+static void fadeCopyright_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  ENTITY *copyright = space_getEntity(self->space, "copyright");
+  float alpha = multiSprite_getAlpha(entity_getComponent(copyright, COMP_MULTISPRITE));
+  alpha = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  multiSprite_setAlpha(entity_getComponent(copyright, COMP_MULTISPRITE), alpha);
+}
+
 static void moveTitle_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, -76.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 93.5f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 96.0f);
 }
 
 static void moveTitleContainer_update(ACTION *action, double dt) {
@@ -20,7 +28,7 @@ static void moveTitleContainer_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, -76.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 93.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 96.0f);
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
@@ -149,5 +157,6 @@ void comp_menuScreenLogic(COMPONENT *self) {
 }
 
 void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
-  
+  CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
+  al_pushBack(&data->actions, action_create(self->owner, fadeCopyright_update, NULL, NULL, false, 0.5f));
 }
