@@ -46,10 +46,10 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       VEC4 color;
       vec3_set(&position, 320, 180, 0);
       vec4_set(&color, 0, 0, 0, 1 );
-      sprintf(buffer, "%s %i, %s", month[comData->months], comData->currentYear, semester[comData->semesterCounter - 1]);
+      sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
       comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
-    sprintf(buffer, "%s %i, %s", month[comData->months], comData->currentYear, semester[comData->semesterCounter - 1]);
+    sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
     genericText_setText(comData->timeUI, buffer);
   }
 
