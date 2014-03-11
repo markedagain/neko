@@ -141,10 +141,10 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
     data->yPan = false;
   }
-  /* if (input->keyboard.keys[KEY_B] == ISTATE_PRESSED) {
-    self->owner->space->systems.camera.transform.scale.x += 1.0f;
-    self->owner->space->systems.camera.transform.scale.y += 1.0f;
-  } */
+
+  if (input->keyboard.keys[KEY_4] == ISTATE_PRESSED) {
+    comp_schoolLogic_millionaire(self);
+  }
   /*
   if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
     ENTITY *ent = space_getEntity(self->owner->space, "TEST1");

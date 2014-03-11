@@ -598,6 +598,13 @@ void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
     }
 }
 
+void comp_schoolLogic_millionaire(COMPONENT *ptr) {
+  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
+
+  // $$$$$$$$$$$$
+  comData->money += 1000000;
+}
+
 void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   list_destroy(comData->roomList);
