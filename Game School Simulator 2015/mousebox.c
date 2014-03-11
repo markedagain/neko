@@ -104,6 +104,8 @@ void set_box_sprite(COMPONENT *self) {
   float worldRotation = trans->world.rotation;
   MATRIX3 transform = { 0 };
 
+  if (spriteData->source == 0)
+    return;
 
   size.x = spriteData->size.x;
   size.y = spriteData->size.y;

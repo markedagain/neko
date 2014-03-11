@@ -134,6 +134,15 @@
     <ClCompile Include="menuscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="custombuttonlogic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="custombutton.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="buttonfunctions.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -284,6 +293,15 @@
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
     <ClInclude Include="menuscreenlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="custombuttonlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="custombutton.h">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="buttonfunctions.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
   </ItemGroup>
