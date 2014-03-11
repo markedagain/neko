@@ -25,21 +25,10 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *schoolLogic = (CDATA_SCHOOLLOGIC *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_SCHOOLLOGIC);
   CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
 
-
-  // float foo = 0;
-  // float baz = 99.9;
   //ONLY EXECUTE ONCE
   if(comData->counter == 0)
     generate_student(self);
   comData->counter++;
-  /*printf("\nName: %s %s\n", comData->name.first, comData->name.last);
-  printf("Gender: %s\n", comData->gender);
-  printf("Tech Skill: %d\n", comData->techSkill);
-  printf("Art Skill: %d\n", comData->artSkill);
-  printf("Design Skill: %d\n", comData->designSkill);
-  printf("Motivation: %%%d\n", comData->motivation);
-  printf("Year Started: %d\n", comData->yearStarted);*/
-    // printf("Totally Random Float: %f\n", randomFloatRange(foo, baz));
   
   // Graduate
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
@@ -49,7 +38,6 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
-    printf("\n%s %s has graduated! +%i Rep\n", comData->name.first, comData->name.last, repIncrease);
     comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
