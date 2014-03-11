@@ -39,13 +39,13 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   int maxIncomingStudents = 0;
 
   // WELCOME
-  if(comData->counter == 0) {
+  if(comData->counter == 1) {
     char message[80];
     sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
     comp_newsfeedlogic_push(self, message);
+    ++comData->counter;
   }
 
-  ++comData->counter;
 
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
@@ -635,7 +635,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
 
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
-  data.schoolName = "Eduardo's Game School";
+  strcpy(data.schoolName, "");
   data.money = 360000;
   data.tuition = 12000;
   data.minIncomingGpa = 2.0f;

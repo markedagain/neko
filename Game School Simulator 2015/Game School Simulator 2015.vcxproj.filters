@@ -150,6 +150,12 @@
     <ClCompile Include="custombuttonlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="namescreen.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="namescreenlogic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -316,6 +322,12 @@
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="custombuttonlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="namescreen.h">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="namescreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
   </ItemGroup>

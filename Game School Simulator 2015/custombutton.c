@@ -42,8 +42,9 @@ ENTITY *createCustomButton(void (*onEntered)(COMPONENT *),
     strcpy(buttonData->sprite.source, "blank");
   buttonSprite->source = buttonData->sprite.source;
   if (color)
-    buttonData->sprite.color = *color;
-  buttonSprite->color = *color;
+    buttonSprite->color = *color;
+  else
+    vec4_set(&buttonSprite->color, 1.0f, 1.0f, 1.0f, 1.0f);
   buttonSprite->size.x = sizeX;
   buttonSprite->size.y = sizeY;
 

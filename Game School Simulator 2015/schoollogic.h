@@ -13,7 +13,7 @@
 #define MAX_ROOMS_PER_FLOOR 16
 
 typedef struct cdata_schoolLogic_t {
-  char *schoolName;
+  char schoolName[30];
   long int money;
   int tuition;
   float minIncomingGpa;

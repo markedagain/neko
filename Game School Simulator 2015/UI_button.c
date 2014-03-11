@@ -18,6 +18,7 @@
 #include "inspectionscreenlogic.h"
 #include "main.h"
 #include "timemanager.h"
+#include "namescreen.h"
 
 #define BUILDENDPOS 120.0f
 
@@ -68,7 +69,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         VEC3 position;
         VEC4 color;
         comp_UI_button_panDown(self);
-      
+        sound_playSound(&self->owner->space->game->systems.sound, "confirm");
         // CREATE LOBBY BUTTON
         vec3_set(&position, -300, -160, 0);
         UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
@@ -127,6 +128,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         comp_UI_button_panUp(self);
         comp_UI_button_cancelBuildMode(self);
         UI_button_destroyGhostRooms(self);
+        sound_playSound(&self->owner->space->game->systems.sound, "negative");
         break;
 
       case BUTTON_BUILDLOBBY:
@@ -210,13 +212,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         inspectData->triggered = true;
         break;
 
-      case BUTTON_NEWGAME:
-        {
-        SPACE *menu = game_getSpace(self->owner->space->game, "menu");
-        space_destroy(menu);
-        }
-        break;
-
       case BUTTON_PAUSE:
         comp_timeManager_pause(self);
         break;
@@ -227,10 +222,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_SLOWDOWN:
         comp_timeManager_slowDown(self);
-        break;
-
-      case BUTTON_EXIT:
-        self->owner->space->game->destroying = true;
         break;
 
       default:
@@ -452,7 +443,6 @@ void UI_button_destroyGhostRooms(COMPONENT *self) {
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   LIST_NODE *node;
 
-  sound_playSound(&self->owner->space->game->systems.sound, "negative");
   // detroying all ghostrooms
   space_getAllEntities(mg, "ghostRoom", ghostrooms);
   node = ghostrooms->first;

@@ -63,3 +63,13 @@ float multiSprite_getAlpha(COMPONENT *self) {
   LIST_NODE *node = data->entities->first;
   return (node ? ((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->color.a : 0.0f);
 }
+
+void multiSprite_setVisible(COMPONENT *self, bool visible) {
+  CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  LIST_NODE *node = data->entities->first;
+
+  while (node) {
+    ((CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE))->visible = visible;
+    node = node->next;
+  }
+}

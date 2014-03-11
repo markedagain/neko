@@ -6,6 +6,9 @@
 void comp_customButtonLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+
+  al_update(&data->actions, updateEvent->dt);
 
   if (mbox->entered)
     if (data->onEntered)
@@ -26,10 +29,6 @@ void comp_customButtonLogic_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_customButtonLogic(COMPONENT *self) {
   CDATA_CUSTOMBUTTON data = { 0 };
-  data.sprite.color.r = 1.0f;
-  data.sprite.color.g = 1.0f;
-  data.sprite.color.b = 1.0f;
-  data.sprite.color.a = 1.0f;
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_CUSTOMBUTTONLOGIC, data);
   self->events.logicUpdate = comp_customButtonLogic_logicUpdate;

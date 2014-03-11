@@ -30,8 +30,7 @@
 #include "newsfeed.h"
 #include "main.h"
 #include "menuscreen.h"
-#include "custombutton.h"
-#include "buttonfunctions.h"
+#include "namescreen.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -50,7 +49,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   initializeEssentialSpaces(game);
   startNewGame(game);
   // create the main menu
-  createMainMenu(game);
   game_start(game);
 
   return 1;
@@ -63,7 +61,7 @@ void createSpaces(GAME *game) {
   SPACE *fgSpace = game_addSpace(game, "fg");
   SPACE *uiSpace = game_addSpace(game, "ui");
   SPACE *menu = game_addSpace(game, "menu");
-  //SPACE *splashSpace = game_addSpace(game, "splash");
+  SPACE *splashSpace = game_addSpace(game, "splash");
   SPACE *cursorSpace = game_addSpace(game, "cursor");
 
   simSpace->visible = false;
@@ -71,8 +69,9 @@ void createSpaces(GAME *game) {
 
 void initializeEssentialSpaces(GAME *game) {
   SPACE *uiSpace = game_getSpace(game, "ui");
-  //SPACE *splashSpace = game_getSpace(game, "splash");
+  SPACE *splashSpace = game_getSpace(game, "splash");
   SPACE *cursorSpace = game_getSpace(game, "cursor");
+  SPACE *menu = game_getSpace(game, "menu");
   VEC3 position = { 0 };
   VEC4 color = { 0 };
   VEC2 dimensions = { 0 };
@@ -84,13 +83,16 @@ void initializeEssentialSpaces(GAME *game) {
   // add cursor
   space_addEntity(uiSpace, arch_cursor, "cursor");
 
+  /*************** MENU SPACE ****************/
+  vec2_set(&dimensions, 640.0f, 360.0f);
+  genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], NULL);
+
   /************** SPLASH SPACE ***************/
   // add splash screen
-  /*vec3_set(&position, 0.0f, 0.0f, 0.0f);
   vec4_set(&color, 1.0f, 1.0f, 1.0f, 1.0f);
   vec2_set(&dimensions, 640.0f, 360.0f);
   genericSprite_createBlank(splashSpace, &position, &dimensions, &color, "splash_bg");
-  space_addEntity(splashSpace, arch_splash, "splash");*/
+  space_addEntity(splashSpace, arch_splash, "splash");
 
   /************** CURSOR SPACE **************/
   // add invisibile cursor
@@ -106,8 +108,7 @@ void createMainMenu(GAME *game) {
   SPACE *menu = game_getSpace(game, "menu");
   VEC3 position = { 0 };
   VEC2 dimensions = { 640, 360 };
-  genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], NULL);
-  space_addEntityAtPosition(menu, arch_menuScreen, "menuscreen", &position);
+  space_addEntityAtPosition(menu, arch_menuScreen, "menuScreen", &position);
 }
 
 void startNewGame(GAME *game) {
@@ -173,15 +174,4 @@ void startNewGame(GAME *game) {
   // create inspection screen
   vec3_set(&position, -2000, 150, 0);
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
-
-  // custom button example
-  /*vec3_set(&position, 0, 0, 0);
-  vec4_set(&color, 0.5f, 0.5f, 0.5f, 1.0f);
-  vec4_set(&color2, 0, 0, 0, 1.0f);
-  createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
-                    uiSpace, &position, "customButton", 
-                    50.0f, 50.0f, 
-                    true, "blank", &color, 
-                    true, "i'm a custom button dawg", "fonts/gothic/12", 
-                    &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);*/
 }

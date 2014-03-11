@@ -29,6 +29,7 @@ typedef struct {
   char face[30];
   char body[30];
   char hair[30];
+  bool zoomedOut;
 } CDATA_STUDENTACTOR;
 
 #endif
