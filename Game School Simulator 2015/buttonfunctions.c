@@ -118,3 +118,50 @@ void decreaseGPA_onExit(COMPONENT *self) {
   sprite->color.a = 1.0f;
 
 }
+
+/******* Increase Tuition *******/
+void increaseTuition_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+}
+
+void increaseTuition_onPressed(COMPONENT *self) {
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
+
+  managementData->tuition += 500;
+}
+
+void increaseTuition_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 1.0f;
+}
+
+/******* Decrease Tuition *******/
+void decreaseTuition_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+}
+
+void decreaseTuition_onPressed(COMPONENT *self) {
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
+
+  if (managementData->tuition <= 0)   
+    managementData->tuition = 500;      
+  else     
+    managementData->tuition -= 500;
+}
+
+void decreaseTuition_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 1.0f;
+}

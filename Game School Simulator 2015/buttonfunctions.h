@@ -22,5 +22,11 @@ void increaseGPA_onExit(COMPONENT *self);
 void decreaseGPA_onEntered(COMPONENT *self);
 void decreaseGPA_onPressed(COMPONENT *self);
 void decreaseGPA_onExit(COMPONENT *self);
+void increaseTuition_onEntered(COMPONENT *self);
+void increaseTuition_onPressed(COMPONENT *self);
+void increaseTuition_onExit(COMPONENT *self);
+void decreaseTuition_onEntered(COMPONENT *self);
+void decreaseTuition_onPressed(COMPONENT *self);
+void decreaseTuition_onExit(COMPONENT *self);
 
 #endif
