@@ -7,6 +7,7 @@
 #include "studentmanagerlogic.h"
 #include "spritetext.h"
 #include "generictext.h"
+#include "sprite.h"
 
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -42,8 +43,6 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       
       comData->months++;
       
-      
-
       // Monthly functions //
       comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
       comData->frameCounter = 0;
@@ -56,6 +55,10 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
         SPACE *fg = game_getSpace(self->owner->space->game, "fg");
         ENTITY *studentManager = space_getEntity(fg, "studentManager");
         COMPONENT *studentManagerLogic = (COMPONENT *)entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
+
+        // Bring up new semester report
+
+
         comData->currentSemester++;
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
         

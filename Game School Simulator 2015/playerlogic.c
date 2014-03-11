@@ -202,35 +202,16 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
   }
 
+  // M - Brings up management screen
+  if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
 
+  }
 
   //Change Tuition
   if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
     schoolData->tuition -= 1000;
   if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
     schoolData->tuition += 1000;
-
-  //Create Lobby room if "L" is pressed
-  if(input->keyboard.keys[KEY_L] == ISTATE_PRESSED) {
-    comp_schoolLogic_constructRoom(self, ROOMTYPE_LOBBY, 2, 2, 7);
-  }
-  /* Create Class room if "K" is pressed
-  if(input->keyboard.keys[KEY_K] == ISTATE_PRESSED) {
-    comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_CLASS);
-  }
-  // Create Library room if "J" is pressed
-  if(input->keyboard.keys[KEY_J] == ISTATE_PRESSED) {
-    comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_LIBRARY);
-  }
-  // Create TeamSpace room if "H" is pressed
-  if(input->keyboard.keys[KEY_H] == ISTATE_PRESSED) {
-    comp_schoolLogic_findBuildSpots(schoolLogic, schoolData, ROOMTYPE_TEAMSPACE);
-  }
-
-  // List all rooms constructed
-  if(input->keyboard.keys[KEY_PERIOD] == ISTATE_PRESSED) {
-    comp_schoolLogic_listRooms(schoolLogic, schoolData);
-  }*/
 
   // List all enrolled students
   if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {

@@ -117,6 +117,7 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(roomPtr->data, COMP_ROOMLOGIC);
     comData->money -= roomData->upkeep;
     totalUpkeep += roomData->upkeep;
+    roomPtr = roomPtr->next;
   }
   
   if (comData->roomMaintenance != totalUpkeep)
