@@ -32,6 +32,9 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
   size_t textLength = strlen(text);
   size_t listLength = multiData->entities->count;
 
+  if (!text)
+    return;
+
   if (strcmp(data->text, text) == 0)
     return;
 

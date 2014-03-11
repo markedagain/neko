@@ -320,9 +320,8 @@ void game_configLoad(GAME *game) {
     game->config.screen.height = atoi((char *)vector_get(&lines, 1));
     game->config.screen.full = atoi((char *)vector_get(&lines, 2));
   }
-
+  vector_destroy(&lines);
 }
-
 void game_configSave(GAME *game) {
   char filename[128] = { 0 };
   FILE *fp;
