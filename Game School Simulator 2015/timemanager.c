@@ -9,6 +9,26 @@
 #include "generictext.h"
 #include "sprite.h"
 
+char *month[12] = {
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+};
+
+char *semester[2] = {
+  "Fall",
+  "Spring"
+};
+
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)self->data;
@@ -19,17 +39,19 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   char buffer[80];
 
-  // Display time on screen   
-  if (!comData->timeUI) {
-    VEC3 position;
-    VEC4 color;
-    vec3_set(&position, 320, 180, 0);
-    vec4_set(&color, 0, 0, 0, 1 );
-    sprintf(buffer, "Month %i, %i Semester %i", comData->months, comData->currentYear, comData->currentSemester);
-    comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+  if(comData->currentSemester >= 0) {
+    // Display time on screen   
+    if (!comData->timeUI) {
+      VEC3 position;
+      VEC4 color;
+      vec3_set(&position, 320, 180, 0);
+      vec4_set(&color, 0, 0, 0, 1 );
+      sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
+      comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+    }
+    sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
+    genericText_setText(comData->timeUI, buffer);
   }
-  sprintf(buffer, "Month %i, %i Semester %i", comData->months, comData->currentYear, comData->currentSemester);
-  genericText_setText(comData->timeUI, buffer);
 
   if(schoolData->roomList->count >= 2) {
     comData->frameCounter++;
@@ -60,6 +82,12 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
 
         comData->currentSemester++;
+        if(comData->semesterCounter == 1)
+          comData->semesterCounter = 2;
+        else if(comData->semesterCounter == 2)
+          comData->semesterCounter = 1;
+
+        // Semesterly functions //
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
         
         // create pop text above student's heads
@@ -120,12 +148,13 @@ void comp_timeManager(COMPONENT *self) {
   data.secondsPerMonth = 1;
   data.speedMultiplier = 1;
   data.paused = FALSE;
-  data.months = 0;
-  data.currentSemester = 0;
+  data.months = -6;
+  data.currentSemester = -1;
   data.previousYear = 1988;
   data.currentYear = 1989;
   data.frameCounter = 10;
   data.monthCounter = 0;
+  data.semesterCounter = 2;
 
   COMPONENT_INIT(self, COMP_TIMEMANAGER, data);
   component_depend(self, COMP_SCHOOLLOGIC);
