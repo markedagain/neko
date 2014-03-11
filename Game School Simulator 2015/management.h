@@ -49,5 +49,8 @@ typedef struct{
 
 void comp_managementUpdate(COMPONENT *self, void *event);
 void comp_management(COMPONENT *self);
+void comp_managementDisplay(COMPONENT *self);
+void comp_managementRemove(COMPONENT *self);
+
 
 #endif
