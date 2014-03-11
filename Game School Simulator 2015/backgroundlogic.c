@@ -13,6 +13,10 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
   INPUT_CONTAINER *input = &self->owner->space->game->input;
+  if (mbox->entered) {
+    sound_playSound(&self->owner->space->game->systems.sound, "confirm");
+  }
+
   if (mbox->left.pressed) {
     VEC3 pos = { 0 };
     POINT mousePos;

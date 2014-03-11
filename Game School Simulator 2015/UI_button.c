@@ -40,14 +40,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 
   al_update(&data->actions, updateEvent->dt);
-  al_update(&data->hoverActions, updateEvent->dt);
+
+  if (mbox->entered) {
+    sound_playSound(&self->owner->space->game->systems.sound, "hover");
+  }
 
   if (mbox->active) {
-    if (mbox->entered) {
-      comp_ui_button_hoverPop(self);
-      //sound_playSound(&self->owner->space->game->systems.sound, "hover");
-    }
-
     if (mbox->over) {
       sprite->color.r = min(sprite->color.r + 0.05f, 1);
       sprite->color.b = max(sprite->color.b - 0.05f, 1);
@@ -242,33 +240,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   }
 }
 
-static void hoverExpand_update(ACTION *action, double dt) {
-  COMPONENT *self = (COMPONENT *)(action->data);
-  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-
-  sprite->size.x += action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
-  sprite->size.y += action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
-}
-
-static void hoverContract_update(ACTION *action, double dt) {
-  COMPONENT *self = (COMPONENT *)(action->data);
-  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-
-  sprite->size.x -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
-  sprite->size.y -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
-}
-
-
-
-void comp_ui_button_hoverPop(COMPONENT *self) {
-  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
-  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-
-  //sprite->size.x = 2.0f;
-  al_pushBack(&data->hoverActions, action_create(self, hoverExpand_update, NULL, NULL, true, 0.1f));
-  al_pushBack(&data->hoverActions, action_create(self, hoverContract_update, NULL, NULL, true, 0.1f));
-}
-
 
 // this is derping out the FIRST time build mode is activated for some weird reason
 static void panDown_update(ACTION *action, double dt) {
@@ -303,8 +274,8 @@ void comp_UI_button_panDown(COMPONENT *self) {
   data->startY = mg->systems.camera.transform.translation.y;
   playerData->yPan = true;
 
-  al_pushFront(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
-  al_pushFront(&data->actions, action_create(self, zoomOut_update, NULL, NULL, false, 0.4f));
+  al_pushBack(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
+  al_pushBack(&data->actions, action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
 }
 
 
@@ -341,14 +312,13 @@ void comp_UI_button_panUp(COMPONENT *self) {
 
   data->startY = mg->systems.camera.transform.translation.y;
 
-  al_pushFront(&data->actions, action_create(self, panUp_update, NULL, panUp_onEnd, false, 0.4f));
+  al_pushBack(&data->actions, action_create(self, panUp_update, NULL, panUp_onEnd, true, 0.4f));
 }
 
 void comp_UI_button(COMPONENT *self) {
   CDATA_UI_BUTTON data = { 0 };
   data.type = BUTTON_DEFAULT;
   al_init(&data.actions);
-  al_init(&data.hoverActions);
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;
@@ -359,7 +329,6 @@ void comp_UI_destroy(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
 
   al_destroy(&data->actions);
-  al_destroy(&data->hoverActions);
 }
 
 
@@ -373,6 +342,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   UI_button_destroyGhostRooms(self);
   comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
   pNode = buildSpaces->first;
+  sound_playSound(&self->owner->space->game->systems.sound, "confirm");
 
   while (pNode) {
     ENTITY *created;
@@ -466,6 +436,7 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
 
+
   // destroying all room buttons
   space_getAllEntities(self->owner->space, "buildButton", buttons);
   node = buttons->first;
@@ -481,6 +452,7 @@ void UI_button_destroyGhostRooms(COMPONENT *self) {
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   LIST_NODE *node;
 
+  sound_playSound(&self->owner->space->game->systems.sound, "negative");
   // detroying all ghostrooms
   space_getAllEntities(mg, "ghostRoom", ghostrooms);
   node = ghostrooms->first;

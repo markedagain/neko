@@ -157,8 +157,8 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
   }
 
   actorData->ID = ID;
-  actorData->lifetime = actorData->roomSize * STUDENT_LIFE;
   actorData->roomSize = room->z * 80.0f;
+  actorData->lifetime = room->z * STUDENT_LIFE;
   actorData->origin = pos->x;
 }
 

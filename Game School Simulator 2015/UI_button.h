@@ -46,7 +46,6 @@ typedef struct{
   ENTITY *ent3;
   BUTTON_TYPE type;
   ALIST actions;
-  ALIST hoverActions;
   float startY;
   float startZoom;
   float origin;
