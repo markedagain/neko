@@ -74,6 +74,18 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // update build buttons
   UI_button_updateBuildButtons(uiSpace);
 
+  // Display Rep on screen
+  if (!comData->reputationUI) {
+    vec3_set(&position, 0, 150, 0);
+    vec4_set(&color, 0, 0, 0, 1 );
+    sprintf(comData->buffer, "Reputation: %i", comData->reputation);
+    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+  }
+  sprintf(comData->buffer, "Reputation: %i", comData->reputation);
+  genericText_setText(comData->reputationUI, comData->buffer);
+  // update build buttons
+  UI_button_updateBuildButtons(uiSpace);
+
   // Calculate Incoming Students
     // Set to total students possible
   maxIncomingStudents = comData->studentCapacity - comData->currentStudents + comData->expectedGraduates;
@@ -216,6 +228,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
+      --comData->reputation;
       continue;
     }
 
@@ -230,6 +243,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
+      --comData->reputation;
       continue;
     }
     
