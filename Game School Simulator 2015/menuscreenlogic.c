@@ -63,6 +63,7 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  ENTITY *pressStart;
   if ((input->mouse.left || input->keyboard.anyKey) && !data->pressedStart) {
     VEC3 position = { 0 };
     VEC4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -130,6 +131,10 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     al_pushBack(&data->actions, action_create(quitButton, moveQuitButton_update, NULL, NULL, false, 0.5f));
     data->pressedStart = true;
+  }
+  pressStart = space_getEntity(self->owner->space, "pressStart");
+  if (pressStart) {
+    multiSprite_setAlpha(entity_getComponent(pressStart, COMP_MULTISPRITE), sinf(self->owner->space->game->systems.time.elapsed * 2.0f));
   }
   al_update(&data->actions, updateEvent->dt);
 }
