@@ -214,12 +214,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         break;
 
       case BUTTON_PAUSE:
+        comp_timeManager_pause(self);
         break;
 
       case BUTTON_FASTFORWARD:
+        comp_timeManager_fastForward(self);
         break;
 
       case BUTTON_SLOWDOWN:
+        comp_timeManager_slowDown(self);
         break;
 
       default:

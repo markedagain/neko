@@ -144,6 +144,24 @@ void startNewGame(GAME *game) {
   // sets the button type to build
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
 
+  // create pause button
+  vec3_set(&position, -240, 180, 0);
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pause_button", &position);
+  // sets the button type to pause
+  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
+
+  // create fastForward button
+  vec3_set(&position, -180, 180, 0);
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "fast_button", &position);
+  // sets the button type to fastForward
+  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
+
+  // create slowDown button
+  vec3_set(&position, -120, 180, 0);
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "slow_button", &position);
+  // sets the button type to slowDown
+  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SLOWDOWN;
+
   // create manage button
   vec3_set(&position, 0, 180, 0);
   space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
