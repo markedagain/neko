@@ -118,7 +118,7 @@ void startNewGame(GAME *game) {
   SPACE *uiSpace = game_getSpace(game, "ui");
 
   VEC3 position;
-  VEC4 color = { 1, 0, 0, 1 };
+  VEC4 color = { 1, 1, 1, 1 };
   VEC4 color2 = { 0 };
   VEC2 dimensions = { 40.0f, 20.0f };
   ENTITY *ent1;
@@ -142,9 +142,22 @@ void startNewGame(GAME *game) {
   // news feed
   space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
 
+  /* custom build button
+  vec3_set(&position, 0, 0, 0);
+  createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
+                    uiSpace, &position, "test", 
+                    1.0f, 1.0f, 
+                    true, "rooms/build", &color, 
+                    false, "i'm a custom button dawg", "fonts/gothic/12", 
+                    &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);*/
+
   // create build button
   vec3_set(&position, 0, -180, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
+  /*{
+    CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE);
+    sprite->source = "buttons/build";
+  }*/
   // sets the button type to build
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
 
