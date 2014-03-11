@@ -120,6 +120,17 @@ int al_isEmpty(ALIST *actionList) {
   return actionList->actions->count == 0;
 }
 
+void al_clear(ALIST *actionList) {
+  LIST_NODE *node = actionList->actions->first;
+  while (node) {
+    ACTION *action = (ACTION *)node->data;
+    if (action->hasStarted && action->onEnd)
+      (*action->onEnd)(action);
+    free(action);
+    node = node->next;
+  }
+}
+
 ACTION *action_create(void *data, ACTION_UPDATE update, ACTION_ONSTART onStart, ACTION_ONEND onEnd, bool blocking, float duration) {
   ACTION *action = (ACTION *)malloc(sizeof(ACTION));
   action->data = data;
