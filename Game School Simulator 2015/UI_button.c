@@ -327,6 +327,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   LIST_NODE *pNode;
   float squareSize = 80.0f;
 
+  UI_button_destroyGhostRooms(self);
   comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
   pNode = buildSpaces->first;
 
@@ -518,7 +519,7 @@ void UI_button_updateBuildButtons(SPACE *ui) {
 
   while (node) {
     buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(node->data, COMP_UI_BUTTON);
-    if (schoolData->money < comp_roomLogic_getRoomCost(buttonData->type)) {
+    if (schoolData->money < comp_roomLogic_getRoomCost(buttonData->type) || schoolData->roomFlag[buttonData->type] == 0) {
       CDATA_MOUSEBOX *buttonBox = entity_getComponentData(node->data, COMP_MOUSEBOX);
       CDATA_SPRITE *buttonSprite = entity_getComponentData(node->data, COMP_SPRITE);
       buttonBox->active = false;
