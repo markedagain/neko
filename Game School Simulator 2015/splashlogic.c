@@ -37,7 +37,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         // ENGINE PROOF ONLY; REMOVE LATER PLOX //
         //////////////////////////////////////////
 
-        //VEC3 position = { 0.0f , 64.0f, 0.0f };
+        VEC3 position = { 0.0f , 0.0f, 0.0f };
         //VEC4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
         SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
         //genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "title", "fonts/gothic/28", "Game School Simulator 2015", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);

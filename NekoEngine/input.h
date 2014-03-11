@@ -142,6 +142,7 @@ typedef struct inputContainer_t {
   struct {
     INPUT_STATE keys[KEY_LAST];
     char ascii[INPUT_MAX_ASCII_KEYS_PER_FRAME + 1];
+    bool anyKey;
   } keyboard;
 } INPUT_CONTAINER;
 
