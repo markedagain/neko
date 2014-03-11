@@ -32,9 +32,12 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
   if(schoolData->rooms.coord[2][7]) {
     comData->frameCounter++;
+    
+    if(comData->paused == FALSE)
+      return;
 
     // NEW MONTH
-    if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond / 1) {
+    if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond * comData->secondsPerMonth / comData->speedMultiplier) {
       SPACE *ui = game_getSpace(self->owner->space->game, "ui");
       
       comData->months++;
@@ -77,8 +80,28 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
 }
 
+void comp_timeManager_pause(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+
+  if(comData->paused)
+    comData->paused = FALSE;
+  else
+    comData->paused = TRUE;
+}
+
+void comp_timeManager_fastForward(COMPONENT *ptr) {
+
+}
+
+void comp_timeManager_slowDown(COMPONENT *ptr) {
+
+}
+
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
+  data.secondsPerMonth = 1;
+  data.speedMultiplier = 1;
+  data.paused = FALSE;
   data.months = 0;
   data.currentSemester = 0;
   data.previousYear = 1988;
