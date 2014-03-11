@@ -175,7 +175,7 @@ void startNewGame(GAME *game) {
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
 
   // custom button example
-  /*vec3_set(&position, 0, 0, 0);
+  vec3_set(&position, 0, 0, 0);
   vec4_set(&color, 0.5f, 0.5f, 0.5f, 1.0f);
   vec4_set(&color2, 0, 0, 0, 1.0f);
   createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
@@ -183,5 +183,5 @@ void startNewGame(GAME *game) {
                     50.0f, 50.0f, 
                     true, "blank", &color, 
                     true, "i'm a custom button dawg", "fonts/gothic/12", 
-                    &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);*/
+                    &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);
 }
