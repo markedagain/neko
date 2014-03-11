@@ -26,6 +26,39 @@ static void moveTitleContainer_update(ACTION *action, double dt) {
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
 }
 
+static void moveNewGameButton_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
+  trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, -76.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -64.0f);
+  trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+}
+
+static void moveOptionsButton_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
+  trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 42.0f);
+  trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+}
+
+static void moveQuitButton_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
+  trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -118.0f);
+  trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+}
+
 void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
   INPUT_CONTAINER *input = &self->owner->space->game->input;
@@ -34,7 +67,7 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     VEC3 position = { 0 };
     VEC4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
     ENTITY *titleContainer = genericSprite_create(self->owner->space, &position, "titleContainer", "titlescreen/title");
-    ENTITY *title;
+    ENTITY *title, *newGameButton, *optionsButton, *quitButton;
     CDATA_SPRITE *titleContainerSprite = (CDATA_SPRITE *)entity_getComponentData(titleContainer, COMP_SPRITE);
     CDATA_TRANSFORM *titleContainerTransform = (CDATA_TRANSFORM *)entity_getComponentData(titleContainer, COMP_TRANSFORM);
     titleContainerSprite->color.a = 0.0f;
@@ -46,6 +79,8 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     title = genericSprite_create(self->owner->space, &position, "logo", "logo");
     al_pushBack(&data->actions, action_create(title, moveTitle_update, NULL, NULL, false, 0.5f));
     al_pushBack(&data->actions, action_create(titleContainer, moveTitleContainer_update, NULL, NULL, false, 0.5f));
+
+    input->mouse.handled[MBUTTON_LEFT] = true;
 
     /*ENTITY *created = genericSprite_create(self->owner->space, &position, "menubox", "blank");
     CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
@@ -80,21 +115,20 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
                              true, "exit", NULL, NULL,
                              false, NULL, NULL, 
                              NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);*/
-    position.x = -76.0f;
-    position.y = -64.0f;
-    createCustomButton(newGame_onEntered, NULL, newGame_onPressed, newGame_onExit, NULL,
+    newGameButton = createCustomButton(newGame_onEntered, NULL, newGame_onPressed, newGame_onExit, NULL,
                        self->owner->space, &position, "newGameButton", 1.0f, 1.0f, true, "titlescreen/newgame",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    position.x = 212.0f;
-    position.y = 42.0f;
-    createCustomButton(options_onEntered, NULL, options_onPressed, options_onExit, NULL,
+    al_pushBack(&data->actions, action_create(newGameButton, moveNewGameButton_update, NULL, NULL, false, 0.5f));
+
+    optionsButton = createCustomButton(options_onEntered, NULL, options_onPressed, options_onExit, NULL,
                        self->owner->space, &position, "optionsButton", 1.0f, 1.0f, true, "titlescreen/options",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    position.x = 212.0f;
-    position.y = -118.0f;
-    createCustomButton(exit_onEntered, NULL, exit_onPressed, exit_onExit, NULL,
+    al_pushBack(&data->actions, action_create(optionsButton, moveOptionsButton_update, NULL, NULL, false, 0.5f));
+
+    quitButton = createCustomButton(exit_onEntered, NULL, exit_onPressed, exit_onExit, NULL,
                        self->owner->space, &position, "quitButton", 1.0f, 1.0f, true, "titlescreen/quit",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    al_pushBack(&data->actions, action_create(quitButton, moveQuitButton_update, NULL, NULL, false, 0.5f));
     data->pressedStart = true;
   }
   al_update(&data->actions, updateEvent->dt);

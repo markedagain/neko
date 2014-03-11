@@ -130,6 +130,12 @@ void startNewGame(GAME *game) {
   VEC2 dimensions = { 40.0f, 20.0f };
   ENTITY *ent1;
   ENTITY *inspectBox;
+
+  simSpace->active = false;
+  bgSpace->active = false;
+  mgSpace->active = false;
+  fgSpace->active = false;
+  //uiSpace->active = false;
   
   /**************** SIM SPACE ****************/
   space_addEntity(simSpace, arch_gameManager, "gameManager");

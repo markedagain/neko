@@ -5,6 +5,7 @@
 #include "genericsprite.h"
 #include "generictext.h"
 #include "schoollogic.h"
+#include "colors.h"
 
 #define MAX_NAME 40
 
@@ -31,6 +32,11 @@ void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     strcpy(schoolData->schoolName, data->name);
     schoolData->counter = 1;
     space_destroy(self->owner->space);
+    (game_getSpace(self->owner->space->game, "sim"))->active = true;
+    (game_getSpace(self->owner->space->game, "bg"))->active = true;
+    (game_getSpace(self->owner->space->game, "mg"))->active = true;
+    (game_getSpace(self->owner->space->game, "fg"))->active = true;
+    //(game_getSpace(self->owner->space->game, "ui"))->active = true;
   }
 
 
@@ -67,15 +73,22 @@ void comp_nameScreenLogic_initialize(COMPONENT *self, void *event) {
   VEC3 position = { 0 };
   VEC4 color = { 0.7f, 0.7f, 0.7f, 0.7f, };
   CDATA_NAMESCREEN *data = (CDATA_NAMESCREEN *)self->data;
-  ENTITY *created = genericSprite_create(self->owner->space, &position, "menubox", "blank");
-  CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
+  //ENTITY *created = genericSprite_create(self->owner->space, &position, "menubox", "blank");
+  //CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
   
-  spriteData->size.x = 500.0f;
-  spriteData->size.y = 500.0f;
+  //spriteData->size.x = 500.0f;
+  //spriteData->size.y = 500.0f;
+
+  entity_destroy(space_getEntity(self->owner->space, "newGameButton"));
+  entity_destroy(space_getEntity(self->owner->space, "optionsButton"));
+  entity_destroy(space_getEntity(self->owner->space, "quitButton"));
+  entity_destroy(space_getEntity(self->owner->space, "logo"));
+  entity_destroy(space_getEntity(self->owner->space, "titleContainer"));
+  entity_destroy(space_getEntity(self->owner->space, "copyright"));
 
   vec4_set(&color, 0, 0, 0, 1.0f);
-  data->displayText = genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "", &color, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  data->displayText = genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 
-  vec3_set(&position, 0, 100.0f, 0);
-  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Enter the name of your school!", &color, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  vec3_set(&position, 0, 20.0f, 0);
+  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Enter the name of your school:", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 }
