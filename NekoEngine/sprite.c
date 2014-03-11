@@ -159,15 +159,15 @@ void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float
   u2 = u + w;
   v2 = v + h;
 
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0x00FF00FF, u1, v2,
-		0.5f,  -0.5f, 0x00FFFF00, u2, v2,
-		-0.5f,  0.5f, 0x00F00FFF, u1, v1);
+  AEGfxTriAdd(
+    -0.5f, -0.5f, 0x00FF00FF, u1, v2,
+    0.5f,  -0.5f, 0x00FFFF00, u2, v2,
+    -0.5f,  0.5f, 0x00F00FFF, u1, v1);
 
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0x00FFFFFF, u2, v2,
-		0.5f,  0.5f, 0x00FFFFFF, u2, v1,
-		-0.5f,  0.5f, 0x00FFFFFF, u1, v1);
+  AEGfxTriAdd(
+    0.5f, -0.5f, 0x00FFFFFF, u2, v2,
+    0.5f,  0.5f, 0x00FFFFFF, u2, v1,
+    -0.5f,  0.5f, 0x00FFFFFF, u1, v1);
   comData->mesh = AEGfxMeshEnd();
   AE_ASSERT_MESG(comData->mesh, "Failed to create mesh!");
 }
