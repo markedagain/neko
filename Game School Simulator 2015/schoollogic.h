@@ -40,6 +40,7 @@ typedef struct cdata_schoolLogic_t {
   long int currMoney;
   int counter;
   ENTITY *moneyUI;
+  ENTITY *studentUI;
   char buffer[20];
   int roomFlag[13];
   union {
