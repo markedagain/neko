@@ -24,10 +24,10 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     VEC4 color;
     vec3_set(&position, 320, 180, 0);
     vec4_set(&color, 0, 0, 0, 1 );
-    sprintf(buffer, "Month: %i, %i, Semester %i", comData->months, comData->currentYear, comData->currentSemester);
+    sprintf(buffer, "Month %i, %i Semester %i", comData->months, comData->currentYear, comData->currentSemester);
     comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
   }
-  sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+  sprintf(buffer, "Month %i, %i Semester %i", comData->months, comData->currentYear, comData->currentSemester);
   genericText_setText(comData->timeUI, buffer);
 
   if(schoolData->roomList->count >= 2) {
