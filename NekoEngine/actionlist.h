@@ -44,6 +44,7 @@ NEKO_API ACTION *al_remove(ALIST *, ACTION *);
 NEKO_API ACTION *al_begin(ALIST *);
 NEKO_API ACTION *al_end(ALIST *);
 NEKO_API int al_isEmpty(ALIST *);
+NEKO_API void al_clear(ALIST *);
 
 NEKO_API ACTION *action_create(void *data, ACTION_UPDATE update, ACTION_ONSTART onStart, ACTION_ONEND onEnd, bool blocking, float duration);
 NEKO_API float action_ease(ACTION *action, EASING easing, float startValue, float endValue);
