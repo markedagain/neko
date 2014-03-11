@@ -17,6 +17,7 @@
 #include "ghostroomlogic.h"
 #include "inspectionscreenlogic.h"
 #include "main.h"
+#include "timemanager.h"
 
 #define BUILDENDPOS 120.0f
 
@@ -210,6 +211,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         SPACE *menu = game_getSpace(self->owner->space->game, "menu");
         space_destroy(menu);
         }
+        break;
+
+      case BUTTON_PAUSE:
+        break;
+
+      case BUTTON_FASTFORWARD:
+        break;
+
+      case BUTTON_SLOWDOWN:
         break;
 
       default:

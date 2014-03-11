@@ -5,26 +5,45 @@
 #include "../NekoEngine/input.h"
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
+#include "spritetext.h"
+#include "generictext.h"
 
 void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)self->data;
   COMPONENT *schoolLogic = entity_getComponent(self->owner, COMP_SCHOOLLOGIC);
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(self->owner, COMP_SCHOOLLOGIC);
+  SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   
   INPUT_CONTAINER *input = &self->owner->space->game->input;
+  char buffer[80];
+
+  // Display time on screen   
+  if (!comData->timeUI) {
+    VEC3 position;
+    VEC4 color;
+    vec3_set(&position, 320, 180, 0);
+    vec4_set(&color, 0, 0, 0, 1 );
+    sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+    comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+  }
+  sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+  genericText_setText(comData->timeUI, buffer);
 
   if(schoolData->rooms.coord[2][7]) {
     comData->frameCounter++;
+    
+    if(comData->paused)
+      return;
 
     // NEW MONTH
-    if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond / 1) {
+    if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond * comData->secondsPerMonth / comData->speedMultiplier) {
       SPACE *ui = game_getSpace(self->owner->space->game, "ui");
       
       comData->months++;
-      printf("\n\n\n\n\n\n");
-      printf("Month: %i  Semester: %i  Year: %i\n\n", comData->months, comData->currentSemester, comData->currentYear);
       
+      
+
       // Monthly functions //
       comp_schoolLogic_updateDataMonth(schoolLogic, schoolData);
       comData->frameCounter = 0;
@@ -58,10 +77,47 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comp_newsfeedlogic_push(self, message);
     }
   }
+
+
+}
+
+void comp_timeManager_pause(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+
+  if(comData->paused)
+    comData->paused = FALSE;
+  else
+    comData->paused = TRUE;
+}
+
+void comp_timeManager_fastForward(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+
+  printf("%i\n", comData->secondsPerMonth);
+  if(comData->secondsPerMonth == 6)
+    comData->secondsPerMonth = 3;
+  else if(comData->secondsPerMonth == 3)
+    comData->secondsPerMonth = 2;
+  else if(comData->secondsPerMonth == 2)
+    comData->secondsPerMonth = 1;
+}
+
+void comp_timeManager_slowDown(COMPONENT *ptr) {
+  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+
+  if(comData->secondsPerMonth == 1)
+    comData->secondsPerMonth = 2;
+  else if(comData->secondsPerMonth == 2)
+    comData->secondsPerMonth = 3;
+  else if(comData->secondsPerMonth == 3)
+    comData->secondsPerMonth = 6;
 }
 
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
+  data.secondsPerMonth = 1;
+  data.speedMultiplier = 1;
+  data.paused = FALSE;
   data.months = 0;
   data.currentSemester = 0;
   data.previousYear = 1988;
