@@ -44,7 +44,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   if (mbox->active) {
     if (mbox->entered) {
-      //comp_ui_button_hoverPop(self);
+      comp_ui_button_hoverPop(self);
+      //sound_playSound(&self->owner->space->game->systems.sound, "hover");
     }
 
     if (mbox->over) {
@@ -245,16 +246,16 @@ static void hoverExpand_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
 
-  sprite->size.x += action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
-  sprite->size.y += action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+  sprite->size.x += action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
+  sprite->size.y += action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
 }
 
 static void hoverContract_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
 
-  sprite->size.x -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
-  sprite->size.y -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+  sprite->size.x -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
+  sprite->size.y -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.03f;
 }
 
 
@@ -264,8 +265,8 @@ void comp_ui_button_hoverPop(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
 
   //sprite->size.x = 2.0f;
-  al_pushFront(&data->hoverActions, action_create(self, hoverExpand_update, NULL, NULL, true, 0.1f));
-  al_pushFront(&data->hoverActions, action_create(self, hoverContract_update, NULL, NULL, true, 0.1f));
+  al_pushBack(&data->hoverActions, action_create(self, hoverExpand_update, NULL, NULL, true, 0.1f));
+  al_pushBack(&data->hoverActions, action_create(self, hoverContract_update, NULL, NULL, true, 0.1f));
 }
 
 
