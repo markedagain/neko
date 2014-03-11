@@ -86,17 +86,17 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         vec3_set(&position, -147, -160, 0);
         UI_button_createRoomButton(self, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
 
-        // CREATE CAFETERIA BUTTON
+        // CREATE OFFICES BUTTON
         vec3_set(&position, -96, -160, 0);
+        UI_button_createRoomButton(self, BUTTON_BUILDOFFICES, &position, &color, "Offices");
+
+        // CREATE CAFETERIA BUTTON
+        vec3_set(&position, -45, -160, 0);
         UI_button_createRoomButton(self, BUTTON_BUILDCAFETERIA, &position, &color, "Cafeteria");
 
         // CREATE STORE BUTTON
-        vec3_set(&position, -45, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDSTORE, &position, &color, "Store");
-
-        // CREATE OFFICES BUTTON
         vec3_set(&position, 45, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDOFFICES, &position, &color, "Offices");
+        UI_button_createRoomButton(self, BUTTON_BUILDSTORE, &position, &color, "Store");
 
         // CREATE AUDITORIUM BUTTON
         vec3_set(&position, 96, -160, 0);

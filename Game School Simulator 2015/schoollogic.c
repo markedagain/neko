@@ -62,6 +62,18 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     UI_button_updateBuildButtons(uiSpace);
   }
 
+  // Display Student count on screen
+  if (!comData->studentUI) {
+    vec3_set(&position, 320, 120, 0);
+    vec4_set(&color, 0, 0, 0, 1 );
+    sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
+    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+  }
+  sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
+  genericText_setText(comData->studentUI, comData->buffer);
+  // update build buttons
+  UI_button_updateBuildButtons(uiSpace);
+
   // Calculate Incoming Students
     // Set to total students possible
   maxIncomingStudents = comData->studentCapacity - comData->currentStudents + comData->expectedGraduates;

@@ -24,13 +24,13 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     VEC4 color;
     vec3_set(&position, 320, 180, 0);
     vec4_set(&color, 0, 0, 0, 1 );
-    sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
+    sprintf(buffer, "Month: %i, %i, Semester %i", comData->months, comData->currentYear, comData->currentSemester);
     comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
   }
   sprintf(buffer, "Year: %i  Semester: %i  Month: %i", comData->currentYear, comData->currentSemester, comData->months);
   genericText_setText(comData->timeUI, buffer);
 
-  if(schoolData->rooms.coord[2][7]) {
+  if(schoolData->roomList->count >= 2) {
     comData->frameCounter++;
     
     if(comData->paused)
@@ -93,7 +93,6 @@ void comp_timeManager_pause(COMPONENT *ptr) {
 void comp_timeManager_fastForward(COMPONENT *ptr) {
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
 
-  printf("%i\n", comData->secondsPerMonth);
   if(comData->secondsPerMonth == 6)
     comData->secondsPerMonth = 3;
   else if(comData->secondsPerMonth == 3)
