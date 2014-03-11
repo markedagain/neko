@@ -14,6 +14,7 @@
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 2.1f
 #define MAX_STUDENTS 1000
+#define STUDENT_LIFE 2.0f
 
 // this totally works except it derps out if you build a building just as a new student spawns
 
@@ -156,7 +157,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
   }
 
   actorData->ID = ID;
-  actorData->lifetime = 50.0f;
+  actorData->lifetime = actorData->roomSize * STUDENT_LIFE;
   actorData->roomSize = room->z * 80.0f;
   actorData->origin = pos->x;
 }

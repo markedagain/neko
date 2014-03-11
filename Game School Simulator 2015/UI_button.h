@@ -46,6 +46,7 @@ typedef struct{
   ENTITY *ent3;
   BUTTON_TYPE type;
   ALIST actions;
+  ALIST hoverActions;
   float startY;
   float startZoom;
   float origin;
@@ -64,5 +65,6 @@ void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *p
 void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
 void comp_UI_destroy(COMPONENT *self, void *event);
 void UI_button_updateBuildButtons(SPACE *ui);
-
+void comp_ui_button_hoverPop(COMPONENT *self);
+ 
 #endif

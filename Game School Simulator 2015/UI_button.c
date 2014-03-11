@@ -40,8 +40,13 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 
   al_update(&data->actions, updateEvent->dt);
+  al_update(&data->hoverActions, updateEvent->dt);
 
   if (mbox->active) {
+    if (mbox->entered) {
+      //comp_ui_button_hoverPop(self);
+    }
+
     if (mbox->over) {
       sprite->color.r = min(sprite->color.r + 0.05f, 1);
       sprite->color.b = max(sprite->color.b - 0.05f, 1);
@@ -225,12 +230,44 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         comp_timeManager_slowDown(self);
         break;
 
+      case BUTTON_EXIT:
+        self->owner->space->game->destroying = true;
+        break;
+
       default:
         break;
       }
     }
   }
 }
+
+static void hoverExpand_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->size.x += action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+  sprite->size.y += action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+}
+
+static void hoverContract_update(ACTION *action, double dt) {
+  COMPONENT *self = (COMPONENT *)(action->data);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->size.x -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+  sprite->size.y -= action_getEase(action, EASING_CIRCULAR_OUT) * 0.25f;
+}
+
+
+
+void comp_ui_button_hoverPop(COMPONENT *self) {
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  //sprite->size.x = 2.0f;
+  al_pushFront(&data->hoverActions, action_create(self, hoverExpand_update, NULL, NULL, true, 0.1f));
+  al_pushFront(&data->hoverActions, action_create(self, hoverContract_update, NULL, NULL, true, 0.1f));
+}
+
 
 // this is derping out the FIRST time build mode is activated for some weird reason
 static void panDown_update(ACTION *action, double dt) {
@@ -310,6 +347,7 @@ void comp_UI_button(COMPONENT *self) {
   CDATA_UI_BUTTON data = { 0 };
   data.type = BUTTON_DEFAULT;
   al_init(&data.actions);
+  al_init(&data.hoverActions);
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;
@@ -320,6 +358,7 @@ void comp_UI_destroy(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
 
   al_destroy(&data->actions);
+  al_destroy(&data->hoverActions);
 }
 
 
