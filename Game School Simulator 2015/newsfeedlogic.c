@@ -24,6 +24,7 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
 
   for(i = 0; i < 5; i++) {
     pos.y += 10;
+    printf(textBuffer);
     comData->lines[i] = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
   }
 

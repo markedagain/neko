@@ -60,8 +60,8 @@ void createSpaces(GAME *game) {
   SPACE *mgSpace = game_addSpace(game, "mg");
   SPACE *fgSpace = game_addSpace(game, "fg");
   SPACE *uiSpace = game_addSpace(game, "ui");
-  SPACE *splashSpace = game_addSpace(game, "splash");
   SPACE *menu = game_addSpace(game, "menu");
+  SPACE *splashSpace = game_addSpace(game, "splash");
   SPACE *cursorSpace = game_addSpace(game, "cursor");
 
   simSpace->visible = false;

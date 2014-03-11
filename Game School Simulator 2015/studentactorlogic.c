@@ -62,9 +62,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
       CDATA_STUDENTMANAGER *managerData = (CDATA_STUDENTMANAGER *)entity_getComponentData(manager, COMP_STUDENTMANAGERLOGIC);
       
       //when the student fades out, remove him from the drawnStudents list
-      // this is messed uuup
-      list_remove(managerData->drawnStudents, comp_studentManagerLogic_findStudent(managerLogic, self->owner, FT_ACTOR));
+      list_remove(managerData->drawnStudents, comp_studentManagerLogic_findStudent(managerLogic, (ENTITY *)self->owner, FT_ACTOR));
       entity_destroy(self->owner);
+      return;
     }
     multiSprite_setAlpha(multiSprite, 1 - data->timer / FADE_TIME);
   }

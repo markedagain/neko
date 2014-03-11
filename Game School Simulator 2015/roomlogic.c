@@ -48,7 +48,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       comData->artBonus = 1;
       comData->upkeep = 15000;
       //Modify SchoolData
-      schoolData->studentCapacity += 30;
+      schoolData->studentCapacity += 20;
       schoolData->money -= comData->cost;
       schoolData->reputation += comData->repBonus;
       schoolData->techBonus += comData->techBonus;

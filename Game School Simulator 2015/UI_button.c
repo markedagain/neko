@@ -119,15 +119,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       // cancel button 
       case BUTTON_CANCEL:
         comData->type = BUTTON_BUILD;
-        //comp_UI_button_panUp(self);
-        {
-          SPACE *ui = game_getSpace(self->owner->space->game, "ui");
-          SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-          ENTITY *player = space_getEntity(ui, "player");
-          CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-      
-          playerData->yPan = false;
-        }
+        comp_UI_button_panUp(self);
         comp_UI_button_cancelBuildMode(self);
         UI_button_destroyGhostRooms(self);
         break;

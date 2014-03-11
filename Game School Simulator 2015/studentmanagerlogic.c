@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #define GROUND_HEIGHT 24
-#define SPAWN_TIMER 2.0f
+#define SPAWN_TIMER 2.1f
 #define MAX_STUDENTS 1000
 
 // this totally works except it derps out if you build a building just as a new student spawns
@@ -54,8 +54,11 @@ void studentManager_spawnStudent(COMPONENT *self) {
   // roll to the random student
   studentPtr = studentList->first;
   // if no students, return
-  if (!studentPtr)
+  if (!studentPtr) {
+    list_destroy(studentList);
+    studentManager_deleteList(roomList);
     return;
+  }
   numStudents = studentList->count;
   randomIndex = randomIntRange(1, numStudents);
   while (count < randomIndex) {
@@ -153,7 +156,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
   }
 
   actorData->ID = ID;
-  actorData->lifetime = 5.0f;
+  actorData->lifetime = 50.0f;
   actorData->roomSize = room->z * 80.0f;
   actorData->origin = pos->x;
 }
@@ -169,7 +172,7 @@ void comp_studentManagerLogic(COMPONENT *self) {
 void comp_studentManagerLogic_destroy(COMPONENT *self, void *event) {
   CDATA_STUDENTMANAGER* data = (CDATA_STUDENTMANAGER *)self->data;
 
-  list_destroy(data->drawnStudents);
+  studentManager_deleteList(data->drawnStudents);
 }
 
 void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
@@ -189,6 +192,9 @@ void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(simStudent, COMP_STUDENTDATA);
     CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
     
+    if (studentData == 0)
+      return;
+
     // if student is still here
     switch (studentData->major) {
     case M_TECH:
@@ -240,6 +246,7 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
   
   if (graduateNode) {
     VEC3 position = { 0 };
+    VEC4 color = { 0, 0, 0, 1.0f };
     ENTITY *studentActor = ((COMPLETE_STUDENT *)graduateNode->data)->studentActor;
     CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
     CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
@@ -251,6 +258,7 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
     entity_attach(popText, studentActor);
 
     actorData->fadeOut = true;
+    actorData->timer = 0;
     list_remove(data->drawnStudents, graduateNode);
   }
 }
@@ -260,6 +268,7 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
 
   if (dropoutNode) {
     VEC3 position = { 0 };
+    VEC4 color = { 0, 0, 0, 1.0f };
     ENTITY *studentActor = ((COMPLETE_STUDENT *)dropoutNode->data)->studentActor;
     CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
     CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
@@ -271,6 +280,7 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
     entity_attach(popText, studentActor);
 
     actorData->fadeOut = true;
+    actorData->timer = 0;
     list_remove(data->drawnStudents, dropoutNode);
   }
 }

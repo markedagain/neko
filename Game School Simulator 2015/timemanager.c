@@ -38,9 +38,10 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
         ENTITY *studentManager = space_getEntity(fg, "studentManager");
         COMPONENT *studentManagerLogic = (COMPONENT *)entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
         comData->currentSemester++;
-        // create pop text above student's heads
-        comp_studentManagerLogic_statGainText(studentManagerLogic);
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
+        
+        // create pop text above student's heads
+        //comp_studentManagerLogic_statGainText(studentManagerLogic);
         sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
         comp_newsfeedlogic_push(self, message);
       }
