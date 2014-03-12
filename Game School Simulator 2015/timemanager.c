@@ -52,6 +52,17 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
     genericText_setText(comData->timeUI, buffer);
   }
+  else {
+    // Display time on screen   
+    if (!comData->timeUI) {
+      VEC3 position;
+      VEC4 color;
+      vec3_set(&position, 320, 180, 0);
+      vec4_set(&color, 0, 0, 0, 1 );
+      sprintf(buffer, "July 1989, Fall");
+      comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+    }
+  }
 
   if(schoolData->roomList->count >= 2) {
     comData->frameCounter++;

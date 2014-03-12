@@ -8,6 +8,7 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
+#include "multisprite.h"
 #include "ghostroom.h"
 #include "playerlogic.h"
 #include "roomlogic.h"
@@ -26,6 +27,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  CDATA_TRANSFORM *transform = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   VEC2 dimensions = { 40.0f, 20.0f };
   VEC3 position = { 10, 10, 0 };
@@ -38,11 +40,106 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
+  char buffer[80];
 
   al_update(&data->actions, updateEvent->dt);
 
   if (mbox->entered) {
     sound_playSound(&self->owner->space->game->systems.sound, "hover");
+  }
+  
+
+  if(mbox->over) {
+    if (!comData->roomInfoUI) {
+      VEC3 position;
+      VEC4 color;
+      printf("%f\n", transform->translation.x);
+      if(transform->translation.x <= -300)
+        vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
+      else
+        vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
+      vec4_set(&color, 0, 0, 0, 1 );
+      sprintf(buffer, "Default");
+      comData->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
+    }
+
+    if(comData->roomInfoUI) {
+      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(comData->roomInfoUI, COMP_MULTISPRITE);
+      multiSprite_setVisible(roomInfo, true);
+    }
+
+    switch(comData->type){
+      case BUTTON_BUILDLOBBY:
+        sprintf(buffer, "Allows construction\n on a new floor!");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDCLASS:
+        sprintf(buffer, "Increases student capacity by 30!\nAll stats +");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDLIBRARY:
+        sprintf(buffer, "All stats ++");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDTEAMSPACE:
+        sprintf(buffer, "Motivation +++");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDCAFETERIA:
+        sprintf(buffer, "Generates income!\n Motivation +");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDSTORE:
+        sprintf(buffer, "Generates income!");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDOFFICES:
+        sprintf(buffer, "All stats +");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDAUDITORIUM:
+        sprintf(buffer, "Motivation +++\nUnlocks special events");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDTUTORING:
+        sprintf(buffer, "All stats +");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDWIFI:
+        sprintf(buffer, "Tech +++");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDRECREATION:
+        sprintf(buffer, "Design +++");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_BUILDFIGURE:
+        sprintf(buffer, "Art +++");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+
+      default:
+        sprintf(buffer, "");
+        genericText_setText(comData->roomInfoUI, buffer);
+        break;
+    }
+  }
+  else {
+    if(comData->roomInfoUI) {
+      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(comData->roomInfoUI, COMP_MULTISPRITE);
+      multiSprite_setVisible(roomInfo, false);
+    }
   }
 
   if (mbox->active) {
