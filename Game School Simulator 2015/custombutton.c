@@ -40,7 +40,7 @@ ENTITY *createCustomButton(void (*onEntered)(COMPONENT *),
   if (customSprite) {
     strcpy(buttonData->sprite.source, spriteSource);
     if (altSource)
-      strcpy(buttonData->sprite.altSource, spriteSource);
+      strcpy(buttonData->sprite.altSource, altSource);
   }
   else
     strcpy(buttonData->sprite.source, "blank");

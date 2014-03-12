@@ -8,6 +8,11 @@
 #include "spritetext.h"
 #include "generictext.h"
 #include "sprite.h"
+#include "colors.h"
+#include "playerlogic.h"
+
+#define WIN_CONDITION 20
+#define LOSE_CONDITION -100000
 
 char *month[12] = {
   "January",
@@ -73,7 +78,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     // NEW MONTH
     if(comData->frameCounter >= self->owner->space->game->systems.time.framesPerSecond * comData->secondsPerMonth / comData->speedMultiplier) {
       SPACE *ui = game_getSpace(self->owner->space->game, "ui");
-      
+      CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(space_getEntity(uiSpace, "player"), COMP_PLAYERLOGIC);
       comData->months++;
       
       // Monthly functions //
@@ -81,6 +86,32 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comData->frameCounter = 0;
       comData->monthCounter++;
       schoolData->roomConstructed = FALSE;
+
+      // if you get enough rep, win!
+      if (schoolData->reputation > WIN_CONDITION && !comData->gameEnded) {
+        VEC2 dimensions = { 400.0f, 200.0f };
+        VEC3 position;
+        
+        vec3_set(&position, 0, 0, 0);
+        genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_NAVY_LIGHT], "winScreen");
+        genericText_create(uiSpace, &position, "winScreen", "fonts/gothic/28", "You won!\nPress enter to keep playing!", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+        comp_timeManager_pause(self);
+        playerData->currentMode = GM_WIN;
+        comData->gameEnded = true;
+      }
+
+      // if you are too far in debt, you lose!
+      if (schoolData->money < LOSE_CONDITION && !comData->gameEnded) {
+        VEC2 dimensions = { 400.0f, 200.0f };
+        VEC3 position;
+        
+        vec3_set(&position, 0, 0, 0);
+        genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_NAVY_LIGHT], "loseScreen");
+        genericText_create(uiSpace, &position, "loseScreen", "fonts/gothic/28", "You are too far in debt!\nYou lose!\nPress enter to quit.", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+        comp_timeManager_pause(self);
+        playerData->currentMode = GM_LOSE;
+        comData->gameEnded = true;
+      }
 
       // NEW SEMESTER
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {

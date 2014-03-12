@@ -73,7 +73,7 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     genericText_setText(managementData->currCosts, managementData->costsBuffer);
   }
 
-  // Tuition
+  // Reputation
   if (comData->reputation != managementData->currReputation) {
     managementData->currReputation = comData->reputation;
     sprintf(managementData->reputationBuffer, "Reputation: %i", comData->reputation);
