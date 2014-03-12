@@ -31,6 +31,8 @@
 #include "main.h"
 #include "menuscreen.h"
 #include "namescreen.h"
+#include "colors.h"
+#include "custombutton.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -160,6 +162,31 @@ void startNewGame(GAME *game) {
   // news feed
   space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
 
+  // UI Bar
+  vec3_set(&position, 0, 165, 0);
+  vec2_set(&dimensions, 640, 29);
+  genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_TURQUOISE_LIGHT], "uiBar");
+  
+  // Menu Button
+  vec3_set(&position, -306, 166, 0);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
+  // Build Button
+  vec3_set(&position, -271, 166, 0);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "bButton", 1, 1, true, "ui/build", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  
+  // Management Button
+  vec3_set(&position, -242, 166, 0);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "manageButton", 1, 1, true, "ui/manage", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
+  // Play Button
+  vec3_set(&position, -209, 166, 0);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "playButton", 1, 1, true, "ui/play", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
+  // Pause Button
+  vec3_set(&position, -180, 166, 0);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "pauseButton", 1, 1, true, "ui/pause", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
   /* custom build button
   vec3_set(&position, 0, 0, 0);
   createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
@@ -180,22 +207,22 @@ void startNewGame(GAME *game) {
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
 
   // create pause button
-  vec3_set(&position, -240, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pause_button", &position);
+  //vec3_set(&position, -240, 180, 0);
+  //ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pause_button", &position);
   // sets the button type to pause
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
+  //((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
 
   // create fastForward button
-  vec3_set(&position, -180, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "slow_button", &position);
+  //vec3_set(&position, -180, 180, 0);
+  //ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "slow_button", &position);
   // sets the button type to fastForward
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SLOWDOWN;
+  //((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SLOWDOWN;
 
   // create slowDown button
-  vec3_set(&position, -120, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "fast_button", &position);
+  //vec3_set(&position, -120, 180, 0);
+  //ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "fast_button", &position);
   // sets the button type to slowDown
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
+  //((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
 
   // create manage button
   vec3_set(&position, 0, 180, 0);
