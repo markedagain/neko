@@ -55,9 +55,7 @@ void exit_onEntered(COMPONENT *self) {
 }
 
 void exit_onPressed(COMPONENT *self) {
-  SPACE *menu = game_getSpace(self->owner->space->game, "menu");
-  VEC3 position = { 0 };
-  space_addEntityAtPosition(menu, arch_nameScreen, "nameScreen", &position);
+  self->owner->space->game->destroying = true;
 }
 
 void exit_onExit(COMPONENT *self) {

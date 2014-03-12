@@ -19,6 +19,7 @@ typedef struct cdata_timeManager_t {
   int frameCounter;
   int monthCounter;
   ENTITY *timeUI;
+  bool gameEnded;
 } CDATA_TIMEMANAGER;
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);

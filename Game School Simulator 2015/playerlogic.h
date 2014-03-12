@@ -11,8 +11,11 @@
 
 typedef enum {
   GM_DEFAULT = 0,
-  GM_BUILD
+  GM_BUILD,
+  GM_LOSE,
+  GM_WIN
 } GMODE;
+
 
 typedef struct {
   bool dragging;
@@ -20,6 +23,7 @@ typedef struct {
   float zoomVelocity;
   float yLock;
   bool yPan;
+  GMODE currentMode;
 } CDATA_PLAYERLOGIC;
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event);
