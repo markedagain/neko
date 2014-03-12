@@ -24,7 +24,7 @@ typedef struct cdata_newsfeedlogic_t {
   ENTITY *lines[5];
   double fadeOutStartTime;
   double delayTime;
-
+  bool locked;
 } CDATA_NEWSFEEDLOGIC;
 
 char *pushStrings[STRINGS_LAST];

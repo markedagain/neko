@@ -3,11 +3,20 @@
 #include "buttonfunctions.h"
 #include "namescreen.h"
 #include "schoollogic.h"
+#include "colors.h"
+#include "custombutton.h"
+#include "genericsprite.h"
+#include "custombuttonlogic.h"
+#include "newsfeedlogic.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
   sprite->color.a = 0.8f;
   sound_playSound(&self->owner->space->game->systems.sound, "hover");
 
@@ -16,12 +25,21 @@ void newGame_onEntered(COMPONENT *self) {
 void newGame_onPressed(COMPONENT *self) {
   SPACE *menu = game_getSpace(self->owner->space->game, "menu");
   VEC3 position = { 0 };
+
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
   space_addEntityAtPosition(menu, arch_nameScreen, "nameScreen", &position);
 }
 
 void newGame_onExit(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
   sprite->color.a = 1.0f;
 
 }
@@ -36,7 +54,52 @@ void options_onEntered(COMPONENT *self) {
 }
 
 void options_onPressed(COMPONENT *self) {
-  self->owner->space->game->destroying = true;
+  SPACE *menu = game_getSpace(self->owner->space->game, "menu");
+  VEC2 dimensions = { 400.0f, 200.0f };
+  VEC3 position = { 0 };
+  ENTITY *created;
+  
+  if (space_getEntity(menu, "options")) {
+    LIST *optionsList = list_create();
+    LIST_NODE *node;
+    space_getAllEntities(menu, "options", optionsList);
+    node = optionsList->first;
+    while (node) {
+      entity_destroy((ENTITY *)node->data);
+      node = node->next;
+    }
+    list_destroy(optionsList);
+  }
+  else {
+  // create a box
+  genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], "options");
+
+  // create the fullscreen word
+  vec3_set(&position, -120.0f, 50.0f, 0);
+  created = genericSprite_create(menu, &position, "options", "options/fullscreen");
+
+  // create the true false button
+  vec3_set(&position, 50.0f, 50.0f, 0);
+  createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
+                         self->owner->space, &position, "options",
+                         1.0f, 1.0f,
+                         true, "options/on", NULL, NULL,
+                         false, NULL, NULL, 
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
+  // create the newsfeed word
+  vec3_set(&position, -120.0f, -50.0f, 0);
+  created = genericSprite_create(menu, &position, "options", "options/newsfeed");
+
+  // create the true false button
+  vec3_set(&position, 50.0f, -50.0f, 0);
+  createCustomButton(newsFeed_onEntered, NULL, newsFeed_onPressed, newsFeed_onExit, NULL,
+                         self->owner->space, &position, "options",
+                         1.0f, 1.0f,
+                         true, "options/on", NULL, NULL,
+                         false, NULL, NULL, 
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  }
 }
 
 void options_onExit(COMPONENT *self) {
@@ -46,21 +109,103 @@ void options_onExit(COMPONENT *self) {
 
 }
 
-/********** Exit **********/
-void exit_onEntered(COMPONENT *self) {
+/**** ON/OFF Fullscreen ****/
+void fullScreen_onEntered(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
   sprite->color.a = 0.8f;
   sound_playSound(&self->owner->space->game->systems.sound, "hover");
 }
 
+void fullScreen_onPressed(COMPONENT *self) {
+  CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
+  COMPONENT *sprite = (COMPONENT *)entity_getComponent(self->owner, COMP_SPRITE);
+  CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  if (!data->sprite.altSprite) {
+    comp_sprite_clearMesh(sprite);
+    spriteData->source = "options/off";
+    data->sprite.altSprite = true;
+    self->owner->space->game->config.screen.full = false;
+    game_configSave(self->owner->space->game);
+  }
+  else {
+    comp_sprite_clearMesh(sprite);
+    spriteData->source = "options/on";
+    data->sprite.altSprite = false;
+    self->owner->space->game->config.screen.full = true;
+    game_configSave(self->owner->space->game);
+  }
+}
+
+void fullScreen_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 1.0f;
+}
+
+/**** ON/OFF newsfeed ****/
+void newsFeed_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+}
+
+void newsFeed_onPressed(COMPONENT *self) {
+  CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  COMPONENT *sprite = (COMPONENT *)entity_getComponent(self->owner, COMP_SPRITE);
+  CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  CDATA_NEWSFEEDLOGIC *newsFeedData = (CDATA_NEWSFEEDLOGIC *)entity_getComponentData(space_getEntity(ui, "newsFeed"), COMP_NEWSFEEDLOGIC);
+
+  if (!data->sprite.altSprite) {
+    comp_sprite_clearMesh(sprite);
+    spriteData->source = "options/off";
+    data->sprite.altSprite = true;
+    newsFeedData->locked = false;
+  }
+  else {
+    comp_sprite_clearMesh(sprite);
+    spriteData->source = "options/on";
+    data->sprite.altSprite = false;
+    newsFeedData->locked = true;
+  }
+}
+
+void newsFeed_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  sprite->color.a = 1.0f;
+}
+
+/********** Exit **********/
+void exit_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+}
+
 void exit_onPressed(COMPONENT *self) {
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
   self->owner->space->game->destroying = true;
 }
 
 void exit_onExit(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
   sprite->color.a = 1.0f;
 
 }
