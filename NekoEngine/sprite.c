@@ -119,6 +119,8 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   v = comData->manual.enabled ? comData->manual.v : sprite->v;
 
   AEGfxTextureSet(texture->data, (float)((float)texture->width * u), (float)((float)texture->height * v));
+  transform.m02 = floorf(transform.m02 + 0.5f);
+  transform.m12 = floorf(transform.m12 + 0.5f);
   AEGfxSetTransform(transform.m);
   spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
   spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
