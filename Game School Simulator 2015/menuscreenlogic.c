@@ -8,12 +8,22 @@
 #include "buttonfunctions.h"
 #include "custombutton.h"
 
-static void fadeCopyright_update(ACTION *action, double dt) {
+static void fadeCopyrightIn_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
   ENTITY *copyright = space_getEntity(self->space, "copyright");
   float alpha = multiSprite_getAlpha(entity_getComponent(copyright, COMP_MULTISPRITE));
-  alpha = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  alpha = action_ease(action, EASING_QUAD_IN, 0.0f, 1.0f);
   multiSprite_setAlpha(entity_getComponent(copyright, COMP_MULTISPRITE), alpha);
+}
+
+static void fadeIn_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
+  sprite->color.a = 1.0f - action_getEase(action, EASING_QUAD_IN);
+}
+static void fadeIn_onEnd(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  entity_destroy(self);
 }
 
 static void moveTitle_update(ACTION *action, double dt) {
@@ -72,6 +82,10 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   ENTITY *pressStart;
+  if (!data->beganFading) {
+    data->beganFading = true;
+    al_pushBack(&data->actions, action_create(space_getEntity(self->owner->space, "fader"), fadeIn_update, NULL, fadeIn_onEnd, false, 0.75f));
+  }
   if ((input->mouse.left || input->keyboard.anyKey) && !data->pressedStart) {
     VEC3 position = { 0 };
     VEC4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -150,13 +164,20 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
 void comp_menuScreenLogic(COMPONENT *self) {
   CDATA_MENUSCREENLOGIC data = { 0 };
   data.pressedStart = false;
+  data.beganFading = false;
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_MENUSCREENLOGIC, data);
   self->events.logicUpdate = comp_menuScreenLogic_logicUpdate;
   self->events.initialize = comp_menuScreenLogic_initialize;
+  self->events.destroy = comp_menuScreenLogic_destroy;
 }
 
 void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
   CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
-  al_pushBack(&data->actions, action_create(self->owner, fadeCopyright_update, NULL, NULL, false, 0.5f));
+  al_pushBack(&data->actions, action_create(self->owner, fadeCopyrightIn_update, NULL, NULL, false, 0.75f));
+}
+
+void comp_menuScreenLogic_destroy(COMPONENT *self, void *event) {
+  CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
+  al_destroy(&data->actions);
 }

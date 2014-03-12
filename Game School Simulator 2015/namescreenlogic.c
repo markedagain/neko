@@ -6,6 +6,7 @@
 #include "generictext.h"
 #include "schoollogic.h"
 #include "colors.h"
+#include "sound.h"
 
 #define MAX_NAME 40
 
@@ -36,6 +37,7 @@ void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     (game_getSpace(self->owner->space->game, "bg"))->active = true;
     (game_getSpace(self->owner->space->game, "mg"))->active = true;
     (game_getSpace(self->owner->space->game, "fg"))->active = true;
+    sound_playSong(&self->owner->space->game->systems.sound, "02");
     //(game_getSpace(self->owner->space->game, "ui"))->active = true;
   }
 

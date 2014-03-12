@@ -118,6 +118,8 @@ void createMainMenu(GAME *game) {
   position.y = -48.0f;
   pressStart = genericText_create(menu, &position, "pressStart", "fonts/gothic/12", "Click anywhere or press any key to begin", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_TOP);
   multiSprite_setAlpha(entity_getComponent(pressStart, COMP_MULTISPRITE), 0.0f);
+  position.y = 0.0f;
+  genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], "fader");
 }
 
 void startNewGame(GAME *game) {
