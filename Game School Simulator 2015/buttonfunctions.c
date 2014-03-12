@@ -79,13 +79,34 @@ void options_onPressed(COMPONENT *self) {
   created = genericSprite_create(menu, &position, "options", "options/fullscreen");
 
   // create the true false button
-  vec3_set(&position, 50.0f, 50.0f, 0);
-  createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
-                         self->owner->space, &position, "options",
-                         1.0f, 1.0f,
-                         true, "options/on", NULL, NULL,
-                         false, NULL, NULL, 
-                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  // if currently full screen
+  if (self->owner->space->game->config.screen.full) {
+    vec3_set(&position, 50.0f, 50.0f, 0);
+    createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
+                           self->owner->space, &position, "options",
+                           1.0f, 1.0f,
+                           true, "options/on", "options/off", NULL,
+                           false, NULL, NULL, 
+                           NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  }
+
+  // if currently not full screen
+  else {
+    CDATA_CUSTOMBUTTON *data;
+    CDATA_SPRITE *spriteData; 
+    vec3_set(&position, 50.0f, 50.0f, 0);
+    created = createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
+                           self->owner->space, &position, "options",
+                           1.0f, 1.0f,
+                           true, "options/on", "options/off", NULL,
+                           false, NULL, NULL, 
+                           NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+    data = (CDATA_CUSTOMBUTTON *)entity_getComponentData(created, COMP_CUSTOMBUTTONLOGIC);
+    data->sprite.altSprite = true;
+    spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
+    spriteData->source = data->sprite.altSource;
+  }
+
 
   // create the newsfeed word
   vec3_set(&position, -120.0f, -50.0f, 0);
@@ -96,7 +117,7 @@ void options_onPressed(COMPONENT *self) {
   createCustomButton(newsFeed_onEntered, NULL, newsFeed_onPressed, newsFeed_onExit, NULL,
                          self->owner->space, &position, "options",
                          1.0f, 1.0f,
-                         true, "options/on", NULL, NULL,
+                         true, "options/on", "options/off", NULL,
                          false, NULL, NULL, 
                          NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
   }
@@ -124,14 +145,14 @@ void fullScreen_onPressed(COMPONENT *self) {
 
   if (!data->sprite.altSprite) {
     comp_sprite_clearMesh(sprite);
-    spriteData->source = "options/off";
+    spriteData->source = data->sprite.altSource;
     data->sprite.altSprite = true;
     self->owner->space->game->config.screen.full = false;
     game_configSave(self->owner->space->game);
   }
   else {
     comp_sprite_clearMesh(sprite);
-    spriteData->source = "options/on";
+    spriteData->source = data->sprite.source;
     data->sprite.altSprite = false;
     self->owner->space->game->config.screen.full = true;
     game_configSave(self->owner->space->game);
@@ -161,13 +182,13 @@ void newsFeed_onPressed(COMPONENT *self) {
 
   if (!data->sprite.altSprite) {
     comp_sprite_clearMesh(sprite);
-    spriteData->source = "options/off";
+    spriteData->source = data->sprite.altSource;
     data->sprite.altSprite = true;
     newsFeedData->locked = false;
   }
   else {
     comp_sprite_clearMesh(sprite);
-    spriteData->source = "options/on";
+    spriteData->source = data->sprite.source;
     data->sprite.altSprite = false;
     newsFeedData->locked = true;
   }
