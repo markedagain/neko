@@ -54,7 +54,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       VEC3 position;
       VEC4 color;
       printf("%f\n", transform->translation.x);
-      if(transform->translation.x <= -300)
+      if(transform->translation.x <= -270)
         vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
