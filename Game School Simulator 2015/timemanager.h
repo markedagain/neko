@@ -20,6 +20,7 @@ typedef struct cdata_timeManager_t {
   int monthCounter;
   int semesterCounter;
   ENTITY *timeUI;
+  bool gameEnded;
 } CDATA_TIMEMANAGER;
 
 char *month[12];

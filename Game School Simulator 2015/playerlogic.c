@@ -14,6 +14,7 @@
 #include "generictext.h"
 #include <math.h>
 #include <stdio.h>
+#include "timemanager.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -111,116 +112,143 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   
   space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
 
-  // MANAGE INPUT
-  if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
-    pan(self, -4.0f, 0.0f, NULL);
-  }
-  if (input->keyboard.keys[KEY_RIGHT] == ISTATE_DOWN) {
-    pan(self, 4.0f, 0.0f, NULL);
-  }
-  if (input->keyboard.keys[KEY_UP] == ISTATE_DOWN) {
-    zoom(self, 0.01f);
-  }
-  if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
-    //zoom(self, -0.01f);
-    CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
-    SPACE *bg = game_getSpace(self->owner->space->game, "bg");
-    SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-    SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-    bg->systems.camera.transform.rotation += 0.2f;
-    mg->systems.camera.transform.rotation += 0.2f;
-    fg->systems.camera.transform.rotation += 0.2f;
-  }
-  if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
-    if (self->owner->space->game->systems.time.scale)
-      self->owner->space->game->systems.time.scale = 0;
-    else
-      self->owner->space->game->systems.time.scale = 1.0;
+  // win state
+  if (data->currentMode == GM_WIN) {
+    if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
+      LIST *winScreen = list_create();
+      LIST_NODE *node;
+      space_getAllEntities(self->owner->space, "winScreen", winScreen);
+      node = winScreen->first;
+      while (node) {
+        entity_destroy((ENTITY *)node->data);
+        node = node->next;
+      }
+      list_destroy(winScreen);
+      comp_timeManager_pause(self);
+      data->currentMode = GM_DEFAULT;
+    }
   }
 
-  if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
-    data->yPan = false;
+  else if (data->currentMode == GM_LOSE) {
+    if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
+      self->owner->space->game->destroying = true;
+    }
   }
 
-  if (input->keyboard.keys[KEY_4] == ISTATE_PRESSED) {
-    comp_schoolLogic_millionaire(self);
-  }
-  /*
-  if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
-    ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
-    CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
-    trans->rotation += 0.2f;
-  }
-  if (input->keyboard.keys[KEY_2] == ISTATE_DOWN) {
-    ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
-    CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
-    trans->scale.x -= 0.1f;
-  }*/
-  /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
-    game_resize(self->owner->space->game, 1280, 720);
-  }*/
-
-  /*if (input->mouse.wheel.direction == -1)
-    zoom(self, -0.1f);
-  if (input->mouse.wheel.direction == 1)
-    zoom(self, 0.1f);*/
-
-
-  if(!data->yPan) {
-    if (input->mouse.wheel.delta != 0) {
-      if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))
-        data->zoomVelocity += 0.004f * (float)input->mouse.wheel.delta;
+  // default state
+  else {
+    // MANAGE INPUT
+    if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
+      pan(self, -4.0f, 0.0f, NULL);
+    }
+    if (input->keyboard.keys[KEY_RIGHT] == ISTATE_DOWN) {
+      pan(self, 4.0f, 0.0f, NULL);
+    }
+    if (input->keyboard.keys[KEY_UP] == ISTATE_DOWN) {
+      zoom(self, 0.01f);
+    }
+    if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
+      //zoom(self, -0.01f);
+      CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
+      SPACE *bg = game_getSpace(self->owner->space->game, "bg");
+      SPACE *mg = game_getSpace(self->owner->space->game, "mg");
+      SPACE *fg = game_getSpace(self->owner->space->game, "fg");
+      bg->systems.camera.transform.rotation += 0.2f;
+      mg->systems.camera.transform.rotation += 0.2f;
+      fg->systems.camera.transform.rotation += 0.2f;
+    }
+    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
+      if (self->owner->space->game->systems.time.scale)
+        self->owner->space->game->systems.time.scale = 0;
       else
-        data->zoomVelocity = 0.012f * (float)input->mouse.wheel.delta;
+        self->owner->space->game->systems.time.scale = 1.0;
     }
-    zoom(self, data->zoomVelocity);
-    if (data->zoomVelocity != 0.0f) {
-      if (data->zoomVelocity > 0) {
-        data->zoomVelocity -= 0.0008f;
-        if (data->zoomVelocity < 0.0005f)
-          data->zoomVelocity = 0.0f;
+
+    if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
+      CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+      schoolData->reputation += 5;
+    }
+
+    if (input->keyboard.keys[KEY_4] == ISTATE_PRESSED) {
+      comp_schoolLogic_millionaire(self);
+    }
+    /*
+    if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
+      ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
+      CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
+      trans->rotation += 0.2f;
+    }
+    if (input->keyboard.keys[KEY_2] == ISTATE_DOWN) {
+      ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
+      CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
+      trans->scale.x -= 0.1f;
+    }*/
+    /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
+      game_resize(self->owner->space->game, 1280, 720);
+    }*/
+
+    /*if (input->mouse.wheel.direction == -1)
+      zoom(self, -0.1f);
+    if (input->mouse.wheel.direction == 1)
+      zoom(self, 0.1f);*/
+
+
+    if(!data->yPan) {
+      if (input->mouse.wheel.delta != 0) {
+        if ((data->zoomVelocity > 0 && input->mouse.wheel.delta > 0) || (data->zoomVelocity < 0 && input->mouse.wheel.delta < 0))
+          data->zoomVelocity += 0.004f * (float)input->mouse.wheel.delta;
+        else
+          data->zoomVelocity = 0.012f * (float)input->mouse.wheel.delta;
       }
-      if (data->zoomVelocity < 0) {
-        data->zoomVelocity += 0.0008f;
-        if (data->zoomVelocity > -0.0005f)
-          data->zoomVelocity = 0.0f;
+      zoom(self, data->zoomVelocity);
+      if (data->zoomVelocity != 0.0f) {
+        if (data->zoomVelocity > 0) {
+          data->zoomVelocity -= 0.0008f;
+          if (data->zoomVelocity < 0.0005f)
+            data->zoomVelocity = 0.0f;
+        }
+        if (data->zoomVelocity < 0) {
+          data->zoomVelocity += 0.0008f;
+          if (data->zoomVelocity > -0.0005f)
+            data->zoomVelocity = 0.0f;
+        }
       }
     }
-  }
 
-  if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
-    data->dragging = false;
-    input_unlockMouse(input);
-  }
-  if (data->dragging) {
-    POINT panned;
-    float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
-    xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
-    pan(self, xdiff, 0.0f, &panned);
-    if (panned.x != 0)
-      data->dragOrigin.x = input->mouse.position.x;
-    input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
-  }
+    if (input->mouse.left == ISTATE_RELEASED && data->dragging) {
+      data->dragging = false;
+      input_unlockMouse(input);
+    }
+    if (data->dragging) {
+      POINT panned;
+      float xdiff = (float)data->dragOrigin.x - (float)input->mouse.position.x;
+      xdiff /= (float)(self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width);
+      pan(self, xdiff, 0.0f, &panned);
+      if (panned.x != 0)
+        data->dragOrigin.x = input->mouse.position.x;
+      input_setMousePos(input, data->dragOrigin.x, data->dragOrigin.y);
+    }
 
-  // M - Brings up management screen
-  if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
+    // M - Brings up management screen
+    if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
 
-  }
+    }
 
-  //Change Tuition
-  if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
-    schoolData->tuition -= 1000;
-  if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
-    schoolData->tuition += 1000;
+    //Change Tuition
+    if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
+      schoolData->tuition -= 1000;
+    if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
+      schoolData->tuition += 1000;
 
-  // List all enrolled students
-  if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
-    comp_schoolLogic_listStudents(schoolLogic, schoolData);
-  }
+    // List all enrolled students
+    if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
+      comp_schoolLogic_listStudents(schoolLogic, schoolData);
+    }
 
-  // List all alumni
-  if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-    comp_schoolLogic_listAlumni(schoolLogic, schoolData);
+    // List all alumni
+    if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
+      comp_schoolLogic_listAlumni(schoolLogic, schoolData);
+    }
   }
 }
 

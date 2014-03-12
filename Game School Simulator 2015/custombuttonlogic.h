@@ -20,6 +20,7 @@ typedef struct {
   struct {
     char source[30];
     char altSource[30];
+    bool altSprite;
   } sprite;
   ENTITY *text;
   ALIST actions;

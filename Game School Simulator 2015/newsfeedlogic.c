@@ -107,7 +107,7 @@ void comp_newsfeedlogic(COMPONENT *self) {
   CDATA_NEWSFEEDLOGIC data = {0};
   data.messages = list_create();
   data.delayTime = 0.0;
-
+  data.locked = true;
   COMPONENT_INIT(self, COMP_NEWSFEEDLOGIC, data);
   self->events.initialize = comp_newsfeedlogic_initialize;
   self->events.logicUpdate = comp_newsfeedlogic_logicUpdate;

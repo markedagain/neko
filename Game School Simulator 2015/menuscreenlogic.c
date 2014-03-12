@@ -7,6 +7,7 @@
 #include "UI_build.h"
 #include "buttonfunctions.h"
 #include "custombutton.h"
+#include "mousebox.h"
 
 static void fadeCopyrightIn_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
@@ -55,6 +56,21 @@ static void moveTitleContainer_update(ACTION *action, double dt) {
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
 }
 
+static void moveNewGameButton_start(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = false;
+}
+
+
+static void moveNewGameButton_exit(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = true;
+}
+
 static void moveNewGameButton_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
@@ -66,6 +82,21 @@ static void moveNewGameButton_update(ACTION *action, double dt) {
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
 }
 
+static void moveOptionsButton_start(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = false;
+}
+
+
+static void moveOptionsButton_exit(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = true;
+}
+
 static void moveOptionsButton_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
@@ -75,6 +106,21 @@ static void moveOptionsButton_update(ACTION *action, double dt) {
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+}
+
+static void moveQuitButton_start(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = false;
+}
+
+
+static void moveQuitButton_exit(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = true;
 }
 
 static void moveQuitButton_update(ACTION *action, double dt) {
@@ -115,21 +161,20 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     al_pushBack(&data->actions, action_create(titleContainer, moveTitleContainer_update, NULL, NULL, false, 0.5f));
 
     input->mouse.handled[MBUTTON_LEFT] = true;
-    
     newGameButton = createCustomButton(newGame_onEntered, NULL, newGame_onPressed, newGame_onExit, NULL,
                        self->owner->space, &position, "newGameButton", 1.0f, 1.0f, true, "titlescreen/newgame",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    al_pushBack(&data->actions, action_create(newGameButton, moveNewGameButton_update, NULL, NULL, false, 0.5f));
+    al_pushBack(&data->actions, action_create(newGameButton, moveNewGameButton_update, moveNewGameButton_start, moveNewGameButton_exit, false, 0.5f));
 
     optionsButton = createCustomButton(options_onEntered, NULL, options_onPressed, options_onExit, NULL,
                        self->owner->space, &position, "optionsButton", 1.0f, 1.0f, true, "titlescreen/options",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    al_pushBack(&data->actions, action_create(optionsButton, moveOptionsButton_update, NULL, NULL, false, 0.5f));
+    al_pushBack(&data->actions, action_create(optionsButton, moveOptionsButton_update, moveOptionsButton_start, moveOptionsButton_exit, false, 0.5f));
 
     quitButton = createCustomButton(exit_onEntered, NULL, exit_onPressed, exit_onExit, NULL,
                        self->owner->space, &position, "quitButton", 1.0f, 1.0f, true, "titlescreen/quit",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-    al_pushBack(&data->actions, action_create(quitButton, moveQuitButton_update, NULL, NULL, false, 0.5f));
+    al_pushBack(&data->actions, action_create(quitButton, moveQuitButton_update, moveQuitButton_start, moveQuitButton_exit, false, 0.5f));
     data->pressedStart = true;
   }
   pressStart = space_getEntity(self->owner->space, "pressStart");
