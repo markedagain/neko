@@ -17,6 +17,17 @@ static void fadeCopyrightIn_update(ACTION *action, double dt) {
   multiSprite_setAlpha(entity_getComponent(copyright, COMP_MULTISPRITE), alpha);
 }
 
+static void scaleTitle_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  ENTITY *logo = space_getEntity(self->space, "logo");
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(logo, COMP_TRANSFORM);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(logo, COMP_SPRITE);
+  trans->scale.x = action_ease(action, EASING_QUAD_IN, 2.0f, -1.0f);
+  trans->scale.y = action_ease(action, EASING_QUAD_IN, 2.0f, -1.0f);
+  sprite->color.a = action_ease(action, EASING_QUAD_IN, 0.0f, 1.0f); 
+}
+
+
 static void fadeIn_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
@@ -150,7 +161,6 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     al_pushBack(&data->actions, action_create(titleContainer, moveTitleContainer_update, NULL, NULL, false, 0.5f));
 
     input->mouse.handled[MBUTTON_LEFT] = true;
-
     newGameButton = createCustomButton(newGame_onEntered, NULL, newGame_onPressed, newGame_onExit, NULL,
                        self->owner->space, &position, "newGameButton", 1.0f, 1.0f, true, "titlescreen/newgame",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
@@ -188,6 +198,7 @@ void comp_menuScreenLogic(COMPONENT *self) {
 void comp_menuScreenLogic_initialize(COMPONENT *self, void *event) {
   CDATA_MENUSCREENLOGIC *data = (CDATA_MENUSCREENLOGIC *)self->data;
   al_pushBack(&data->actions, action_create(self->owner, fadeCopyrightIn_update, NULL, NULL, false, 0.75f));
+  al_pushBack(&data->actions, action_create(self->owner, scaleTitle_update, NULL, NULL, false, 1.25f));
 }
 
 void comp_menuScreenLogic_destroy(COMPONENT *self, void *event) {
