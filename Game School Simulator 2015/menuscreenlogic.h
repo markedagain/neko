@@ -11,11 +11,13 @@
 
 typedef struct {
   bool pressedStart;
+  bool beganFading;
   ALIST actions;
 } CDATA_MENUSCREENLOGIC;
 
 void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_menuScreenLogic(COMPONENT *self);
 void comp_menuScreenLogic_initialize(COMPONENT *self, void *event);
+void comp_menuScreenLogic_destroy(COMPONENT *self, void *event);
 
 #endif

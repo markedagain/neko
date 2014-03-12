@@ -18,9 +18,13 @@ typedef struct cdata_timeManager_t {
   int currentYear;
   int frameCounter;
   int monthCounter;
+  int semesterCounter;
   ENTITY *timeUI;
   bool gameEnded;
 } CDATA_TIMEMANAGER;
+
+char *month[12];
+char *semester[2];
 
 void comp_timeManager_logicUpdate(COMPONENT *, void *);
 void comp_timeManager_pause(COMPONENT *ptr);
