@@ -162,15 +162,15 @@ void startNewGame(GAME *game) {
   // news feed
   space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
 
-  /*
+  
   // UI Bar
-  vec3_set(&position, 0, 165, 0);
+  vec3_set(&position, 0, 166, 0);
   vec2_set(&dimensions, 640, 29);
   genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_TURQUOISE_LIGHT], "uiBar");
   
   // Menu Button
   vec3_set(&position, -306, 166, 0);
-  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu_alt", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
   // Build Button
   vec3_set(&position, -271, 166, 0);
@@ -188,7 +188,7 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -180, 166, 0);
   createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "pauseButton", 1, 1, true, "ui/pause", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
-  */
+  
   /* custom build button
   vec3_set(&position, 0, 0, 0);
   createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
