@@ -230,8 +230,11 @@ void comp_sprite_clearMesh(COMPONENT *self) {
   comData->mesh = NULL;
 }
 
-void entity_setOutline(ENTITY *entity, bool enabled, VEC4 color) {
+void entity_setOutline(ENTITY *entity, bool enabled, VEC4 *color) {
   CDATA_SPRITE *comData = (CDATA_SPRITE *)entity_getComponentData(entity, COMP_SPRITE);
   comData->outline.enabled = enabled;
-  comData->outline.color = color;
+  comData->outline.color.r = color->r;
+  comData->outline.color.g = color->g;
+  comData->outline.color.b = color->b;
+  comData->outline.color.a = color->a;
 }
