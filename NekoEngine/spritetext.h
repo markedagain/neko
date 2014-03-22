@@ -33,6 +33,10 @@ typedef struct {
     TEXTALIGN x;
     TEXTALIGN y;
   } alignment;
+  struct {
+    bool enabled;
+    VEC4 color;
+  } outline;
 } CDATA_SPRITETEXT;
 
 NEKO_API void comp_spriteText_setText(COMPONENT *self, char *text);
@@ -42,5 +46,8 @@ NEKO_API void comp_spriteText_initialize(COMPONENT *self, void *event);
 NEKO_API void comp_spriteText(COMPONENT *self);
 
 NEKO_API void comp_spriteText_setText(COMPONENT *self, char *text);
+
+// this sucks
+NEKO_API void spriteText_outline(ENTITY *entity, bool enabled, VEC4 *color);
 
 #endif

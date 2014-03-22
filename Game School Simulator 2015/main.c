@@ -135,8 +135,8 @@ void startNewGame(GAME *game) {
   VEC4 color = { 1, 1, 1, 1 };
   VEC4 color2 = { 0 };
   VEC2 dimensions = { 40.0f, 20.0f };
-  ENTITY *ent1;
   ENTITY *inspectBox;
+  ENTITY *ent1;
 
   simSpace->active = false;
   bgSpace->active = false;
@@ -174,11 +174,12 @@ void startNewGame(GAME *game) {
 
   // Build Button
   vec3_set(&position, -271, 166, 0);
-  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "bButton", 1, 1, true, "ui/build", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-  
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
+  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
+
   // Management Button
   vec3_set(&position, -242, 166, 0);
-  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "manageButton", 1, 1, true, "ui/manage", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
 
   // Play Button
   vec3_set(&position, -209, 166, 0);
@@ -199,15 +200,14 @@ void startNewGame(GAME *game) {
                     &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);*/
 
   // create build button
-  vec3_set(&position, 0, -180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
+  //vec3_set(&position, 0, -180, 0);
+  //space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
   /*{
     CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE);
     sprite->source = "buttons/build";
   }*/
   // sets the button type to build
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
-
+  /*
   // create pause button
   vec3_set(&position, -240, 180, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pause_button", &position);
@@ -225,10 +225,10 @@ void startNewGame(GAME *game) {
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "fast_button", &position);
   // sets the button type to slowDown
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
-
+  */
   // create manage button
-  vec3_set(&position, 0, 180, 0);
-  space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
+  //vec3_set(&position, 0, 180, 0);
+  //space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
 
   // create inspection screen
   vec3_set(&position, -2000, 150, 0);

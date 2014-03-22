@@ -44,6 +44,6 @@ NEKO_API void comp_sprite_clearMesh(COMPONENT *self);
 NEKO_API void comp_sprite(COMPONENT *);
 
 // THIS FUNCTION'S EXISTENCE MAKES ME SAD
-NEKO_API void entity_setOutline(ENTITY *entity, bool enabled, VEC4 color);
+NEKO_API void entity_setOutline(ENTITY *entity, bool enabled, VEC4 *color);
 
 #endif

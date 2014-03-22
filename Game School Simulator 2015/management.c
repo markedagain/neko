@@ -36,7 +36,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     sprite->color.g = max(sprite->color.g - 0.05f, 0);
   }
   else {
-    sprite->color.r = max(sprite->color.r - 0.05f, 0);
+    sprite->color.r = max(sprite->color.r - 0.05f, 1);
     sprite->color.b = min(sprite->color.b + 0.05f, 1);
     sprite->color.g = min(sprite->color.g + 0.05f, 1);
   }
@@ -60,7 +60,7 @@ void comp_managementDisplay(COMPONENT *self) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   char titleBuffer[40];  
   VEC3 position = { 0, 0, 0 };  
-  VEC4 color = { 0.7f, 0.5f, 0.5f, 1 }; 
+  VEC4 color = { 0, 0, 0, 1 }; 
   VEC4 textColor = { 0, 0, 0, 1.0f };
    
   data->triggered = true;
