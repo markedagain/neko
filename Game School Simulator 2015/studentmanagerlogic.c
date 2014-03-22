@@ -14,7 +14,7 @@
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 2.1f
 #define MAX_STUDENTS 1000
-#define STUDENT_LIFE 2.0f
+#define STUDENT_LIFE 3.0f
 
 // this totally works except it derps out if you build a building just as a new student spawns
 
@@ -258,8 +258,9 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
     popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
     entity_attach(popText, studentActor);
 
-    actorData->fadeOut = true;
-    actorData->timer = 0;
+    actorData->outerState = OS_FADEOUT;
+    actorData->innerState = IS_ENTER;
+    actorData->stateTimer = 0;
     list_remove(data->drawnStudents, graduateNode);
   }
 }
@@ -280,8 +281,9 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
     popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
     entity_attach(popText, studentActor);
 
-    actorData->fadeOut = true;
-    actorData->timer = 0;
+    actorData->outerState = OS_FADEOUT;
+    actorData->innerState = IS_ENTER;
+    actorData->stateTimer = 0;
     list_remove(data->drawnStudents, dropoutNode);
   }
 }

@@ -15,6 +15,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "timemanager.h"
+#include "tutorial.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -172,17 +173,24 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     if (input->keyboard.keys[KEY_4] == ISTATE_PRESSED) {
       comp_schoolLogic_millionaire(self);
     }
-    /*
-    if (input->keyboard.keys[KEY_1] == ISTATE_DOWN) {
-      ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
-      CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
-      trans->rotation += 0.2f;
+    
+    /************ tutorial stuff ***********/
+    if (input->keyboard.keys[KEY_6] == ISTATE_PRESSED) {
+      tutorial_disableUIButtons(self->owner->space);
     }
-    if (input->keyboard.keys[KEY_2] == ISTATE_DOWN) {
-      ENTITY *ent = space_getEntity(self->owner->space, "TEST1");
-      CDATA_TRANSFORM *trans = entity_getComponentData(ent, COMP_TRANSFORM);
-      trans->scale.x -= 0.1f;
-    }*/
+    if (input->keyboard.keys[KEY_7] == ISTATE_PRESSED) {
+      tutorial_enableUIButtons(self->owner->space);
+    }
+    if (input->keyboard.keys[KEY_8] == ISTATE_PRESSED) {
+      tutorial_disableBuildButtons(self->owner->space);
+    }
+    if (input->keyboard.keys[KEY_9] == ISTATE_PRESSED) {
+      tutorial_enableBuildButtons(self->owner->space);
+    }
+    if (input->keyboard.keys[KEY_1] == ISTATE_PRESSED) {
+      tutorial_createTextBox(self->owner->space);
+    }
+
     /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
       game_resize(self->owner->space->game, 1280, 720);
     }*/

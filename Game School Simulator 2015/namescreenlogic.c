@@ -8,7 +8,7 @@
 #include "colors.h"
 #include "sound.h"
 
-#define MAX_NAME 40
+#define MAX_NAME 30
 
 void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;

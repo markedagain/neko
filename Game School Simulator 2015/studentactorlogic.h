@@ -11,11 +11,26 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_studentActorLogic(COMPONENT *self);
 void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
 void comp_studentActorLogic_flipSprite(COMPONENT *self);
+void comp_studentActorLogic_createPopText(COMPONENT *self, char *text);
+void comp_studentActorLogic_updateState(COMPONENT *self, void *event);
+
+typedef enum {
+  OS_LEFT,
+  OS_RIGHT,
+  OS_IDLE,
+  OS_FADEIN,
+  OS_WALKTODOOR,
+  OS_FADEOUT,
+  IS_ENTER,
+  IS_UPDATE,
+  IS_EXIT
+} STUDENT_STATE;
 
 typedef struct {
   int ID;
-  float timer;
-  float timer2;
+  float stateTimer;
+  float stateTime;
+  float lifeTimer;
   float lifetime;
   bool setSprite;
   float velocity;
@@ -30,6 +45,8 @@ typedef struct {
   char body[30];
   char hair[30];
   bool zoomedOut;
+  STUDENT_STATE outerState;
+  STUDENT_STATE innerState;
 } CDATA_STUDENTACTOR;
 
 #endif

@@ -60,7 +60,7 @@ void comp_managementDisplay(COMPONENT *self) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   char titleBuffer[40];  
   VEC3 position = { 0, 0, 0 };  
-  VEC4 color = { 0.7f, 0.5f, 0.5f, 1 }; 
+  VEC4 color = { 0, 0, 0, 1 }; 
   VEC4 textColor = { 0, 0, 0, 1.0f };
    
   data->triggered = true;
@@ -113,6 +113,7 @@ void comp_managementDisplay(COMPONENT *self) {
   data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", data->incomeBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Increase GPA button
+  vec4_set(&color, 0.75f, 0.75f, 0.75f, 1.0f);
   vec3_set(&position, -40, 30, 0);
   createCustomButton(increaseGPA_onEntered, NULL, increaseGPA_onPressed, increaseGPA_onExit, NULL,
                          self->owner->space, &position, "managementButton",
