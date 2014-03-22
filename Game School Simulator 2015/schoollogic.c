@@ -50,8 +50,8 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display $$$ on screen
   if (comData->currMoney != comData->money) {    
     if (!comData->moneyUI) {
-      vec3_set(&position, 320, 150, 0);
-      vec4_set(&color, 0, 0, 0, 1 );
+      vec3_set(&position, 320, 180, 0);
+      vec4_set(&color, 1, 1, 1, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20bold", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }

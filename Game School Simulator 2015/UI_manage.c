@@ -16,5 +16,5 @@ void arch_uimanage(ENTITY *entity) {
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_management);
-  sprite->source = "backgrounds/white_box";
+  sprite->source = "ui/manage";
 }

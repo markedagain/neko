@@ -154,3 +154,17 @@ void comp_spriteText(COMPONENT *self) {
   self->events.initialize = comp_spriteText_initialize;
   component_depend(self, COMP_MULTISPRITE);
 }
+
+void spriteText_outline(ENTITY *entity, bool enabled, VEC4 *color) {
+  CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(entity, COMP_MULTISPRITE);
+  LIST_NODE *node = multi->entities->first;
+  while (node) {
+    CDATA_SPRITE *comData = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
+    comData->outline.enabled = enabled;
+    comData->outline.color.r = color->r;
+    comData->outline.color.g = color->g;
+    comData->outline.color.b = color->b;
+    comData->outline.color.a = color->a;
+    node = node->next;
+  }
+}

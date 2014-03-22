@@ -21,6 +21,10 @@ typedef struct cdata_sprite_t {
   bool visible;
   struct {
     bool enabled;
+    VEC4 color;
+  } outline;
+  struct {
+    bool enabled;
     char *textureName;
     float u;
     float v;
@@ -38,5 +42,8 @@ void comp_sprite_buildMesh(COMPONENT *self, float u, float v, float width, float
 NEKO_API void comp_sprite_clearMesh(COMPONENT *self);
 
 NEKO_API void comp_sprite(COMPONENT *);
+
+// THIS FUNCTION'S EXISTENCE MAKES ME SAD
+NEKO_API void entity_setOutline(ENTITY *entity, bool enabled, VEC4 *color);
 
 #endif

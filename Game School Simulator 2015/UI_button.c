@@ -21,6 +21,8 @@
 #include "timemanager.h"
 #include "namescreen.h"
 
+
+
 #define BUILDENDPOS 120.0f
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
@@ -53,8 +55,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     if (!comData->roomInfoUI) {
       VEC3 position;
       VEC4 color;
-      printf("%f\n", transform->translation.x);
       if(transform->translation.x <= -260)
+      if(transform->translation.x <= -249)
         vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
@@ -149,7 +151,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       sprite->color.g = max(sprite->color.g - 0.05f, 0);
     }
     else {
-      sprite->color.r = max(sprite->color.r - 0.05f, 0);
+      sprite->color.r = max(sprite->color.r - 0.05f, 1);
       sprite->color.b = min(sprite->color.b + 0.05f, 1);
       sprite->color.g = min(sprite->color.g + 0.05f, 1);
     }

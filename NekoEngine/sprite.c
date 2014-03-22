@@ -112,18 +112,63 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   else
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
-  AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
   //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
-
+  spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
+  spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
   u = comData->manual.enabled ? comData->manual.u : sprite->u;
   v = comData->manual.enabled ? comData->manual.v : sprite->v;
 
-  AEGfxTextureSet(texture->data, (float)((float)texture->width * u), (float)((float)texture->height * v));
-  AEGfxSetTransform(transform.m);
-  spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
-  spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
+
+  transform.m02 = floorf(transform.m02 + 0.5f);
+  transform.m12 = floorf(transform.m12 + 0.5f);
+
+
   if (comData->mesh == NULL)
     comp_sprite_buildMesh(self, u, v, spriteWidth / (float)texture->width, spriteHeight / (float)texture->height);
+  if (comData->outline.enabled) {
+    AEGfxSetTintColor(comData->outline.color.r, comData->outline.color.g, comData->outline.color.b, comData->outline.color.a);
+    AEGfxTextureSet(texture->data, (float)((float)texture->width * u), (float)((float)texture->height * v));
+
+    transform.m02 += screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m12 += screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m02 -= screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m02 -= screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m12 -= screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m12 -= screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m02 += screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m02 += screenScale;
+    AEGfxSetTransform(transform.m);
+    AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
+
+    transform.m02 -= screenScale;
+    transform.m12 += screenScale;
+  }
+
+  AEGfxSetTintColor(comData->color.r, comData->color.g, comData->color.b, comData->color.a);
+  AEGfxTextureSet(texture->data, (float)((float)texture->width * u), (float)((float)texture->height * v));
+  AEGfxSetTransform(transform.m);
+
   AEGfxMeshDraw(comData->mesh, AE_GFX_MDM_TRIANGLES);
 }
 
@@ -138,6 +183,11 @@ void comp_sprite(COMPONENT *self) {
   data.size.x = 1;
   data.size.y = 1;
   data.visible = true;
+  data.outline.enabled = false;
+  data.outline.color.r = 0.0f;
+  data.outline.color.g = 0.0f;
+  data.outline.color.b = 0.0f;
+  data.outline.color.a = 1.0f;
 
   COMPONENT_INIT(self, COMP_SPRITE, data);
   component_depend(self, COMP_TRANSFORM);
@@ -178,4 +228,13 @@ void comp_sprite_clearMesh(COMPONENT *self) {
     return;
   AEGfxMeshFree(comData->mesh);
   comData->mesh = NULL;
+}
+
+void entity_setOutline(ENTITY *entity, bool enabled, VEC4 *color) {
+  CDATA_SPRITE *comData = (CDATA_SPRITE *)entity_getComponentData(entity, COMP_SPRITE);
+  comData->outline.enabled = enabled;
+  comData->outline.color.r = color->r;
+  comData->outline.color.g = color->g;
+  comData->outline.color.b = color->b;
+  comData->outline.color.a = color->a;
 }

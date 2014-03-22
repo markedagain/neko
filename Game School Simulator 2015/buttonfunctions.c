@@ -8,6 +8,7 @@
 #include "genericsprite.h"
 #include "custombuttonlogic.h"
 #include "newsfeedlogic.h"
+#include "UI_button.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
