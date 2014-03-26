@@ -11,7 +11,7 @@
 #include "colors.h"
 #include "playerlogic.h"
 
-#define WIN_CONDITION 20
+#define WIN_CONDITION 200
 #define LOSE_CONDITION -100000
 
 char *month[12] = {
