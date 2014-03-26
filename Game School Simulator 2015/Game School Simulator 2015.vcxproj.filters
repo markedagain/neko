@@ -156,6 +156,13 @@
     <ClCompile Include="namescreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial.c" />
+    <ClCompile Include="tutorialtextbox.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialtextboxlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -329,6 +336,13 @@
     </ClInclude>
     <ClInclude Include="namescreenlogic.h">
       <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h" />
+    <ClInclude Include="tutorialtextbox.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorialtextboxlogic.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -72,7 +72,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
   genericText_setText(comData->studentUI, comData->buffer);
   // update build buttons
-  UI_button_updateBuildButtons(uiSpace);
+  //UI_button_updateBuildButtons(uiSpace);
 
   // Display Rep on screen
   if (!comData->reputationUI) {
@@ -84,7 +84,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   sprintf(comData->buffer, "Reputation: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
   // update build buttons
-  UI_button_updateBuildButtons(uiSpace);
+  //UI_button_updateBuildButtons(uiSpace);
 
   // Calculate Incoming Students
     // Set to total students possible

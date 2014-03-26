@@ -113,6 +113,7 @@ void comp_managementDisplay(COMPONENT *self) {
   data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", data->incomeBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Increase GPA button
+  vec4_set(&color, 0.75f, 0.75f, 0.75f, 1.0f);
   vec3_set(&position, -40, 30, 0);
   createCustomButton(increaseGPA_onEntered, NULL, increaseGPA_onPressed, increaseGPA_onExit, NULL,
                          self->owner->space, &position, "managementButton",
