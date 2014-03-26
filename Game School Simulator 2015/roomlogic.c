@@ -150,7 +150,7 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
 
     case ROOMTYPE_WIFI:
       //Set Values
-      comData->size = 1;
+      comData->size = 2;
       comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_WIFI);
       comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_WIFI);
       comData->techBonus = 5;
