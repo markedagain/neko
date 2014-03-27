@@ -8,6 +8,11 @@
 
 #define COMP_BACKGROUNDLOGIC HASH("COMP_BACKGROUNDLOGIC")
 
+/*typedef struct {
+  int clouds;
+  int maxClouds;
+} CDATA_BACKGROUNDLOGIC;*/
+
 void comp_backgroundLogic(COMPONENT *self);
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event);
 

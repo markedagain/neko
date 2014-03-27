@@ -6,8 +6,10 @@
 #include "poptext.h"
 #include "sound.h"
 #include "inspectionscreenlogic.h"
+#include "cloud.h"
 
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
+  //CDATA_BACKGROUNDLOGIC *comData = (CDATA_BACKGROUNDLOGIC *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
@@ -37,9 +39,19 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     playerData->dragOrigin.y = input->mouse.position.y;
     input->mouse.handled[MBUTTON_LEFT] = true;
   }
+
+  // CLOUD MANAGER
+  /*if(comData->clouds < comData->maxClouds) {
+    space_addEntity(game_getSpace(self->owner->space->game, "bg"), arch_cloud, "cloud");
+    ++comData->clouds;
+  }*/
 }
 
 void comp_backgroundLogic(COMPONENT *self) {
+  //CDATA_BACKGROUNDLOGIC data = { 0 };
+  //data.clouds = 0;
+  //data.maxClouds = 2;
+
   COMPONENT_INIT_NULL(self, COMP_BACKGROUNDLOGIC);
   component_depend(self, COMP_MOUSEBOX);
   self->events.frameUpdate = comp_backgroundLogic_frameUpdate;
