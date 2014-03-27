@@ -187,6 +187,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="blackbar.c" />
     <ClCompile Include="blackbarlogic.c" />
     <ClCompile Include="buttonfunctions.c" />
+    <ClCompile Include="cloud.c" />
+    <ClCompile Include="cloudlogic.c" />
     <ClCompile Include="colors.c" />
     <ClCompile Include="cursor.c" />
     <ClCompile Include="cursorlogic.c" />
@@ -243,6 +245,8 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="blackbar.h" />
     <ClInclude Include="blackbarlogic.h" />
     <ClInclude Include="buttonfunctions.h" />
+    <ClInclude Include="cloud.h" />
+    <ClInclude Include="cloudlogic.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="cursorlogic.h" />
