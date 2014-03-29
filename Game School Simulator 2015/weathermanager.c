@@ -14,7 +14,7 @@ void comp_weatherManager_logicUpdate(COMPONENT *self, void *event) {
   // CLOUD MANAGER
   while(comData->clouds < comData->maxClouds) {
     VEC3 pos = {0};
-    vec3_set(&pos, (float)randomIntRange(-1000, 1000), (float)randomIntRange(175, 600), 0); 
+    vec3_set(&pos, (float)randomIntRange(-1000, 900), (float)randomIntRange(200, 600), 0); 
     space_addEntityAtPosition(game_getSpace(self->owner->space->game, "bg"), arch_cloud, "cloud", &pos);
     ++comData->clouds;
   }
