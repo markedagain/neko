@@ -20,7 +20,12 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
 
   if (mbox->entered)
-    comp_studentActorLogic_createPopText(self, "hello moto");
+  {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    char buffer[30];
+    sprintf(buffer, "%s %s", studentData->name.first, studentData->name.last);
+    comp_studentActorLogic_createPopText(self, buffer);
+  }
 
   data->lifeTimer += (float)updateEvent->dt;
 
@@ -269,6 +274,10 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     case IS_ENTER:
       data->stateTimer = 0;
       data->innerState = IS_UPDATE;
+      {
+        CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+        mbox->active = false;
+      }
       break;
 
     // on enter

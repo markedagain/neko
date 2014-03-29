@@ -100,8 +100,6 @@ void set_box_sprite(COMPONENT *self) {
   VEC3 botRight;
   VEC3 size;
   VEC3 camScale;
-  VEC3 worldScale = trans->world.scale;
-  float worldRotation = trans->world.rotation;
   MATRIX3 transform = { 0 };
 
   if (spriteData->source == 0)
@@ -134,8 +132,6 @@ void set_box_sprite(COMPONENT *self) {
   matrix3_identity(&transform);
   matrix3_scale(&transform, &size);
   matrix3_scale(&transform, &camScale);
-  matrix3_scale(&transform, &worldScale);
-  matrix3_rotate(&transform, worldRotation);
 
   matrix3_apply_to_vector(&topLeft, &transform);
   matrix3_apply_to_vector(&botRight, &transform);
