@@ -48,9 +48,6 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
 }
 
 void comp_backgroundLogic(COMPONENT *self) {
-  //CDATA_BACKGROUNDLOGIC data = { 0 };
-  //data.clouds = 0;
-  //data.maxClouds = 2;
 
   COMPONENT_INIT_NULL(self, COMP_BACKGROUNDLOGIC);
   component_depend(self, COMP_MOUSEBOX);

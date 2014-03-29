@@ -240,6 +240,7 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="UI_manage.c" />
     <ClCompile Include="UI_student.c" />
     <ClCompile Include="UI_studentLogic.c" />
+    <ClCompile Include="weathermanager.c" />
     <ClInclude Include="background.h" />
     <ClInclude Include="backgroundlogic.h" />
     <ClInclude Include="blackbar.h" />
@@ -298,6 +299,7 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="UI_manage.h" />
     <ClInclude Include="UI_student.h" />
     <ClInclude Include="UI_studentLogic.h" />
+    <ClInclude Include="weathermanager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NekoEngine\NekoEngine.vcxproj">
