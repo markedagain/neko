@@ -230,8 +230,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
       printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
-      if (studentPtr)
-        comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentPtr->data);
+      comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
@@ -245,8 +244,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
       printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
-      if (studentPtr)
-        comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentPtr->data);
+      comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;

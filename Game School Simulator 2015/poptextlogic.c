@@ -64,6 +64,8 @@ void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if (parentTrans && parentTrans->scale.x < 0)
     trans->scale.x = -1.0f;
+  else
+    trans->scale.x = 1.0f;
 
   al_update(&data->actions, updateEvent->dt);
 }
