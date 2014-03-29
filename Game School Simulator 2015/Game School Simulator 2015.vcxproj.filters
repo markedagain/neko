@@ -163,6 +163,15 @@
     <ClCompile Include="tutorialtextboxlogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="cloud.c">
+      <Filter>Archetypes</Filter>
+    </ClCompile>
+    <ClCompile Include="cloudlogic.c">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="weathermanager.c">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -342,6 +351,15 @@
       <Filter>Archetypes</Filter>
     </ClInclude>
     <ClInclude Include="tutorialtextboxlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="cloud.h">
+      <Filter>Archetypes</Filter>
+    </ClInclude>
+    <ClInclude Include="cloudlogic.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="weathermanager.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

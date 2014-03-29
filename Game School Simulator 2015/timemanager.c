@@ -11,7 +11,7 @@
 #include "colors.h"
 #include "playerlogic.h"
 
-#define WIN_CONDITION 20
+#define WIN_CONDITION 200
 #define LOSE_CONDITION -100000
 
 char *month[12] = {
@@ -187,7 +187,7 @@ void comp_timeManager_slowDown(COMPONENT *ptr) {
 
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
-  data.secondsPerMonth = 1;
+  data.secondsPerMonth = 3;
   data.speedMultiplier = 1;
   data.paused = FALSE;
   data.months = -6;

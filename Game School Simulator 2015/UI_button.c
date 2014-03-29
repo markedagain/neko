@@ -55,7 +55,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     if (!comData->roomInfoUI) {
       VEC3 position;
       VEC4 color;
-      if(transform->translation.x <= -260)
       if(transform->translation.x <= -249)
         vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
       else
@@ -308,7 +307,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_ROOM_UPGRADE:
         comp_roomLogic_upgradeRoom(self);
         inspectData->triggered = true;
-        break;
 
       case BUTTON_PAUSE:
         comp_timeManager_pause(self);
@@ -638,4 +636,25 @@ void UI_button_updateBuildButtons(SPACE *ui) {
     node = node->next;
   }
   list_destroy(buildButtons);
+}
+
+void UI_button_updateUpgradeButton(SPACE *ui) {
+  /*SPACE *sim = game_getSpace(ui->game, "sim");
+  ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[inspectData->posY][inspectData->posX], COMP_ROOMLOGIC);
+
+  if(schoolData->money < comp_roomLogic_getRoomUpgradeCost(roomData->type)) {
+    CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_MOUSEBOX);
+    CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_SPRITE);
+    buttonBox->active = false;
+    buttonSprite->color.r = 0.4f;
+    buttonSprite->color.g = 0.4f;
+    buttonSprite->color.b = 0.4f;
+  }
+  else {
+    CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_MOUSEBOX);
+    buttonBox->active = true;
+  }*/
 }

@@ -5,6 +5,7 @@
 #include "../NekoEngine/sprite.h"
 #include "mousebox.h"
 #include "backgroundlogic.h"
+#include "weatherManager.h"
 
 void arch_background(ENTITY *entity) {
   CDATA_SPRITE *sprite;
@@ -18,4 +19,5 @@ void arch_background(ENTITY *entity) {
 
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_backgroundLogic);
+  entity_connect(entity, comp_weatherManager);
 }

@@ -10,6 +10,7 @@
 #include "../NekoEngine/sprite.h"
 #include "inspectionscreen.h"
 #include "inspectionscreenlogic.h"
+#include "UI_button.h"
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
@@ -23,7 +24,6 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 
   al_update(&comData->actions, updateEvent->dt);
-
 
   if (mbox->left.pressed && !inspectData->active && !comData->triggered) {
     inspectData->posActive = true;
@@ -45,6 +45,10 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   }
   else if (!mbox->left.pressed)
     comData->triggered = false;
+  
+  if(inspectData->active && comData->triggered == false) {
+    UI_button_updateUpgradeButton(uiSpace);
+  }
 
   // CHANGE SPRITE TO EXTERIOR IF ZOOMED OUT
   if(fg->systems.camera.transform.scale.x <= 0.65f && comData->zoomedOut == FALSE) {
