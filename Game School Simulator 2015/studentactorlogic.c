@@ -6,6 +6,7 @@
 #include "random.h"
 #include "studentmanagerlogic.h"
 #include "popText.h"
+#include "mousebox.h"
 
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
@@ -16,6 +17,10 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   VEC3 pos = { 0 };
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+
+  if (mbox->entered)
+    comp_studentActorLogic_createPopText(self, "hello moto");
 
   data->lifeTimer += (float)updateEvent->dt;
 
@@ -132,7 +137,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
 
     // on exit
     case IS_EXIT:
-      comp_studentActorLogic_createPopText(self, "heyyy butts");
+      //comp_studentActorLogic_createPopText(self, "hello moto");
       data->outerState = randomIntRange(0, 1);
       data->innerState = IS_ENTER;
       break;
