@@ -162,27 +162,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   int lowValue = -50;
   int highValue = 50;
 
-  //Add students
-  if(comData->incomingStudents > 0) {
-    int newCount = 0;
-    for(i = 0; i < comData->incomingStudents; i++)
-    {
-      CDATA_STUDENTDATA *studentData;
-      LIST_NODE *nodeptr;
-      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
-      studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
-      nodeptr = list_insert_end(comData->students, newStudent);
-      studentData->listNodePtr = nodeptr;
-      comData->currentStudents++;
-      studentData->tuition = comData->tuition;
-      ++newCount;
-    }
-    sprintf(message, pushStrings[STRINGS_ENROLL], newCount);
-    comp_newsfeedlogic_push(self, message);
-
-    comData->incomingStudents = 0;
-  }
-
   // LOOP THROUGH STUDENTS
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
@@ -239,7 +218,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     }
 
     // Drop students whos motivation has reached 0 
-    else if(studentData->motivation == 0) {
+    else if(studentData->motivation <= 0) {
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
@@ -251,18 +230,40 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       --comData->reputation;
       continue;
     }
-    
-    
   }
+  // Print how many students droped
   if(dropCount) {
     sprintf(message, pushStrings[STRINGS_DROP], dropCount);
     comp_newsfeedlogic_push(self, message);
+  }
+
+  //Add students
+  if(comData->incomingStudents > 0) {
+    int newCount = 0;
+    for(i = 0; i < comData->incomingStudents; i++)
+    {
+      CDATA_STUDENTDATA *studentData;
+      LIST_NODE *nodeptr;
+      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
+      studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
+      nodeptr = list_insert_end(comData->students, newStudent);
+      studentData->listNodePtr = nodeptr;
+      comData->currentStudents++;
+      studentData->tuition = comData->tuition;
+      studentData->motivation = randomIntRange((int)(comData->minGpa * 25), 100);
+      ++newCount;
+    }
+    sprintf(message, pushStrings[STRINGS_ENROLL], newCount);
+    comp_newsfeedlogic_push(self, message);
+
+    comData->incomingStudents = 0;
   }
 
   comData->semTech = 0;
   comData->semDesign = 0;
   comData->semArt = 0;
 
+  // Print graduation message
   if(comData->expectedGraduates > 0) {
     sprintf(message, pushStrings[STRINGS_GRAD], comData->expectedGraduates);
     comp_newsfeedlogic_push(self, message);
