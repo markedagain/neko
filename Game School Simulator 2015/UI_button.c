@@ -647,7 +647,7 @@ void UI_button_enterBuildMode(COMPONENT *buildButton) {
 
   // CREATE WIFI BUTTON
   vec3_set(&position, 198, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDWIFI, &position, &color, "Wifi");
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDIT, &position, &color, "IT");
 
   // CREATE CAFETERIA BUTTON
   vec3_set(&position, 249, -160, 0);
