@@ -64,5 +64,7 @@ void comp_UI_destroy(COMPONENT *self, void *event);
 void UI_button_updateBuildButtons(SPACE *ui);
 void comp_ui_button_hoverPop(COMPONENT *self);
 void UI_button_updateUpgradeButton(SPACE *ui);
+void UI_button_cancelBuildMode(COMPONENT *buildButton);
+void UI_button_enterBuildMode(COMPONENT *buildButton);
  
 #endif

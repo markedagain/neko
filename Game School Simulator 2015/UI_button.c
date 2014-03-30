@@ -36,7 +36,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
@@ -52,7 +51,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   
 
   if(mbox->over) {
-    if (!comData->roomInfoUI) {
+    if (!data->roomInfoUI) {
       VEC3 position;
       VEC4 color;
       if(transform->translation.x <= -249)
@@ -61,84 +60,84 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
       vec4_set(&color, 0, 0, 0, 1 );
       sprintf(buffer, "Default");
-      comData->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
+      data->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
     }
 
-    if(comData->roomInfoUI) {
-      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(comData->roomInfoUI, COMP_MULTISPRITE);
+    if(data->roomInfoUI) {
+      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(data->roomInfoUI, COMP_MULTISPRITE);
       multiSprite_setVisible(roomInfo, true);
     }
 
-    switch(comData->type){
+    switch(data->type){
       case BUTTON_BUILDLOBBY:
         sprintf(buffer, "Allows construction\n on a new floor!");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDCLASS:
         sprintf(buffer, "Increases student capacity by 30!\nAll stats +");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDLIBRARY:
         sprintf(buffer, "All stats ++");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDTEAMSPACE:
         sprintf(buffer, "Motivation +++");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDCAFETERIA:
         sprintf(buffer, "Generates income!\n Motivation +");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDSTORE:
         sprintf(buffer, "Generates income!");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDOFFICES:
         sprintf(buffer, "All stats +");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDAUDITORIUM:
         sprintf(buffer, "Motivation +++\nUnlocks special events");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDTUTORING:
         sprintf(buffer, "All stats +");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDWIFI:
         sprintf(buffer, "Tech +++");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDRECREATION:
         sprintf(buffer, "Design +++");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDFIGURE:
         sprintf(buffer, "Art +++");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
 
       default:
         sprintf(buffer, "");
-        genericText_setText(comData->roomInfoUI, buffer);
+        genericText_setText(data->roomInfoUI, buffer);
         break;
     }
   }
   else {
-    if(comData->roomInfoUI) {
-      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(comData->roomInfoUI, COMP_MULTISPRITE);
+    if(data->roomInfoUI) {
+      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(data->roomInfoUI, COMP_MULTISPRITE);
       multiSprite_setVisible(roomInfo, false);
     }
   }
@@ -158,74 +157,18 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     // if clicked on
     if (mbox->left.pressed) {
       // execute different things based on button type
-      switch (comData->type) {
+      switch (data->type) {
 
       // build button
       case BUTTON_BUILD:
       {
-        VEC3 position;
-        VEC4 color;
-        comp_UI_button_panDown(self);
-        sound_playSound(&self->owner->space->game->systems.sound, "confirm");
-        // CREATE LOBBY BUTTON
-        vec3_set(&position, -300, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
-
-        // CREATE CLASS BUTTON
-        vec3_set(&position, -249, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDCLASS, &position, &color, "Classroom");
-
-        // CREATE LIBRARY BUTTON
-        vec3_set(&position, -198, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDLIBRARY, &position, &color, "Library");
- 
-        // CREATE TEAMSPACE BUTTON
-        vec3_set(&position, -147, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
-
-        // CREATE OFFICES BUTTON
-        vec3_set(&position, -96, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDOFFICES, &position, &color, "Offices");
-
-        // CREATE CAFETERIA BUTTON
-        vec3_set(&position, -45, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDCAFETERIA, &position, &color, "Cafeteria");
-
-        // CREATE STORE BUTTON
-        vec3_set(&position, 45, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDSTORE, &position, &color, "Store");
-
-        // CREATE AUDITORIUM BUTTON
-        vec3_set(&position, 96, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDAUDITORIUM, &position, &color, "Auditorium");
-
-        // CREATE TUTORING BUTTON
-        vec3_set(&position, 147, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDTUTORING, &position, &color, "Tutoring");
-
-        // CREATE WIFI BUTTON
-        vec3_set(&position, 198, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDWIFI, &position, &color, "Wifi");
-
-        // CREATE CAFETERIA BUTTON
-        vec3_set(&position, 249, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDRECREATION, &position, &color, "Recreation");
-
-        // CREATE Figure BUTTON
-        vec3_set(&position, 300, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDFIGURE, &position, &color, "Figure");
-
-        comData->type = BUTTON_CANCEL;
+        UI_button_enterBuildMode(self);
         break;
       }
 
       // cancel button 
       case BUTTON_CANCEL:
-        comData->type = BUTTON_BUILD;
-        comp_UI_button_panUp(self);
-        comp_UI_button_cancelBuildMode(self);
-        UI_button_destroyGhostRooms(self);
-        sound_playSound(&self->owner->space->game->systems.sound, "negative");
+        UI_button_cancelBuildMode(self);
         break;
 
       case BUTTON_BUILDLOBBY:
@@ -521,7 +464,7 @@ void comp_UI_button_cancelBuildMode(COMPONENT *self) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *player = space_getEntity(ui, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
-  CDATA_UI_BUTTON *comData = (CDATA_UI_BUTTON *)self->data;
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
 
 
   // destroying all room buttons
@@ -619,17 +562,17 @@ void UI_button_updateBuildButtons(SPACE *ui) {
   node = buildButtons->first;
 
   while (node) {
-    buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(node->data, COMP_UI_BUTTON);
-    if (schoolData->money < comp_roomLogic_getRoomCost(buttonData->type) || schoolData->roomFlag[buttonData->type] == 0) {
-      CDATA_MOUSEBOX *buttonBox = entity_getComponentData(node->data, COMP_MOUSEBOX);
-      CDATA_SPRITE *buttonSprite = entity_getComponentData(node->data, COMP_SPRITE);
+    buttonData = (CDATA_UI_BUTTON *)entity_getComponentData((ENTITY *)node->data, COMP_UI_BUTTON);
+    if (schoolData->money < (ROOM_TYPE)comp_roomLogic_getRoomCost(buttonData->type) || schoolData->roomFlag[buttonData->type] == 0) {
+      CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)node->data, COMP_MOUSEBOX);
+      CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
       buttonBox->active = false;
       buttonSprite->color.r = 0.4f;
       buttonSprite->color.g = 0.4f;
       buttonSprite->color.b = 0.4f;
     }
     else {
-      CDATA_MOUSEBOX *buttonBox = entity_getComponentData(node->data, COMP_MOUSEBOX);
+      CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(node->data, COMP_MOUSEBOX);
       buttonBox->active = true;
     }
 
@@ -657,4 +600,71 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
     CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_MOUSEBOX);
     buttonBox->active = true;
   }*/
+}
+
+void UI_button_enterBuildMode(COMPONENT *buildButton) {
+  VEC3 position;
+  VEC4 color;
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+  comp_UI_button_panDown(buildButton);
+  sound_playSound(&buildButton->owner->space->game->systems.sound, "confirm");
+
+  // CREATE LOBBY BUTTON
+  vec3_set(&position, -300, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
+
+  // CREATE CLASS BUTTON
+  vec3_set(&position, -249, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDCLASS, &position, &color, "Classroom");
+
+  // CREATE LIBRARY BUTTON
+  vec3_set(&position, -198, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDLIBRARY, &position, &color, "Library");
+ 
+  // CREATE TEAMSPACE BUTTON
+  vec3_set(&position, -147, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
+
+  // CREATE OFFICES BUTTON
+  vec3_set(&position, -96, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDOFFICES, &position, &color, "Offices");
+
+  // CREATE CAFETERIA BUTTON
+  vec3_set(&position, -45, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDCAFETERIA, &position, &color, "Cafeteria");
+
+  // CREATE STORE BUTTON
+  vec3_set(&position, 45, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDSTORE, &position, &color, "Store");
+
+  // CREATE AUDITORIUM BUTTON
+  vec3_set(&position, 96, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDAUDITORIUM, &position, &color, "Auditorium");
+
+  // CREATE TUTORING BUTTON
+  vec3_set(&position, 147, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTUTORING, &position, &color, "Tutoring");
+
+  // CREATE WIFI BUTTON
+  vec3_set(&position, 198, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDWIFI, &position, &color, "Wifi");
+
+  // CREATE CAFETERIA BUTTON
+  vec3_set(&position, 249, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDRECREATION, &position, &color, "Recreation");
+
+  // CREATE Figure BUTTON
+  vec3_set(&position, 300, -160, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDFIGURE, &position, &color, "Figure");
+
+  data->type = BUTTON_CANCEL;
+}
+
+void UI_button_cancelBuildMode(COMPONENT *buildButton) {
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+  data->type = BUTTON_BUILD;
+  comp_UI_button_panUp(buildButton);
+  comp_UI_button_cancelBuildMode(buildButton);
+  UI_button_destroyGhostRooms(buildButton);
+  sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
 }
