@@ -37,7 +37,7 @@ void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     (game_getSpace(self->owner->space->game, "bg"))->active = true;
     (game_getSpace(self->owner->space->game, "mg"))->active = true;
     (game_getSpace(self->owner->space->game, "fg"))->active = true;
-    sound_playSong(&self->owner->space->game->systems.sound, "02");
+    sound_playSong(&self->owner->space->game->systems.sound, "03");
     //(game_getSpace(self->owner->space->game, "ui"))->active = true;
   }
 

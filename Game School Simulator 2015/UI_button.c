@@ -115,7 +115,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         genericText_setText(comData->roomInfoUI, buffer);
         break;
 
-      case BUTTON_BUILDWIFI:
+      case BUTTON_BUILDIT:
         sprintf(buffer, "Tech +++");
         genericText_setText(comData->roomInfoUI, buffer);
         break;
@@ -203,9 +203,9 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         vec3_set(&position, 147, -160, 0);
         UI_button_createRoomButton(self, BUTTON_BUILDTUTORING, &position, &color, "Tutoring");
 
-        // CREATE WIFI BUTTON
+        // CREATE IT BUTTON
         vec3_set(&position, 198, -160, 0);
-        UI_button_createRoomButton(self, BUTTON_BUILDWIFI, &position, &color, "Wifi");
+        UI_button_createRoomButton(self, BUTTON_BUILDIT, &position, &color, "IT");
 
         // CREATE CAFETERIA BUTTON
         vec3_set(&position, 249, -160, 0);
@@ -264,8 +264,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         UI_button_createGhostRooms(self, ROOMTYPE_TUTORING);
         break;
 
-      case BUTTON_BUILDWIFI:
-        UI_button_createGhostRooms(self, ROOMTYPE_WIFI);
+      case BUTTON_BUILDIT:
+        UI_button_createGhostRooms(self, ROOMTYPE_IT);
         break;
 
       case BUTTON_BUILDRECREATION:
@@ -488,8 +488,8 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/tutoring";
       break;
-    case ROOMTYPE_WIFI:
-      sprite->source = "rooms/wifi";
+    case ROOMTYPE_IT:
+      sprite->source = "rooms/IT";
       break;
     case ROOMTYPE_RECREATION:
       sprite->source = "rooms/recreation";

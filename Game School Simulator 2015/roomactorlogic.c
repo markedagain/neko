@@ -80,7 +80,7 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/exterior";
       break;
-    case ROOMTYPE_WIFI:
+    case ROOMTYPE_IT:
       sprite->source = "rooms/exterior";
       break;
     case ROOMTYPE_RECREATION:
@@ -126,8 +126,8 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/tutoring";
       break;
-    case ROOMTYPE_WIFI:
-      sprite->source = "rooms/wifi";
+    case ROOMTYPE_IT:
+      sprite->source = "rooms/IT";
       break;
     case ROOMTYPE_RECREATION:
       sprite->source = "rooms/recreation";
