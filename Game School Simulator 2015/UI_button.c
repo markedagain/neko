@@ -50,7 +50,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       VEC3 position;
       VEC4 color;
       if(transform->translation.x <= -249)
+      {
         vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
+        if(transform->translation.y >= 0)
+          vec3_set(&position, transform->translation.x, transform->translation.y - 60, 0);
+      }
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
       vec4_set(&color, 0, 0, 0, 1 );
@@ -121,6 +125,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_BUILDFIGURE:
         sprintf(buffer, "Art +++\n$150,000");
+        genericText_setText(data->roomInfoUI, buffer);
+        break;
+
+      case BUTTON_ROOM_UPGRADE:
+        sprintf(buffer, "Upgrade!\n$5,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
