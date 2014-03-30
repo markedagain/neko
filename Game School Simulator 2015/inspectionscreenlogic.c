@@ -124,8 +124,8 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_IT): 
-          sprintf(comData->roomTypeBuffer, "Wi-Fi Room", NULL);
-          sprintf(comData->upgradeMessageBuffer, "Improve Wi-Fi!", NULL);
+          sprintf(comData->roomTypeBuffer, "IT Room", NULL);
+          sprintf(comData->upgradeMessageBuffer, "Improve IT!", NULL);
           break;
         case (ROOMTYPE_RECREATION): 
           sprintf(comData->roomTypeBuffer, "Rec Room", NULL);

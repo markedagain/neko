@@ -489,7 +489,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
       sprite->source = "rooms/tutoring";
       break;
     case ROOMTYPE_IT:
-      sprite->source = "rooms/IT";
+      sprite->source = "rooms/it";
       break;
     case ROOMTYPE_RECREATION:
       sprite->source = "rooms/recreation";
