@@ -65,62 +65,62 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
     switch(data->type){
       case BUTTON_BUILDLOBBY:
-        sprintf(buffer, "Allows construction\n on a new floor!");
+        sprintf(buffer, "Allows construction\n on a new floor!\n$250,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDCLASS:
-        sprintf(buffer, "Increases student capacity by 30!\nAll stats +");
+        sprintf(buffer, "Increases student capacity by 30!\nAll stats +\n$100,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDLIBRARY:
-        sprintf(buffer, "All stats ++");
+        sprintf(buffer, "All stats ++\n$200,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDTEAMSPACE:
-        sprintf(buffer, "Motivation +++");
+        sprintf(buffer, "Motivation +++\n$300,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDCAFETERIA:
-        sprintf(buffer, "Generates income!\n Motivation +");
+        sprintf(buffer, "Generates income!\n Motivation +\n$350,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDSTORE:
-        sprintf(buffer, "Generates income!");
+        sprintf(buffer, "Generates income!\n$250,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDOFFICES:
-        sprintf(buffer, "All stats +");
+        sprintf(buffer, "All stats +\n100,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDAUDITORIUM:
-        sprintf(buffer, "Motivation +++\nUnlocks special events");
+        sprintf(buffer, "Motivation +++\nUnlocks special events\n$500,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDTUTORING:
-        sprintf(buffer, "All stats +");
+        sprintf(buffer, "All stats +\n$80,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDIT:
-        sprintf(buffer, "Tech +++");
+        sprintf(buffer, "Tech +++\n$150,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDRECREATION:
-        sprintf(buffer, "Design +++");
+        sprintf(buffer, "Design +++\n$150,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
       case BUTTON_BUILDFIGURE:
-        sprintf(buffer, "Art +++");
+        sprintf(buffer, "Art +++\n$150,000");
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
