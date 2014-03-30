@@ -11,6 +11,7 @@
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
 #define INDIVIDUAL_ROOM_SIZE 80.0f
+#define ROOM_X_OFFSET -25.0f
 
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
@@ -28,18 +29,6 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   }
 
   data->lifeTimer += (float)updateEvent->dt;
-
-  if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
-    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
-    multiSprite_setVisible(multiSprite, false);
-    data->zoomedOut = true;
-  }
-
-  if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
-    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
-    multiSprite_setVisible(multiSprite, true);
-    data->zoomedOut = false;
-  }
 
   if (!data->setSprite) {
     VEC3 position = { 0 };
@@ -65,6 +54,18 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     multiSprite_addSprite(multiSprite, hair);
 
     data->setSprite = true;
+  }
+
+  if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    multiSprite_setVisible(multiSprite, false);
+    data->zoomedOut = true;
+  }
+
+  if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    multiSprite_setVisible(multiSprite, true);
+    data->zoomedOut = false;
   }
 
   if (data->lifeTimer > data->lifetime) {
@@ -171,7 +172,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
         trans->translation.x += data->velocity;
 
         // if hitting the walls
-        if (trans->translation.x < data->origin - 40.0f + STUDENT_OFFSET || trans->translation.x > data->origin + data->roomSize - 40.0f - STUDENT_OFFSET) {
+        if (trans->translation.x < data->origin - 40.0f + STUDENT_OFFSET - ROOM_X_OFFSET || trans->translation.x > data->origin + data->roomSize - 40.0f - STUDENT_OFFSET - ROOM_X_OFFSET) {
           data->velocity = -data->velocity;
           comp_studentActorLogic_flipSprite(self);
         }
@@ -213,7 +214,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
         trans->translation.x += data->velocity;
 
         // if hitting the walls
-        if (trans->translation.x < data->origin - 40.0f + STUDENT_OFFSET || trans->translation.x > data->origin + data->roomSize - 40.0f - STUDENT_OFFSET) {
+        if (trans->translation.x < data->origin - 40.0f + STUDENT_OFFSET - ROOM_X_OFFSET || trans->translation.x > data->origin + data->roomSize - 40.0f - STUDENT_OFFSET - ROOM_X_OFFSET) {
           data->velocity = -data->velocity;
           comp_studentActorLogic_flipSprite(self);
         }
@@ -231,7 +232,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
       break;
 
     } 
-    break; // end going left
+    break; // end going right
 
   // walking to door
   case OS_WALKTODOOR:
@@ -274,6 +275,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     case IS_ENTER:
       data->stateTimer = 0;
       data->innerState = IS_UPDATE;
+      data->lifetime = 10000.0f;
       {
         CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
         mbox->active = false;
