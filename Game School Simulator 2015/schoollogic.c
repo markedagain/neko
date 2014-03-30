@@ -20,6 +20,8 @@
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
 
+
+
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   comData->roomFlag[ROOMTYPE_LOBBY] = 1;
@@ -208,7 +210,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
-      printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -222,7 +223,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
-      printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -233,7 +233,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   }
   // Print how many students droped
   if(dropCount) {
-    sprintf(message, pushStrings[STRINGS_DROP], dropCount);
+    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -253,7 +253,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->motivation = randomIntRange((int)(comData->minGpa * 25), 100);
       ++newCount;
     }
-    sprintf(message, pushStrings[STRINGS_ENROLL], newCount);
+    sprintf(message, pushStrings[STRINGS_ENROLL], month[timeData->monthCounter], timeData->currentYear, newCount);
     comp_newsfeedlogic_push(self, message);
 
     comData->incomingStudents = 0;
@@ -265,7 +265,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   // Print graduation message
   if(comData->expectedGraduates > 0) {
-    sprintf(message, pushStrings[STRINGS_GRAD], comData->expectedGraduates);
+    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->expectedGraduates);
     comp_newsfeedlogic_push(self, message);
   }
 

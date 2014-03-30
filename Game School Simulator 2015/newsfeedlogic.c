@@ -8,11 +8,11 @@
 
 char *pushStrings[STRINGS_LAST] = {
   "Welcome to: %s!",
-  "%i students have enrolled!",
-  "%i students have dropped out!",
-  "%i students have graduated!",
-  "Semester %i has started!",
-  "Its %i, happy new year!"
+  "%s/%i - %i students have enrolled!",
+  "%s/%i - %i students have dropped out!",
+  "%s/%i - %i students have graduated!",
+  "%s/%i - Semester %i has started!",
+  "%s/%i - Its %i, happy new year!"
 };
 
 void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
