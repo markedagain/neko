@@ -536,19 +536,22 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       break;
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
-      comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
-      comData->roomFlag[ROOMTYPE_IT] = 1;
+      if(comData->roomFlag[ROOMTYPE_TEAMSPACE] != 2) {
+        comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
+        comData->roomFlag[ROOMTYPE_IT] = 1;
+      }
+      comData->roomFlag[ROOMTYPE_TEAMSPACE] = 2;
       break;
     case ROOMTYPE_CAFETERIA:
       sprite->source = "rooms/cafeteria";
+      comData->roomFlag[ROOMTYPE_CAFETERIA] = 0;
       break;
     case ROOMTYPE_STORE:
       sprite->source = "rooms/store";
       break;
     case ROOMTYPE_OFFICES:
       sprite->source = "rooms/offices";
-      if(comData->roomFlag[ROOMTYPE_OFFICES] != 2)
-      {
+      if(comData->roomFlag[ROOMTYPE_OFFICES] != 2) {
         comData->roomFlag[ROOMTYPE_AUDITORIUM] = 1;
         comData->roomFlag[ROOMTYPE_TUTORING] = 1;
         comData->roomFlag[ROOMTYPE_FIGURE] = 1;
