@@ -45,11 +45,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   al_update(&data->actions, updateEvent->dt);
 
-  if (mbox->entered) {
-    sound_playSound(&self->owner->space->game->systems.sound, "hover");
-  }
-  
-
   if(mbox->over) {
     if (!data->roomInfoUI) {
       VEC3 position;
@@ -142,7 +137,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     }
   }
 
-  if (mbox->active) {
+  if (data->clickable) {
+    if (mbox->entered) {
+      sound_playSound(&self->owner->space->game->systems.sound, "hover");
+    }
     if (mbox->over) {
       sprite->color.r = min(sprite->color.r + 0.05f, 1);
       sprite->color.b = max(sprite->color.b - 0.05f, 1);
@@ -348,6 +346,7 @@ void comp_UI_button_panUp(COMPONENT *self) {
 void comp_UI_button(COMPONENT *self) {
   CDATA_UI_BUTTON data = { 0 };
   data.type = BUTTON_DEFAULT;
+  data.clickable = true;
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
@@ -566,14 +565,14 @@ void UI_button_updateBuildButtons(SPACE *ui) {
     if (schoolData->money < (ROOM_TYPE)comp_roomLogic_getRoomCost(buttonData->type) || schoolData->roomFlag[buttonData->type] == 0) {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)node->data, COMP_MOUSEBOX);
       CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
-      buttonBox->active = false;
+      buttonData->clickable = false;
       buttonSprite->color.r = 0.4f;
       buttonSprite->color.g = 0.4f;
       buttonSprite->color.b = 0.4f;
     }
     else {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(node->data, COMP_MOUSEBOX);
-      buttonBox->active = true;
+      buttonData->clickable = true;
     }
 
     node = node->next;
