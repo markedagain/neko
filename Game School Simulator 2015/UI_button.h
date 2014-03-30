@@ -47,6 +47,7 @@ typedef struct{
   float startZoom;
   float origin;
   ENTITY *roomInfoUI;
+  bool clickable;
 } CDATA_UI_BUTTON;
 
 void UI_buttonUpdate(COMPONENT *self, void *event);

@@ -175,12 +175,12 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
     
     /************ tutorial stuff ***********/
-    if (input->keyboard.keys[KEY_6] == ISTATE_PRESSED) {
-      tutorial_disableUIButtons(self->owner->space);
-    }
-    if (input->keyboard.keys[KEY_7] == ISTATE_PRESSED) {
-      tutorial_enableUIButtons(self->owner->space);
-    }
+    //if (input->keyboard.keys[KEY_6] == ISTATE_PRESSED) {
+    //  tutorial_disableUIButtons(self->owner->space);
+    //}
+    //if (input->keyboard.keys[KEY_7] == ISTATE_PRESSED) {
+    //  tutorial_enableUIButtons(self->owner->space);
+    //}
     if (input->keyboard.keys[KEY_8] == ISTATE_PRESSED) {
       tutorial_disableBuildButtons(self->owner->space);
     }
