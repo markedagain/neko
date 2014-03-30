@@ -22,10 +22,12 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if (mbox->entered)
   {
-    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
-    char buffer[30];
-    sprintf(buffer, "%s %s", studentData->name.first, studentData->name.last);
-    comp_studentActorLogic_createPopText(self, buffer);
+    if (!entity_getChild(self->owner, "individualText")) {
+      CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+      char buffer[30];
+      sprintf(buffer, "%s %s", studentData->name.first, studentData->name.last);
+      comp_studentActorLogic_createPopText(self, buffer);
+    }
   }
 
   data->lifeTimer += (float)updateEvent->dt;

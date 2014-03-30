@@ -160,7 +160,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       // build button
       case BUTTON_BUILD:
       {
-        UI_button_enterBuildMode(self);
+        comp_UI_button_enterBuildMode(self);
         break;
       }
 
@@ -601,7 +601,7 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
   }*/
 }
 
-void UI_button_enterBuildMode(COMPONENT *buildButton) {
+void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
   VEC4 color;
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
@@ -666,4 +666,17 @@ void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   __UI_button_cancelBuildMode(buildButton);
   UI_button_destroyGhostRooms(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
+}
+
+void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+
+  if (data->type == BUTTON_CANCEL) {
+    comp_UI_button_cancelBuildMode(buildButton);
+  }
+
+  else if (data->type == BUTTON_BUILD) {
+    comp_UI_button_enterBuildMode(buildButton);
+  }
+
 }

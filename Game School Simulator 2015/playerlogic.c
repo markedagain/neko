@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include "timemanager.h"
 #include "tutorial.h"
+#include "UI_button.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -174,6 +175,11 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       comp_schoolLogic_millionaire(self);
     }
     
+    if (input->keyboard.keys[KEY_SPACE] == ISTATE_PRESSED) {
+      COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(self->owner->space, "build_button"), COMP_UI_BUTTON);
+      comp_UI_button_toggleBuildMode(buildButton);
+    }
+
     /************ tutorial stuff ***********/
     //if (input->keyboard.keys[KEY_6] == ISTATE_PRESSED) {
     //  tutorial_disableUIButtons(self->owner->space);
