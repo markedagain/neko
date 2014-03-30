@@ -168,7 +168,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       // cancel button 
       case BUTTON_CANCEL:
-        UI_button_cancelBuildMode(self);
+        comp_UI_button_cancelBuildMode(self);
         break;
 
       case BUTTON_BUILDLOBBY:
@@ -458,7 +458,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   UI_button_deleteList(buildSpaces);
 }
 
-void comp_UI_button_cancelBuildMode(COMPONENT *self) {
+void __UI_button_cancelBuildMode(COMPONENT *self) {
   LIST_NODE *node;
   LIST *buttons = list_create();
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
@@ -660,11 +660,11 @@ void UI_button_enterBuildMode(COMPONENT *buildButton) {
   data->type = BUTTON_CANCEL;
 }
 
-void UI_button_cancelBuildMode(COMPONENT *buildButton) {
+void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   data->type = BUTTON_BUILD;
   comp_UI_button_panUp(buildButton);
-  comp_UI_button_cancelBuildMode(buildButton);
+  __UI_button_cancelBuildMode(buildButton);
   UI_button_destroyGhostRooms(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
 }
