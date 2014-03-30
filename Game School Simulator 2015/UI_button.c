@@ -114,7 +114,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         genericText_setText(data->roomInfoUI, buffer);
         break;
 
-      case BUTTON_BUILDWIFI:
+      case BUTTON_BUILDIT:
         sprintf(buffer, "Tech +++");
         genericText_setText(data->roomInfoUI, buffer);
         break;
@@ -207,8 +207,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         UI_button_createGhostRooms(self, ROOMTYPE_TUTORING);
         break;
 
-      case BUTTON_BUILDWIFI:
-        UI_button_createGhostRooms(self, ROOMTYPE_WIFI);
+      case BUTTON_BUILDIT:
+        UI_button_createGhostRooms(self, ROOMTYPE_IT);
         break;
 
       case BUTTON_BUILDRECREATION:
@@ -431,8 +431,8 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/tutoring";
       break;
-    case ROOMTYPE_WIFI:
-      sprite->source = "rooms/wifi";
+    case ROOMTYPE_IT:
+      sprite->source = "rooms/it";
       break;
     case ROOMTYPE_RECREATION:
       sprite->source = "rooms/recreation";

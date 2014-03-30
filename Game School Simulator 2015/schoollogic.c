@@ -537,7 +537,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
       comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
-      comData->roomFlag[ROOMTYPE_WIFI] = 1;
+      comData->roomFlag[ROOMTYPE_IT] = 1;
       break;
     case ROOMTYPE_CAFETERIA:
       sprite->source = "rooms/cafeteria";
@@ -557,8 +557,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/tutoring";
       break;
-    case ROOMTYPE_WIFI:
-      sprite->source = "rooms/wifi";
+    case ROOMTYPE_IT:
+      sprite->source = "rooms/it";
       break;
     case ROOMTYPE_RECREATION:
       sprite->source = "rooms/recreation";
@@ -573,9 +573,9 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
-  if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE || type == ROOMTYPE_OFFICES || type == ROOMTYPE_TUTORING || type == ROOMTYPE_WIFI)
+  if(type == ROOMTYPE_CLASS || type == ROOMTYPE_STORE || type == ROOMTYPE_OFFICES || type == ROOMTYPE_TUTORING)
     return 1;
-  else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY || type == ROOMTYPE_RECREATION || type == ROOMTYPE_FIGURE || type == ROOMTYPE_POTTERY)
+  else if(type == ROOMTYPE_LOBBY || type == ROOMTYPE_LIBRARY || type == ROOMTYPE_RECREATION || type == ROOMTYPE_FIGURE || type == ROOMTYPE_POTTERY || type == ROOMTYPE_IT)
     return 2;
   else if(type == ROOMTYPE_TEAMSPACE || type == ROOMTYPE_CAFETERIA || type == ROOMTYPE_AUDITORIUM)
     return 3;
