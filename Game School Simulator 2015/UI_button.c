@@ -298,10 +298,13 @@ void comp_UI_button_panDown(COMPONENT *self) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
 
+  al_clear(&data->actions);
+
   data->startZoom = mg->systems.camera.transform.scale.x;
   data->startY = mg->systems.camera.transform.translation.y;
   playerData->yPan = true;
 
+  
   al_pushBack(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
   al_pushBack(&data->actions, action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
 }
@@ -339,7 +342,7 @@ void comp_UI_button_panUp(COMPONENT *self) {
   COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
 
   data->startY = mg->systems.camera.transform.translation.y;
-
+  al_clear(&data->actions);
   al_pushBack(&data->actions, action_create(self, panUp_update, NULL, panUp_onEnd, true, 0.4f));
 }
 
