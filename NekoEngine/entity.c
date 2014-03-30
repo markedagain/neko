@@ -149,3 +149,8 @@ void __entity_destroy(ENTITY *entity) {
 
   list_remove_free(entity->space->entities, entity->node);
 }
+
+/*void entity_getChild(ENTITY *entity, char *) {
+
+}
+*/

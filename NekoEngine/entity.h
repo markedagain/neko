@@ -34,6 +34,7 @@ NEKO_API COMPONENT *entity_getComponent(ENTITY *, unsigned int);
 NEKO_API void *entity_getComponentData(ENTITY *, unsigned int);
 void entity_invokeEvent(ENTITY *entity, EVENT_TYPE event, void *data);
 NEKO_API void entity_destroy(ENTITY *);
+//NEKO_API void entity_getChild(ENTITY *entity, char *);
 void __entity_destroy(ENTITY *);
 
 #endif
