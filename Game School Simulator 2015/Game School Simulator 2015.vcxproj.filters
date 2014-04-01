@@ -172,6 +172,7 @@
     <ClCompile Include="weathermanager.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="gameinitialize.c" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -362,6 +363,7 @@
     <ClInclude Include="weathermanager.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="gameinitialize.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\txt\names\first_female.txt">

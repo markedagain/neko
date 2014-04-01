@@ -12,12 +12,10 @@
 #include <stdio.h>
 
 #define GROUND_HEIGHT 24
-#define SPAWN_TIMER 2.1f
+#define SPAWN_TIMER 1.0f
 #define MAX_STUDENTS 1000
-#define STUDENT_LIFE 3.0f
+#define STUDENT_LIFE 4.0f
 #define ROOM_X_OFFSET -25.0f
-
-// this totally works except it derps out if you build a building just as a new student spawns
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;

@@ -49,7 +49,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     if (!comData->timeUI) {
       VEC3 position;
       VEC4 color;
-      vec3_set(&position, 220, 178, 0);
+      vec3_set(&position, 220, 176, 0);
       vec4_set(&color, 1, 1, 1, 1 );
       sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
       comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
@@ -62,7 +62,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     if (!comData->timeUI) {
       VEC3 position;
       VEC4 color;
-      vec3_set(&position, 220, 178, 0);
+      vec3_set(&position, 220, 176, 0);
       vec4_set(&color, 1, 1, 1, 1 );
       sprintf(buffer, "July 1989, Fall");
       comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
@@ -146,7 +146,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comData->currentYear++;
       comp_schoolLogic_updateDataYear(schoolLogic, schoolData);
       comData->monthCounter = 0;
-      sprintf(message, pushStrings[STRINGS_YEAR], comData->currentYear);
+      sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
       comp_newsfeedlogic_push(self, message);
     }
   }

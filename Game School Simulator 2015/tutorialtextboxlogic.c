@@ -27,11 +27,7 @@ void comp_tutorialTextBoxLogic_initialize(COMPONENT *self, void *event) {
   vec3_set(&pos, -100.0f, 40.0f, 0);
   data->text = genericText_create(self->owner->space, &pos, "textboxtext", "fonts/gothic/12", "", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   entity_attach(data->text, self->owner);
-  comp_tutorialTextBoxLogic_pushText(self->owner, "first");
-  comp_tutorialTextBoxLogic_pushText(self->owner, "second");
-  comp_tutorialTextBoxLogic_pushText(self->owner, "third");
   data->currentText = data->textList->first;
-  genericText_setText(data->text, (char *)data->currentText->data);
 }
 
 void comp_tutorialTextBoxLogic_destroy(COMPONENT *self, void *event) {
