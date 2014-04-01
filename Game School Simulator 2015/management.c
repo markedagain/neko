@@ -17,6 +17,7 @@
 #include "managescreen.h"
 #include "buttonfunctions.h"
 #include "custombutton.h"
+#include "colors.h"
 
 
 void comp_managementUpdate(COMPONENT *self, void *event) {
