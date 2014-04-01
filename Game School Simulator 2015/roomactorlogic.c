@@ -11,6 +11,7 @@
 #include "inspectionscreen.h"
 #include "inspectionscreenlogic.h"
 #include "UI_button.h"
+#include "random.h"
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
@@ -159,11 +160,26 @@ static void landing_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
 
-  trans->translation.y = data->startY + action_getEase(action, EASING_EXPONENTIAL_OUT) * (data->targetY - data->startY);
+  trans->translation.y = data->startY + action_getEase(action, EASING_QUAD_OUT) * (data->targetY - data->startY);
 }
+
+static void landing_onEnd(ACTION *action) {
+  int choice = randomIntRange(1,2);
+  COMPONENT *self = (COMPONENT *)action->data;
+
+  switch (choice) {
+  case 1:
+    sound_playSound(&self->owner->space->game->systems.sound, "roombuild");
+    break;
+  case 2:
+    sound_playSound(&self->owner->space->game->systems.sound, "roombuild2");
+    break;
+  }
+}
+
 
 void comp_roomActorLogic_initialize(COMPONENT *self, void *event) {
   CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
 
-  al_pushBack(&data->actions, action_create(self, landing_update, NULL, NULL, false, 0.6f));
+  al_pushBack(&data->actions, action_create(self, landing_update, NULL, landing_onEnd, false, 0.6f));
 }
