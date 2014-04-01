@@ -8,6 +8,7 @@
 
 #define COMP_TIMEMANAGER HASH("COMP_TIMEMANAGER")
 
+
 typedef struct cdata_timeManager_t {
   int secondsPerMonth;
   int speedMultiplier;

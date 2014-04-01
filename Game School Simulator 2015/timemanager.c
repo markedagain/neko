@@ -115,7 +115,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
       // NEW SEMESTER
       if(comData->monthCounter == 6 || comData->monthCounter == 12) {
-        char message[80];
+        //char message[80];
         SPACE *fg = game_getSpace(self->owner->space->game, "fg");
         ENTITY *studentManager = space_getEntity(fg, "studentManager");
         COMPONENT *studentManagerLogic = (COMPONENT *)entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
@@ -134,8 +134,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
         
         // create pop text above student's heads
         //comp_studentManagerLogic_statGainText(studentManagerLogic);
-        sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
-        comp_newsfeedlogic_push(self, message);
+        //sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
+        //comp_newsfeedlogic_push(self, message);
       }
     }
 
@@ -187,10 +187,10 @@ void comp_timeManager_slowDown(COMPONENT *ptr) {
 
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
-  data.secondsPerMonth = 3;
+  data.secondsPerMonth = 2;
   data.speedMultiplier = 1;
   data.paused = FALSE;
-  data.months = -6;
+  data.months = -1;
   data.currentSemester = -1;
   data.previousYear = 1988;
   data.currentYear = 1989;

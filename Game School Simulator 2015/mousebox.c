@@ -234,3 +234,8 @@ void check_status(COMPONENT *self) {
     }
   }
 }
+
+void comp_mouseBox_setInactive(CDATA_MOUSEBOX *mbox) {
+  mbox->active = false;
+  mbox->exited = true;
+}

@@ -4,14 +4,15 @@
 #include "../NekoEngine/generictext.h"
 #include "../Nekoengine/spritetext.h"
 #include "easing.h"
+#include "mousebox.h"
 
 char *pushStrings[STRINGS_LAST] = {
   "Welcome to: %s!",
-  "%i students have enrolled!",
-  "%i students have dropped out!",
-  "%i students have graduated!",
-  "Semester %i has started!",
-  "Its %i, happy new year!"
+  "%s/%i - %i students have enrolled!",
+  "%s/%i - %i students have dropped out!",
+  "%s/%i - %i students have graduated!",
+  "%s/%i - Semester %i has started!",
+  "%s/%i - Its %i, happy new year!"
 };
 
 void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
@@ -19,7 +20,7 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
   char textBuffer[80] = {0};
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
-  VEC3 pos = {-300, -130, 0};
+  VEC3 pos = {-310, -160, 0};
   VEC4 color = {0, 0, 0, 1};
 
   for(i = 0; i < 5; i++) {
@@ -37,6 +38,14 @@ void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event) {
   int i;
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+
+  if(mbox->over) {
+    COMPONENT *multiSprite = (COMPONENT *) entity_getComponent(comData->lines[0], COMP_MULTISPRITE);
+    multiSprite_setAlpha(multiSprite, 1);
+    comData->fadeOutStartTime = (float)self->owner->space->game->systems.time.elapsed + 3;
+    comData->delayTime = 0;
+  }
 
   comData->delayTime += updateEvent->dt;
 
@@ -58,16 +67,14 @@ void comp_newsfeedlogic_push(COMPONENT *ptr, char *string) {
   ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)entity_getComponentData(newsFeed, COMP_NEWSFEEDLOGIC);
 
-  
+  // If not all 5 slots have been used yet
   if(comData->messages->count < 5) {
     int i;
 
     if(comData->messages->count != 0) {
       for(i = 0; i < comData->messages->count; i++) {
         CDATA_SPRITETEXT *spriteText = (CDATA_SPRITETEXT *) entity_getComponentData(comData->lines[comData->messages->count - i - 1], COMP_SPRITETEXT);
-        //COMPONENT *multiSprite = (COMPONENT *) entity_getComponent(comData->lines[comData->messages->count - i - 1], COMP_MULTISPRITE);
         genericText_setText(comData->lines[comData->messages->count - i], spriteText->text);
-        //multiSprite_setAlpha(multiSprite, 1);
       }
     }
   }
@@ -75,9 +82,7 @@ void comp_newsfeedlogic_push(COMPONENT *ptr, char *string) {
     int i;
     for(i = 0; i < 4; i++) {
       CDATA_SPRITETEXT *spriteText = (CDATA_SPRITETEXT *) entity_getComponentData(comData->lines[4 - i - 1], COMP_SPRITETEXT);
-      //COMPONENT *multiSprite = (COMPONENT *) entity_getComponent(comData->lines[4 - i - 1], COMP_MULTISPRITE);
       genericText_setText(comData->lines[4 - i], spriteText->text);
-      //multiSprite_setAlpha(multiSprite, 1);
     }
   }
 
@@ -111,6 +116,7 @@ void comp_newsfeedlogic(COMPONENT *self) {
   data.delayTime = 0.0;
   data.locked = true;
   COMPONENT_INIT(self, COMP_NEWSFEEDLOGIC, data);
+  component_depend(self, COMP_MOUSEBOX);
   self->events.initialize = comp_newsfeedlogic_initialize;
   self->events.logicUpdate = comp_newsfeedlogic_logicUpdate;
   self->events.destroy = comp_newsfeedlogic_destroy;

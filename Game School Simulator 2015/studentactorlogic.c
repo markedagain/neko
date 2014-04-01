@@ -2,6 +2,7 @@
 
 #include "studentactorlogic.h"
 #include "genericsprite.h"
+#include "generictext.h"
 #include "multisprite.h"
 #include "random.h"
 #include "studentmanagerlogic.h"
@@ -20,12 +21,22 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   VEC3 pos = { 0 };
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
 
-  if (mbox->entered)
-  {
+  if (mbox->entered) {
+    ENTITY *created;
+    VEC3 position = { 0, 30.0f, 0 };
+    VEC4 color = { 0, 0, 0, 1.0f };
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
     char buffer[30];
     sprintf(buffer, "%s %s", studentData->name.first, studentData->name.last);
-    comp_studentActorLogic_createPopText(self, buffer);
+    created = genericText_create(self->owner->space, &position, "nameText", "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    entity_attach(created, self->owner);
+    comp_studentActorLogic_flipText(created);
+  }
+
+  if (mbox->exited) {
+    ENTITY *text = entity_getChild(self->owner, "nameText");
+    if (text)
+      entity_destroy(text);
   }
 
   data->lifeTimer += (float)updateEvent->dt;
@@ -58,12 +69,14 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
     COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    comp_mouseBox_setInactive(mbox);
     multiSprite_setVisible(multiSprite, false);
     data->zoomedOut = true;
   }
 
   if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
     COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    mbox->active = true;
     multiSprite_setVisible(multiSprite, true);
     data->zoomedOut = false;
   }
@@ -80,12 +93,30 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
 void comp_studentActorLogic_flipSprite(COMPONENT *self) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
+  ENTITY *text = entity_getChild(self->owner, "nameText");
   
-  if (data->velocity < 0)
+  if (data->velocity < 0) {
     trans->scale.x = -1.0f;
-  else
+    if (text)
+      comp_studentActorLogic_flipText(text);
+  }
+
+  else {
     trans->scale.x = 1.0f;
+    if (text)
+      comp_studentActorLogic_flipText(text);
+  }
 }
+
+void comp_studentActorLogic_flipText(ENTITY *text) {
+   CDATA_TRANSFORM *parentTrans = (text->parent == NULL ? NULL : (CDATA_TRANSFORM *)entity_getComponentData(text->parent, COMP_TRANSFORM));
+   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(text, COMP_TRANSFORM);
+   if (parentTrans->scale.x < 0)
+     trans->scale.x = -1.0f;
+   else
+     trans->scale.x = 1.0f;
+}
+
 
 void comp_studentActorLogic(COMPONENT *self) {
   CDATA_STUDENTACTOR data = { 0 };
@@ -117,7 +148,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     multiSprite_setAlpha(multiSprite, data->stateTimer / FADE_TIME);
     }
     if (data->stateTimer > FADE_TIME) {
-      data->outerState = randomIntRange(0, 1);
+      data->outerState = (STUDENT_STATE)randomIntRange(0, 1);
       data->innerState = IS_ENTER;
     } 
     break; // end fading in
@@ -130,7 +161,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     case IS_ENTER:
       data->velocity = 0;
       data->stateTimer = 0;
-      data->stateTime = randomIntRange(5, 10) / 10.0f;
+      data->stateTime = (STUDENT_STATE)randomIntRange(5, 10) / 10.0f;
       data->innerState = IS_UPDATE;
       break;
 
@@ -144,7 +175,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     // on exit
     case IS_EXIT:
       //comp_studentActorLogic_createPopText(self, "hello moto");
-      data->outerState = randomIntRange(0, 1);
+      data->outerState = (STUDENT_STATE)randomIntRange(0, 1);
       data->innerState = IS_ENTER;
       break;
 

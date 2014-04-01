@@ -169,7 +169,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       // build button
       case BUTTON_BUILD:
       {
-        UI_button_enterBuildMode(self);
+        comp_UI_button_enterBuildMode(self);
         break;
       }
 
@@ -307,10 +307,13 @@ void comp_UI_button_panDown(COMPONENT *self) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
 
+  al_clear(&data->actions);
+
   data->startZoom = mg->systems.camera.transform.scale.x;
   data->startY = mg->systems.camera.transform.translation.y;
   playerData->yPan = true;
 
+  
   al_pushBack(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
   al_pushBack(&data->actions, action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
 }
@@ -348,7 +351,7 @@ void comp_UI_button_panUp(COMPONENT *self) {
   COMPONENT *playerLogic = entity_getComponent(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
 
   data->startY = mg->systems.camera.transform.translation.y;
-
+  al_clear(&data->actions);
   al_pushBack(&data->actions, action_create(self, panUp_update, NULL, panUp_onEnd, true, 0.4f));
 }
 
@@ -610,7 +613,7 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
   }*/
 }
 
-void UI_button_enterBuildMode(COMPONENT *buildButton) {
+void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
   VEC4 color;
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
@@ -675,4 +678,17 @@ void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   __UI_button_cancelBuildMode(buildButton);
   UI_button_destroyGhostRooms(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
+}
+
+void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+
+  if (data->type == BUTTON_CANCEL) {
+    comp_UI_button_cancelBuildMode(buildButton);
+  }
+
+  else if (data->type == BUTTON_BUILD) {
+    comp_UI_button_enterBuildMode(buildButton);
+  }
+
 }

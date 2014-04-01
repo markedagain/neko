@@ -129,6 +129,7 @@ void al_clear(ALIST *actionList) {
     free(action);
     node = node->next;
   }
+  list_empty(actionList->actions);
 }
 
 ACTION *action_create(void *data, ACTION_UPDATE update, ACTION_ONSTART onStart, ACTION_ONEND onEnd, bool blocking, float duration) {

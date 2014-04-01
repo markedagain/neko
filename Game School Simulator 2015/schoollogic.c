@@ -20,6 +20,8 @@
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
 
+
+
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
   comData->roomFlag[ROOMTYPE_LOBBY] = 1;
@@ -162,27 +164,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   int lowValue = -50;
   int highValue = 50;
 
-  //Add students
-  if(comData->incomingStudents > 0) {
-    int newCount = 0;
-    for(i = 0; i < comData->incomingStudents; i++)
-    {
-      CDATA_STUDENTDATA *studentData;
-      LIST_NODE *nodeptr;
-      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
-      studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
-      nodeptr = list_insert_end(comData->students, newStudent);
-      studentData->listNodePtr = nodeptr;
-      comData->currentStudents++;
-      studentData->tuition = comData->tuition;
-      ++newCount;
-    }
-    sprintf(message, pushStrings[STRINGS_ENROLL], newCount);
-    comp_newsfeedlogic_push(self, message);
-
-    comData->incomingStudents = 0;
-  }
-
   // LOOP THROUGH STUDENTS
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
@@ -229,7 +210,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
-      printf("\n%s %s has droped out due to a %1.1f GPA!\n", studentData->name.first, studentData->name.last, studentData->gpa);
       comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -239,11 +219,10 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     }
 
     // Drop students whos motivation has reached 0 
-    else if(studentData->motivation == 0) {
+    else if(studentData->motivation <= 0) {
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       ENTITY *studentManager = space_getEntity(fg, "studentManager");
       COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
-      printf("\n%s %s has droped out due to losing all motivation!\n", studentData->name.first, studentData->name.last);
       comp_studentManagerLogic_removeDropout(studentManagerLogic, (ENTITY *)studentData->listNodePtr->data);
       comData->currentStudents--;
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
@@ -251,20 +230,42 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       --comData->reputation;
       continue;
     }
-    
-    
   }
+  // Print how many students droped
   if(dropCount) {
-    sprintf(message, pushStrings[STRINGS_DROP], dropCount);
+    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount);
     comp_newsfeedlogic_push(self, message);
+  }
+
+  //Add students
+  if(comData->incomingStudents > 0) {
+    int newCount = 0;
+    for(i = 0; i < comData->incomingStudents; i++)
+    {
+      CDATA_STUDENTDATA *studentData;
+      LIST_NODE *nodeptr;
+      newStudent = space_addEntity(self->owner->space, arch_student, "Student");
+      studentData = (CDATA_STUDENTDATA *)entity_getComponentData(newStudent, COMP_STUDENTDATA);
+      nodeptr = list_insert_end(comData->students, newStudent);
+      studentData->listNodePtr = nodeptr;
+      comData->currentStudents++;
+      studentData->tuition = comData->tuition;
+      studentData->motivation = randomIntRange((int)(comData->minGpa * 25), 100);
+      ++newCount;
+    }
+    sprintf(message, pushStrings[STRINGS_ENROLL], month[timeData->monthCounter], timeData->currentYear, newCount);
+    comp_newsfeedlogic_push(self, message);
+
+    comData->incomingStudents = 0;
   }
 
   comData->semTech = 0;
   comData->semDesign = 0;
   comData->semArt = 0;
 
+  // Print graduation message
   if(comData->expectedGraduates > 0) {
-    sprintf(message, pushStrings[STRINGS_GRAD], comData->expectedGraduates);
+    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->expectedGraduates);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -536,23 +537,31 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       break;
     case ROOMTYPE_TEAMSPACE:
       sprite->source = "rooms/teamspace";
-      comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
-      comData->roomFlag[ROOMTYPE_IT] = 1;
+      if(comData->roomFlag[ROOMTYPE_TEAMSPACE] != 2) {
+        comData->roomFlag[ROOMTYPE_CAFETERIA] = 1;
+        comData->roomFlag[ROOMTYPE_IT] = 1;
+      }
+      comData->roomFlag[ROOMTYPE_TEAMSPACE] = 2;
       break;
     case ROOMTYPE_CAFETERIA:
       sprite->source = "rooms/cafeteria";
+      comData->roomFlag[ROOMTYPE_CAFETERIA] = 0;
       break;
     case ROOMTYPE_STORE:
       sprite->source = "rooms/store";
       break;
     case ROOMTYPE_OFFICES:
       sprite->source = "rooms/offices";
-      comData->roomFlag[ROOMTYPE_AUDITORIUM] = 1;
-      comData->roomFlag[ROOMTYPE_TUTORING] = 1;
-      comData->roomFlag[ROOMTYPE_FIGURE] = 1;
+      if(comData->roomFlag[ROOMTYPE_OFFICES] != 2) {
+        comData->roomFlag[ROOMTYPE_AUDITORIUM] = 1;
+        comData->roomFlag[ROOMTYPE_TUTORING] = 1;
+        comData->roomFlag[ROOMTYPE_FIGURE] = 1;
+      }
+      comData->roomFlag[ROOMTYPE_OFFICES] = 2;
       break;
     case ROOMTYPE_AUDITORIUM:
       sprite->source = "rooms/auditorium";
+      comData->roomFlag[ROOMTYPE_AUDITORIUM] = 0;
       break;
     case ROOMTYPE_TUTORING:
       sprite->source = "rooms/tutoring";
