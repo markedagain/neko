@@ -1,3 +1,5 @@
+/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+
 #include "management.h"
 #include "mousebox.h"
 #include "../NekoEngine/transform.h"

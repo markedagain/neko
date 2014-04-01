@@ -17,7 +17,7 @@
 #include "managescreen.h"
 #include "ghostroomlogic.h"
 #include "inspectionscreenlogic.h"
-#include "main.h"
+#include "gameinitialize.h"
 #include "timemanager.h"
 #include "namescreen.h"
 #include "tutorial.h"

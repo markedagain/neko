@@ -3,7 +3,7 @@
 #include "splashlogic.h"
 #include "sound.h"
 #include "generictext.h"
-#include "main.h"
+#include "gameinitialize.h"
 
 #define DIGIPEN_TIME 3.0
 #define NEKOMEANSCAT_TIME 3.0

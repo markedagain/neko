@@ -7,5 +7,9 @@
 #include "entity.h"
 
 void startGame(GAME *game);
+void createSpaces(GAME *game);
+void createMainMenu(GAME *game);
+void startNewGame(GAME *game);
+void initializeEssentialSpaces(GAME *game);
 
 #endif

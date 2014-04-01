@@ -315,7 +315,6 @@
     <ClInclude Include="newsfeedlogic.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="main.h" />
     <ClInclude Include="menuscreen.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
