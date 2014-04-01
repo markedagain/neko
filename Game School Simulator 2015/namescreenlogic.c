@@ -8,6 +8,7 @@
 #include "colors.h"
 #include "sound.h"
 #include "gameinitialize.h"
+#include "menuscreenlogic.h"
 
 #define MAX_NAME 30
 
@@ -72,11 +73,10 @@ void comp_nameScreenLogic_initialize(COMPONENT *self, void *event) {
   VEC3 position = { 0 };
   VEC4 color = { 0.7f, 0.7f, 0.7f, 0.7f, };
   CDATA_NAMESCREEN *data = (CDATA_NAMESCREEN *)self->data;
-  //ENTITY *created = genericSprite_create(self->owner->space, &position, "menubox", "blank");
-  //CDATA_SPRITE *spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
-  
-  //spriteData->size.x = 500.0f;
-  //spriteData->size.y = 500.0f;
+  ENTITY *menuScreen = space_getEntity(self->owner->space, "menuScreen");
+  CDATA_MENUSCREENLOGIC *menuData = (CDATA_MENUSCREENLOGIC *)entity_getComponentData(menuScreen, COMP_MENUSCREENLOGIC);
+
+  al_clear(&menuData->actions);
 
   entity_destroy(space_getEntity(self->owner->space, "newGameButton"));
   entity_destroy(space_getEntity(self->owner->space, "optionsButton"));

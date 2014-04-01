@@ -179,7 +179,7 @@ void startNewGame(GAME *game) {
 
   // Management Button
   vec3_set(&position, -242, 166, 0);
-  space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
+  ent1 = space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
 
   // Play Button
   vec3_set(&position, -209, 166, 0);

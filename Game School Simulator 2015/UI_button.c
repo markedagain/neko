@@ -20,7 +20,7 @@
 #include "main.h"
 #include "timemanager.h"
 #include "namescreen.h"
-
+#include "tutorial.h"
 
 
 #define BUILDENDPOS 120.0f
@@ -49,6 +49,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     if (!data->roomInfoUI) {
       VEC3 position;
       VEC4 color;
+
       if(transform->translation.x <= -249)
       {
         vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
@@ -57,6 +58,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       }
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
+      
       vec4_set(&color, 0, 0, 0, 1 );
       sprintf(buffer, "Default");
       data->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
@@ -149,16 +151,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   if (data->clickable) {
     if (mbox->entered) {
       sound_playSound(&self->owner->space->game->systems.sound, "hover");
+      sprite->color.a = 0.8f;
     }
-    if (mbox->over) {
-      sprite->color.r = min(sprite->color.r + 0.05f, 1);
-      sprite->color.b = max(sprite->color.b - 0.05f, 1);
-      sprite->color.g = max(sprite->color.g - 0.05f, 0);
-    }
-    else {
-      sprite->color.r = max(sprite->color.r - 0.05f, 1);
-      sprite->color.b = min(sprite->color.b + 0.05f, 1);
-      sprite->color.g = min(sprite->color.g + 0.05f, 1);
+
+    if (mbox->exited) {
+      sprite->color.a = 1.0f;
     }
 
     // if clicked on
@@ -170,6 +167,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_BUILD:
       {
         comp_UI_button_enterBuildMode(self);
+#if TUTORIAL
+        if (!data->firstBuildClick) {
+          createFirstTutorialPartTwo(self->owner->space);
+          data->firstBuildClick = true;
+        }
+#endif
         break;
       }
 
@@ -180,6 +183,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_BUILDLOBBY:
         UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
+#if TUTORIAL
+        if (data->lobbyBuilt == false) {
+          createSecondTutorial(self->owner->space);
+          data->lobbyBuilt = true;
+        }
+#endif
         break;
 
       case BUTTON_BUILDCLASS:
@@ -314,8 +323,8 @@ void comp_UI_button_panDown(COMPONENT *self) {
   playerData->yPan = true;
 
   
-  al_pushBack(&data->actions, action_create(self, panDown_update, NULL, NULL, false, 0.4f));
-  al_pushBack(&data->actions, action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
+  al_pushBack(&data->actions, (ACTION *)action_create(self, panDown_update, NULL, NULL, false, 0.4f));
+  al_pushBack(&data->actions, (ACTION *)action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
 }
 
 
@@ -584,7 +593,11 @@ void UI_button_updateBuildButtons(SPACE *ui) {
     }
     else {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(node->data, COMP_MOUSEBOX);
+      CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
       buttonData->clickable = true;
+      buttonSprite->color.r = 1.0f;
+      buttonSprite->color.g = 1.0f;
+      buttonSprite->color.b = 1.0f;
     }
 
     node = node->next;

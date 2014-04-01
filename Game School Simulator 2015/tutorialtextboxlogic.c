@@ -24,9 +24,10 @@ void comp_tutorialTextBoxLogic_initialize(COMPONENT *self, void *event) {
   VEC4 color = { 0, 0, 0, 1.0f };
   ENTITY *whiteBox = genericSprite_createBlank(self->owner->space, &pos, &dimensions, &colors[C_WHITE_DARK], "textBoxBackground");
   entity_attach(whiteBox, self->owner);
-  vec3_set(&pos, -100.0f, 40.0f, 0);
+  vec3_set(&pos, -150.0f, 40.0f, 0);
   data->text = genericText_create(self->owner->space, &pos, "textboxtext", "fonts/gothic/12", "", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   entity_attach(data->text, self->owner);
+  comp_tutorialTextBoxLogic_pushText(self->owner, "");
   data->currentText = data->textList->first;
 }
 
