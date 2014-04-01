@@ -149,3 +149,17 @@ void __entity_destroy(ENTITY *entity) {
 
   list_remove_free(entity->space->entities, entity->node);
 }
+
+ENTITY * entity_getChild(ENTITY *entity, char *target) {
+  ENTITY *current;
+  unsigned int i;
+  size_t totalSize = vector_size(&entity->children);
+
+  for (i = 0; i < totalSize; i++) {
+    current = (ENTITY *)vector_get(&entity->children, i);
+    if (strcmp(target, current->name) == 0)
+      return current;
+  }
+
+  return NULL;
+}

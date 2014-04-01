@@ -12,11 +12,17 @@
 #include "schoollogic.h"
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
-#define HEAD_COUNT 5
-#define FACE_COUNT 5
-#define HAIR_COUNT 5
-#define BODY_COUNT 5
-#define LEGS_COUNT 5
+#define MALE_HEAD_COUNT 5
+#define MALE_FACE_COUNT 5
+#define MALE_HAIR_COUNT 10
+#define MALE_BODY_COUNT 5
+#define MALE_LEGS_COUNT 5
+
+#define FEMALE_HEAD_COUNT 5
+#define FEMALE_FACE_COUNT 5
+#define FEMALE_HAIR_COUNT 11
+#define FEMALE_BODY_COUNT 5
+#define FEMALE_LEGS_COUNT 5
 
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -86,11 +92,6 @@ void generate_student(COMPONENT *self) {
   char *firstname;
 
   data->name.last = lastname;
-  data->head = randomIntRange(1, HEAD_COUNT);
-  data->face = randomIntRange(1, FACE_COUNT);
-  data->hair = randomIntRange(1, HAIR_COUNT);
-  data->body = randomIntRange(1, BODY_COUNT);
-  data->legs = randomIntRange(1, LEGS_COUNT);
 
   if(gender == 1) {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_male");
@@ -98,6 +99,12 @@ void generate_student(COMPONENT *self) {
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
     data->gender = GEN_MALE;
+
+    data->head = randomIntRange(1, MALE_HEAD_COUNT);
+    data->face = randomIntRange(1, MALE_FACE_COUNT);
+    data->hair = randomIntRange(1, MALE_HAIR_COUNT);
+    data->body = randomIntRange(1, MALE_BODY_COUNT);
+    data->legs = randomIntRange(1, MALE_LEGS_COUNT);
   }
   else {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
@@ -105,6 +112,12 @@ void generate_student(COMPONENT *self) {
     firstname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
     data->name.first = firstname;
     data->gender = GEN_FEMALE;
+
+    data->head = randomIntRange(1, FEMALE_HEAD_COUNT);
+    data->face = randomIntRange(1, FEMALE_FACE_COUNT);
+    data->hair = randomIntRange(1, FEMALE_HAIR_COUNT);
+    data->body = randomIntRange(1, FEMALE_BODY_COUNT);
+    data->legs = randomIntRange(1, FEMALE_LEGS_COUNT);
   }
 
   data->techSkill = randomIntRange(lowValue, highValue);

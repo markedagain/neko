@@ -20,7 +20,7 @@ typedef enum { // DO NOT MOVE THE LOBBY - POTTERY BUTTONS, THEY NEED TO BE ON TO
   BUTTON_BUILDOFFICES,
   BUTTON_BUILDAUDITORIUM,
   BUTTON_BUILDTUTORING,
-  BUTTON_BUILDWIFI,
+  BUTTON_BUILDIT,
   BUTTON_BUILDRECREATION,
   BUTTON_BUILDFIGURE,
   BUTTON_BUILDPOTTERY,
@@ -47,11 +47,12 @@ typedef struct{
   float startZoom;
   float origin;
   ENTITY *roomInfoUI;
+  bool clickable;
 } CDATA_UI_BUTTON;
 
 void UI_buttonUpdate(COMPONENT *self, void *event);
 void comp_UI_button(COMPONENT *self);
-void comp_UI_button_cancelBuildMode(COMPONENT *self);
+void __UI_button_cancelBuildMode(COMPONENT *self);
 void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild);
 void UI_button_deleteList(LIST *buildSpaces);
 void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name);
@@ -64,5 +65,8 @@ void comp_UI_destroy(COMPONENT *self, void *event);
 void UI_button_updateBuildButtons(SPACE *ui);
 void comp_ui_button_hoverPop(COMPONENT *self);
 void UI_button_updateUpgradeButton(SPACE *ui);
- 
+void comp_UI_button_cancelBuildMode(COMPONENT *buildButton);
+void comp_UI_button_enterBuildMode(COMPONENT *buildButton);
+void comp_UI_button_toggleBuildMode(COMPONENT *buildButton);
+
 #endif

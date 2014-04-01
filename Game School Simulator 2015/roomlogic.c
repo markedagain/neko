@@ -148,11 +148,11 @@ void comp_roomLogic_createRoom(COMPONENT *self) {
       schoolData->motivationBonus += comData->motivationBonus;
       break;
 
-    case ROOMTYPE_WIFI:
+    case ROOMTYPE_IT:
       //Set Values
       comData->size = 2;
-      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_WIFI);
-      comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_WIFI);
+      comData->cost = comp_roomLogic_getRoomCost(ROOMTYPE_IT);
+      comData->upgradeCost = comp_roomLogic_getRoomUpgradeCost(ROOMTYPE_IT);
       comData->techBonus = 5;
       comData->upkeep = 15000;
       //Modify SchoolLogic
@@ -303,7 +303,7 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
       schoolData->motivationBonus += 2;
       break;
 
-    case ROOMTYPE_WIFI:
+    case ROOMTYPE_IT:
       //Set Values
       comData->techBonus += 3;
       comData->upkeep += 10000;
@@ -399,7 +399,7 @@ int comp_roomLogic_getRoomCost(ROOM_TYPE type) {
     case ROOMTYPE_TUTORING:
       return 80000;
 
-    case ROOMTYPE_WIFI:
+    case ROOMTYPE_IT:
       return 150000;
 
     case ROOMTYPE_RECREATION:
@@ -445,7 +445,7 @@ int comp_roomLogic_getRoomUpgradeCost(ROOM_TYPE type) {
     case ROOMTYPE_TUTORING:
       return 5000;
 
-    case ROOMTYPE_WIFI:
+    case ROOMTYPE_IT:
       return 5000;
 
     case ROOMTYPE_RECREATION:

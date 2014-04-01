@@ -15,6 +15,7 @@
 #define SPAWN_TIMER 2.1f
 #define MAX_STUDENTS 1000
 #define STUDENT_LIFE 3.0f
+#define ROOM_X_OFFSET -25.0f
 
 // this totally works except it derps out if you build a building just as a new student spawns
 
@@ -41,7 +42,6 @@ void studentManager_spawnStudent(COMPONENT *self) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
   int numStudents = 0;
   int randomIndex = 0;
-  int roomCount = schoolData->roomCount;
   int count = 1;
 
   // make a copy of the list of students, then remove the ones already drawn
@@ -75,7 +75,7 @@ void studentManager_spawnStudent(COMPONENT *self) {
   
   // roll to random room
   pNode = roomList->first;
-  randomIndex = randomIntRange(1, roomCount);
+  randomIndex = randomIntRange(1, roomList->count);
   count = 1;
   while (count < randomIndex) {
     pNode = pNode->next;
@@ -86,7 +86,7 @@ void studentManager_spawnStudent(COMPONENT *self) {
   {
     COMPLETE_STUDENT *newStudent = (COMPLETE_STUDENT *)malloc(sizeof(COMPLETE_STUDENT));
     VEC3 *room = (VEC3 *)pNode->data;
-    VEC3 pos = {(room->x - 7.5f) * 80.0f, (2 - room->y) * 80.0f + 20.0f, 0};
+    VEC3 pos = {(room->x - 7.5f) * 80.0f + ROOM_X_OFFSET, (2 - room->y) * 80.0f + GROUND_HEIGHT, 0};
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentActor = space_addEntityAtPosition(fg, arch_studentActor, "studentActor", &pos);
     int ID = data->currID;
