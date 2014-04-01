@@ -9,6 +9,7 @@
 #include "popText.h"
 #include "mousebox.h"
 #include "timemanager.h"
+#include "inspectionscreenlogic.h"
 
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
@@ -21,6 +22,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   VEC3 pos = { 0 };
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
 
   if (mbox->entered) {
     ENTITY *created;
@@ -34,47 +38,57 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
+  if (mbox->left.pressed)
+    printf("fff");
+
   // name, major, 3 stats, gpa, motivation, expected graduation year
-  if (mbox->left.pressed) {
+  if (mbox->left.pressed && !data->triggered) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
     SPACE *sim = game_getSpace(self->owner->space->game, "sim");
     ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
     CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
-    SPACE *ui = game_getSpace(self->owner->space->game, "ui");
-    ENTITY * inspectionScreen = space_getEntity(ui, "inspection_screen");
-    char name[30];
-    char major[13];
-    //char expectedGraduationYear[30];
-    char GPA[6];
-    char motivation[4];
+
+    if (inspectData->posActive)
+        inspectData->posActive = false;
 
     // name
-    sprintf(name, "%s %s", studentData->name.first, studentData->name.last);
-    
+    sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
+
     // major
     switch (studentData->major) {
     case M_TECH:
-      strcpy(major, "Programming");
+      strcpy(inspectData->major, "Programming");
       break;
     case M_ART:
-      strcpy(major, "Art");
+      strcpy(inspectData->major, "Art");
       break;
     case M_DESIGN:
-      strcpy(major, "Design");
+      strcpy(inspectData->major, "Design");
       break;
     }
 
     // gpa
-    sprintf(GPA, "%.2f", studentData->gradePoints);
+    sprintf(inspectData->GPA, "%.2f", studentData->gradePoints);
 
     // motivation
-    sprintf(motivation, "%.2d%%", studentData->motivation);
+    sprintf(inspectData->motivation, "%.2d%%", studentData->motivation);
 
-    // expected graduation - need eduardo's help
-
-
+    // expected graduation
+    sprintf(inspectData->expectedGraduationYear, "&d", studentData->yearStarted + 4);
+    
+    inspectData->active = true;
+    inspectData->studentActive = true;
+    data->triggered = true;
   }
 
+  else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
+    inspectData->studentActive = false;
+    inspectData->active = false;
+    data->triggered = true;
+  }
+  
+  else if (!mbox->left.pressed)
+    data->triggered = false;
 
   if (mbox->exited) {
     ENTITY *text = entity_getChild(self->owner, "nameText");

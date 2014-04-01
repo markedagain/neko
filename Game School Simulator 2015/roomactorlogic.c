@@ -25,24 +25,31 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   al_update(&comData->actions, updateEvent->dt);
 
-  if (mbox->left.pressed && !inspectData->active && !comData->triggered) {
+  if (mbox->left.pressed && !comData->triggered) {
+    
+    if (inspectData->studentActive)
+      inspectData->studentActive = false;
+    
     inspectData->posActive = true;
     inspectData->posX = comData->posX;
     inspectData->posY = comData->posY;
     comData->triggered = true;
     inspectData->active = true;
   }
+
   else if (mbox->left.pressed && inspectData->active && (inspectData->posX != comData->posX 
     || inspectData->posY != comData->posY) && !comData->triggered) {
       inspectData->posX = comData->posX;
       inspectData->posY = comData->posY;
       inspectData->triggered = true;
-  } 
+  }
+
   else if (mbox->left.pressed && inspectData->active && inspectData->posX == comData->posX 
     && inspectData->posY == comData->posY && !comData->triggered) {
     comData->triggered = true;
     inspectData->active = false;
   }
+
   else if (!mbox->left.pressed)
     comData->triggered = false;
   

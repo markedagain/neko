@@ -11,7 +11,55 @@
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
 #include "roomactorlogic.h"
+#include "studentactorlogic.h"
 #include "colors.h"
+
+void room_inspection_clear(COMPONENT *self) {
+  CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
+  
+  if (comData->roomType) {
+    LIST_NODE *node;
+    LIST *buttons = list_create(); 
+  
+    space_getAllEntities(self->owner->space, "upgradeButton", buttons);
+    node = buttons->first;
+    while (node) {
+    entity_destroy((ENTITY *)node->data);
+    node = node->next;
+    }
+
+  list_destroy(buttons);
+    entity_destroy(comData->bonuses);
+    comData->bonuses = NULL;
+    entity_destroy(comData->roomType);
+    comData->roomType = NULL;
+    entity_destroy(comData->upkeep);
+    comData->upkeep = NULL;
+    entity_destroy(comData->level);
+    comData->level = NULL;
+    entity_destroy(comData->bonusText);
+    comData->bonusText = NULL;
+  }
+}
+
+void student_inspection_clear(COMPONENT *self) {
+  CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data; 
+  
+  if (comData->studentName) {
+   entity_destroy(comData->studentName);
+   comData->studentName = NULL;
+   /*
+   entity_destroy(comData->studentGPA);
+   comData->studentGPA = NULL;
+   entity_destroy(comData->studentMajor);
+   comData->studentMajor = NULL;
+   entity_destroy(comData->studentGraduation);
+   comData->studentGraduation = NULL;
+   entity_destroy(comData->studentMotivation);
+   comData->studentMotivation = NULL;
+   */
+   }
+}
 
 void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
@@ -21,37 +69,57 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
- 
+  CDATA_SCHOOLLOGIC *studentData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+
+  // STUDENT INSPECTION
+  if (!comData->studentActive)
+    student_inspection_clear(self);
+
+  if (comData->studentActive) {
+      comData->posActive = false;
+
+    // Is the window active?
+    if (comData->active == false) {
+      student_inspection_clear(self);
+      sprite->visible = false;
+    }
+
+    else if (comData->active == true) {
+      VEC3 position = { 0, 0, 0 };
+      VEC4 color = { 0 };
+      sprite->visible = true;
+
+      if (!comData->studentName) {
+        vec3_set(&position, -315, 150, 0);
+        comData->studentName = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", comData->nameBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+      }
+
+      if (comData->triggered) {
+        genericText_setText(comData->studentName, comData->nameBuffer);
+        comData->triggered = false;
+      }
+
+      /*
+      if (!comData->studentMajor) {
+        vec3_set(&position, -315, 130, 0);
+        comData->studentMajor = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->major, &colors[C_WHITE_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);
+      }
+      */
+    }
+  }
+  // ROOM INSPECTION
   // Check if posX and posY are set.
+  if (!comData->posActive)
+    room_inspection_clear(self);
+
   if (comData->posActive) {
     CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[comData->posY][comData->posX], COMP_ROOMLOGIC);
 
     // Is the window active?
     if (comData->active == false) {
-      LIST_NODE *node;
-      LIST *buttons = list_create(); 
+      student_inspection_clear(self);
+      room_inspection_clear(self);
       sprite->visible = false;
-      
-      space_getAllEntities(self->owner->space, "upgradeButton", buttons);
-      node = buttons->first;
-      while (node) {
-        entity_destroy((ENTITY *)node->data);
-        node = node->next;
-      }
-      list_destroy(buttons);
-      
-      if (comData->roomType) {
-        entity_destroy(comData->bonuses);
-        comData->bonuses = NULL;
-        entity_destroy(comData->roomType);
-        comData->roomType = NULL;
-        entity_destroy(comData->upkeep);
-        comData->upkeep = NULL;
-        entity_destroy(comData->level);
-        comData->level = NULL;
-        entity_destroy(comData->bonusText);
-        comData->bonusText = NULL;
-      }
     }
 
     else if (comData->active == true) {
@@ -167,6 +235,7 @@ void comp_inspectionScreenLogic_initialize(COMPONENT *self, void *event) {
   
   sprite->visible = false;
   comData->posActive = false;
+  comData->studentActive = false;
 }
 
 void comp_inspectionScreenLogic(COMPONENT *self) {
