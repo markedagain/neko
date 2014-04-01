@@ -83,7 +83,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     sprintf(comData->buffer, "Rep: %i", comData->reputation);
     comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20bold", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
-  sprintf(comData->buffer, "Reputation: %i", comData->reputation);
+  sprintf(comData->buffer, "Rep: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
   // update build buttons
   //UI_button_updateBuildButtons(uiSpace);

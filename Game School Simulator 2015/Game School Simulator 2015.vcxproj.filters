@@ -122,9 +122,6 @@
     <ClCompile Include="inspectionscreenlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
-    <ClCompile Include="newsfeedlogic.c">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="menuscreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
     <ClCompile Include="moneyinfologic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="newsfeedlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
   </ItemGroup>
@@ -318,9 +318,6 @@
     <ClInclude Include="inspectionscreenlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
-    <ClInclude Include="newsfeedlogic.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="menuscreen.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
@@ -373,6 +370,9 @@
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
     <ClInclude Include="moneyinfologic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="newsfeedlogic.h">
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
   </ItemGroup>
