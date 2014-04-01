@@ -45,6 +45,7 @@ typedef struct{
   ENTITY *income;
 
   bool triggered;
+  bool alreadyActivated;
 } CDATA_MANAGEMENT;
 
 void comp_managementUpdate(COMPONENT *self, void *event);

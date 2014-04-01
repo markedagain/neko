@@ -20,7 +20,7 @@ void tutorial_disableUIButtons(SPACE *ui) {
   mbox->active = false;
 
   // disable pause button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
+  /*mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
   mbox->active = false;
 
   // disable slow button
@@ -29,7 +29,7 @@ void tutorial_disableUIButtons(SPACE *ui) {
 
   // disable fast button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
-  mbox->active = false;
+  mbox->active = false;*/
 
   // disable manage button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
@@ -48,16 +48,16 @@ void tutorial_enableUIButtons(SPACE *ui) {
   mbox->active = true;
 
   // enable pause button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
-  mbox->active = true;
+  //mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
+  //mbox->active = true;
 
   // enable slow button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(slowButton, COMP_MOUSEBOX);
-  mbox->active = true;
+  //mbox = (CDATA_MOUSEBOX *)entity_getComponentData(slowButton, COMP_MOUSEBOX);
+  //mbox->active = true;
 
   // enable fast button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
-  mbox->active = true;
+  // mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
+  //mbox->active = true;
 
   // enable manage button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
@@ -67,7 +67,9 @@ void tutorial_enableUIButtons(SPACE *ui) {
 void tutorial_disableBuildButtons(SPACE *ui) {
   LIST *buildButtons = list_create();
   LIST_NODE *node;
+  CDATA_MOUSEBOX *buildBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "build_button"), COMP_MOUSEBOX);
 
+  buildBox->active = false;
   space_getAllEntities(ui, "buildButton", buildButtons);
   node = buildButtons->first;
 
@@ -82,7 +84,9 @@ void tutorial_disableBuildButtons(SPACE *ui) {
 void tutorial_enableBuildButtons(SPACE *ui) {
   LIST *buildButtons = list_create();
   LIST_NODE *node;
+  CDATA_MOUSEBOX *buildBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "build_button"), COMP_MOUSEBOX);
 
+  buildBox->active = true;
   space_getAllEntities(ui, "buildButton", buildButtons);
   node = buildButtons->first;
 
@@ -116,7 +120,54 @@ void tutorialBackground_onPressed(COMPONENT *self) {
 
 void createFirstTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "first");
-  comp_tutorialTextBoxLogic_pushText(textBox, "second");
-  comp_tutorialTextBoxLogic_pushText(textBox, "third");
+  comp_tutorialTextBoxLogic_pushText(textBox, "What up Bro, they told me you would be coming!\n\nI am Brad Bromayor, \nyour one and only advisor as you build your new game school!\n\nClick anywhere to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Oh yeah, you're totally building a game school!\n\nWe got approved for the loan \nand got this gorgeous piece of land!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Lets kick things off by buying a Lobby.\n\nClick the Build Button to continue.");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_disableUIButtons(ui);
+  tutorial_enableBuildButtons(ui);
+}
+
+void createFirstTutorialPartTwo(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "Nice, Bro!\nNow click the Lobby Button to continue.");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+}
+
+
+void createSecondTutorial(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "Alright, whenever you try to build a new room you \nwill see the available build locations on screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "All you have to do is to click on the one you want to build at.\nClick on the available slot to continue.");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_disableUIButtons(ui);
+  tutorial_enableBuildButtons(ui);
+}
+
+void createThirdTutorial(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "Right! Students!!!\nThat means we need a classroom.\nClick the Class Button to continue.");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_disableUIButtons(ui);
+  tutorial_enableBuildButtons(ui);
+}
+
+void createFourthTutorial(SPACE *ui) {
+  CDATA_MOUSEBOX *manageBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "manage_button"), COMP_MOUSEBOX);
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "I think its about time we let our first students in.\n\nYou can check what the current status of \nincoming students is in your management screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Click the Management Screen Button to continue.");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_disableUIButtons(ui);
+  tutorial_disableBuildButtons(ui);
+  manageBox->active = true;
+}
+
+void createFifthTutorial(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "Here you can manage various attributes of your school!\nGo wild!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Enjoy the rest of the game!");
+  comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_enableUIButtons(ui);
+  tutorial_enableBuildButtons(ui);
 }

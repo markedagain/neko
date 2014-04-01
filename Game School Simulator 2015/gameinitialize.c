@@ -9,5 +9,7 @@ void startGame(GAME *game) {
   (game_getSpace(game, "mg"))->active = true;
   (game_getSpace(game, "fg"))->active = true;
   sound_playSong(&game->systems.sound, "03");
-  //createFirstTutorial(game_getSpace(game, "ui"));
+#if TUTORIAL
+  createFirstTutorial(game_getSpace(game, "ui"));
+#endif
 }

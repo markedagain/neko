@@ -6,9 +6,6 @@
 #include "../NekoEngine/component.h"
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "playerlogic.h"
 #include "roomlogic.h"
 #include "UI_build.h"
@@ -18,7 +15,7 @@
 #include "buttonfunctions.h"
 #include "custombutton.h"
 #include "colors.h"
-
+#include "tutorial.h"
 
 void comp_managementUpdate(COMPONENT *self, void *event) {
   CDATA_MANAGEMENT *data = (CDATA_MANAGEMENT *)self->data;
@@ -31,19 +28,24 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
 
-  if (mbox->over) {
-    sprite->color.r = min(sprite->color.r + 0.05f, 1);
-    sprite->color.b = max(sprite->color.b - 0.05f, 1);
-    sprite->color.g = max(sprite->color.g - 0.05f, 0);
+  if (mbox->entered) {
+    sound_playSound(&self->owner->space->game->systems.sound, "hover");
+    sprite->color.a = 0.8f;
   }
-  else {
-    sprite->color.r = max(sprite->color.r - 0.05f, 1);
-    sprite->color.b = min(sprite->color.b + 0.05f, 1);
-    sprite->color.g = min(sprite->color.g + 0.05f, 1);
+
+  if (mbox->exited) {
+    sprite->color.a = 1.0f;
   }
 
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     comp_managementDisplay(self);
+
+#if TUTORIAL
+    if (!data->alreadyActivated) {
+      createFifthTutorial(uiSpace);
+      data->alreadyActivated = true;
+    }
+#endif
   }
 
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
@@ -66,7 +68,7 @@ void comp_managementDisplay(COMPONENT *self) {
    
   data->triggered = true;
   
-  vec3_set(&position, 0, 0, 0);    
+  vec3_set(&position, 0, 0, 0);
 
   data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
 

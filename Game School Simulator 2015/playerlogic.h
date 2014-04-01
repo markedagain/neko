@@ -24,6 +24,8 @@ typedef struct {
   float yLock;
   bool yPan;
   GMODE currentMode;
+  bool lobbyBuilt;
+  bool classroomBuilt;
 } CDATA_PLAYERLOGIC;
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event);

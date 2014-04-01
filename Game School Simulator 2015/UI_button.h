@@ -48,6 +48,8 @@ typedef struct{
   float origin;
   ENTITY *roomInfoUI;
   bool clickable;
+  bool firstBuildClick;
+  bool lobbyBuilt;
 } CDATA_UI_BUTTON;
 
 void UI_buttonUpdate(COMPONENT *self, void *event);

@@ -42,7 +42,6 @@ typedef struct {
 void comp_mouseBox_logicUpdate(COMPONENT *self, void *event);
 void comp_mouseBox(COMPONENT *self);
 void comp_mouseBox_initialize(COMPONENT *self, void *event);
-void adjust_box(COMPONENT *self);
 void set_box(COMPONENT *self, float left, float top, float right, float bot);
 void set_box_sprite(COMPONENT *self);
 void check_status(COMPONENT *self);
