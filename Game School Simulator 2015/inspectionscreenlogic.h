@@ -12,6 +12,22 @@
 typedef struct cdata_inspectionScreen_t {
   bool active;
   bool posActive;
+  bool studentActive;
+  bool triggered;
+
+  // STUDENT INSPECTION
+  char nameBuffer[30];
+  char GPA[4];
+  char expectedGraduationYear[30];
+  char major[14];
+  char motivation[4];
+  ENTITY *studentName;
+  ENTITY *studentMajor;
+  ENTITY *studentGPA;
+  ENTITY *studentGraduation;
+  ENTITY *studentMotivation;
+
+  // ROOM INSPECTION
   ROOM_TYPE type;
   char roomTypeBuffer[20];
   char bonusBuffer[128];
@@ -26,12 +42,12 @@ typedef struct cdata_inspectionScreen_t {
   ENTITY *upkeep;
   ENTITY *upgradeButton;
   ENTITY *level;
-  bool triggered;
   int posX;
   int posY;
-  int bonusSum;
   } CDATA_INSPECTIONSCREEN;
 
+void room_inspection_clear(COMPONENT *self);
+void student_inspection_clear(COMPONENT *self);
 void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_inspectionScreenLogic(COMPONENT *self);
 void comp_inspectionScreenLogic_initialize(COMPONENT *self, void *event);
