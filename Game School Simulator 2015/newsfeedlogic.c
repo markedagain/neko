@@ -21,12 +21,12 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
-  VEC3 pos = {-310, -160, 0};
+  VEC3 pos = {0, 90, 0};
   VEC4 color = {0, 0, 0, 1};
 
   for(i = 0; i < 5; i++) {
     pos.y += 10;
-    comData->lines[i] = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
+    comData->lines[i] = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     //vec4_set(&color, 1, 1, 1, 1);
     //spriteText_outline(comData->lines[i], true, &color);
   }
@@ -42,8 +42,10 @@ void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
 
   if(mbox->over) {
-    COMPONENT *multiSprite = (COMPONENT *) entity_getComponent(comData->lines[0], COMP_MULTISPRITE);
-    multiSprite_setAlpha(multiSprite, 1);
+    for(i = 0; i < 5; i++) {
+      COMPONENT *multiSprite = (COMPONENT *) entity_getComponent(comData->lines[i], COMP_MULTISPRITE);
+      multiSprite_setAlpha(multiSprite, 1);
+    }
     comData->fadeOutStartTime = (float)self->owner->space->game->systems.time.elapsed + 3;
     comData->delayTime = 0;
   }

@@ -14,7 +14,7 @@ void arch_newsFeed(ENTITY *entity) {
 
   //Connect components to the entity
   trans = (CDATA_TRANSFORM *)entity_connect(entity, comp_transform);
-  vec3_set(&trans->translation, -220, -120, 0); 
+  vec3_set(&trans->translation, 0, 110, 0); 
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   sprite->source = "empty";
   entity_connect(entity, comp_mouseBox);

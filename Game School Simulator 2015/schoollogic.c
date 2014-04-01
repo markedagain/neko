@@ -78,12 +78,12 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // Display Rep on screen
   if (!comData->reputationUI) {
-    vec3_set(&position, 0, 150, 0);
-    vec4_set(&color, 0, 0, 0, 1 );
-    sprintf(comData->buffer, "Reputation: %i", comData->reputation);
-    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    vec3_set(&position, -50, 178, 0);
+    vec4_set(&color, 1, 1, 1, 1 );
+    sprintf(comData->buffer, "Rep: %i", comData->reputation);
+    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20bold", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
-  sprintf(comData->buffer, "Reputation: %i", comData->reputation);
+  sprintf(comData->buffer, "Rep: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
   // update build buttons
   //UI_button_updateBuildButtons(uiSpace);

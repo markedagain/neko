@@ -30,6 +30,7 @@
 #include "namescreen.h"
 #include "colors.h"
 #include "custombutton.h"
+#include "moneyinfo.h"
 
 void startGame(GAME *game) {
   (game_getSpace(game, "sim"))->active = true;
@@ -147,6 +148,7 @@ void startNewGame(GAME *game) {
   /**************** UI SPACE *****************/
   // news feed
   space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
+  space_addEntity(uiSpace, arch_moneyInfo, "moneyInfo");
 
   
   // UI Bar
