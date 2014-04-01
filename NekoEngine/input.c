@@ -18,6 +18,7 @@ void input_initialize(INPUT_CONTAINER *input) {
   input->mouse.position.y = 0;
   input->mouse.wheel.delta = 0;
   input->mouse.wheel.direction = 0;
+  input->mouse.overHandled = 0;
   input->keyboard.anyKey = false;
   for (i = 0; i < INPUT_MAX_ASCII_KEYS_PER_FRAME + 1; ++i)
     input->keyboard.ascii[i] = 0;
@@ -59,6 +60,7 @@ void input_reset_logic(INPUT_CONTAINER *input) {
   for (i = 0; i < INPUT_MAX_ASCII_KEYS_PER_FRAME; ++i)
     input->keyboard.ascii[i] = 0;
   input->keyboard.anyKey = false;
+  input->mouse.overHandled = false;
 }
 
 void input_reset_frame(INPUT_CONTAINER *input) {

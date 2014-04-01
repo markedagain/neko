@@ -45,17 +45,19 @@ void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     int length = strlen(data->name);
     int inputLength = strlen(input->keyboard.ascii);
 
-    // if there's enough space for everything
-    if (length + inputLength <= MAX_NAME)
-      strcat(data->name, input->keyboard.ascii);
+    if (inputLength) {
+      // if there's enough space for everything
+      if (length + inputLength <= MAX_NAME)
+        strcat(data->name, input->keyboard.ascii);
 
-    // if user types too damn fast
-    else if (MAX_NAME - length > 0) {
-      int originalLength = strlen(data->name);
-      int numNewChars = MAX_NAME - length;
-      int i;
-      for (i = 0; i < numNewChars; ++i) {
-        data->name[originalLength + i] = input->keyboard.ascii[i];
+      // if user types too damn fast
+      else if (MAX_NAME - length > 0) {
+        int originalLength = strlen(data->name);
+        int numNewChars = MAX_NAME - length;
+        int i;
+        for (i = 0; i < numNewChars; ++i) {
+          data->name[originalLength + i] = input->keyboard.ascii[i];
+        }
       }
     }
   }

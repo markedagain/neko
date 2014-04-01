@@ -20,6 +20,7 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
   char textBuffer[80] = {0};
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   VEC3 pos = {-310, -160, 0};
   VEC4 color = {0, 0, 0, 1};
 
@@ -31,6 +32,7 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
     //spriteText_outline(comData->lines[i], true, &color);
   }
 
+  mbox->ghost = true;
   comData->fadeOutStartTime = (float)self->owner->space->game->systems.time.elapsed;
 }
 

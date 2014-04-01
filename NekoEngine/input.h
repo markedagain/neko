@@ -137,6 +137,7 @@ typedef struct inputContainer_t {
       int delta;
       int direction;
     } wheel;
+    bool overHandled;
     POINT position;
   } mouse;
   struct {

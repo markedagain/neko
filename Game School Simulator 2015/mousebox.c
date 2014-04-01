@@ -122,7 +122,9 @@ void check_status(COMPONENT *self) {
   posY = (float)mousePos.y;
 
   // checks if the mouse if over the object or not
-  if ((posX >= box.topLeft.x && posX <= box.botRight.x) && (posY <= box.topLeft.y && posY >= box.botRight.y)) {
+  if ((posX >= box.topLeft.x && posX <= box.botRight.x) && (posY <= box.topLeft.y && posY >= box.botRight.y) && !input->mouse.overHandled) {
+    if (!data->ghost)
+      input->mouse.overHandled = true;
     if (data->over != true)
       data->entered = true;
     else
