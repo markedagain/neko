@@ -12,8 +12,8 @@ void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
 
   if (comData->manual == false)
     set_box_sprite(self);
-  else
-    adjust_box(self);
+  //else
+    //adjust_box(self);
 
   check_status(self);
 }

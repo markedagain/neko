@@ -33,6 +33,7 @@
 #include "namescreen.h"
 #include "colors.h"
 #include "custombutton.h"
+#include "moneyinfo.h"
 
 #pragma comment (lib, "../lib/neko.lib")
 
@@ -161,6 +162,9 @@ void startNewGame(GAME *game) {
   /**************** UI SPACE *****************/
   // news feed
   space_addEntity(uiSpace, arch_newsFeed, "newsFeed");
+
+  // Money Info
+  space_addEntity(uiSpace, arch_moneyInfo, "moneyinfo");
 
   
   // UI Bar

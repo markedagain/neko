@@ -173,6 +173,12 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="gameinitialize.c" />
+    <ClCompile Include="moneyinfo.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="moneyinfologic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -364,6 +370,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="gameinitialize.h" />
+    <ClInclude Include="moneyinfo.h">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="moneyinfologic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\txt\names\first_female.txt">
