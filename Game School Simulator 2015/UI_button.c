@@ -628,7 +628,7 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
 
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
-  VEC4 color;
+  VEC4 color = { 0, 0, 0, 1.0f };
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   comp_UI_button_panDown(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "confirm");
