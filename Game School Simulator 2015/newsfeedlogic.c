@@ -25,7 +25,6 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
 
   for(i = 0; i < 5; i++) {
     pos.y += 10;
-    printf(textBuffer);
     comData->lines[i] = genericText_create(uiSpace, &pos, "textSprite", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
     //vec4_set(&color, 1, 1, 1, 1);
     //spriteText_outline(comData->lines[i], true, &color);

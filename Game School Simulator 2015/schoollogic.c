@@ -64,7 +64,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     UI_button_updateBuildButtons(uiSpace);
   }
 
-  // Display Student count on screen
+  /* Display Student count on screen
   if (!comData->studentUI) {
     vec3_set(&position, 320, 120, 0);
     vec4_set(&color, 0, 0, 0, 1 );
@@ -72,7 +72,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
   }
   sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
-  genericText_setText(comData->studentUI, comData->buffer);
+  genericText_setText(comData->studentUI, comData->buffer);*/
   // update build buttons
   //UI_button_updateBuildButtons(uiSpace);
 
@@ -114,6 +114,7 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
     comData->money += studentData->tuition / 6;
+    studentPtr = studentPtr->next;
   }
 
   //Lose money

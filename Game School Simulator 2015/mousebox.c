@@ -12,8 +12,6 @@ void comp_mouseBox_logicUpdate(COMPONENT *self, void *event) {
 
   if (comData->manual == false)
     set_box_sprite(self);
-  else
-    adjust_box(self);
 
   check_status(self);
 }
@@ -47,45 +45,6 @@ void set_box(COMPONENT *self, float left, float top, float right, float bot) {
   data->box.topLeft.y = top;
   data->box.botRight.x = right;
   data->box.botRight.y = bot;
-}
-
-// this is not tested
-void adjust_box(COMPONENT *self) {
-  CDATA_MOUSEBOX *comData = (CDATA_MOUSEBOX *)self->data;
-  SPRITE *sprite = NULL;
-  VEC3 topLeft;
-  VEC3 botRight;
-  VEC3 camScale;
-  VEC3 screenScaleVec;
-  MATRIX3 transform = { 0 };
-  float screenScale;
-  VEC3 translation;
-
-  translation.x = -self->owner->space->systems.camera.transform.translation.x;
-  translation.y = -self->owner->space->systems.camera.transform.translation.y;
-
-  camScale.x = self->owner->space->systems.camera.transform.scale.x;
-  camScale.y = self->owner->space->systems.camera.transform.scale.y;
-
-  screenScale = (float)self->owner->space->game->innerWindow.width / self->owner->space->game->dimensions.width;
-  screenScaleVec.x = screenScale;
-  screenScaleVec.y = screenScale;
-
-  topLeft.x = comData->initBox.topLeft.x;
-  topLeft.y = comData->initBox.topLeft.y;
-  botRight.x = comData->initBox.botRight.x;
-  botRight.y = comData->initBox.botRight.y;
-
-  matrix3_identity(&transform);
-  matrix3_scale(&transform, &camScale);
-  matrix3_scale(&transform, &screenScaleVec);
-  
-  matrix3_apply_to_vector(&topLeft, &transform);
-  matrix3_apply_to_vector(&botRight, &transform);
-  matrix3_apply_to_vector(&translation, &transform);
-  matrix3_translate(&transform, &translation);
-
-  set_box(self, topLeft.x, topLeft.y, botRight.x, botRight.y);
 }
 
 void set_box_sprite(COMPONENT *self) {
