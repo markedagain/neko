@@ -146,7 +146,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       comData->currentYear++;
       comp_schoolLogic_updateDataYear(schoolLogic, schoolData);
       comData->monthCounter = 0;
-      sprintf(message, pushStrings[STRINGS_YEAR], comData->currentYear);
+      sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
       comp_newsfeedlogic_push(self, message);
     }
   }

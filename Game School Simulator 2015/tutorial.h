@@ -6,5 +6,6 @@ void tutorial_enableUIButtons(SPACE *ui);
 void tutorial_disableUIButtons(SPACE *ui);
 void tutorial_enableBuildButtons(SPACE *ui);
 void tutorial_disableBuildButtons(SPACE *ui);
-void tutorial_createTextBox(SPACE *ui);
+ENTITY * tutorial_createTextBox(SPACE *ui);
 void tutorialBackground_onPressed(COMPONENT *self);
+void createFirstTutorial(SPACE *ui);

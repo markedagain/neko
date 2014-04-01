@@ -95,7 +95,7 @@ void tutorial_enableBuildButtons(SPACE *ui) {
   list_destroy(buildButtons);
 }
 
-void tutorial_createTextBox(SPACE *ui) {
+ENTITY *tutorial_createTextBox(SPACE *ui) {
   VEC2 dimensions = { 640.0f, 360.0f };
   VEC3 position = { 0 };
   ENTITY *created = createCustomButton(NULL, NULL, tutorialBackground_onPressed, NULL, NULL,
@@ -106,10 +106,17 @@ void tutorial_createTextBox(SPACE *ui) {
   CDATA_SPRITE *sprite = entity_getComponentData(created, COMP_SPRITE);
   sprite->color.a = 0.75f;
   vec3_set(&position, 0, 80.0f, 0);
-  space_addEntityAtPosition(ui, arch_tutorialTextBox, "textBox", &position);
+  return space_addEntityAtPosition(ui, arch_tutorialTextBox, "textBox", &position);
 }
 
 void tutorialBackground_onPressed(COMPONENT *self) {
   ENTITY *textBox = space_getEntity(self->owner->space, "textBox");
   comp_tutorialTextBoxLogic_nextText(textBox);
+}
+
+void createFirstTutorial(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "first");
+  comp_tutorialTextBoxLogic_pushText(textBox, "second");
+  comp_tutorialTextBoxLogic_pushText(textBox, "third");
 }

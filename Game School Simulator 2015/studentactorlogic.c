@@ -8,6 +8,7 @@
 #include "studentmanagerlogic.h"
 #include "popText.h"
 #include "mousebox.h"
+#include "timemanager.h"
 
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
@@ -32,6 +33,48 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     entity_attach(created, self->owner);
     comp_studentActorLogic_flipText(created);
   }
+
+  // name, major, 3 stats, gpa, motivation, expected graduation year
+  if (mbox->left.pressed) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+    ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
+    CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+    ENTITY * inspectionScreen = space_getEntity(ui, "inspection_screen");
+    char name[30];
+    char major[13];
+    //char expectedGraduationYear[30];
+    char GPA[6];
+    char motivation[4];
+
+    // name
+    sprintf(name, "%s %s", studentData->name.first, studentData->name.last);
+    
+    // major
+    switch (studentData->major) {
+    case M_TECH:
+      strcpy(major, "Programming");
+      break;
+    case M_ART:
+      strcpy(major, "Art");
+      break;
+    case M_DESIGN:
+      strcpy(major, "Design");
+      break;
+    }
+
+    // gpa
+    sprintf(GPA, "%.2f", studentData->gradePoints);
+
+    // motivation
+    sprintf(motivation, "%.2d%%", studentData->motivation);
+
+    // expected graduation - need eduardo's help
+
+
+  }
+
 
   if (mbox->exited) {
     ENTITY *text = entity_getChild(self->owner, "nameText");
