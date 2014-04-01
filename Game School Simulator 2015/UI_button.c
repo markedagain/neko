@@ -51,7 +51,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       VEC4 color;
       if(transform->translation.x <= -249)
       {
-        vec3_set(&position, transform->translation.x + 40, transform->translation.y + 30, 0);
+        vec3_set(&position, transform->translation.x + 40, transform->translation.y + 20, 0);
         if(transform->translation.y >= 0)
           vec3_set(&position, transform->translation.x, transform->translation.y - 60, 0);
       }
