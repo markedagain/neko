@@ -231,6 +231,8 @@ void startNewGame(GAME *game) {
   //space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
 
   // create inspection screen
-  vec3_set(&position, -2000, 150, 0);
+  vec3_set(&position, -267, 65, 0);
+  vec2_set(&dimensions, 106, 195);
+  //genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_NAVY_DARK], "inspectionBox");
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
 }

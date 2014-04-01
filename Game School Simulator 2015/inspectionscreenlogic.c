@@ -11,6 +11,7 @@
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
 #include "roomactorlogic.h"
+#include "colors.h"
 
 void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
@@ -48,18 +49,20 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         comData->upkeep = NULL;
         entity_destroy(comData->level);
         comData->level = NULL;
+        entity_destroy(comData->bonusText);
+        comData->bonusText = NULL;
       }
     }
 
     else if (comData->active == true) {
       VEC3 position = { 0, 0, 0 };
-      VEC4 color = { 0, 0, 0, 1 };
+      VEC4 color = { 0 };
       sprite->visible = true;
 
       if (comData->triggered) {
         roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[comData->posY][comData->posX], COMP_ROOMLOGIC);
-        sprintf(comData->bonusBuffer, "Tech Bonus: +%i\nDesign Bonus: +%i\nArt Bonus: +%i\nRep Bonus: +%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus);
-        sprintf(comData->upkeepBuffer, "Upkeep: $%li", roomData->upkeep);
+        sprintf(comData->bonusBuffer, "+%i\n+%i\n+%i\n\n+%i\n+%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus, roomData->motivationBonus);
+        sprintf(comData->upkeepBuffer, "$%li", roomData->upkeep);
         sprintf(comData->levelBuffer, "Level %i", roomData->level);
         genericText_setText(comData->bonuses, comData->bonusBuffer);
         genericText_setText(comData->upkeep, comData->upkeepBuffer);
@@ -67,22 +70,27 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         comData->triggered = false;
       }
 
+      if (!comData->bonusText) {
+        vec3_set(&position, -315, 110, 0);
+        comData->bonusText = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", "Tech:\nDesign:\nArt:\n\nReputation:\nMotivation:\n\nUpkeep:", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+      }
+
       if (!comData->bonuses) {
-        vec3_set(&position, -318, 120, 0);
-        sprintf(comData->bonusBuffer, "Tech Bonus: +%i\nDesign Bonus: +%i\nArt Bonus: +%i\nRep Bonus: +%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus);
-        comData->bonuses = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->bonusBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        vec3_set(&position, -215, 110, 0);
+        sprintf(comData->bonusBuffer, "+%i\n+%i\n+%i\n\n+%i\n+%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus, roomData->motivationBonus);
+        comData->bonuses = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->bonusBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);
       }
       
       if (!comData->upkeep) {
-        vec3_set(&position, -318, 70, 0);
-        sprintf(comData->upkeepBuffer, "Upkeep: $%li", roomData->upkeep);
-        comData->upkeep = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->upkeepBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+        vec3_set(&position, -215, 26, 0);
+        sprintf(comData->upkeepBuffer, "$%li", roomData->upkeep);
+        comData->upkeep = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->upkeepBuffer, &colors[C_RED_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);  
       }
 
       if (!comData->level) {
-        vec3_set(&position, -318, 150, 0);
+        vec3_set(&position, -315, 130, 0);
         sprintf(comData->levelBuffer, "Level %i", roomData->level);
-        comData->level = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->levelBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+        comData->level = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->levelBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_TOP, TEXTALIGN_LEFT);  
       }
         //Check if the type of room has changed
       if (comData->type != roomData->type) {
@@ -142,10 +150,10 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
        }
       }  
       if(!comData->roomType) {
-        vec3_set(&position, -318, 170, 0);
-        comData->roomType = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", comData->roomTypeBuffer, &color, TEXTALIGN_TOP, TEXTALIGN_LEFT);  
-        vec3_set(&position, -268, 20, 0);
-        UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &color, "Upgrade!");
+        vec3_set(&position, -315, 150, 0);
+        comData->roomType = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20", comData->roomTypeBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+        vec3_set(&position, -265, 0, 0);
+        UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &colors[C_WHITE_DARK], "Upgrade!");
       }
       genericText_setText(comData->roomType, comData->roomTypeBuffer);
       comData->type = roomData->type;
