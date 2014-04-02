@@ -48,7 +48,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   if(mbox->over) {
     if (!data->roomInfoUI) {
       VEC3 position;
-      VEC4 color;
+      VEC4 color = {0, 0, 0, 1.0f};
 
       if(transform->translation.x <= -249)
       {
@@ -59,7 +59,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
       
-      vec4_set(&color, 0, 0, 0, 1 );
       sprintf(buffer, "Default");
       data->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
     }
@@ -268,8 +267,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         inspectData->triggered = true;
 
       case BUTTON_PAUSE:
+        {
         comp_timeManager_pause(self);
         break;
+        }
 
       case BUTTON_FASTFORWARD:
         comp_timeManager_fastForward(self);
