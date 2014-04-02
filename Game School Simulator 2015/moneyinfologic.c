@@ -19,17 +19,17 @@ void comp_moneyInfoLogic_initialize(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   COMPONENT *box = (COMPONENT *)entity_getComponent(self->owner, COMP_MOUSEBOX);
   char textBuffer[40] = {0};
-  VEC3 pos = {220, 130, 0};
+  VEC3 pos = {220, 120, 0};
   VEC4 color = colors[C_GREEN_LIGHT];
 
   mbox->manual = true;
   set_box(box, 230, 180, 360, 150);
 
   comData->incomeText = genericText_create(uiSpace, &pos, "incomeText", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
-  vec3_set(&pos, 220, 100, 0);
+  vec3_set(&pos, 220, 90, 0);
   color = colors[C_RED_LIGHT];
   comData->expensesText = genericText_create(uiSpace, &pos, "expensesText", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
-  vec3_set(&pos, 220, 70, 0);
+  vec3_set(&pos, 220, 60, 0);
   color = colors[C_WHITE_LIGHT];
   comData->totalText = genericText_create(uiSpace, &pos, "totalText", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
 }
@@ -71,16 +71,16 @@ void comp_moneyInfoLogic_logicUpdate(COMPONENT *self, void *event) {
 
     total = income + expenses;
 
-    sprintf(textBuffer, "Income:\n   %.2f", income);
+    sprintf(textBuffer, "%.2f", income);
     genericText_setText(comData->incomeText, textBuffer);
 
-    sprintf(textBuffer, "Expenses:\n    %.2f", expenses);
+    sprintf(textBuffer, "%.2f", expenses);
     genericText_setText(comData->expensesText, textBuffer);
 
-    sprintf(textBuffer, "Total:\n    %.2f", total);
+    sprintf(textBuffer, "%.2f", total);
     genericText_setText(comData->totalText, textBuffer);
 
-    vec3_set(&trans->translation, trans->translation.x, trans->translation.y - 110, trans->translation.z);
+    vec3_set(&trans->translation, trans->translation.x, trans->translation.y - 155, trans->translation.z);
     multiSprite_setAlpha(incomeMultiSprite, 1);
     multiSprite_setAlpha(expensesMultiSprite, 1);
     multiSprite_setAlpha(totalMultiSprite, 1);
@@ -91,7 +91,7 @@ void comp_moneyInfoLogic_logicUpdate(COMPONENT *self, void *event) {
     COMPONENT *expensesMultiSprite = (COMPONENT *) entity_getComponent(comData->expensesText, COMP_MULTISPRITE);
     COMPONENT *totalMultiSprite = (COMPONENT *) entity_getComponent(comData->totalText, COMP_MULTISPRITE);
 
-    vec3_set(&trans->translation, trans->translation.x, trans->translation.y + 110, trans->translation.z);
+    vec3_set(&trans->translation, trans->translation.x, trans->translation.y + 155, trans->translation.z);
     multiSprite_setAlpha(incomeMultiSprite, 0);
     multiSprite_setAlpha(expensesMultiSprite, 0);
     multiSprite_setAlpha(totalMultiSprite, 0);

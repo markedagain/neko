@@ -122,7 +122,7 @@ void createFirstTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
   comp_tutorialTextBoxLogic_pushText(textBox, "What up Bro, they told me you would be coming!\n\nI am Brad Bromayor, \nyour one and only advisor as you build your new game school!\n\nClick anywhere to continue.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Oh yeah, you're totally building a game school!\n\nWe got approved for the loan, \nand got this gorgeous piece of land!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Lets kick things off by buying a Lobby.\n\nClick the Build Button to continue.\n\n(or press the Space button)");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Lets kick things off by buying a Lobby.\n\nClick the Build Button to continue.\n(or press the Space button)");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);

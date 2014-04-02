@@ -13,9 +13,9 @@ void arch_moneyInfo(ENTITY *entity) {
   entity->id = ARCH_MONEYINFO;
 
   trans = (CDATA_TRANSFORM *)entity_connect(entity, comp_transform);
-  vec3_set(&trans->translation, 270, 250, 0);
+  vec3_set(&trans->translation, 260, 250, 0);
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "ui/moneyHover";
+  sprite->source = "ui/money_hover";
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_moneyInfoLogic);
 }
