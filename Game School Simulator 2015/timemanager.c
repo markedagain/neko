@@ -163,25 +163,20 @@ void comp_timeManager_pause(COMPONENT *ptr) {
     comData->paused = TRUE;
 }
 
-void comp_timeManager_fastForward(COMPONENT *ptr) {
+void comp_timeManager_changeSpeed(COMPONENT *ptr) {
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
 
+  // SLOW -> MEDIUM
   if(comData->secondsPerMonth == 6)
     comData->secondsPerMonth = 3;
+  // MEDIUM -> FAST
   else if(comData->secondsPerMonth == 3)
     comData->secondsPerMonth = 2;
+  // FAST -> VERY FAST
   else if(comData->secondsPerMonth == 2)
     comData->secondsPerMonth = 1;
-}
-
-void comp_timeManager_slowDown(COMPONENT *ptr) {
-  CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
-
-  if(comData->secondsPerMonth == 1)
-    comData->secondsPerMonth = 2;
-  else if(comData->secondsPerMonth == 2)
-    comData->secondsPerMonth = 3;
-  else if(comData->secondsPerMonth == 3)
+  // VERY FAST -> SLOW
+  else if(comData->secondsPerMonth == 1)
     comData->secondsPerMonth = 6;
 }
 
