@@ -180,4 +180,6 @@ void createSixthTutorial(SPACE *ui) {
   comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by building rooms that provide motivation boosts!\n\n The amount their stats increase is also determined by their motivation.\nSo keep that motivation high!");
   comp_tutorialTextBoxLogic_pushText(textBox, "Well, thats all I have for you.\n\nFrom what I have heard, the best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!\n\n Good luck, and have fun!");
   comp_tutorialTextBoxLogic_nextText(textBox);
+  tutorial_enableUIButtons(ui);
+  tutorial_enableBuildButtons(ui);
 }
