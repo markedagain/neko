@@ -48,11 +48,11 @@ void student_inspection_clear(COMPONENT *self) {
   if (comData->studentName) {
    entity_destroy(comData->studentName);
    comData->studentName = NULL;
+   entity_destroy(comData->studentMajor);
+   comData->studentMajor = NULL;
    /*
    entity_destroy(comData->studentGPA);
    comData->studentGPA = NULL;
-   entity_destroy(comData->studentMajor);
-   comData->studentMajor = NULL;
    entity_destroy(comData->studentGraduation);
    comData->studentGraduation = NULL;
    entity_destroy(comData->studentMotivation);
@@ -92,19 +92,16 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
       if (!comData->studentName) {
         vec3_set(&position, -315, 150, 0);
         comData->studentName = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", comData->nameBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        vec3_set(&position, -315, 110, 0);
+        comData->studentMajor = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->major, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
       }
-
+      
       if (comData->triggered) {
         genericText_setText(comData->studentName, comData->nameBuffer);
+        genericText_setText(comData->studentMajor, comData->major);
         comData->triggered = false;
       }
 
-      /*
-      if (!comData->studentMajor) {
-        vec3_set(&position, -315, 130, 0);
-        comData->studentMajor = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->major, &colors[C_WHITE_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);
-      }
-      */
     }
   }
   // ROOM INSPECTION
@@ -162,7 +159,14 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
       }
         //Check if the type of room has changed
       if (comData->type != roomData->type) {
-       switch (roomData->type) {
+        sprintf(comData->bonusBuffer, "+%i\n+%i\n+%i\n\n+%i\n+%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus, roomData->motivationBonus);
+        sprintf(comData->upkeepBuffer, "$%li", roomData->upkeep);
+        sprintf(comData->levelBuffer, "Level %i", roomData->level);
+        genericText_setText(comData->bonuses, comData->bonusBuffer);
+        genericText_setText(comData->upkeep, comData->upkeepBuffer);
+        genericText_setText(comData->level, comData->levelBuffer);
+        
+        switch (roomData->type) {
         case (ROOMTYPE_LOBBY): 
           sprintf(comData->roomTypeBuffer, "Lobby", NULL);
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);

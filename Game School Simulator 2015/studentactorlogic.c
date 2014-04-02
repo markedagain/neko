@@ -10,6 +10,7 @@
 #include "mousebox.h"
 #include "timemanager.h"
 #include "inspectionscreenlogic.h"
+#include <string.h>
 
 #define STUDENT_OFFSET 8.0f
 #define FADE_TIME 1.0f
@@ -37,9 +38,6 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     entity_attach(created, self->owner);
     comp_studentActorLogic_flipText(created);
   }
-
-  if (mbox->left.pressed)
-    printf("fff");
 
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
@@ -78,12 +76,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     
     inspectData->active = true;
     inspectData->studentActive = true;
-    data->triggered = true;
-  }
-
-  else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
-    inspectData->studentActive = false;
-    inspectData->active = false;
+    inspectData->triggered = true;
     data->triggered = true;
   }
   
