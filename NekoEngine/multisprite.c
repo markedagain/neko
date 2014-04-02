@@ -16,7 +16,6 @@ void comp_multiSprite_initialize(COMPONENT *self, void *event) {
     node = node->next;
   }
 
-
 }
 
 void comp_multiSprite(COMPONENT *self) {
@@ -30,8 +29,14 @@ void comp_multiSprite(COMPONENT *self) {
 
 void multiSprite_addSprite(COMPONENT *self, ENTITY *sprite) {
   CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
+  CDATA_TRANSFORM *trans2;
   list_insert_end(data->entities, sprite);
   entity_attach(sprite, self->owner);
+  trans2 = (CDATA_TRANSFORM *)entity_getComponentData(sprite, COMP_TRANSFORM);
+  comp_transform_logicUpdate(entity_getComponent(self->owner, COMP_TRANSFORM), NULL);
+  trans2->world.translation.x = trans->world.translation.x;
+  trans2->world.translation.y = trans->world.translation.y;
 }
 void multiSprite_removeSprite(COMPONENT *self, size_t index) {
   CDATA_MULTISPRITE *data = (CDATA_MULTISPRITE *)self->data;
