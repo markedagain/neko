@@ -69,14 +69,14 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   // Upkeep Costs
   if (comData->roomMaintenance != managementData->currUpkeep) {
     managementData->currUpkeep = comData->roomMaintenance;
-    sprintf(managementData->costsBuffer, "Upkeep: -$%i", comData->roomMaintenance);
+    sprintf(managementData->costsBuffer, "-$%i", comData->roomMaintenance);
     genericText_setText(managementData->currCosts, managementData->costsBuffer);
   }
 
   // Reputation
   if (comData->reputation != managementData->currReputation) {
     managementData->currReputation = comData->reputation;
-    sprintf(managementData->reputationBuffer, "Reputation: %i", comData->reputation);
+    sprintf(managementData->reputationBuffer, "%i", comData->reputation);
     genericText_setText(managementData->rep, managementData->reputationBuffer);
   }
 }

@@ -606,8 +606,11 @@ void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *posi
   CDATA_UI_BUTTON *buttonData;
   ENTITY *text;
   VEC3 textPos;
+  CDATA_SPRITE *sprite;
 
   newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "upgradeButton", position);
+  sprite = entity_getComponentData(newButton, COMP_SPRITE);
+  sprite->source = "ui/upgrade";
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
