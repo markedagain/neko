@@ -16,5 +16,5 @@ void arch_uibuild(ENTITY *entity) {
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_mouseBox);
   entity_connect(entity, comp_UI_button);
-  sprite->source = "ui/build";
+  sprite->source = "ui/individualRoomsButton";
 }

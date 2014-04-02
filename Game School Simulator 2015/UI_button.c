@@ -21,9 +21,9 @@
 #include "timemanager.h"
 #include "namescreen.h"
 #include "tutorial.h"
+#include "colors.h"
 
-
-#define BUILDENDPOS 120.0f
+#define BUILDENDPOS 100.0f
 
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -45,105 +45,155 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   al_update(&data->actions, updateEvent->dt);
 
-  if(mbox->over) {
-    if (!data->roomInfoUI) {
-      VEC3 position;
-      VEC4 color = {0, 0, 0, 1.0f};
+  if(mbox->entered) {
+    if (data->text) {
+      switch(data->type){
+        case BUTTON_BUILDLOBBY:
+          sprintf(buffer, "Allows\nconstruction!\n$250,000");
+          genericText_setText(data->text, buffer);
+          break;
 
-      if(transform->translation.x <= -249)
-      {
-        vec3_set(&position, transform->translation.x + 40, transform->translation.y + 20, 0);
-        if(transform->translation.y >= 0)
-          vec3_set(&position, transform->translation.x, transform->translation.y - 60, 0);
+        case BUTTON_BUILDCLASS:
+          sprintf(buffer, "Capacity +30\nAll stats +\n$100,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDLIBRARY:
+          sprintf(buffer, "All stats ++\n$200,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDTEAMSPACE:
+          sprintf(buffer, "Motivation +++\n$300,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDCAFETERIA:
+          sprintf(buffer, "Income + \nMotivation +\n$350,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDSTORE:
+          sprintf(buffer, "Generates income!\n$250,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDOFFICES:
+          sprintf(buffer, "All stats +\n100,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDAUDITORIUM:
+          sprintf(buffer, "Motivation +++\n$500,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDTUTORING:
+          sprintf(buffer, "All stats +\n$80,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDIT:
+          sprintf(buffer, "Tech +++\n$150,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDRECREATION:
+          sprintf(buffer, "Design +++\n$150,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDFIGURE:
+          sprintf(buffer, "Art +++\n$150,000\n");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_ROOM_UPGRADE:
+          sprintf(buffer, "$5,000");
+          genericText_setText(data->text, buffer);
+          break;
+
+        default:
+          sprintf(buffer, "");
+          genericText_setText(data->text, buffer);
+          break;
       }
-      else
-        vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
-      
-      sprintf(buffer, "Default");
-      data->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
-    }
-
-    if(data->roomInfoUI) {
-      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(data->roomInfoUI, COMP_MULTISPRITE);
-      multiSprite_setVisible(roomInfo, true);
-    }
-
-    switch(data->type){
-      case BUTTON_BUILDLOBBY:
-        sprintf(buffer, "Allows construction\n on a new floor!\n$250,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDCLASS:
-        sprintf(buffer, "Increases student capacity by 30!\nAll stats +\n$100,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDLIBRARY:
-        sprintf(buffer, "All stats ++\n$200,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDTEAMSPACE:
-        sprintf(buffer, "Motivation +++\n$300,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDCAFETERIA:
-        sprintf(buffer, "Generates income!\n Motivation +\n$350,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDSTORE:
-        sprintf(buffer, "Generates income!\n$250,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDOFFICES:
-        sprintf(buffer, "All stats +\n100,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDAUDITORIUM:
-        sprintf(buffer, "Motivation +++\nUnlocks special events\n$500,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDTUTORING:
-        sprintf(buffer, "All stats +\n$80,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDIT:
-        sprintf(buffer, "Tech +++\n$150,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDRECREATION:
-        sprintf(buffer, "Design +++\n$150,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_BUILDFIGURE:
-        sprintf(buffer, "Art +++\n$150,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      case BUTTON_ROOM_UPGRADE:
-        sprintf(buffer, "Upgrade!\n$5,000");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
-
-      default:
-        sprintf(buffer, "");
-        genericText_setText(data->roomInfoUI, buffer);
-        break;
     }
   }
-  else {
-    if(data->roomInfoUI) {
-      COMPONENT *roomInfo = (COMPONENT *)entity_getComponent(data->roomInfoUI, COMP_MULTISPRITE);
-      multiSprite_setVisible(roomInfo, false);
+
+  if (mbox->exited) {
+    if (data->text) {
+      switch(data->type){
+        case BUTTON_BUILDLOBBY:
+          sprintf(buffer, "Lobby");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDCLASS:
+          sprintf(buffer, "Classroom");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDLIBRARY:
+          sprintf(buffer, "Library");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDTEAMSPACE:
+          sprintf(buffer, "Teamspace");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDCAFETERIA:
+          sprintf(buffer, "Cafeteria");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDSTORE:
+          sprintf(buffer, "Store");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDOFFICES:
+          sprintf(buffer, "Offices");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDAUDITORIUM:
+          sprintf(buffer, "Auditorium");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDTUTORING:
+          sprintf(buffer, "Tutoring");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDIT:
+          sprintf(buffer, "IT");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDRECREATION:
+          sprintf(buffer, "Recreation");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_BUILDFIGURE:
+          sprintf(buffer, "Figure Drawing");
+          genericText_setText(data->text, buffer);
+          break;
+
+        case BUTTON_ROOM_UPGRADE:
+          sprintf(buffer, "Upgrade!");
+          genericText_setText(data->text, buffer);
+          break;
+
+        default:
+          sprintf(buffer, "");
+          genericText_setText(data->text, buffer);
+          break;
+      }
     }
   }
 
@@ -520,7 +570,6 @@ void UI_button_deleteList(LIST *buildSpaces) {
 void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
   ENTITY *newButton = 0;
   CDATA_UI_BUTTON *buttonData;
-  ENTITY *text;
   VEC3 textPos;
   SPACE *sim = game_getSpace(self->owner->space->game, "sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
@@ -529,8 +578,8 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", position);
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
-  text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-  entity_attach(text, newButton);
+  buttonData->text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  entity_attach(buttonData->text, newButton);
   buttonData->type = type;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newButton, COMP_SPRITE);
 
@@ -624,58 +673,57 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
 
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
-  VEC4 color = { 0, 0, 0, 1.0f };
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   comp_UI_button_panDown(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "confirm");
 
   // CREATE LOBBY BUTTON
-  vec3_set(&position, -300, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDLOBBY, &position, &color, "Lobby");
+  vec3_set(&position, -261, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDLOBBY, &position, &colors[C_WHITE_LIGHT], "Lobby");
 
   // CREATE CLASS BUTTON
-  vec3_set(&position, -249, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDCLASS, &position, &color, "Classroom");
+  vec3_set(&position, -157, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDCLASS, &position, &colors[C_WHITE_LIGHT], "Classroom");
 
   // CREATE LIBRARY BUTTON
-  vec3_set(&position, -198, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDLIBRARY, &position, &color, "Library");
+  vec3_set(&position, -53, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDLIBRARY, &position, &colors[C_WHITE_LIGHT], "Library");
  
   // CREATE TEAMSPACE BUTTON
-  vec3_set(&position, -147, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &color, "Teammspace");
+  vec3_set(&position, 51, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &colors[C_WHITE_LIGHT], "Teammspace");
 
   // CREATE OFFICES BUTTON
-  vec3_set(&position, -96, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDOFFICES, &position, &color, "Offices");
+  vec3_set(&position, 155, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDOFFICES, &position, &colors[C_WHITE_LIGHT], "Offices");
 
   // CREATE CAFETERIA BUTTON
-  vec3_set(&position, -45, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDCAFETERIA, &position, &color, "Cafeteria");
+  vec3_set(&position, 259, -116, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDCAFETERIA, &position, &colors[C_WHITE_LIGHT], "Cafeteria");
 
   // CREATE STORE BUTTON
-  vec3_set(&position, 45, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDSTORE, &position, &color, "Store");
+  vec3_set(&position, -261, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDSTORE, &position, &colors[C_WHITE_LIGHT], "Store");
 
   // CREATE AUDITORIUM BUTTON
-  vec3_set(&position, 96, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDAUDITORIUM, &position, &color, "Auditorium");
+  vec3_set(&position, -157, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDAUDITORIUM, &position, &colors[C_WHITE_LIGHT], "Auditorium");
 
   // CREATE TUTORING BUTTON
-  vec3_set(&position, 147, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDTUTORING, &position, &color, "Tutoring");
+  vec3_set(&position, -53, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTUTORING, &position, &colors[C_WHITE_LIGHT], "Tutoring");
 
   // CREATE WIFI BUTTON
-  vec3_set(&position, 198, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDIT, &position, &color, "IT");
+  vec3_set(&position, 51, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDIT, &position, &colors[C_WHITE_LIGHT], "IT");
 
   // CREATE CAFETERIA BUTTON
-  vec3_set(&position, 249, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDRECREATION, &position, &color, "Recreation");
+  vec3_set(&position, 155, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDRECREATION, &position, &colors[C_WHITE_LIGHT], "Recreation");
 
   // CREATE Figure BUTTON
-  vec3_set(&position, 300, -160, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDFIGURE, &position, &color, "Figure");
+  vec3_set(&position, 259, -158, 0);
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDFIGURE, &position, &colors[C_WHITE_LIGHT], "Figure Drawing");
 
   data->type = BUTTON_CANCEL;
 }
