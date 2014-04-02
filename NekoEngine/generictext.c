@@ -16,11 +16,13 @@ ENTITY *genericText_create(SPACE *space, VEC3 *position, char *name, char *font,
   ENTITY *entity = space_addEntity(space, arch_genericText, name);
   CDATA_TRANSFORM *transData = ((CDATA_TRANSFORM *)entity_getComponentData(entity, COMP_TRANSFORM));
   CDATA_SPRITETEXT *textData = ((CDATA_SPRITETEXT *)entity_getComponentData(entity, COMP_SPRITETEXT));
-  vec3_copy(&transData->translation, position);
   textData->font = font;
   textData->alignment.x = xAlign;
   textData->alignment.y = yAlign;
   vec4_copy(&textData->color, color);
+  
+  vec3_copy(&transData->translation, position);
+  
   genericText_setText(entity, text);
   return entity;
 }

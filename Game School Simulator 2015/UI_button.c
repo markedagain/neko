@@ -48,7 +48,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   if(mbox->over) {
     if (!data->roomInfoUI) {
       VEC3 position;
-      VEC4 color;
+      VEC4 color = {0, 0, 0, 1.0f};
 
       if(transform->translation.x <= -249)
       {
@@ -59,7 +59,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       else
         vec3_set(&position, transform->translation.x, transform->translation.y + 30, 0);
       
-      vec4_set(&color, 0, 0, 0, 1 );
       sprintf(buffer, "Default");
       data->roomInfoUI = genericText_create(ui, &position, NULL, "fonts/gothic/12", buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
     }
@@ -266,19 +265,16 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_ROOM_UPGRADE:
         comp_roomLogic_upgradeRoom(self);
         inspectData->triggered = true;
+        break;
 
       case BUTTON_PAUSE:
         comp_timeManager_pause(self);
         break;
 
       case BUTTON_FASTFORWARD:
-        comp_timeManager_fastForward(self);
+        comp_timeManager_changeSpeed(self);
         break;
-
-      case BUTTON_SLOWDOWN:
-        comp_timeManager_slowDown(self);
-        break;
-
+        
       default:
         break;
       }
@@ -628,7 +624,7 @@ void UI_button_updateUpgradeButton(SPACE *ui) {
 
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
-  VEC4 color;
+  VEC4 color = { 0, 0, 0, 1.0f };
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   comp_UI_button_panDown(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "confirm");
