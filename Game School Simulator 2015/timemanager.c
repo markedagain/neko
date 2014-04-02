@@ -156,33 +156,47 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_timeManager_pause(COMPONENT *ptr) {
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "ui"), "pauseButton"), COMP_SPRITE);
 
-  if(comData->paused)
+  if(comData->paused) {
     comData->paused = FALSE;
-  else
+    sprite->source = "ui/play";
+  }
+  else {
     comData->paused = TRUE;
+    sprite->source = "ui/pause";
+  }
 }
 
 void comp_timeManager_changeSpeed(COMPONENT *ptr) {
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "ui"), "speedButton"), COMP_SPRITE);
 
   // SLOW -> MEDIUM
-  if(comData->secondsPerMonth == 6)
+  if(comData->secondsPerMonth == 6) {
     comData->secondsPerMonth = 3;
+    sprite->source = "ui/build";
+  }
   // MEDIUM -> FAST
-  else if(comData->secondsPerMonth == 3)
+  else if(comData->secondsPerMonth == 3) {
     comData->secondsPerMonth = 2;
+    sprite->source = "ui/menu";
+  }
   // FAST -> VERY FAST
-  else if(comData->secondsPerMonth == 2)
+  else if(comData->secondsPerMonth == 2) {
     comData->secondsPerMonth = 1;
+    sprite->source = "ui/manage";
+  }
   // VERY FAST -> SLOW
-  else if(comData->secondsPerMonth == 1)
+  else if(comData->secondsPerMonth == 1) {
     comData->secondsPerMonth = 6;
+    sprite->source = "ui/play";
+  }
 }
 
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
-  data.secondsPerMonth = 2;
+  data.secondsPerMonth = 6;
   data.speedMultiplier = 1;
   data.paused = FALSE;
   data.months = -1;

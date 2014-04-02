@@ -143,6 +143,7 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
 }
 
 void comp_spriteText(COMPONENT *self) {
+  int i = 0;
   CDATA_SPRITETEXT data = { 0 };
   data.color.r = 1;
   data.color.g = 1;
@@ -150,6 +151,8 @@ void comp_spriteText(COMPONENT *self) {
   data.color.a = 1;
   data.alignment.x = TEXTALIGN_LEFT;
   data.alignment.y = TEXTALIGN_TOP;
+  for (i = 0; i < SPRITETEXT_MAXLENGTH; ++i)
+    data.text[i] = 0;
   COMPONENT_INIT(self, COMP_SPRITETEXT, data);
   self->events.initialize = comp_spriteText_initialize;
   component_depend(self, COMP_MULTISPRITE);

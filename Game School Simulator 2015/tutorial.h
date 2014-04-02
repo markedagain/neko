@@ -4,7 +4,7 @@
 #define __TUTORIAL_H__
 #include "entity.h"
 
-#define TUTORIAL 0
+#define TUTORIAL 1
 
 void tutorial_enableUIButtons(SPACE *ui);
 void tutorial_disableUIButtons(SPACE *ui);
