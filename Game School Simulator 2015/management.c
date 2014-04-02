@@ -126,7 +126,7 @@ void comp_managementDisplay(COMPONENT *self) {
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_plus", NULL, &color,
-                         true, "+Tuition", "fonts/gothic/12", 
+                         false, "+Tuition", "fonts/gothic/12", 
                          &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);    
   
   // Decrease tuition button
@@ -135,7 +135,7 @@ void comp_managementDisplay(COMPONENT *self) {
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_minus", NULL, &color,
-                         true, "-Tuition", "fonts/gothic/12", 
+                         false, "-Tuition", "fonts/gothic/12", 
                          &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 }
 
