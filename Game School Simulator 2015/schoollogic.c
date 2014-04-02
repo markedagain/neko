@@ -19,7 +19,7 @@
 #include "UI_button.h"
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
-
+#include "tutorial.h"
 
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
@@ -64,24 +64,12 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     UI_button_updateBuildButtons(uiSpace);
   }
 
-  /* Display Student count on screen
-  if (!comData->studentUI) {
-    vec3_set(&position, 320, 120, 0);
-    vec4_set(&color, 0, 0, 0, 1 );
-    sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
-    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
-  }
-  sprintf(comData->buffer, "Students: %i / %i", comData->currentStudents, comData->studentCapacity);
-  genericText_setText(comData->studentUI, comData->buffer);*/
-  // update build buttons
-  //UI_button_updateBuildButtons(uiSpace);
-
   // Display Rep on screen
   if (!comData->reputationUI) {
     vec3_set(&position, -50, 178, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "Rep: %i", comData->reputation);
-    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20bold", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
   sprintf(comData->buffer, "Rep: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
@@ -258,6 +246,12 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     comp_newsfeedlogic_push(self, message);
 
     comData->incomingStudents = 0;
+  }
+
+  // Start tutorial 6 if first semester
+  if(timeData->currentSemester == 0) {
+    SPACE *uiSpace = (SPACE *)game_getSpace(self->owner->space->game, "ui");
+    createSixthTutorial(uiSpace);
   }
 
   comData->semTech = 0;

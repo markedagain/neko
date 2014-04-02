@@ -18,5 +18,6 @@ void createSecondTutorial(SPACE *ui);
 void createThirdTutorial(SPACE *ui);
 void createFourthTutorial(SPACE *ui);
 void createFifthTutorial(SPACE *ui);
+void createSixthTutorial(SPACE *ui);
 
 #endif
