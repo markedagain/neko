@@ -164,7 +164,7 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -271, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_BUILD;
-  (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE)->source = "ui/build";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/build";
 
   // Management Button
   vec3_set(&position, -242, 166, 0);
@@ -174,13 +174,13 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -209, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "playButton", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
-  (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE)->source = "ui/play";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/play";
 
   // Pause Button
   vec3_set(&position, -180, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "playButton", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
-  (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE)->source = "ui/pause";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/pause";
 
   
   /* custom build button

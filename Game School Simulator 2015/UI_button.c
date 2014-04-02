@@ -265,6 +265,15 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_ROOM_UPGRADE:
         comp_roomLogic_upgradeRoom(self);
         inspectData->triggered = true;
+        break;
+
+      case BUTTON_PAUSE:
+        comp_timeManager_pause(self);
+        break;
+
+      case BUTTON_FASTFORWARD:
+        comp_timeManager_changeSpeed(self);
+        break;
         
       default:
         break;
