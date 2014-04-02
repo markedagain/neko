@@ -64,9 +64,12 @@ void comp_managementDisplay(COMPONENT *self) {
   ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   VEC3 position = { 0, 0, 0 };  
-  VEC4 color = { 0, 0, 0, 1 }; 
-  VEC4 textColor = colors[C_WHITE_LIGHT];
+  VEC4 color = colors[C_WHITE_LIGHT];
+  ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
+  CDATA_MOUSEBOX *newsFeedBox = (CDATA_MOUSEBOX *)entity_getComponentData(newsFeed, COMP_MOUSEBOX);
    
+  newsFeedBox->active = false;
+
   data->triggered = true;
   
   vec3_set(&position, 0, 0, 0);
@@ -103,40 +106,40 @@ void comp_managementDisplay(COMPONENT *self) {
   
   // Increase GPA button
   vec4_set(&color, 0.75f, 0.75f, 0.75f, 1.0f);
-  vec3_set(&position, 40, 30, 0);
+  vec3_set(&position, 45, 30, 0);
   createCustomButton(increaseGPA_onEntered, NULL, increaseGPA_onPressed, increaseGPA_onExit, NULL,
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_plus", NULL, &color,
                          false, "+GPA", "fonts/gothic/12", 
-                         &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
   
   // Decrease GPA button
-  vec3_set(&position, -20, 30, 0);
+  vec3_set(&position, -25, 30, 0);
   createCustomButton(decreaseGPA_onEntered, NULL, decreaseGPA_onPressed, decreaseGPA_onExit, NULL,
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_minus", NULL, &color,
                          false, "-GPA", "fonts/gothic/12", 
-                         &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
   
   // Increase tuition button
-  vec3_set(&position, 40, 10, 0);
+  vec3_set(&position, 45, 10, 0);
   createCustomButton(increaseTuition_onEntered, NULL, increaseTuition_onPressed, increaseTuition_onExit, NULL,
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_plus", NULL, &color,
                          false, "+Tuition", "fonts/gothic/12", 
-                         &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);    
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);    
   
   // Decrease tuition button
-  vec3_set(&position, -20, 10, 0);   
+  vec3_set(&position, -25, 10, 0);   
   createCustomButton(decreaseTuition_onEntered, NULL, decreaseTuition_onPressed, decreaseTuition_onExit, NULL,
                          self->owner->space, &position, "managementButton",
                          1.0f, 1.0f,
                          true, "ui/button_minus", NULL, &color,
                          false, "-Tuition", "fonts/gothic/12", 
-                         &textColor, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 }
 
 void comp_managementRemove(COMPONENT *self) {
@@ -147,7 +150,12 @@ void comp_managementRemove(COMPONENT *self) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   LIST_NODE *node;
   LIST *buttons = list_create(); 
+  ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
+  CDATA_MOUSEBOX *newsFeedBox = (CDATA_MOUSEBOX *)entity_getComponentData(newsFeed, COMP_MOUSEBOX);
+   
   data->triggered = true;
+
+  newsFeedBox->active = true;
 
   //entity_destroy(data->gpaTitle);
   //data->gpaTitle = NULL;

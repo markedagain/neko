@@ -179,6 +179,12 @@
     <ClCompile Include="newsfeedlogic.c">
       <Filter>Components\UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="creditsscreenlogic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="creditsscreen.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -374,6 +380,12 @@
     </ClInclude>
     <ClInclude Include="newsfeedlogic.h">
       <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="creditsscreenlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="creditsscreen.h">
+      <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

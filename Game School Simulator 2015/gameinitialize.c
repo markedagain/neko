@@ -31,8 +31,13 @@
 #include "colors.h"
 #include "custombutton.h"
 #include "moneyinfo.h"
+#include "playerlogic.h"
+#include "creditsscreen.h"
+#include "mousebox.h"
 
 void startGame(GAME *game) {
+  ENTITY *player;
+  CDATA_PLAYERLOGIC *playerData;
   (game_getSpace(game, "sim"))->active = true;
   (game_getSpace(game, "bg"))->active = true;
   (game_getSpace(game, "mg"))->active = true;
@@ -41,6 +46,9 @@ void startGame(GAME *game) {
 #if TUTORIAL
   createFirstTutorial(game_getSpace(game, "ui"));
 #endif
+  player = space_getEntity(game_getSpace(game,"ui"), "player");
+  playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
+  playerData->currentMode = GM_PLAY;
 }
 
 void createSpaces(GAME *game) {
@@ -99,14 +107,19 @@ void createMainMenu(GAME *game) {
   VEC3 position = { 0 };
   VEC2 dimensions = { 640, 360 };
   ENTITY *copyright, *pressStart;
+
   space_addEntityAtPosition(menu, arch_menuScreen, "menuScreen", &position);
+  
   genericSprite_create(menu, &position, "logo", "logo");
+  
   position.y = -180.0f;
   copyright = genericText_create(menu, &position, "copyright", "fonts/gothic/12", "Copyright (C) 2014 DigiPen (USA) Corporation. All rights reserved.", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
   multiSprite_setAlpha(entity_getComponent(copyright, COMP_MULTISPRITE), 0.0f);
+  
   position.y = -48.0f;
   pressStart = genericText_create(menu, &position, "pressStart", "fonts/gothic/12", "Click anywhere or press any key to begin", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_TOP);
   multiSprite_setAlpha(entity_getComponent(pressStart, COMP_MULTISPRITE), 0.0f);
+  
   position.y = 0.0f;
   genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], "fader");
 }

@@ -86,6 +86,7 @@ void comp_nameScreenLogic_initialize(COMPONENT *self, void *event) {
   entity_destroy(space_getEntity(self->owner->space, "logo"));
   entity_destroy(space_getEntity(self->owner->space, "titleContainer"));
   entity_destroy(space_getEntity(self->owner->space, "copyright"));
+  entity_destroy(space_getEntity(self->owner->space, "creditsButton"));
 
   vec4_set(&color, 0, 0, 0, 1.0f);
   data->displayText = genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);

@@ -9,6 +9,7 @@
 #include "custombuttonlogic.h"
 #include "newsfeedlogic.h"
 #include "UI_button.h"
+#include "mousebox.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
@@ -130,6 +131,64 @@ void options_onExit(COMPONENT *self) {
   sprite->color.a = 1.0f;
 
 }
+
+
+/********* CREDITS ***********/
+
+void credits_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+
+}
+
+static void fadeIn_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  SPACE *menu = game_getSpace(self->space->game, "menu");
+  ENTITY *credits = space_getEntity(menu, "credits");
+  if (credits) {
+    CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(credits, COMP_SPRITE);
+    sprite->color.a = action_getEase(action, EASING_QUAD_OUT);
+  }
+}
+
+static void fadeIn_onEnd(ACTION *action) {
+  ENTITY *credits = space_getEntity(((ENTITY *)action->data)->space, "credits");
+  
+  if (credits) {
+    CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(credits, COMP_MOUSEBOX);
+
+    mbox->active = true;
+  }
+}
+
+void credits_onPressed(COMPONENT *self) {
+  ENTITY *credits = space_getEntity(self->owner->space, "credits");
+  CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
+
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
+  al_pushBack(&data->actions, action_create(self->owner, fadeIn_update, NULL, fadeIn_onEnd, false, 0.75f));
+}
+
+void credits_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  
+  // if options are open, don't do anything
+  if (space_getEntity(self->owner->space, "options"))
+    return;
+
+  sprite->color.a = 1.0f;
+
+}
+
 
 /**** ON/OFF Fullscreen ****/
 void fullScreen_onEntered(COMPONENT *self) {

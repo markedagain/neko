@@ -127,7 +127,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       }
       list_destroy(winScreen);
       comp_timeManager_pause(self);
-      data->currentMode = GM_DEFAULT;
+      data->currentMode = GM_PLAY;
     }
   }
 
@@ -137,8 +137,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
   }
 
-  // default state
-  else {
+
+  else if (data->currentMode == GM_PLAY) {
     // MANAGE INPUT
     if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
       pan(self, -4.0f, 0.0f, NULL);
@@ -159,12 +159,12 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       mg->systems.camera.transform.rotation += 0.2f;
       fg->systems.camera.transform.rotation += 0.2f;
     }
-    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
+    /*if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
       if (self->owner->space->game->systems.time.scale)
         self->owner->space->game->systems.time.scale = 0;
       else
         self->owner->space->game->systems.time.scale = 1.0;
-    }
+    }*/
 
     if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
       CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
@@ -187,7 +187,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     //if (input->keyboard.keys[KEY_7] == ISTATE_PRESSED) {
     //  tutorial_enableUIButtons(self->owner->space);
     //}
-    if (input->keyboard.keys[KEY_8] == ISTATE_PRESSED) {
+    /*if (input->keyboard.keys[KEY_8] == ISTATE_PRESSED) {
       tutorial_disableBuildButtons(self->owner->space);
     }
     if (input->keyboard.keys[KEY_9] == ISTATE_PRESSED) {
@@ -195,7 +195,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
     if (input->keyboard.keys[KEY_1] == ISTATE_PRESSED) {
       tutorial_createTextBox(self->owner->space);
-    }
+    }*/
 
     /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
       game_resize(self->owner->space->game, 1280, 720);
@@ -249,20 +249,20 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
 
     //Change Tuition
-    if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
+    /*if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
       schoolData->tuition -= 1000;
     if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
-      schoolData->tuition += 1000;
+      schoolData->tuition += 1000;*/
 
     // List all enrolled students
-    if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
-      comp_schoolLogic_listStudents(schoolLogic, schoolData);
-    }
+    //if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
+    //  comp_schoolLogic_listStudents(schoolLogic, schoolData);
+    //}
 
     // List all alumni
-    if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-      comp_schoolLogic_listAlumni(schoolLogic, schoolData);
-    }
+    //if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
+    //  comp_schoolLogic_listAlumni(schoolLogic, schoolData);
+    //}
   }
 }
 

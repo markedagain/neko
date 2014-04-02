@@ -8,6 +8,7 @@
 #include "buttonfunctions.h"
 #include "custombutton.h"
 #include "mousebox.h"
+#include "creditsscreen.h"
 
 static void fadeCopyrightIn_update(ACTION *action, double dt) {
   ENTITY *self = (ENTITY *)action->data;
@@ -102,7 +103,33 @@ static void moveOptionsButton_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 42.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 96.0f);
+  trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+  sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
+}
+
+static void moveCreditsButton_start(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = false;
+}
+
+
+static void moveCreditsButton_exit(ACTION *action) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self, COMP_MOUSEBOX);
+
+  mbox->active = true;
+}
+
+static void moveCreditsButton_update(ACTION *action, double dt) {
+  ENTITY *self = (ENTITY *)action->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
+  trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -22.0f);
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
@@ -147,9 +174,11 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     VEC3 position = { 0 };
     VEC4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
     ENTITY *titleContainer = genericSprite_create(self->owner->space, &position, "titleContainer", "titlescreen/title");
-    ENTITY *title, *newGameButton, *optionsButton, *quitButton;
+    ENTITY *title, *credits, *newGameButton, *optionsButton, *quitButton, *creditsButton;
     CDATA_SPRITE *titleContainerSprite = (CDATA_SPRITE *)entity_getComponentData(titleContainer, COMP_SPRITE);
     CDATA_TRANSFORM *titleContainerTransform = (CDATA_TRANSFORM *)entity_getComponentData(titleContainer, COMP_TRANSFORM);
+    CDATA_MOUSEBOX *mbox;
+    
     titleContainerSprite->color.a = 0.0f;
     titleContainerTransform->scale.x = 0.0f;
     titleContainerTransform->scale.y = 0.0f;
@@ -175,6 +204,15 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
                        self->owner->space, &position, "quitButton", 1.0f, 1.0f, true, "titlescreen/quit",
                        NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
     al_pushBack(&data->actions, action_create(quitButton, moveQuitButton_update, moveQuitButton_start, moveQuitButton_exit, false, 0.5f));
+    creditsButton = createCustomButton(credits_onEntered, NULL, credits_onPressed, credits_onExit, NULL,
+                       self->owner->space, &position, "creditsButton", 1.0f, 1.0f, true, "titlescreen/credits",
+                       NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+    al_pushBack(&data->actions, action_create(creditsButton, moveCreditsButton_update, moveCreditsButton_start, moveCreditsButton_exit, false, 0.5f));
+    
+    
+    credits = space_addEntityAtPosition(self->owner->space, arch_creditsScreen, "credits", &position);
+    mbox = (CDATA_MOUSEBOX *)entity_getComponentData(credits, COMP_MOUSEBOX);
+    mbox->active = false;
     data->pressedStart = true;
   }
   pressStart = space_getEntity(self->owner->space, "pressStart");
