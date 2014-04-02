@@ -2,6 +2,7 @@
 
 #include "backgroundlogic.h"
 #include "mousebox.h"
+#include "management.h"
 #include "playerlogic.h"
 #include "poptext.h"
 #include "sound.h"
@@ -14,6 +15,7 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
+  CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(space_getEntity(ui, "manage_button"), COMP_MANAGEMENT);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
 
   if (mbox->left.pressed) {
@@ -28,6 +30,10 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     
     if (inspectData->active == true)
       inspectData->active = false;
+
+    if (managementData->manageWindow)
+      comp_managementRemove(self);
+
   }
 
   if (mbox->left.down) {

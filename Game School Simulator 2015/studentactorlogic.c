@@ -66,13 +66,13 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     }
 
     // gpa
-    sprintf(inspectData->GPA, "%.2f", studentData->gradePoints);
+    sprintf(inspectData->GPA, "GPA: %.2f", studentData->gradePoints);
 
     // motivation
-    sprintf(inspectData->motivation, "%.2d%%", studentData->motivation);
+    sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
 
     // expected graduation
-    sprintf(inspectData->expectedGraduationYear, "&d", studentData->yearStarted + 4);
+    sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
     
     inspectData->active = true;
     inspectData->studentActive = true;
