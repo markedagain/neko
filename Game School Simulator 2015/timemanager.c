@@ -175,22 +175,22 @@ void comp_timeManager_changeSpeed(COMPONENT *ptr) {
   // SLOW -> MEDIUM
   if(comData->secondsPerMonth == 6) {
     comData->secondsPerMonth = 3;
-    sprite->source = "ui/build";
+    sprite->source = "ui/speed_medium";
   }
   // MEDIUM -> FAST
   else if(comData->secondsPerMonth == 3) {
     comData->secondsPerMonth = 2;
-    sprite->source = "ui/menu";
+    sprite->source = "ui/speed_fast";
   }
   // FAST -> VERY FAST
   else if(comData->secondsPerMonth == 2) {
     comData->secondsPerMonth = 1;
-    sprite->source = "ui/manage";
+    sprite->source = "ui/speed_veryfast";
   }
   // VERY FAST -> SLOW
   else if(comData->secondsPerMonth == 1) {
     comData->secondsPerMonth = 6;
-    sprite->source = "ui/play";
+    sprite->source = "ui/speed_slow";
   }
 }
 
