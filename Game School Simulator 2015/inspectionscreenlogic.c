@@ -50,14 +50,12 @@ void student_inspection_clear(COMPONENT *self) {
    comData->studentName = NULL;
    entity_destroy(comData->studentMajor);
    comData->studentMajor = NULL;
-   /*
    entity_destroy(comData->studentGPA);
    comData->studentGPA = NULL;
    entity_destroy(comData->studentGraduation);
    comData->studentGraduation = NULL;
    entity_destroy(comData->studentMotivation);
    comData->studentMotivation = NULL;
-   */
    }
 }
 
@@ -93,12 +91,21 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         vec3_set(&position, -315, 150, 0);
         comData->studentName = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", comData->nameBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
         vec3_set(&position, -315, 110, 0);
-        comData->studentMajor = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->major, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        comData->studentMajor = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", comData->major, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        vec3_set(&position, -315, 90, 0);
+        comData->studentGPA = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->GPA, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        vec3_set(&position, -315, 70, 0);
+        comData->studentMotivation = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->motivation, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        vec3_set(&position, -315, 50, 0);
+        comData->studentGraduation = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->expectedGraduationYear, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
       }
       
       if (comData->triggered) {
         genericText_setText(comData->studentName, comData->nameBuffer);
         genericText_setText(comData->studentMajor, comData->major);
+        genericText_setText(comData->studentGPA, comData->GPA);
+        genericText_setText(comData->studentGraduation, comData->expectedGraduationYear);
+        genericText_setText(comData->studentMotivation, comData->motivation);
         comData->triggered = false;
       }
 
