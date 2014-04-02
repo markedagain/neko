@@ -271,7 +271,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         comp_timeManager_pause(self);
         break;
 
-      case BUTTON_FASTFORWARD:
+      case BUTTON_SPEED:
         comp_timeManager_changeSpeed(self);
         break;
         
