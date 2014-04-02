@@ -131,14 +131,14 @@ void createFirstTutorial(SPACE *ui) {
 void createFirstTutorialPartTwo(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
   comp_tutorialTextBoxLogic_pushText(textBox, "Nice, Bro!\n\nHere you can see the rooms you are able to create!\nThe highlighted buttons indicate which rooms you can create right now!\n\n");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Now click the Lobby Button to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Click the Lobby Button to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
 }
 
 
 void createSecondTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Alright, whenever you try to build a new room you \nwill see the available build locations on screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Great! Whenever you try to build a new room you \nwill see the available build locations on screen.");
   comp_tutorialTextBoxLogic_pushText(textBox, "All you have to do is to click on the one you want to build at.\nClick on the available slot to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
@@ -147,7 +147,7 @@ void createSecondTutorial(SPACE *ui) {
 
 void createThirdTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Right! Students!!!\nThat means we need a classroom.\nClick the Class Button to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "I feel like we are forgeting something...\nRight! Students!!! This is a game school after all!\n\nThat means we need a classroom.\nClick the Class Button to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -156,7 +156,7 @@ void createThirdTutorial(SPACE *ui) {
 void createFourthTutorial(SPACE *ui) {
   CDATA_MOUSEBOX *manageBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "manage_button"), COMP_MOUSEBOX);
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "I think its about time we let our first students in.\n\nYou can check what the current status of \nincoming students is in your management screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nI think its about time we let our first students in.\n\nYou can check what the current status of \nincoming students is in your management screen.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Click the Management Screen Button to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
@@ -166,9 +166,18 @@ void createFourthTutorial(SPACE *ui) {
 
 void createFifthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Here you can manage various attributes of your school!\nGo wild!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Enjoy the rest of the game!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Here you can manage various attributes of your school!\n\nRequired GPA and Tuition effect the number of incoming students.\n\n");
+  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nThats all ive got for you. Good luck on your new school!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
+}
+
+void createSixthTutorial(SPACE *ui) {
+  ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "Your first students have arrived!\n\nThis means your reputation can start to change.\n When students drop out, your reputation goes down.\nBut when your students graduate your rep goes up!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by clicking their avatar on the screen.\n\nThe higher their main stat is, the more repuation you get when they graduate!\n\n");
+  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by building rooms that provide motivation boosts!\n\n The amount their stats increase is also determined by their motivation.\nSo keep that motivation high!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Well, thats all I have for you.\n\nFrom what I have heard, the best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!\n\n Good luck, and have fun!");
+  comp_tutorialTextBoxLogic_nextText(textBox);
 }

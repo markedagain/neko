@@ -17,10 +17,10 @@ typedef struct cdata_inspectionScreen_t {
 
   // STUDENT INSPECTION
   char nameBuffer[30];
-  char GPA[4];
+  char GPA[16];
   char expectedGraduationYear[30];
-  char major[14];
-  char motivation[4];
+  char major[16];
+  char motivation[16];
   ENTITY *studentName;
   ENTITY *studentMajor;
   ENTITY *studentGPA;

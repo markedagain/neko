@@ -199,7 +199,7 @@ void comp_timeManager(COMPONENT *self) {
   data.secondsPerMonth = 6;
   data.speedMultiplier = 1;
   data.paused = FALSE;
-  data.months = -1;
+  data.months = -6;
   data.currentSemester = -1;
   data.previousYear = 1988;
   data.currentYear = 1989;

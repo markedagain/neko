@@ -140,9 +140,9 @@ void comp_managementDisplay(COMPONENT *self) {
 }
 
 void comp_managementRemove(COMPONENT *self) {
-  CDATA_MANAGEMENT *data = (CDATA_MANAGEMENT *)self->data;
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  CDATA_MANAGEMENT *data = (CDATA_MANAGEMENT *)entity_getComponentData(space_getEntity(uiSpace, "manage_button"), COMP_MANAGEMENT);
   ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   LIST_NODE *node;
@@ -169,7 +169,8 @@ void comp_managementRemove(COMPONENT *self) {
   data->rep = NULL;
   entity_destroy(data->income);
   data->income = NULL;
-  space_getAllEntities(self->owner->space, "managementButton", buttons);
+  space_getAllEntities(uiSpace, "managementButton", buttons);
+  
   node = buttons->first;
   while (node) {
     entity_destroy((ENTITY *)node->data);
