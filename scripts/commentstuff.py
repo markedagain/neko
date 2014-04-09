@@ -8,6 +8,7 @@ authors = ["Adam Rezich",
            "Eduardo Gorinstein",
            "Samuel Valdez",
            "Tai Der Hui"]
+authorCount = [ 0, 0, 0, 0 ]
 
 here = os.path.abspath(os.path.dirname(sys.argv[0]))
 filesToCheck = []
@@ -26,6 +27,7 @@ for base, dirs, files in os.walk(here):
                 # get author
                 print(fileName)
                 author = input("Who is Author? 0 = Adam, 1 = Ed, 2 = Sam, 3 = DH: ")
+                authorCount[int(author)] += 1
                 
                 # open file and read in all lines
                 fileNameAndPath = (base + '/' + fileName)
@@ -71,3 +73,9 @@ file = open("errors.txt", 'wt')
 for name in filesToCheck:
     file.write(name)
 file.close()
+
+# print to screen the total number of files each person wrote
+print("Adam: " + str(authorCount[0]) + '\n')
+print("Ed: " + str(authorCount[1]) + '\n')
+print("Sam: " + str(authorCount[2]) + '\n')
+print("DH: " + str(authorCount[3]) + '\n')
