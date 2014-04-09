@@ -156,7 +156,7 @@ void createThirdTutorial(SPACE *ui) {
 void createFourthTutorial(SPACE *ui) {
   CDATA_MOUSEBOX *manageBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "manage_button"), COMP_MOUSEBOX);
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nI think its about time we let our first students in.\n\nYou can check what the current status of \nincoming students is in your management screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nI think its about time we let our first students in.\n\nYou can check what the current status of\nincoming students is in your management screen.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Click the Management Screen Button to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
@@ -175,10 +175,10 @@ void createFifthTutorial(SPACE *ui) {
 
 void createSixthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Your first students have arrived!\n\nThis means your reputation can start to change.\n When students drop out, your reputation goes down.\nBut when your students graduate your rep goes up!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by clicking their avatar on the screen.\n\nThe higher their main stat is, the more repuation you get when they graduate!\n\n");
-  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by building rooms that provide motivation boosts!\n\n The amount their stats increase is also determined by their motivation.\nSo keep that motivation high!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Well, thats all I have for you.\n\nFrom what I have heard, the best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!\n\n Good luck, and have fun!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Your first students have arrived!\n\nThis means your reputation can start to change.\nWhen students drop out, your reputation goes down.\nBut when your students graduate your rep goes up!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by\nclicking their avatar on the screen.\n\nThe higher their main stat is, the more repuation\nyou get when they graduate!\n\n");
+  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by\nbuilding rooms that provide motivation boosts!\n\nThe amount their stats increase is\nalso determined by their motivation.\nSo keep that motivation high!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Well, thats all I have for you.\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!\n\nGood luck, and have fun!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
