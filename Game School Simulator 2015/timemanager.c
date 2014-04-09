@@ -10,6 +10,7 @@
 #include "sprite.h"
 #include "colors.h"
 #include "playerlogic.h"
+#include "management.h"
 
 #define WIN_CONDITION 200
 #define LOSE_CONDITION -100000
@@ -40,6 +41,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   COMPONENT *schoolLogic = entity_getComponent(self->owner, COMP_SCHOOLLOGIC);
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(self->owner, COMP_SCHOOLLOGIC);
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
+  CDATA_MANAGEMENT *manageData = (CDATA_MANAGEMENT *)entity_getComponentData(space_getEntity(uiSpace, "manage_button"), COMP_MANAGEMENT);
   
   INPUT_CONTAINER *input = &self->owner->space->game->input;
   char buffer[80];
@@ -69,7 +71,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     }
   }
 
-  if(schoolData->roomList->count >= 2) {
+  // START TIME
+  if(manageData->closed > 0) {
     comData->frameCounter++;
     
     if(comData->paused)
@@ -199,12 +202,12 @@ void comp_timeManager(COMPONENT *self) {
   data.secondsPerMonth = 6;
   data.speedMultiplier = 1;
   data.paused = FALSE;
-  data.months = -6;
+  data.months = 0;
   data.currentSemester = -1;
   data.previousYear = 1988;
   data.currentYear = 1989;
   data.frameCounter = 10;
-  data.monthCounter = 0;
+  data.monthCounter = 5;
   data.semesterCounter = 2;
 
   COMPONENT_INIT(self, COMP_TIMEMANAGER, data);

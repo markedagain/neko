@@ -157,6 +157,9 @@ void comp_managementRemove(COMPONENT *self) {
 
   newsFeedBox->active = true;
 
+  if(data->closed == 0)
+    data->closed = 1;
+
   //entity_destroy(data->gpaTitle);
   //data->gpaTitle = NULL;
   //entity_destroy(data->tuitionTitle);

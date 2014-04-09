@@ -23,6 +23,7 @@ typedef struct{
   int currReputation;
   int expectedIncome;
   float currMinGpa;
+  bool closed;
   ENTITY *gpa;
   ENTITY *tuition;
   ENTITY *rep;
