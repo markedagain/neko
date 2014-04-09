@@ -204,6 +204,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
       --comData->reputation;
+      ++(comData->numDropouts);
       continue;
     }
 
@@ -217,6 +218,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       entity_destroy(list_remove(comData->students, studentData->listNodePtr));
       ++dropCount;
       --comData->reputation;
+      ++(comData->numDropouts);
       continue;
     }
   }
@@ -269,8 +271,10 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
-    if(studentData->semesterStarted == timeData->currentSemester - 7 && !studentData->graduated)
+    if(studentData->semesterStarted == timeData->currentSemester - 7 && !studentData->graduated) {
       comData->expectedGraduates++;
+      ++(comData->numGraduates);
+    }
   }
 }
 
@@ -488,9 +492,10 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   list_insert_end(comData->roomList, newRoom); //Add newRoom to the rooms list
   comData->rooms.coord[floorToUse][colToUse] = newRoom; // Construct Room
   comData->roomConstructed = TRUE;
-  comData->slotsUsed += roomSize;
-  if (roomType != ROOMTYPE_LOBBY)
+  if (roomType != ROOMTYPE_LOBBY) {
+    comData->slotsUsed += roomSize;
     ++comData->roomCount;
+  }
 
   // CREATE ACTOR
   switch (roomSize) {

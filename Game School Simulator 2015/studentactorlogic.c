@@ -337,7 +337,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
         trans->translation.x += data->velocity;
 
         // once i'm at the door, fadeout
-        if (fabsf(trans->translation.x - data->origin) <= 0.1) {
+        if (fabsf(trans->translation.x - data->origin) <= 0.5f) {
           data->outerState = OS_FADEOUT;
           data->innerState = IS_ENTER;
         }
@@ -363,7 +363,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
       }
       break;
 
-    // on enter
+    // on update
     case IS_UPDATE:
       {
         COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
@@ -383,6 +383,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
       
         //when the student fades out, remove him from the drawnStudents list
         list_remove(managerData->drawnStudents, comp_studentManagerLogic_findStudent(managerLogic, (ENTITY *)self->owner, FT_ACTOR));
+        --(managerData->displayCurrent);
         entity_destroy(self->owner);
       }
       break;
