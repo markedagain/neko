@@ -184,6 +184,11 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentData->designIncrease = 0;
     studentData->artIncrease = 0;
 
+    if(studentData->gpa > 4.0)
+    {
+      printf("hi");
+    }
+
     // Life
     studentData->lifeModifier = randomIntRange(lowValue, highValue);
     studentData->motivation += studentData->lifeModifier;
