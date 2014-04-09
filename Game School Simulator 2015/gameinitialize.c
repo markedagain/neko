@@ -193,7 +193,7 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -180, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "speedButton", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SPEED;
-  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/play";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/speed_slow";
   
   /* custom build button
   vec3_set(&position, 0, 0, 0);

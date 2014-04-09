@@ -149,7 +149,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     }
   }
 
-
+  
 }
 
 void comp_timeManager_pause(COMPONENT *ptr) {
