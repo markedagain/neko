@@ -22,7 +22,7 @@ typedef struct cdata_transform_t {
   } world;
 } CDATA_TRANSFORM;
 
-void comp_transform_logicUpdate(COMPONENT *, void *);
+void comp_transform_frameUpdate(COMPONENT *, void *);
 void comp_transform_destroy(COMPONENT *, void *);
 
 NEKO_API void comp_transform(COMPONENT *);
