@@ -14,7 +14,8 @@ typedef enum {
   GM_BUILD,
   GM_LOSE,
   GM_WIN,
-  GM_PLAY
+  GM_PLAY,
+  GM_PAUSE
 } GMODE;
 
 

@@ -35,7 +35,12 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = game->config.screen.width;
   sysInitInfo.mWinHeight      = game->config.screen.height;
+#ifdef _DEBUG
   sysInitInfo.mCreateConsole    = 1;
+#endif
+#ifndef _DEBUG
+  sysInitInfo.mCreateConsole = 0;
+#endif
   sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS - 1; // -1 to make Alpha not be dumb (?)
   sysInitInfo.mpWinCallBack    = __game_processWindow;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
@@ -73,9 +78,11 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysSetWindowTitle(NEKO_GAMETITLE);
   game_resize(game, game->config.screen.width, game->config.screen.height, game->config.screen.full);
   
+#ifdef _DEBUG
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
+#endif
 
   AESysReset();
   srand((unsigned int)time(NULL));
@@ -198,8 +205,12 @@ bool game_loop(GAME *game) {
   GetClientRect(AESysGetWindowHandle(), &clientRect);
   GetCursorPos(&cursorPos);
   ScreenToClient(AESysGetWindowHandle(), &cursorPos);
-  if (cursorPos.x >= 0 && cursorPos.x <= clientRect.right && cursorPos.y >= 0 && cursorPos.y <= clientRect.bottom)
+  if (cursorPos.x >= 0 && cursorPos.x <= clientRect.right && cursorPos.y >= 0 && cursorPos.y <= clientRect.bottom) {
     SetCursor(NULL);
+    ShowCursor(FALSE);
+  }
+  /*else
+    ShowCursor(TRUE);*/
   game->systems.time.elapsedFrames++;
   stopwatch_stop(&game->systems.time.secondsStopwatch);
   if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {
