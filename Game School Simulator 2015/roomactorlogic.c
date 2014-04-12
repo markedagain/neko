@@ -175,6 +175,8 @@ static void landing_update(ACTION *action, double dt) {
 static void landing_onEnd(ACTION *action) {
   int choice = randomIntRange(1,2);
   COMPONENT *self = (COMPONENT *)action->data;
+  CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
+  CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
 
   switch (choice) {
   case 1:
@@ -184,6 +186,7 @@ static void landing_onEnd(ACTION *action) {
     sound_playSound(&self->owner->space->game->systems.sound, "roombuild2");
     break;
   }
+  trans->translation.y = data->targetY;
 }
 
 
