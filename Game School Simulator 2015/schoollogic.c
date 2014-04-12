@@ -519,14 +519,23 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
-        sprite->source = "rooms/lobby";
+      if(comData->rooms.coord[1][7] == NULL) {
+        sprite->source = "rooms/lobby1";
         comData->roomFlag[ROOMTYPE_CLASS] = 1;
-        break;
+      }
+      else if(comData->rooms.coord[0][7] == NULL)
+        sprite->source = "rooms/lobby2";
+      else{
+        sprite->source = "rooms/lobby3";
+        comData->roomFlag[ROOMTYPE_LOBBY] = 2;
+      }
+
+      break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
-        comData->roomFlag[ROOMTYPE_TEAMSPACE] = 1;
-        comData->roomFlag[ROOMTYPE_LIBRARY] = 1;
-        comData->roomFlag[ROOMTYPE_OFFICES] = 1;
+      comData->roomFlag[ROOMTYPE_TEAMSPACE] = 1;
+      comData->roomFlag[ROOMTYPE_LIBRARY] = 1;
+      comData->roomFlag[ROOMTYPE_OFFICES] = 1;
       break;
     case ROOMTYPE_LIBRARY:
       sprite->source = "rooms/library";
