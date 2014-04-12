@@ -52,7 +52,6 @@ typedef struct cdata_schoolLogic_t {
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
-void comp_schoolLogic_frameUpdate(COMPONENT *, void *);
 void comp_schoolLogic_initialize(COMPONENT *self, void *event);
 void comp_schoolLogic_destroy(COMPONENT *, void *);
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
