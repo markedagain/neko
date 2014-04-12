@@ -29,8 +29,6 @@ void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-
-
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
