@@ -29,8 +29,6 @@ void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
 
 void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-
-
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
@@ -183,6 +181,11 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentData->techIncrease = 0;
     studentData->designIncrease = 0;
     studentData->artIncrease = 0;
+
+    if(studentData->gpa > 4.0)
+    {
+      printf("hi");
+    }
 
     // Life
     studentData->lifeModifier = randomIntRange(lowValue, highValue);
@@ -521,14 +524,23 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
-        sprite->source = "rooms/lobby";
+      if(comData->rooms.coord[1][7] == NULL) {
+        sprite->source = "rooms/lobby1";
         comData->roomFlag[ROOMTYPE_CLASS] = 1;
-        break;
+      }
+      else if(comData->rooms.coord[0][7] == NULL)
+        sprite->source = "rooms/lobby2";
+      else{
+        sprite->source = "rooms/lobby3";
+        comData->roomFlag[ROOMTYPE_LOBBY] = 2;
+      }
+
+      break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
-        comData->roomFlag[ROOMTYPE_TEAMSPACE] = 1;
-        comData->roomFlag[ROOMTYPE_LIBRARY] = 1;
-        comData->roomFlag[ROOMTYPE_OFFICES] = 1;
+      comData->roomFlag[ROOMTYPE_TEAMSPACE] = 1;
+      comData->roomFlag[ROOMTYPE_LIBRARY] = 1;
+      comData->roomFlag[ROOMTYPE_OFFICES] = 1;
       break;
     case ROOMTYPE_LIBRARY:
       sprite->source = "rooms/library";

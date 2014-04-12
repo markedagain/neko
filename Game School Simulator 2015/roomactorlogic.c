@@ -23,6 +23,8 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_ACTORLOGIC *comData = (CDATA_ACTORLOGIC *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *schoolLogic = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
 
   al_update(&comData->actions, updateEvent->dt);
 
@@ -108,7 +110,7 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   if(fg->systems.camera.transform.scale.x > 0.65f && comData->zoomedOut == TRUE) {
      switch (comData->type) {
     case ROOMTYPE_LOBBY:
-        sprite->source = "rooms/lobby";
+        sprite->source = "rooms/lobby1";
         break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";

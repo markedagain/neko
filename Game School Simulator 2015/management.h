@@ -27,6 +27,7 @@ typedef struct{
   int numDropouts;
   int numGraduates;
   float currMinGpa;
+  bool closed;
   ENTITY *gpa;
   ENTITY *tuition;
   ENTITY *rep;

@@ -165,6 +165,9 @@ void comp_managementRemove(COMPONENT *self) {
 
   newsFeedBox->active = true;
 
+  if(data->closed == 0)
+    data->closed = 1;
+    
   entity_destroy(data->gpa);
   data->gpa = NULL;
   entity_destroy(data->tuition);

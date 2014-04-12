@@ -433,6 +433,9 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   int roomSize = comp_schoolLogic_getRoomSize(toBuild);
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   LIST_NODE *pNode;
+  SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_SCHOOLLOGIC *schoolLogic = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
   float squareSize = 80.0f;
 
   UI_button_destroyGhostRooms(self);
@@ -471,7 +474,12 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
     switch (toBuild) {
       case ROOMTYPE_LOBBY:
-        sprite->source = "rooms/lobby";
+        if(schoolLogic->rooms.coord[2][7] == NULL)
+          sprite->source = "rooms/lobby1";
+        else if(schoolLogic->rooms.coord[1][7] == NULL)
+          sprite->source = "rooms/lobby2";
+        else
+          sprite->source = "rooms/lobby3";
         break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
