@@ -73,9 +73,11 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   AESysSetWindowTitle(NEKO_GAMETITLE);
   game_resize(game, game->config.screen.width, game->config.screen.height, game->config.screen.full);
   
+#ifdef _DEBUG
   AllocConsole();
   freopen("CONOUT$", "w", stdout);
   printf("Neko Engine loaded more or less successfully!\n");
+#endif
 
   AESysReset();
   srand((unsigned int)time(NULL));
