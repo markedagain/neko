@@ -204,6 +204,7 @@ void startNewGame(GAME *game) {
   vec2_set(&dimensions, 106, 195);
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
 
-  vec3_set(&position, -40, 176, 0);
-  genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students")
+  // Create Student Pop Sprite
+  vec3_set(&position, -50, 168, 0);
+  genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
 }

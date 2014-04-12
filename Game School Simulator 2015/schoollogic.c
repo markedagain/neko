@@ -65,7 +65,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Rep on screen
     // Create if first time
   if (!comData->reputationUI) {
-    vec3_set(&position, -100, 176, 0);
+    vec3_set(&position, -110, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "Rep: %i", comData->reputation);
     comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
@@ -77,7 +77,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Student Pop on screen
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -40, 176, 0);
+    vec3_set(&position, -20, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
     comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
