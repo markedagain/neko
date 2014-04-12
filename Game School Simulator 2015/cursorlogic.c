@@ -12,7 +12,7 @@
 
 #define GROUND_HEIGHT 24
 
-void comp_cursorLogic_logicUpdate(COMPONENT *self, void *event) {
+void comp_cursorLogic_frameUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   INPUT_CONTAINER *input = &self->owner->space->game->input;
@@ -31,7 +31,7 @@ void comp_cursorLogic(COMPONENT *self) {
   COMPONENT_INIT_NULL(self, COMP_CURSORLOGIC);
   component_depend(self, COMP_TRANSFORM);
   component_depend(self, COMP_SPRITE);
-  self->events.logicUpdate = comp_cursorLogic_logicUpdate;
+  self->events.frameUpdate = comp_cursorLogic_frameUpdate;
 }
 
 void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE toBuild) {

@@ -13,6 +13,8 @@ typedef struct {
   float timer;
   LIST *drawnStudents;
   int currID;
+  int displayTotal;
+  int displayCurrent;
 } CDATA_STUDENTMANAGER;
 
 typedef struct {
@@ -36,5 +38,6 @@ LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, 
 void comp_studentManagerLogic_statGainText(COMPONENT *studentManagerLogic);
 void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENTITY *student);
 void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTITY *student);
+void comp_studentManagerLogic_updateDisplayFraction(COMPONENT *self);
 
 #endif

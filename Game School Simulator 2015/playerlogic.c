@@ -159,12 +159,12 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       mg->systems.camera.transform.rotation += 0.2f;
       fg->systems.camera.transform.rotation += 0.2f;
     }
-    /*if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
+    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
       if (self->owner->space->game->systems.time.scale)
         self->owner->space->game->systems.time.scale = 0;
       else
         self->owner->space->game->systems.time.scale = 1.0;
-    }*/
+    }
 
     if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {
       CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);

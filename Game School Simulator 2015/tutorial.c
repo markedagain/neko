@@ -102,15 +102,16 @@ void tutorial_enableBuildButtons(SPACE *ui) {
 ENTITY *tutorial_createTextBox(SPACE *ui) {
   VEC2 dimensions = { 640.0f, 360.0f };
   VEC3 position = { 0 };
+  SPACE *tutorial = game_getSpace(ui->game, "tutorial");
   ENTITY *created = createCustomButton(NULL, NULL, tutorialBackground_onPressed, NULL, NULL,
-                           ui, &position, "textboxbackground",
+                           tutorial, &position, "textboxbackground",
                            640.0f, 360.0f,
                            false, NULL, NULL, &colors[C_GRAY_DARK],
                            false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-  CDATA_SPRITE *sprite = entity_getComponentData(created, COMP_SPRITE);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
   sprite->color.a = 0.75f;
   vec3_set(&position, 0, 80.0f, 0);
-  return space_addEntityAtPosition(ui, arch_tutorialTextBox, "textBox", &position);
+  return space_addEntityAtPosition(tutorial, arch_tutorialTextBox, "textBox", &position);
 }
 
 void tutorialBackground_onPressed(COMPONENT *self) {

@@ -58,6 +58,7 @@ typedef struct game_t {
       unsigned int height;
       bool full;
     } screen;
+    bool tutorial;
   } config;
   bool initialized;
   bool resized;

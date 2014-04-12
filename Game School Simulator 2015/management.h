@@ -16,12 +16,16 @@ typedef struct{
   char studentIncBuffer[40];
   char reputationBuffer[40];
   char incomeBuffer[40];
+  char graduateBuffer[10];
+  char dropoutBuffer[10];
   int currStudentInc;
   int currUpkeep;
   int currTuition;
   int currStudentPop;
   int currReputation;
   int expectedIncome;
+  int numDropouts;
+  int numGraduates;
   float currMinGpa;
   bool closed;
   ENTITY *gpa;
@@ -35,6 +39,8 @@ typedef struct{
   ENTITY *studentPop;
   ENTITY *studentInc;
   ENTITY *income;
+  ENTITY *grads;
+  ENTITY *dropoutsText;
 
   bool triggered;
   bool alreadyActivated;

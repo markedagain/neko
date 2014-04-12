@@ -62,7 +62,7 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   // Student Population
   if (comData->currentStudents != managementData->currStudentPop) {
     managementData->currStudentPop = comData->currentStudents;
-    sprintf(managementData->studentPopBuffer, "%i / %i", comData->currentStudents, comData->studentCapacity);
+    sprintf(managementData->studentPopBuffer, "%i", comData->currentStudents);
     genericText_setText(managementData->studentPop, managementData->studentPopBuffer);
   }
 
@@ -78,6 +78,20 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     managementData->currReputation = comData->reputation;
     sprintf(managementData->reputationBuffer, "%i", comData->reputation);
     genericText_setText(managementData->rep, managementData->reputationBuffer);
+  }
+
+  // Graduates
+  if (comData->numGraduates != managementData->numGraduates) {
+    managementData->numGraduates = comData->numGraduates;
+    sprintf(managementData->graduateBuffer, "%i", comData->numGraduates);
+    genericText_setText(managementData->grads, managementData->graduateBuffer);
+  }
+
+  // Dropouts
+  if (comData->numDropouts != managementData->numDropouts) {
+    managementData->numDropouts = comData->numDropouts;
+    sprintf(managementData->dropoutBuffer, "%i", comData->numDropouts);
+    genericText_setText(managementData->dropoutsText, managementData->dropoutBuffer);
   }
 }
 

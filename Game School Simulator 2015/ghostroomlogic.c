@@ -7,6 +7,7 @@
 #include "playerlogic.h"
 #include "cursorlogic.h"
 #include "tutorial.h"
+#include "UI_button.h"
 
 // fix all mboxes to handle things
 void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
@@ -27,20 +28,22 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
     LIST *ghostrooms = list_create();
     LIST_NODE *pNode;
+    COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
 
     comp_schoolLogic_constructRoom(self, gData->roomType, gData->roomSize, gData->point.y, gData->point.x);
+    comp_UI_button_cancelBuildMode(buildButton);
 
-#if TUTORIAL
-    if (playerData->lobbyBuilt == false) {
-      createThirdTutorial(ui);
-      playerData->lobbyBuilt = true;
-    }
+    if (self->owner->space->game->config.tutorial) {
+      if (playerData->lobbyBuilt == false) {
+        createThirdTutorial(ui);
+        playerData->lobbyBuilt = true;
+      }
 
-    else if (playerData->classroomBuilt == false) {
-      createFourthTutorial(ui);
-      playerData->classroomBuilt = true;
+      else if (playerData->classroomBuilt == false) {
+        createFourthTutorial(ui);
+        playerData->classroomBuilt = true;
+      }
     }
-#endif
 
     space_getAllEntities(self->owner->space, "ghostRoom", ghostrooms);
     pNode = ghostrooms->first;

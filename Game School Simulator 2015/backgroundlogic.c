@@ -8,6 +8,7 @@
 #include "sound.h"
 #include "inspectionscreenlogic.h"
 #include "cloud.h"
+#include "UI_button.h"
 
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
   //CDATA_BACKGROUNDLOGIC *comData = (CDATA_BACKGROUNDLOGIC *)self->data;
@@ -22,6 +23,7 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     VEC3 pos = { 0 };
     POINT mousePos;
     VEC4 col = { 0.0f, 0.0f, 0.0f, 1.0f };
+    COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
     space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
     pos.x = (float)mousePos.x;
     pos.y = (float)mousePos.y;
@@ -33,6 +35,8 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
 
     if (managementData->manageWindow)
       comp_managementRemove(self);
+
+    comp_UI_button_cancelBuildMode(buildButton);
 
   }
 

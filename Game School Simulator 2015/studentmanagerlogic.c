@@ -9,17 +9,20 @@
 #include "multisprite.h"
 #include "genericsprite.h"
 #include "poptext.h"
-#include <stdio.h>
 
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 1.0f
 #define MAX_STUDENTS 1000
 #define STUDENT_LIFE 4.0f
 #define ROOM_X_OFFSET -25.0f
+#define DISPLAY_FRACTION 10
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
+
+  if (data->displayCurrent >= data->displayTotal)
+    return;
 
   data->timer += (float)updateEvent->dt;
   if(data->timer > SPAWN_TIMER) {
@@ -98,6 +101,9 @@ void studentManager_spawnStudent(COMPONENT *self) {
     studentManager_setStudent(studentActor, room, &pos, studentData, (ENTITY *)(studentPtr->data), ID);
   }
 
+  // increment the total number of displayed students
+  ++(data->displayCurrent);
+
   studentManager_deleteList(roomList);
   list_destroy(studentList);
 }
@@ -162,6 +168,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
 void comp_studentManagerLogic(COMPONENT *self) {
   CDATA_STUDENTMANAGER data = { 0 };
+  data.displayTotal = 1;
   data.drawnStudents = list_create();
   COMPONENT_INIT(self, COMP_STUDENTMANAGERLOGIC, data);
   self->events.logicUpdate = comp_studentManagerLogic_logicUpdate;
@@ -242,7 +249,8 @@ LIST_NODE *comp_studentManagerLogic_findStudent(COMPONENT *studentManagerLogic, 
 
 void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENTITY *student) {
   LIST_NODE *graduateNode = comp_studentManagerLogic_findStudent(studentManagerLogic, student, FT_SIM);
-  
+
+  // if the graduate is on screen
   if (graduateNode) {
     VEC3 position = { 0 };
     VEC4 color = { 0, 0, 0, 1.0f };
@@ -260,6 +268,7 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
     actorData->innerState = IS_ENTER;
     actorData->stateTimer = 0;
     list_remove(data->drawnStudents, graduateNode);
+    --(data->displayCurrent);
   }
 }
 
@@ -283,13 +292,20 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
     actorData->innerState = IS_ENTER;
     actorData->stateTimer = 0;
     list_remove(data->drawnStudents, dropoutNode);
+    --(data->displayCurrent);
   }
 }
 
-/*
-// if the student drops out
-    if (studentData->gpa < schoolData->minGpa || studentData->motivation == 0) {
-      strcpy(buffer, "I'm dropping out!");
-      actorData->fadeOut = true;
-      actorData->timer = 0.0f;
-    }*/
+void comp_studentManagerLogic_updateDisplayFraction(COMPONENT *self) {
+  SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  int numToDisplay = schoolData->currentStudents / DISPLAY_FRACTION * schoolData->slotsUsed;
+  CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
+
+  if (numToDisplay == 0)
+    data->displayTotal = 0;
+
+  else
+    data->displayTotal = numToDisplay;
+
+}

@@ -43,9 +43,10 @@ void startGame(GAME *game) {
   (game_getSpace(game, "mg"))->active = true;
   (game_getSpace(game, "fg"))->active = true;
   sound_playSong(&game->systems.sound, "03");
-#if TUTORIAL
-  createFirstTutorial(game_getSpace(game, "ui"));
-#endif
+
+  if (game->config.tutorial)
+    createFirstTutorial(game_getSpace(game, "ui"));
+
   player = space_getEntity(game_getSpace(game,"ui"), "player");
   playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   playerData->currentMode = GM_PLAY;
@@ -53,13 +54,17 @@ void startGame(GAME *game) {
 
 void createSpaces(GAME *game) {
   SPACE *simSpace = game_addSpace(game, "sim");
-  SPACE *bgSpace = game_addSpace(game, "bg");
-  SPACE *mgSpace = game_addSpace(game, "mg");
-  SPACE *fgSpace = game_addSpace(game, "fg");
-  SPACE *uiSpace = game_addSpace(game, "ui");
-  SPACE *menu = game_addSpace(game, "menu");
-  SPACE *splashSpace = game_addSpace(game, "splash");
-  SPACE *cursorSpace = game_addSpace(game, "cursor");
+  game_addSpace(game, "bg");
+  game_addSpace(game, "mg");
+  game_addSpace(game, "fg");
+  game_addSpace(game, "ui");
+  
+  if (game->config.tutorial)
+    game_addSpace(game, "tutorial");
+
+  game_addSpace(game, "menu");
+  game_addSpace(game, "splash");
+  game_addSpace(game, "cursor");
 
   simSpace->visible = false;
 }
@@ -83,7 +88,6 @@ void initializeEssentialSpaces(GAME *game) {
   /*************** MENU SPACE ****************/
   vec2_set(&dimensions, 640.0f, 360.0f);
   genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], NULL);
-  //genericSprite_create(menu, &position, "logo", "logo");
 
   /************** SPLASH SPACE ***************/
   // add splash screen
@@ -187,7 +191,7 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -209, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pauseButton", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
-  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/pause";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/play";
 
   // Speed Button
   vec3_set(&position, -180, 166, 0);
@@ -195,49 +199,8 @@ void startNewGame(GAME *game) {
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SPEED;
   ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/speed_slow";
   
-  /* custom build button
-  vec3_set(&position, 0, 0, 0);
-  createCustomButton(NULL, custom_onHover, NULL, custom_onExit, NULL, 
-                    uiSpace, &position, "test", 
-                    1.0f, 1.0f, 
-                    true, "rooms/build", &color, 
-                    false, "i'm a custom button dawg", "fonts/gothic/12", 
-                    &color2, TEXTALIGN_LEFT, TEXTALIGN_LEFT);*/
-
-  // create build button
-  //vec3_set(&position, 0, -180, 0);
-  //space_addEntityAtPosition(uiSpace, arch_uibuild, "build_button", &position);
-  /*{
-    CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE);
-    sprite->source = "buttons/build";
-  }*/
-  // sets the button type to build
-  /*
-  // create pause button
-  vec3_set(&position, -240, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pause_button", &position);
-  // sets the button type to pause
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
-
-  // create fastForward button
-  vec3_set(&position, -180, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "slow_button", &position);
-  // sets the button type to fastForward
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SLOWDOWN;
-
-  // create slowDown button
-  vec3_set(&position, -120, 180, 0);
-  ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "fast_button", &position);
-  // sets the button type to slowDown
-  ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_FASTFORWARD;
-  */
-  // create manage button
-  //vec3_set(&position, 0, 180, 0);
-  //space_addEntityAtPosition(uiSpace, arch_uimanage, "manage_button", &position);
-
   // create inspection screen
   vec3_set(&position, -267, 65, 0);
   vec2_set(&dimensions, 106, 195);
-  //genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_NAVY_DARK], "inspectionBox");
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
 }

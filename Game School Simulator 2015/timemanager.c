@@ -135,10 +135,8 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
         // Semesterly functions //
         comp_schoolLogic_updateDataSemester(schoolLogic, schoolData);
         
-        // create pop text above student's heads
-        //comp_studentManagerLogic_statGainText(studentManagerLogic);
-        //sprintf(message, pushStrings[STRINGS_SEMESTER], comData->currentSemester);
-        //comp_newsfeedlogic_push(self, message);
+        // update number of students to display
+        comp_studentManagerLogic_updateDisplayFraction(studentManagerLogic);
       }
     }
 

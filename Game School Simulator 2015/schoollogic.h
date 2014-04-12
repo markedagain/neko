@@ -44,6 +44,8 @@ typedef struct cdata_schoolLogic_t {
   ENTITY *reputationUI;
   char buffer[20];
   int roomFlag[13];
+  int numGraduates;
+  int numDropouts;
   union {
     ENTITY *coord[MAX_FLOORS][MAX_ROOMS_PER_FLOOR];
   } rooms;

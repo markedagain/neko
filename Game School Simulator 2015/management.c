@@ -42,12 +42,12 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     comp_managementDisplay(self);
 
-#if TUTORIAL
-    if (!data->alreadyActivated) {
-      createFifthTutorial(uiSpace);
-      data->alreadyActivated = true;
+    if (self->owner->space->game->config.tutorial) {
+      if (!data->alreadyActivated) {
+        createFifthTutorial(uiSpace);
+        data->alreadyActivated = true;
+      }
     }
-#endif
   }
 
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
@@ -89,7 +89,7 @@ void comp_managementDisplay(COMPONENT *self) {
   data->currCosts = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->costsBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Student Population
-  vec3_set(&position, -70, -30, 0);
+  vec3_set(&position, -70, -31, 0);
   data->studentPop = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->studentPopBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Incoming Students
@@ -104,6 +104,14 @@ void comp_managementDisplay(COMPONENT *self) {
   vec3_set(&position, 100, -40, 0);
   data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->incomeBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
+  // Graduates
+  vec3_set(&position, -70, -59, 0);
+  data->grads = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->graduateBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+
+  // Dropouts
+  vec3_set(&position, -70, -71, 0);
+  data->dropoutsText = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->dropoutBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+
   // Increase GPA button
   vec4_set(&color, 0.75f, 0.75f, 0.75f, 1.0f);
   vec3_set(&position, 45, 30, 0);
@@ -159,11 +167,7 @@ void comp_managementRemove(COMPONENT *self) {
 
   if(data->closed == 0)
     data->closed = 1;
-
-  //entity_destroy(data->gpaTitle);
-  //data->gpaTitle = NULL;
-  //entity_destroy(data->tuitionTitle);
-  //data->tuitionTitle = NULL;
+    
   entity_destroy(data->gpa);
   data->gpa = NULL;
   entity_destroy(data->tuition);
@@ -180,6 +184,10 @@ void comp_managementRemove(COMPONENT *self) {
   data->rep = NULL;
   entity_destroy(data->income);
   data->income = NULL;
+  entity_destroy(data->grads);
+  data->grads = NULL;
+  entity_destroy(data->dropoutsText);
+  data->dropoutsText = NULL;
   space_getAllEntities(uiSpace, "managementButton", buttons);
   
   node = buttons->first;
