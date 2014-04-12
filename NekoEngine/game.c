@@ -319,6 +319,7 @@ void game_configLoad(GAME *game) {
     game->config.screen.width = atoi((char *)vector_get(&lines, 0));
     game->config.screen.height = atoi((char *)vector_get(&lines, 1));
     game->config.screen.full = atoi((char *)vector_get(&lines, 2));
+    game->config.tutorial = atoi((char *)vector_get(&lines, 3));
   }
   vector_destroy(&lines);
 }
@@ -332,6 +333,7 @@ void game_configSave(GAME *game) {
     fprintf(fp, "%i\n", (int)game->config.screen.width);
     fprintf(fp, "%i\n", (int)game->config.screen.height);
     fprintf(fp, "%i\n", (int)game->config.screen.full);
+    fprintf(fp, "%i\n", (int)game->config.tutorial);
     fclose(fp);
   }
 }
@@ -340,6 +342,7 @@ void game_configDefaults(GAME *game) {
   game->config.screen.width = 640;
   game->config.screen.height = 360;
   game->config.screen.full = true;
+  game->config.tutorial = true;
 }
 
 void __game_resize(GAME *game) {

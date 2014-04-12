@@ -10,7 +10,7 @@
 
 #define COMP_CURSORLOGIC HASH("COMP_CURSORLOGIC")
 
-void comp_cursorLogic_logicUpdate(COMPONENT *, void *);
+void comp_cursorLogic_frameUpdate(COMPONENT *, void *);
 void comp_cursorLogic(COMPONENT *);
 void comp_cursorLogic_deleteList(LIST *buildSpaces);
 void createGhostRooms(COMPONENT *self, LIST *spots, int roomSize, ROOM_TYPE roomType);

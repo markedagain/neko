@@ -33,17 +33,17 @@ void comp_ghostRoomLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_schoolLogic_constructRoom(self, gData->roomType, gData->roomSize, gData->point.y, gData->point.x);
     comp_UI_button_cancelBuildMode(buildButton);
 
-#if TUTORIAL
-    if (playerData->lobbyBuilt == false) {
-      createThirdTutorial(ui);
-      playerData->lobbyBuilt = true;
-    }
+    if (self->owner->space->game->config.tutorial) {
+      if (playerData->lobbyBuilt == false) {
+        createThirdTutorial(ui);
+        playerData->lobbyBuilt = true;
+      }
 
-    else if (playerData->classroomBuilt == false) {
-      createFourthTutorial(ui);
-      playerData->classroomBuilt = true;
+      else if (playerData->classroomBuilt == false) {
+        createFourthTutorial(ui);
+        playerData->classroomBuilt = true;
+      }
     }
-#endif
 
     space_getAllEntities(self->owner->space, "ghostRoom", ghostrooms);
     pNode = ghostrooms->first;

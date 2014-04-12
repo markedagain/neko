@@ -4,11 +4,11 @@
 import os, sys
 
 exts = ['.c', '.h']
-authors = ["Adam Rezich",
-           "Eduardo Gorinstein",
-           "Samuel Valdez",
-           "Tai Der Hui"]
-authorCount = [ 0, 0, 0, 0 ]
+adamFiles = []
+edFiles = []
+samFiles = []
+dhFiles = []
+authors = ["Adam Rezich", "Eduardo Gorinstein", "Samuel Valdez", "Tai Der Hui"]
 
 here = os.path.abspath(os.path.dirname(sys.argv[0]))
 filesToCheck = []
@@ -27,7 +27,14 @@ for base, dirs, files in os.walk(here):
                 # get author
                 print(fileName)
                 author = input("Who is Author? 0 = Adam, 1 = Ed, 2 = Sam, 3 = DH: ")
-                authorCount[int(author)] += 1
+                if int(author) == 0 :
+                    adamFiles.append(fileName)
+                if int(author) == 1 :
+                    edFiles.append(fileName)
+                if int(author) == 2 :
+                    samFiles.append(fileName)
+                if int(author) == 3 :
+                    dhFiles.append(fileName)
                 
                 # open file and read in all lines
                 fileNameAndPath = (base + '/' + fileName)
@@ -75,7 +82,28 @@ for name in filesToCheck:
 file.close()
 
 # print to screen the total number of files each person wrote
-print("Adam: " + str(authorCount[0]) + '\n')
-print("Ed: " + str(authorCount[1]) + '\n')
-print("Sam: " + str(authorCount[2]) + '\n')
-print("DH: " + str(authorCount[3]) + '\n')
+print("Adam: " + str(len(adamFiles)) + '\n')
+print("Ed: " + str(len(edFiles)) + '\n')
+print("Sam: " + str(len(samFiles)) + '\n')
+print("DH: " + str(len(dhFiles)) + '\n')
+
+# write the filenames to different files
+file = open("adam.txt", 'wt')
+for item in adamFiles:
+    file.write(item)
+file.close()
+
+file = open("ed.txt", 'wt')
+for item in edFiles:
+    file.write(item)
+file.close()
+
+file = open("sam.txt", 'wt')
+for item in samFiles:
+    file.write(item)
+file.close()
+
+file = open("dh.txt", 'wt')
+for item in dhFiles:
+    file.write(item)
+file.close()

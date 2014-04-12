@@ -46,6 +46,7 @@ typedef struct{
   float startZoom;
   float origin;
   bool clickable;
+  bool unlocked;
   bool firstBuildClick;
   bool lobbyBuilt;
   ENTITY *text;

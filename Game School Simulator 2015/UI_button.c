@@ -47,76 +47,150 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
   if(mbox->entered) {
     if (data->text) {
-      switch(data->type){
-        case BUTTON_BUILDLOBBY:
-          sprintf(buffer, "Allows\nconstruction!\n$250,000");
-          genericText_setText(data->text, buffer);
-          break;
 
-        case BUTTON_BUILDCLASS:
-          sprintf(buffer, "Capacity +30\nAll stats +\n$100,000");
-          genericText_setText(data->text, buffer);
-          break;
+      // if it's not unlocked, make it say locked
+      if (!data->unlocked) {
+        switch(data->type){
+          case BUTTON_BUILDLOBBY:
+            sprintf(buffer, "Allows\nconstruction!\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDLIBRARY:
-          sprintf(buffer, "All stats ++\n$200,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDCLASS:
+            sprintf(buffer, "Capacity +30\nAll stats +\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDTEAMSPACE:
-          sprintf(buffer, "Motivation +++\n$300,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDLIBRARY:
+            sprintf(buffer, "All stats ++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDCAFETERIA:
-          sprintf(buffer, "Income + \nMotivation +\n$350,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDTEAMSPACE:
+            sprintf(buffer, "Motivation +++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDSTORE:
-          sprintf(buffer, "Generates income!\n$250,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDCAFETERIA:
+            sprintf(buffer, "Income + \nMotivation +\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDOFFICES:
-          sprintf(buffer, "All stats +\n100,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDSTORE:
+            sprintf(buffer, "Generates income!\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDAUDITORIUM:
-          sprintf(buffer, "Motivation +++\n$500,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDOFFICES:
+            sprintf(buffer, "All stats +\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDTUTORING:
-          sprintf(buffer, "All stats +\n$80,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDAUDITORIUM:
+            sprintf(buffer, "Motivation +++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDIT:
-          sprintf(buffer, "Tech +++\n$150,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDTUTORING:
+            sprintf(buffer, "All stats +\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDRECREATION:
-          sprintf(buffer, "Design +++\n$150,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDIT:
+            sprintf(buffer, "Tech +++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_BUILDFIGURE:
-          sprintf(buffer, "Art +++\n$150,000\n");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDRECREATION:
+            sprintf(buffer, "Design +++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        case BUTTON_ROOM_UPGRADE:
-          sprintf(buffer, "$5,000");
-          genericText_setText(data->text, buffer);
-          break;
+          case BUTTON_BUILDFIGURE:
+            sprintf(buffer, "Art +++\nLocked");
+            genericText_setText(data->text, buffer);
+            break;
 
-        default:
-          sprintf(buffer, "");
-          genericText_setText(data->text, buffer);
-          break;
+          default:
+            sprintf(buffer, "");
+            genericText_setText(data->text, buffer);
+            break;
+        }
+      }
+
+      // if it is unlocked, display price
+      else {
+        switch(data->type){
+          case BUTTON_BUILDLOBBY:
+            sprintf(buffer, "Allows\nconstruction!\n$250,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDCLASS:
+            sprintf(buffer, "Capacity +30\nAll stats +\n$100,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDLIBRARY:
+            sprintf(buffer, "All stats ++\n$200,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDTEAMSPACE:
+            sprintf(buffer, "Motivation +++\n$300,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDCAFETERIA:
+            sprintf(buffer, "Income + \nMotivation +\n$350,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDSTORE:
+            sprintf(buffer, "Generates income!\n$250,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDOFFICES:
+            sprintf(buffer, "All stats +\n$100,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDAUDITORIUM:
+            sprintf(buffer, "Motivation +++\n$500,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDTUTORING:
+            sprintf(buffer, "All stats +\n$80,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDIT:
+            sprintf(buffer, "Tech +++\n$150,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDRECREATION:
+            sprintf(buffer, "Design +++\n$150,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_BUILDFIGURE:
+            sprintf(buffer, "Art +++\n$150,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          case BUTTON_ROOM_UPGRADE:
+            sprintf(buffer, "$5,000");
+            genericText_setText(data->text, buffer);
+            break;
+
+          default:
+            sprintf(buffer, "");
+            genericText_setText(data->text, buffer);
+            break;
+        }
       }
     }
   }
@@ -216,12 +290,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_BUILD:
       {
         comp_UI_button_enterBuildMode(self);
-#if TUTORIAL
-        if (!data->firstBuildClick) {
-          createFirstTutorialPartTwo(self->owner->space);
-          data->firstBuildClick = true;
+        if (self->owner->space->game->config.tutorial) {
+          if (!data->firstBuildClick) {
+            createFirstTutorialPartTwo(self->owner->space);
+            data->firstBuildClick = true;
+          }
         }
-#endif
         break;
       }
 
@@ -232,12 +306,14 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_BUILDLOBBY:
         UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
-#if TUTORIAL
-        if (data->lobbyBuilt == false) {
-          createSecondTutorial(self->owner->space);
-          data->lobbyBuilt = true;
+
+        if (self->owner->space->game->config.tutorial) {
+          if (data->lobbyBuilt == false) {
+            createSecondTutorial(self->owner->space);
+            data->lobbyBuilt = true;
+          }
         }
-#endif
+
         break;
 
       case BUTTON_BUILDCLASS:
@@ -639,18 +715,32 @@ void UI_button_updateBuildButtons(SPACE *ui) {
 
   while (node) {
     buttonData = (CDATA_UI_BUTTON *)entity_getComponentData((ENTITY *)node->data, COMP_UI_BUTTON);
-    if (schoolData->money < (ROOM_TYPE)comp_roomLogic_getRoomCost(buttonData->type) || schoolData->roomFlag[buttonData->type] == 0) {
+    // if still locked
+    if (schoolData->roomFlag[buttonData->type] == 0) {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)node->data, COMP_MOUSEBOX);
       CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
       buttonData->clickable = false;
-      buttonSprite->color.r = 0.4f;
-      buttonSprite->color.g = 0.4f;
-      buttonSprite->color.b = 0.4f;
+      buttonSprite->color.r = 0.2f;
+      buttonSprite->color.g = 0.2f;
+      buttonSprite->color.b = 0.2f;
     }
+    
+    // if not enough money
+    else if (schoolData->money < (ROOM_TYPE)comp_roomLogic_getRoomCost(buttonData->type)) {
+      CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)node->data, COMP_MOUSEBOX);
+      CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
+      buttonData->clickable = false;
+      buttonData->unlocked = true;
+      buttonSprite->color.r = 0.5f;
+      buttonSprite->color.g = 0.5f;
+      buttonSprite->color.b = 0.5f;
+    }
+    
     else {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(node->data, COMP_MOUSEBOX);
       CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
       buttonData->clickable = true;
+      buttonData->unlocked = true;
       buttonSprite->color.r = 1.0f;
       buttonSprite->color.g = 1.0f;
       buttonSprite->color.b = 1.0f;
@@ -741,11 +831,13 @@ void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
 
 void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
-  data->type = BUTTON_BUILD;
-  comp_UI_button_panUp(buildButton);
-  __UI_button_cancelBuildMode(buildButton);
-  UI_button_destroyGhostRooms(buildButton);
-  sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
+  if (data->type == BUTTON_CANCEL) {
+    data->type = BUTTON_BUILD;
+    comp_UI_button_panUp(buildButton);
+    __UI_button_cancelBuildMode(buildButton);
+    UI_button_destroyGhostRooms(buildButton);
+    sound_playSound(&buildButton->owner->space->game->systems.sound, "negative");
+  }
 }
 
 void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {

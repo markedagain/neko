@@ -42,12 +42,12 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     comp_managementDisplay(self);
 
-#if TUTORIAL
-    if (!data->alreadyActivated) {
-      createFifthTutorial(uiSpace);
-      data->alreadyActivated = true;
+    if (self->owner->space->game->config.tutorial) {
+      if (!data->alreadyActivated) {
+        createFifthTutorial(uiSpace);
+        data->alreadyActivated = true;
+      }
     }
-#endif
   }
 
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
