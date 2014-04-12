@@ -256,7 +256,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   // Start tutorial 6 if first semester
   if(timeData->currentSemester == 0) {
     SPACE *uiSpace = (SPACE *)game_getSpace(self->owner->space->game, "ui");
-    if (self->owner->space->game.config.tutorial)
+    if (self->owner->space->game->config.tutorial)
       createSixthTutorial(uiSpace);
   }
 
