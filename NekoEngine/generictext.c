@@ -34,7 +34,7 @@ void genericText_setText(ENTITY *entity, char *text) {
   comp_spriteText_setText(comText, text);
   node = multi->entities->first;
   while (node) {
-    comp_transform_logicUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
+    comp_transform_frameUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
     node = node->next;
   }
 

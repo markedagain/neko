@@ -9,7 +9,7 @@
 #include "event.h"
 #include "util.h"
 
-void comp_transform_logicUpdate(COMPONENT *self, void *event) {
+void comp_transform_frameUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *comData = (CDATA_TRANSFORM *)self->data;
   CDATA_TRANSFORM *parentTransform = NULL;
@@ -51,5 +51,5 @@ void comp_transform_destroy(COMPONENT *self, void *event) {
 void comp_transform(COMPONENT *self) {
   CDATA_TRANSFORM initData = { { 0, 0, 0 }, { 1, 1, 1 }, 0, { { 0, 0, 0 }, { 1, 1, 1 }, 0 } };
   COMPONENT_INIT(self, COMP_TRANSFORM, initData);
-  self->events.logicUpdate = comp_transform_logicUpdate;
+  self->events.frameUpdate = comp_transform_frameUpdate;
 }

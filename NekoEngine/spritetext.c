@@ -13,9 +13,9 @@ void comp_spriteText_initialize(COMPONENT *self, void *event) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_MULTISPRITE *multi = (CDATA_MULTISPRITE *)entity_getComponentData(self->owner, COMP_MULTISPRITE);
   LIST_NODE *node = multi->entities->first;
-  comp_transform_logicUpdate(entity_getComponent(self->owner, COMP_TRANSFORM), NULL);
+  comp_transform_frameUpdate(entity_getComponent(self->owner, COMP_TRANSFORM), NULL);
   while (node) {
-    comp_transform_logicUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
+    comp_transform_frameUpdate(entity_getComponent((ENTITY *)node->data, COMP_TRANSFORM), NULL);
     node = node->next;
   }
 }
