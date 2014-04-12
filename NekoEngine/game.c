@@ -35,7 +35,12 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   sysInitInfo.mShow        = show;
   sysInitInfo.mWinWidth      = game->config.screen.width;
   sysInitInfo.mWinHeight      = game->config.screen.height;
+#ifdef _DEBUG
   sysInitInfo.mCreateConsole    = 1;
+#endif
+#ifndef _DEBUG
+  sysInitInfo.mCreateConsole = 0;
+#endif
   sysInitInfo.mMaxFrameRate    = NEKO_DEFAULT_FPS - 1; // -1 to make Alpha not be dumb (?)
   sysInitInfo.mpWinCallBack    = __game_processWindow;
   sysInitInfo.mClassStyle      = CS_HREDRAW | CS_VREDRAW;
