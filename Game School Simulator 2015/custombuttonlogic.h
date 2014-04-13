@@ -33,6 +33,7 @@ typedef struct {
     bool altSprite;
   } sprite;
   ENTITY *text;
+  ENTITY *hoverText;
   ALIST actions;
 } CDATA_CUSTOMBUTTON;
 

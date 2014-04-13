@@ -51,6 +51,7 @@ typedef struct{
   ENTITY *income;
   ENTITY *grads;
   ENTITY *dropoutsText;
+  ENTITY *hoverText;
 
   bool triggered;
   bool alreadyActivated;
