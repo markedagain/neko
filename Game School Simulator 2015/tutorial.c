@@ -180,7 +180,7 @@ void createFourthTutorial(SPACE *ui) {
 void createFifthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
   comp_tutorialTextBoxLogic_pushText(textBox, "Here, you can manage various attributes of your school!\n\nRequired GPA and Tuition affect the\nnumber of incoming students.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nWelp, that's all I've got for now.")
+  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nWelp, that's all I've got for now.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Let's wait for our incoming students to arrive!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
