@@ -59,6 +59,7 @@ typedef struct{
   bool unlocked;
   bool firstBuildClick;
   bool lobbyBuilt;
+  bool firstLobby;
   ENTITY *text;
 } CDATA_UI_BUTTON;
 

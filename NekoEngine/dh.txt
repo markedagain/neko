@@ -1,1 +1,2 @@
-vectormath.cvectormath.h
+vectormath.c
+vectormath.h

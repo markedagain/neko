@@ -35,9 +35,6 @@ void newsFeed_onExit(COMPONENT *self);
 void exit_onEntered(COMPONENT *self);
 void exit_onPressed(COMPONENT *self);
 void exit_onExit(COMPONENT *self);
-//void manage_onEntered(COMPONENT *self);
-//void manage_onPressed(COMPONENT *self);
-//void manage_onExit(COMPONENT *self);
 void increaseGPA_onEntered(COMPONENT *self);
 void increaseGPA_onPressed(COMPONENT *self);
 void increaseGPA_onExit(COMPONENT *self);
@@ -50,5 +47,8 @@ void increaseTuition_onExit(COMPONENT *self);
 void decreaseTuition_onEntered(COMPONENT *self);
 void decreaseTuition_onPressed(COMPONENT *self);
 void decreaseTuition_onExit(COMPONENT *self);
+void pause_onEntered(COMPONENT *self);
+void pause_onPressed(COMPONENT *self);
+void pause_onExit(COMPONENT *self);
 
 #endif

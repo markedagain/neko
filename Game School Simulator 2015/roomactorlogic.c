@@ -180,7 +180,7 @@ static void landing_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
 
-  trans->translation.y = data->startY + action_getEase(action, EASING_QUAD_OUT) * (data->targetY - data->startY);
+  trans->translation.y = data->startY + action_getEase(action, EASING_QUAD_IN) * (data->targetY - data->startY);
 }
 
 static void landing_onEnd(ACTION *action) {

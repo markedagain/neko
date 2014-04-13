@@ -44,6 +44,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "playerlogic.h"
 #include "creditsscreen.h"
 #include "mousebox.h"
+#include "buttonfunctions.h"
 
 void startGame(GAME *game) {
   ENTITY *player;
@@ -62,6 +63,7 @@ void startGame(GAME *game) {
   player = space_getEntity(game_getSpace(game,"ui"), "player");
   playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   playerData->currentMode = GM_PLAY;
+  entity_destroy((ENTITY *)space_getEntity(game_getSpace(game, "ui"), "emptyBox"));
 }
 
 void createSpaces(GAME *game) {
@@ -70,10 +72,7 @@ void createSpaces(GAME *game) {
   game_addSpace(game, "mg");
   game_addSpace(game, "fg");
   game_addSpace(game, "ui");
-  
-  if (game->config.tutorial)
-    game_addSpace(game, "tutorial");
-
+  game_addSpace(game, "tutorial");
   game_addSpace(game, "menu");
   game_addSpace(game, "splash");
   game_addSpace(game, "cursor");
@@ -146,6 +145,7 @@ void startNewGame(GAME *game) {
   SPACE *mgSpace = game_getSpace(game, "mg");
   SPACE *fgSpace = game_getSpace(game, "fg");
   SPACE *uiSpace = game_getSpace(game, "ui");
+  CDATA_SPRITE *sprite;
 
   VEC3 position;
   VEC4 color = { 1, 1, 1, 1 };
@@ -187,7 +187,7 @@ void startNewGame(GAME *game) {
   
   // Menu Button
   vec3_set(&position, -306, 166, 0);
-  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu_alt", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  createCustomButton(pause_onEntered, NULL, pause_onPressed, pause_onExit, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu_alt", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
   // Build Button
   vec3_set(&position, -271, 166, 0);
@@ -219,4 +219,10 @@ void startNewGame(GAME *game) {
   // Create Student Pop Sprite
   vec3_set(&position, -60, 168, 0);
   genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
+
+  // Create an empty mousebox to stop click through
+  vec3_set(&position, 0, 0, 0);
+  ent1 = createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  sprite = entity_getComponentData(ent1, COMP_SPRITE);
+  sprite->visible = false;
 }
