@@ -191,6 +191,9 @@
     <ClCompile Include="homeworklogic.c">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="brad.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -398,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="homeworklogic.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="brad.h">
+      <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

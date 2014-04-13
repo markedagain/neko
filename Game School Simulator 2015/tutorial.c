@@ -113,6 +113,7 @@ ENTITY *tutorial_createTextBox(SPACE *ui) {
   VEC2 dimensions = { 640.0f, 360.0f };
   VEC3 position = { 0 };
   SPACE *tutorial = game_getSpace(ui->game, "tutorial");
+  // background button
   ENTITY *created = createCustomButton(NULL, NULL, tutorialBackground_onPressed, NULL, NULL,
                            tutorial, &position, "textboxbackground",
                            640.0f, 360.0f,
@@ -131,9 +132,9 @@ void tutorialBackground_onPressed(COMPONENT *self) {
 
 void createFirstTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "What up Bro, they told me you would be coming!\n\nI am Brad Bromayor, \nyour one and only advisor as you build your new game school!\n\nClick anywhere to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "What up Bro, they told me you would be coming!\nI am Brad Bromayor, \nyour one and only advisor as you build your new game school!\n\nClick anywhere to continue.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Oh yeah, you're totally building a game school!\n\nWe got approved for the loan, \nand got this gorgeous piece of land!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Lets kick things off by buying a Lobby.\n\nClick the Build Button to continue.\n(or press the Space button)");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Let's kick things off by buying a Lobby.\n\nClick the Build Button to continue.\n(or press the Space button)");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -141,15 +142,15 @@ void createFirstTutorial(SPACE *ui) {
 
 void createFirstTutorialPartTwo(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Nice, Bro!\n\nHere you can see the rooms you are able to create!\nThe highlighted buttons indicate which rooms you can create right now!\n\n");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Click the Lobby Button to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Nice, Bro!\n\nHere you can see the rooms you are able to create!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "The highlighted buttons indicate which rooms\nyou can create right now!\n\nLet's build a lobby, shall we?");
   comp_tutorialTextBoxLogic_nextText(textBox);
 }
 
 
 void createSecondTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Great! Whenever you try to build a new room you \nwill see the available build locations on screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Great! Whenever you try to build a new room you\nwill see the available build locations on screen.");
   comp_tutorialTextBoxLogic_pushText(textBox, "All you have to do is to click on the one you want to build at.\nClick on the available slot to continue.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
@@ -158,7 +159,8 @@ void createSecondTutorial(SPACE *ui) {
 
 void createThirdTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "I feel like we are forgeting something...\nRight! Students!!! This is a game school after all!\n\nThat means we need a classroom.\nClick the Class Button to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "I feel like we are forgeting something...\nRight! Students!! This is a game school after all!\nThat means we need a classroom.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Let's open up that Build menu again,\nand a get a classroom in!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -167,8 +169,8 @@ void createThirdTutorial(SPACE *ui) {
 void createFourthTutorial(SPACE *ui) {
   CDATA_MOUSEBOX *manageBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "manage_button"), COMP_MOUSEBOX);
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nI think its about time we let our first students in.\n\nYou can check what the current status of\nincoming students is in your management screen.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Click the Management Screen Button to continue.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nWell, I think it's about time we let our\nfirst students in, don't you?");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Let's check the current status of incoming students!\n\nClick the Management Screen Button above, man.");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_disableBuildButtons(ui);
@@ -177,8 +179,9 @@ void createFourthTutorial(SPACE *ui) {
 
 void createFifthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Here you can manage various attributes of your school!\n\nRequired GPA and Tuition effect the number of incoming students.\n\n");
-  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nThats all ive got for you. Good luck on your new school!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Here, you can manage various attributes of your school!\n\nRequired GPA and Tuition affect the\nnumber of incoming students.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nWelp, that's all I've got for now.")
+  comp_tutorialTextBoxLogic_pushText(textBox, "Let's wait for our incoming students to arrive!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -187,9 +190,13 @@ void createFifthTutorial(SPACE *ui) {
 void createSixthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
   comp_tutorialTextBoxLogic_pushText(textBox, "Your first students have arrived!\n\nThis means your reputation can start to change.\nWhen students drop out, your reputation goes down.\nBut when your students graduate your rep goes up!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by\nclicking their avatar on the screen.\n\nThe higher their main stat is, the more repuation\nyou get when they graduate!\n\n");
-  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by\nbuilding rooms that provide motivation boosts!\n\nThe amount their stats increase is\nalso determined by their motivation.\nSo keep that motivation high!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Well, thats all I have for you.\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!\n\nGood luck, and have fun!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "When students drop out, your reputation goes down.\nBut when your students graduate, your rep goes up!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by\nclicking their avatar on the screen.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "The higher their main stat is, the more repuation\nyou get when they graduate!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by\nbuilding rooms that provide motivation boosts!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "The amount their stats increase is\nalso determined by their motivation.\nSo keep that motivation high!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Well, that's all I have for you.\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "I know you'll do great whatever you decide to do.\n\nGood Luck, and Have Fun!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
