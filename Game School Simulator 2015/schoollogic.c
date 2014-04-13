@@ -134,6 +134,8 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
     comData->money += studentData->tuition / 6;
     studentPtr = studentPtr->next;
+    // Make $ pop text
+
   }
 
   //Lose money
