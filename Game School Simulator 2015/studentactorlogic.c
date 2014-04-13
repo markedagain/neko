@@ -79,6 +79,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
       break;
     }
 
+    // quote
+    sprintf(inspectData->quote, "%s", studentData->quote);
+
     // gpa
     sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
 

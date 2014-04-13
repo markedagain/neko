@@ -248,7 +248,9 @@ void setInspectText(GAME *game) {
   inspectData->studentMotivation = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
   vec3_set(&position, -315, 50, 0);
   inspectData->studentGraduation = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
-
+  vec3_set(&position, -315, 30, 0);
+  inspectData->studentQuote = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  
   // Room Inspection Text
   vec3_set(&position, -315, 150, 0);
   inspectData->roomType = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_TOP, TEXTALIGN_LEFT);  

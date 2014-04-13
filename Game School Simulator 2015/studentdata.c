@@ -98,8 +98,12 @@ void generate_student(COMPONENT *self) {
   GAME *owner = self->owner->space->game;
   TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
   unsigned int totalNames = vector_size(&namefile->lines);
+  unsigned int totalQuotes;
   char *lastname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
   char *firstname;
+  namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "misc/quotes");
+  totalQuotes = vector_size(&namefile->lines);
+  data->quote = (char *)vector_get(&namefile->lines, randomIntRange(0, totalQuotes - 1));
 
   data->name.last = lastname;
 

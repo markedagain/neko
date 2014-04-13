@@ -54,6 +54,7 @@ void student_inspection_clear(COMPONENT *self) {
   genericText_setText(comData->studentGPA, " ");
   genericText_setText(comData->studentGraduation, " ");
   genericText_setText(comData->studentMotivation, " ");
+  genericText_setText(comData->studentQuote, " ");
   comData->clear = false;
 }
 
@@ -90,14 +91,23 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
       VEC3 position = { 0, 0, 0 };
       VEC4 color = { 0 };
       sprite->visible = true;
-
-      
-    if (comData->triggered) {
-        genericText_setText(comData->studentName, comData->nameBuffer);
+    
+      if (comData->triggered) {
         genericText_setText(comData->studentMajor, comData->major);
+        if (!comData->studentName) {
+        //entity_destroy(comData->studentName);
+        //comData->studentName = NULL;
+          vec3_set(&position, -315, 150, 0);
+          comData->studentName = genericText_create(ui, &position, NULL, "fonts/gothic/16", comData->nameBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+        }
+        else
+          genericText_setText(comData->studentName, comData->nameBuffer);
+        
+        
         genericText_setText(comData->studentGPA, comData->GPA);
         genericText_setText(comData->studentGraduation, comData->expectedGraduationYear);
         genericText_setText(comData->studentMotivation, comData->motivation);
+        genericText_setText(comData->studentQuote, comData->quote);
         comData->triggered = false;
       }
     }
@@ -128,20 +138,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         genericText_setText(comData->upkeep, comData->upkeepBuffer);
         genericText_setText(comData->level, comData->levelBuffer);
         genericText_setText(comData->bonusText, "Tech:\nDesign:\nArt:\n\nReputation:\nMotivation:\n\nUpkeep:");
-        comData->currUpkeep = roomData->upkeep;
-  /*      comData->triggered = false;
-  }
-      /*
-        // Check if the type of room and the upkeep have changed.  If so, change the data.
-      if ((comData->triggered) && (comData->type != roomData->type) || (comData->currUpkeep != roomData->upkeep)) {
-        comData->currUpkeep = roomData->upkeep;
-        sprintf(comData->bonusBuffer, "+%i\n+%i\n+%i\n\n+%i\n+%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus, roomData->motivationBonus);
-        sprintf(comData->upkeepBuffer, "$%li", roomData->upkeep);
-        sprintf(comData->levelBuffer, "Level %i", roomData->level);
-        genericText_setText(comData->bonuses, comData->bonusBuffer);
-        genericText_setText(comData->upkeep, comData->upkeepBuffer);
-        genericText_setText(comData->level, comData->levelBuffer);
-        */
+
         switch (roomData->type) {
         case (ROOMTYPE_LOBBY): 
           sprintf(comData->roomTypeBuffer, "Lobby", NULL);

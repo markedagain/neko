@@ -27,6 +27,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "schoollogic.h"
 #include "managescreen.h"
 #include "managescreenlogic.h"
+#include "studentdata.h"
 
 void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MANAGESCREEN *data = (CDATA_MANAGESCREEN *)self->data;
@@ -43,7 +44,18 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   // Check if current management values have changed for...
   // Expected Income
   if (comData->currentStudents != managementData->currStudentPop || comData->tuition != managementData->currTuition) {
-    managementData->expectedIncome = comData->currentStudents * comData->tuition;
+    CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(self->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
+    LIST_NODE *studentPtr;
+    int income = 0, i = 0;
+
+    studentPtr = schoolData->students->first;
+    for(i = 0; i < schoolData->students->count; i++) {
+      CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
+      income += studentData->tuition / 6;
+      studentPtr = studentPtr->next;
+    }
+
+    managementData->expectedIncome = income;
     sprintf(managementData->incomeBuffer, "$%i", managementData->expectedIncome);
     genericText_setText(managementData->income, managementData->incomeBuffer);
   }
