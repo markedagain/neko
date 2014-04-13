@@ -86,7 +86,7 @@ void zoom(COMPONENT *self, float zoom) {
   newZoom = (float)max((float)min(newZoom, 1.0f), 0.5f);
   zoomScale = (newZoom - 0.5f) * 2;
   schoolScale = min((schoolData->currentStudents / (float)STUDENT_VOLUME_MAX), 1.0f);
-  sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f, 1.0f - zoomScale * 0.65f, zoomScale * schoolScale);
+  sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f, (1.0f - zoomScale) * 0.6f, zoomScale * schoolScale);
     
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
@@ -158,6 +158,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
 
   else if (data->currentMode == GM_PLAY) {
+
     // MANAGE INPUT
     if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {
       pan(self, -4.0f, 0.0f, NULL);
@@ -169,14 +170,14 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       zoom(self, 0.01f);
     }
     if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
-      //zoom(self, -0.01f);
-      CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
+      zoom(self, -0.01f);
+      /*CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
       SPACE *bg = game_getSpace(self->owner->space->game, "bg");
       SPACE *mg = game_getSpace(self->owner->space->game, "mg");
       SPACE *fg = game_getSpace(self->owner->space->game, "fg");
       bg->systems.camera.transform.rotation += 0.2f;
       mg->systems.camera.transform.rotation += 0.2f;
-      fg->systems.camera.transform.rotation += 0.2f;
+      fg->systems.camera.transform.rotation += 0.2f;*/
     }
     if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
       if (self->owner->space->game->systems.time.scale)

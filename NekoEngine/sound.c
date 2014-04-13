@@ -73,6 +73,16 @@ void sound_playSong(SOUNDSYSTEM *system, char *song) {
     sound_stopSong(system);
   FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->channels.music);
   FMOD_Channel_SetVolume(system->channels.music, system->volume.music * system->volume.master);
+  FMOD_Channel_SetMode(system->channels.music, FMOD_LOOP_OFF);
+  FMOD_Channel_SetLoopCount(system->channels.music, 0);
+}
+
+void sound_playSongLooped(SOUNDSYSTEM *system, char *song) {
+  SOUND *snd = (SOUND *)dict_get(system->sounds, song);
+  if (system->channels.music != NULL)
+    sound_stopSong(system);
+  FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->channels.music);
+  FMOD_Channel_SetVolume(system->channels.music, system->volume.music * system->volume.master);
   FMOD_Channel_SetMode(system->channels.music, FMOD_LOOP_NORMAL);
   FMOD_Channel_SetLoopCount(system->channels.music, -1);
 }
