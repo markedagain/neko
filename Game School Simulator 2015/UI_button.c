@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../NekoEngine/entity.h"
 #include "../NekoEngine/sprite.h"
 #include "multisprite.h"
+#include "management.h"
 #include "ghostroom.h"
 #include "playerlogic.h"
 #include "roomlogic.h"
@@ -49,7 +50,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
-  CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
+
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
   char buffer[80];
 
   al_update(&data->actions, self->owner->space->game->systems.time.dt);
@@ -60,6 +62,8 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       // if it's not unlocked, make it say locked
       if (!data->unlocked) {
         switch(data->type){
+          
+        
           case BUTTON_BUILDLOBBY:
             sprintf(buffer, "Allows\nconstruction!\nLocked");
             genericText_setText(data->text, buffer);
@@ -130,6 +134,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       // if it is unlocked, display price
       else {
         switch(data->type){
+
           case BUTTON_BUILDLOBBY:
             sprintf(buffer, "Allows\nconstruction!\n$250,000");
             genericText_setText(data->text, buffer);
@@ -284,11 +289,48 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     if (mbox->entered) {
       sound_playSound(&self->owner->space->game->systems.sound, "hover");
       sprite->color.a = 0.8f;
-    }
+    
+      // hover text for top UI buttons
+      switch (data->type) {
+        case BUTTON_BUILD: {
+          if (!data->hoverText) {
+            vec3_set(&position, -271, 151, 0);
+            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Build!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+          }
+          else
+            genericText_setText(data->hoverText, "Build!");
+          break;
+        }
 
+        case BUTTON_SPEED: {
+          if (!data->hoverText) {
+            vec3_set(&position, -180, 151, 0);
+            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Change Speed!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+          }
+          else
+            genericText_setText(data->hoverText, "Change Speed!");
+          break;
+        }
+
+        case BUTTON_PAUSE: {
+          if (!data->hoverText) {
+            vec3_set(&position, -209, 151, 0);
+            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Pause!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+          }
+          else
+            genericText_setText(data->hoverText, "Pause!");
+          break;
+       }
+      }
+    }
     if (mbox->exited) {
       sprite->color.a = 1.0f;
+      if (data->hoverText) {
+        entity_destroy(data->hoverText);
+        data->hoverText = NULL;
+      }
     }
+
 
     // if clicked on
     if (mbox->left.pressed) {
@@ -373,28 +415,28 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         break;
 
       case BUTTON_GPA_INCREMENT:
-        if (managementData->minGpa >= (float)4.0)
-          managementData->minGpa = (float)4.0;
+        if (schoolData->minGpa >= (float)4.0)
+          schoolData->minGpa = (float)4.0;
         else
-          managementData->minGpa += (float)0.2;
+          schoolData->minGpa += (float)0.2;
         break;
 
       case BUTTON_GPA_DECREMENT:
-        if (managementData->minGpa <= (float)0.2)
-          managementData->minGpa = (float)0.2;
+        if (schoolData->minGpa <= (float)0.2)
+          schoolData->minGpa = (float)0.2;
         else
-          managementData->minGpa -= (float)0.2;
+          schoolData->minGpa -= (float)0.2;
         break;
 
       case BUTTON_TUITION_INCREMENT:
-        managementData->tuition += 500;
+        schoolData->tuition += 500;
         break;
 
       case BUTTON_TUITION_DECREMENT:
-        if (managementData->tuition <= 0)
-          managementData->tuition = 500;
+        if (schoolData->tuition <= 0)
+          schoolData->tuition = 500;
         else
-         managementData->tuition -= 500;
+         schoolData->tuition -= 500;
         break;
 
       case BUTTON_ROOM_UPGRADE:

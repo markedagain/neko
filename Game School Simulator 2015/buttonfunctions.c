@@ -405,9 +405,16 @@ void decreaseTuition_onExit(COMPONENT *self) {
 /********* Pause *********/
 void pause_onEntered(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)entity_getComponentData(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
 
   sprite->color.a = 0.8f;
   sound_playSound(&self->owner->space->game->systems.sound, "hover");
+  if (!data->hoverText) {
+    VEC3 position;
+    vec3_set(&position, -301, 151, 0);
+    data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Menu!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+  }
 }
 
 void pause_onPressed(COMPONENT *self) {
@@ -422,7 +429,13 @@ void pause_onPressed(COMPONENT *self) {
 
 void pause_onExit(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)entity_getComponentData(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
+
 
   sprite->color.a = 1.0f;
-
+  if (data->hoverText) {
+    entity_destroy(data->hoverText);
+    data->hoverText = NULL;
+  }
 }
