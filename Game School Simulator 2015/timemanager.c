@@ -26,18 +26,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define LOSE_CONDITION -100000
 
 char *month[12] = {
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
   "June",
   "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec"
 };
 
 char *semester[2] = {

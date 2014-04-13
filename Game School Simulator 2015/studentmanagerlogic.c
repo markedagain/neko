@@ -137,6 +137,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
   actorData->studentPtr = studentPtr;
 
+  // set male sprites
   if (studentData->gender == GEN_MALE) {
     sprintf(spriteName, "student/male/legs/%.2d", studentData->legs);
     strcpy(actorData->legs, spriteName);
@@ -152,7 +153,12 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
     sprintf(spriteName, "student/male/hair/%.2d", studentData->hair);
     strcpy(actorData->hair, spriteName);
+
+    strcpy(actorData->walk1, "student/male/legs/pass");
+    strcpy(actorData->walk2, "student/male/legs/contact");
   }
+
+  // set female sprites
   else {
     sprintf(spriteName, "student/female/legs/%.2d", studentData->legs);
     strcpy(actorData->legs, spriteName);
@@ -168,6 +174,9 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
     sprintf(spriteName, "student/female/hair/%.2d", studentData->hair);
     strcpy(actorData->hair, spriteName);
+
+    strcpy(actorData->walk1, "student/female/legs/pass");
+    strcpy(actorData->walk2, "student/female/legs/contact");
   }
 
   actorData->ID = ID;
