@@ -106,7 +106,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // Add min GPA multiplier
   comData->incomingStudents = (int)(comData->incomingStudents * (((4.2f - comData->minGpa) / 4.0f)));
     // Add min Tuition multiplier
-  comData->incomingStudents += (int)(maxIncomingStudents * ((10000.0f - comData->tuition) / 40000.0f));
+  comData->incomingStudents += (int)(maxIncomingStudents * (-comData->tuition / 30000.0f));
     // Make sure incoming students does not go over
   if(comData->incomingStudents > maxIncomingStudents)
     comData->incomingStudents = maxIncomingStudents;
@@ -716,7 +716,7 @@ void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   strcpy(data.schoolName, "");
   data.money = 350000;
-  data.tuition = 10000;
+  data.tuition = 5000;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;
