@@ -20,6 +20,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "newsfeedlogic.h"
 #include "UI_button.h"
 #include "mousebox.h"
+#include "pausescreenlogic.h"
+#include "pausescreen.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
@@ -398,4 +400,28 @@ void decreaseTuition_onExit(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
   sprite->color.a = 1.0f;
+}
+
+/********* Pause *********/
+void pause_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+}
+
+void pause_onPressed(COMPONENT *self) {
+  CDATA_PLAYERLOGIC *playerData = entity_getComponentData(space_getEntity(self->owner->space, "player"), COMP_PLAYERLOGIC);
+  SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
+  if (!space_getEntity(tutorial, "pauseScreen")) {
+    CDATA_PAUSESCREEN *pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(space_addEntity(tutorial, arch_pauseScreen, "pauseScreen"), COMP_PAUSESCREENLOGIC);
+    pauseData->lastMode = playerData->currentMode;
+  }
+}
+
+void pause_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->color.a = 1.0f;
+
 }

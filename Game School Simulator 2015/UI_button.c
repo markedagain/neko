@@ -318,9 +318,10 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
 
         if (self->owner->space->game->config.tutorial) {
-          if (data->lobbyBuilt == false) {
+          if (data->lobbyBuilt == false && data->firstLobby == false) {
             createSecondTutorial(self->owner->space);
             data->lobbyBuilt = true;
+            data->firstLobby = true;
           }
         }
 

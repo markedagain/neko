@@ -44,6 +44,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "playerlogic.h"
 #include "creditsscreen.h"
 #include "mousebox.h"
+#include "buttonfunctions.h"
 
 void startGame(GAME *game) {
   ENTITY *player;
@@ -182,7 +183,7 @@ void startNewGame(GAME *game) {
   
   // Menu Button
   vec3_set(&position, -306, 166, 0);
-  createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu_alt", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  createCustomButton(NULL, pause_onEntered, pause_onPressed, pause_onExit, NULL, uiSpace, &position, "menuButton", 1, 1, true, "ui/menu_alt", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
 
   // Build Button
   vec3_set(&position, -271, 166, 0);

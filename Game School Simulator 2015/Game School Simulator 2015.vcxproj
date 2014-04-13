@@ -234,8 +234,6 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClCompile Include="player.c" />
     <ClCompile Include="studentmanager.c" />
     <ClCompile Include="studentmanagerlogic.c" />
-    <ClCompile Include="studentscreen.c" />
-    <ClCompile Include="studentscreenlogic.c" />
     <ClCompile Include="timemanager.c" />
     <ClCompile Include="tutorial.c" />
     <ClCompile Include="tutorialtextbox.c" />
@@ -299,8 +297,6 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="player.h" />
     <ClInclude Include="studentmanager.h" />
     <ClInclude Include="studentmanagerlogic.h" />
-    <ClInclude Include="studentscreen.h" />
-    <ClInclude Include="studentscreenlogic.h" />
     <ClInclude Include="timemanager.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="tutorialtextbox.h" />

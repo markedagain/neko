@@ -132,12 +132,6 @@
     <ClCompile Include="newsfeed.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
-    <ClCompile Include="studentscreen.c">
-      <Filter>Archetypes\ui_elements</Filter>
-    </ClCompile>
-    <ClCompile Include="studentscreenlogic.c">
-      <Filter>Components\UI_elements</Filter>
-    </ClCompile>
     <ClCompile Include="custombutton.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -339,12 +333,6 @@
     <ClInclude Include="colors.h" />
     <ClInclude Include="newsfeed.h">
       <Filter>Archetypes\ui_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="studentscreen.h">
-      <Filter>Archetypes\ui_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="studentscreenlogic.h">
-      <Filter>Components\UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="custombutton.h">
       <Filter>Archetypes\ui_elements</Filter>
