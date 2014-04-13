@@ -55,5 +55,8 @@ void pause_onEntered(COMPONENT *self);
 void pause_onPressed(COMPONENT *self);
 void pause_onExit(COMPONENT *self);
 void empty_onPressed(COMPONENT *self);
+void mExit_onEntered(COMPONENT *self);
+void mExit_onPressed(COMPONENT *self);
+void mExit_onExit(COMPONENT *self);
 
 #endif

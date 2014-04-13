@@ -52,6 +52,7 @@ typedef struct{
   ENTITY *grads;
   ENTITY *dropoutsText;
   ENTITY *hoverText;
+  ENTITY *schoolName;
 
   bool triggered;
   bool alreadyActivated;

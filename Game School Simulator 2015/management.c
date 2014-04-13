@@ -98,6 +98,10 @@ void comp_managementDisplay(COMPONENT *self) {
 
   data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
 
+  // School Name
+  vec3_set(&position, -158, 62, 0);
+  data->schoolName = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", comData->schoolName, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
+
   // GPA
   vec3_set(&position, 10, 30, 0); 
   data->gpa = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", data->gpaBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
@@ -170,6 +174,16 @@ void comp_managementDisplay(COMPONENT *self) {
                          true, "ui/button_minus", NULL, &color,
                          false, "-Tuition", "fonts/gothic/12", 
                          NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
+  // close button
+  vec3_set(&position, 125, 70, 0);
+  createCustomButton(mExit_onEntered, NULL, mExit_onPressed, mExit_onExit, NULL,
+                         self->owner->space, &position, "managementButton",
+                         1.0f, 1.0f,
+                         true, "ui/close", NULL, &color,
+                         false, NULL, NULL,
+                         NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+
 }
 
 void comp_managementRemove(COMPONENT *self) {
@@ -210,6 +224,8 @@ void comp_managementRemove(COMPONENT *self) {
   data->grads = NULL;
   entity_destroy(data->dropoutsText);
   data->dropoutsText = NULL;
+  entity_destroy(data->schoolName);
+  data->schoolName = NULL;
   space_getAllEntities(uiSpace, "managementButton", buttons);
   
   node = buttons->first;

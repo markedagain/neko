@@ -23,6 +23,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pausescreenlogic.h"
 #include "pausescreen.h"
 #include "creditsscreenlogic.h"
+#include "management.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
@@ -493,4 +494,28 @@ void empty_onPressed(COMPONENT *self) {
     }
     list_destroy(optionsList);
   } 
+}
+
+/********** Management Exit **********/
+void mExit_onEntered(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->color.a = 0.8f;
+  sound_playSound(&self->owner->space->game->systems.sound, "hover");
+
+}
+
+void mExit_onPressed(COMPONENT *self) {
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  VEC3 position = { 0 };
+  COMPONENT *management = entity_getComponent(space_getEntity(ui, "manage_button"), COMP_MANAGEMENT); 
+
+  comp_managementRemove(management);
+}
+
+void mExit_onExit(COMPONENT *self) {
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+
+  sprite->color.a = 1.0f;
+
 }
