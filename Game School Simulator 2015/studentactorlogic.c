@@ -49,6 +49,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
+  if(mbox->left.pressed)
+    sound_playSound(&self->owner->space->game->systems.sound, "oh");
+
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
@@ -56,9 +59,10 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
     CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
 
-    if (inspectData->posActive)
-        inspectData->posActive = false;
-
+    if (inspectData->posActive) {
+      inspectData->clear = true;
+      inspectData->posActive = false;
+    }
     // name
     sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
 
@@ -75,6 +79,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
       break;
     }
 
+    // quote
+    sprintf(inspectData->quote, "%s", studentData->quote);
+
     // gpa
     sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
 
@@ -88,6 +95,11 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     inspectData->studentActive = true;
     inspectData->triggered = true;
     data->triggered = true;
+  }
+  
+  else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
+    inspectData->clear = true;
+    inspectData->studentActive = false;
   }
   
   else if (!mbox->left.pressed)

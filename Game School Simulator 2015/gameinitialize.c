@@ -33,6 +33,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "blackbar.h"
 #include "studentactor.h"
 #include "studentmanager.h"
+#include "inspectionscreenlogic.h"
 #include "inspectionscreen.h"
 #include "background.h"
 #include "newsfeed.h"
@@ -146,7 +147,7 @@ void startNewGame(GAME *game) {
   SPACE *fgSpace = game_getSpace(game, "fg");
   SPACE *uiSpace = game_getSpace(game, "ui");
   CDATA_SPRITE *sprite;
-
+  
   VEC3 position;
   VEC4 color = { 1, 1, 1, 1 };
   VEC4 color2 = { 0 };
@@ -211,10 +212,11 @@ void startNewGame(GAME *game) {
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_SPEED;
   ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/speed_slow";
   
-  // create inspection screen
+  // Inspection Screen
   vec3_set(&position, -267, 65, 0);
   vec2_set(&dimensions, 106, 195);
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
+  setInspectText(game);
 
   // Create Student Pop Sprite
   vec3_set(&position, -60, 168, 0);
@@ -225,4 +227,39 @@ void startNewGame(GAME *game) {
   ent1 = createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
   sprite = entity_getComponentData(ent1, COMP_SPRITE);
   sprite->visible = false;
+}
+
+void setInspectText(GAME *game) { 
+  SPACE *uiSpace = game_getSpace(game, "ui");
+  
+  VEC3 position;
+  VEC4 color2 = { 0 };
+  ENTITY *inspectionScreen = space_getEntity(uiSpace, "inspection_screen");
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
+  
+  // Student Inspection Text
+  vec3_set(&position, -315, 150, 0);
+  inspectData->studentName = genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -315, 110, 0);
+  inspectData->studentMajor = genericText_create(uiSpace, &position, NULL, "fonts/gothic/16", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -315, 90, 0);
+  inspectData->studentGPA = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -315, 70, 0);
+  inspectData->studentMotivation = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -315, 50, 0);
+  inspectData->studentGraduation = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -315, 30, 0);
+  inspectData->studentQuote = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  
+  // Room Inspection Text
+  vec3_set(&position, -315, 150, 0);
+  inspectData->roomType = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+  vec3_set(&position, -315, 130, 0);
+  inspectData->level = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_TOP, TEXTALIGN_LEFT);  
+  vec3_set(&position, -315, 110, 0);
+  inspectData->bonusText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  vec3_set(&position, -215, 26, 0);
+  inspectData->upkeep = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_RED_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);  
+  vec3_set(&position, -215, 110, 0);
+  inspectData->bonuses = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);
 }

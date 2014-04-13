@@ -21,5 +21,6 @@ void createSpaces(GAME *game);
 void createMainMenu(GAME *game);
 void startNewGame(GAME *game);
 void initializeEssentialSpaces(GAME *game);
+void setInspectText(GAME *game);
 
 #endif
