@@ -160,7 +160,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   }
 
 
-  else if (data->currentMode == GM_PLAY) {
+  else if (data->currentMode == GM_PLAY && self->owner->space->game->systems.time.scale != 0) {
 
     if (data->lastSong != 0) {
       data->nextSongTime -= (float)self->owner->space->game->systems.time.dtFrame;
