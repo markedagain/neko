@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: inspectionscreenlogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "inspectionscreenlogic.h"
 #include "inspectionscreen.h"
@@ -18,17 +28,18 @@ void room_inspection_clear(COMPONENT *self) {
   CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
   
   if (comData->roomType) {
+    
     LIST_NODE *node;
     LIST *buttons = list_create(); 
   
     space_getAllEntities(self->owner->space, "upgradeButton", buttons);
     node = buttons->first;
-    while (node) {
+    
     entity_destroy((ENTITY *)node->data);
-    node = node->next;
-    }
+    node = NULL;
 
-  list_destroy(buttons);
+    list_destroy(buttons);
+    
     entity_destroy(comData->bonuses);
     comData->bonuses = NULL;
     entity_destroy(comData->roomType);
@@ -207,7 +218,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_TUTORING): 
-          sprintf(comData->roomTypeBuffer, "Tutoring Room", NULL);
+          sprintf(comData->roomTypeBuffer, "Tutor R.", NULL);
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_IT): 
@@ -219,7 +230,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_FIGURE): 
-          sprintf(comData->roomTypeBuffer, "Figure-Drawing Room", NULL);
+          sprintf(comData->roomTypeBuffer, "Figure D.", NULL);
           sprintf(comData->upgradeMessageBuffer, "Upgrade!", NULL);
           break;
         case (ROOMTYPE_POTTERY): 

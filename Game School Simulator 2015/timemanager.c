@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: timemanager.c
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "timemanager.h"
 #include "schoollogic.h"
@@ -72,7 +82,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
   }
 
   // START TIME
-  if(manageData->closed > 0) {
+  if(manageData->closed > 0 || self->owner->space->game->config.tutorial == 0) {
     comData->frameCounter++;
     
     if(comData->paused)
@@ -145,7 +155,6 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       char message[80];
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
-      comp_schoolLogic_updateDataYear(schoolLogic, schoolData);
       comData->monthCounter = 0;
       sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
       comp_newsfeedlogic_push(self, message);

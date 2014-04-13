@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: studentactorlogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Tai Der Hui
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "studentactorlogic.h"
 #include "genericsprite.h"
@@ -55,13 +65,13 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     // major
     switch (studentData->major) {
     case M_TECH:
-      strcpy(inspectData->major, "Programming");
+      strcpy(inspectData->major, "Programmer");
       break;
     case M_ART:
-      strcpy(inspectData->major, "Art");
+      strcpy(inspectData->major, "Artist");
       break;
     case M_DESIGN:
-      strcpy(inspectData->major, "Design");
+      strcpy(inspectData->major, "Designer");
       break;
     }
 

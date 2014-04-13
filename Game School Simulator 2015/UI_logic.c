@@ -1,3 +1,14 @@
+/******************************************************************************
+Filename: UI_logic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 #include "UI_logic.h"
 #include "mousebox.h"
 

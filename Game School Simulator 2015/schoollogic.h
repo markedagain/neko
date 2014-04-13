@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: schoollogic.h
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __COMP_SCHOOLLOGIC__
 #define __COMP_SCHOOLLOGIC__
@@ -52,12 +62,10 @@ typedef struct cdata_schoolLogic_t {
 } CDATA_SCHOOLLOGIC;
 
 void comp_schoolLogic_logicUpdate(COMPONENT *, void *);
-void comp_schoolLogic_frameUpdate(COMPONENT *, void *);
 void comp_schoolLogic_initialize(COMPONENT *self, void *event);
 void comp_schoolLogic_destroy(COMPONENT *, void *);
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
-void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData);
 void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, LIST *legalSlots);
 void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, int floorToUse, int colToUse);
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type);

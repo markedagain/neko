@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: player.c
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 // Include any component headers you need here, plus the header of this archetype,
 // plus component.h and entity.h

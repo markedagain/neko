@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: gameinitialize.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "gameinitialize.h"
 #include "tutorial.h"
@@ -205,4 +215,8 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -267, 65, 0);
   vec2_set(&dimensions, 106, 195);
   inspectBox = space_addEntityAtPosition(uiSpace, arch_inspectionScreen, "inspection_screen", &position);
+
+  // Create Student Pop Sprite
+  vec3_set(&position, -60, 168, 0);
+  genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
 }

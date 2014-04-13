@@ -1,3 +1,14 @@
+/******************************************************************************
+Filename: UI_studentLogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 #include "UI_studentLogic.h"
 #include "mousebox.h"
 #include "../NekoEngine/transform.h"

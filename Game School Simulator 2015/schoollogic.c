@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: schoollogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "schoollogic.h"
 #include "room.h"
@@ -24,11 +34,9 @@
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
-  comData->roomFlag[ROOMTYPE_LOBBY] = 1;
-}
 
-void comp_schoolLogic_frameUpdate(COMPONENT *self, void *event) {
-  CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)self->data;
+  // Unlock Lobby
+  comData->roomFlag[ROOMTYPE_LOBBY] = 1;
 }
 
 void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
@@ -38,7 +46,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   VEC4 color;
   int maxIncomingStudents = 0;
 
-  // WELCOME
+  // Print Welcome
   if(comData->counter == 1) {
     char message[80];
     sprintf(message, pushStrings[STINGS_WELCOME], comData->schoolName);
@@ -48,13 +56,15 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 
 
   // Display $$$ on screen
-  if (comData->currMoney != comData->money) {    
+  if (comData->currMoney != comData->money) {   
+    // Create text if first time
     if (!comData->moneyUI) {
       vec3_set(&position, 320, 178, 0);
       vec4_set(&color, 1, 1, 1, 1 );
       sprintf(comData->buffer, "$%li", comData->money);
       comData->moneyUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20bold", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
     }
+    // Update text
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
     comData->currMoney = comData->money;
@@ -63,16 +73,28 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   }
 
   // Display Rep on screen
+    // Create if first time
   if (!comData->reputationUI) {
-    vec3_set(&position, -50, 176, 0);
+    vec3_set(&position, -120, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "Rep: %i", comData->reputation);
     comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
+    // Update
   sprintf(comData->buffer, "Rep: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
-  // update build buttons
-  //UI_button_updateBuildButtons(uiSpace);
+
+  // Display Student Pop on screen
+    // Create if first time
+  if (!comData->studentUI) {
+    vec3_set(&position, -30, 176, 0);
+    vec4_set(&color, 1, 1, 1, 1 );
+    sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
+    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+  }
+    // Update
+  sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
+  genericText_setText(comData->studentUI, comData->buffer);
 
   // Calculate Incoming Students
     // Set to total students possible
@@ -87,6 +109,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     comData->incomingStudents = maxIncomingStudents;
 }
 
+// Called by timemanager.c
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
   int totalUpkeep;
@@ -113,7 +136,8 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
       totalUpkeep += roomData->upkeep;
       roomPtr = roomPtr->next;
     }
-  
+    
+    // Check for rounding errors
     if (comData->roomMaintenance != totalUpkeep)
       comData->roomMaintenance = totalUpkeep;
   }
@@ -135,12 +159,14 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     studentPtr = studentPtr->next;
   }
 
+  // Add to the total skills (used for GPA)
   comData->semTech += comData->techBonus;
   comData->semDesign += comData->designBonus;
   comData->semArt += comData->artBonus;
 
 }
 
+// Called by timemanager.c
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
@@ -151,12 +177,18 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   int lowValue = -50;
   int highValue = 50;
 
-  // LOOP THROUGH STUDENTS
+  // LOOP THROUGH STUDENTS (update stats)
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
 
     // GPA
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // How GPA is determined:
+    // Semester GPA = Skill points earned(tech/design/art) / Skill points possible to learn
+    // Total GPA = Semester GPAs total / number of semesters
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Determine Major
     if(studentData->major == M_TECH) {
       int semestersPassed = timeData->currentSemester - studentData->semesterStarted;
       if(semestersPassed != 0) {
@@ -181,11 +213,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentData->techIncrease = 0;
     studentData->designIncrease = 0;
     studentData->artIncrease = 0;
-
-    if(studentData->gpa > 4.0)
-    {
-      printf("hi");
-    }
 
     // Life
     studentData->lifeModifier = randomIntRange(lowValue, highValue);
@@ -231,7 +258,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     comp_newsfeedlogic_push(self, message);
   }
 
-  //Add students
+  // Enroll students
   if(comData->incomingStudents > 0) {
     int newCount = 0;
     for(i = 0; i < comData->incomingStudents; i++)
@@ -247,6 +274,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->motivation = randomIntRange((int)(comData->minGpa * 25), 100);
       ++newCount;
     }
+    // Print how many students enrolled
     sprintf(message, pushStrings[STRINGS_ENROLL], month[timeData->monthCounter], timeData->currentYear, newCount);
     comp_newsfeedlogic_push(self, message);
 
@@ -272,6 +300,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   comData->expectedGraduates = 0;
 
+  // Calculate expected graduates for the following semester
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
@@ -280,10 +309,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       ++(comData->numGraduates);
     }
   }
-}
-
-void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
-  
 }
 
 void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, LIST *legalSlots) {
@@ -692,7 +717,6 @@ void comp_schoolLogic(COMPONENT *self) {
 
   COMPONENT_INIT(self, COMP_SCHOOLLOGIC, data);
   self->events.logicUpdate = comp_schoolLogic_logicUpdate;
-  self->events.frameUpdate = comp_schoolLogic_frameUpdate;
   self->events.initialize = comp_schoolLogic_initialize;
   self->events.destroy = comp_schoolLogic_destroy;
 }
