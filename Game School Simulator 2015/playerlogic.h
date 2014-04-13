@@ -37,6 +37,7 @@ typedef struct {
   bool yPan;
   GMODE currentMode;
   bool lobbyBuilt;
+  bool lobbyClicked;
   bool classroomBuilt;
   int lastSong;
   float nextSongTime;
