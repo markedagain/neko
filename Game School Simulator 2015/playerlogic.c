@@ -29,9 +29,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "UI_button.h"
 #include "pausescreen.h"
 #include "pausescreenlogic.h"
+#include "sound.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
+#define STUDENT_VOLUME_MAX 100
 
 void comp_playerLogic_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -74,12 +76,19 @@ void pan_reset(COMPONENT *self) {
 
 void zoom(COMPONENT *self, float zoom) {
   CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
+  SPACE *simSpace = game_getSpace(self->owner->space->game,"sim");
+  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   SPACE *bg = game_getSpace(self->owner->space->game, "bg");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
   SPACE *fg = game_getSpace(self->owner->space->game, "fg");
   float newZoom = bg->systems.camera.transform.scale.x + zoom;
   float gameHeight = (float)self->owner->space->game->dimensions.height;
+  float zoomScale;
+  float schoolScale;
   newZoom = (float)max((float)min(newZoom, 1.0f), 0.5f);
+  zoomScale = (newZoom - 0.5f) * 2;
+  schoolScale = min((schoolData->currentStudents / (float)STUDENT_VOLUME_MAX), 1.0f);
+  sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f - zoomScale * 0.65f, zoomScale * schoolScale * 2.0f);
     
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
