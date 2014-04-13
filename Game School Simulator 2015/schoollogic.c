@@ -30,6 +30,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
 #include "tutorial.h"
+#include "playerlogic.h"
+#include "sound.h"
 
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
@@ -284,8 +286,12 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   // Start tutorial 6 if first semester
   if(timeData->currentSemester == 0) {
     SPACE *uiSpace = (SPACE *)game_getSpace(self->owner->space->game, "ui");
+    CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(uiSpace, "player"), COMP_PLAYERLOGIC);
     if (self->owner->space->game->config.tutorial)
       createSixthTutorial(uiSpace);
+    sound_playSong(&self->owner->space->game->systems.sound, "02");
+    playerData->lastSong = 2;
+    playerData->nextSongTime = 60.0f * 1.5f;
   }
 
   comData->semTech = 0;

@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pausescreen.h"
 #include "pausescreenlogic.h"
 #include "sound.h"
+#include "random.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -120,7 +121,6 @@ void comp_playerLogic_initialize(COMPONENT *self, void *event) {
   pan_reset(self);
   zoom_reset(self);
   data->yPan = false;
-  //sound_playSong(&self->owner->space->game->systems.sound, "01");
 }
 
 void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
@@ -130,6 +130,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   SPACE *simSpace = game_getSpace(self->owner->space->game,"sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
   COMPONENT *schoolLogic = (COMPONENT *)entity_getComponent((ENTITY *)space_getEntity(simSpace, "gameManager"), COMP_SCHOOLLOGIC);
+  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   POINT mousePos;
   double elapsedTime = self->owner->space->game->systems.time.elapsed;
   
@@ -160,6 +161,28 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
 
   else if (data->currentMode == GM_PLAY) {
+
+    if (data->lastSong != 0) {
+      data->nextSongTime -= (float)self->owner->space->game->systems.time.dtFrame;
+      if (data->nextSongTime <= 0.0f) {
+        int nextSong = randomIntRange(0, 1);
+        if (data->lastSong == 1) {
+          data->lastSong = (nextSong ? 2 : 3);
+          sound_playSong(&self->owner->space->game->systems.sound, (nextSong ? "02" : "03"));
+          data->nextSongTime = 60.0f * (nextSong ? 1.5f : 2.25f);
+        }
+        else if (data->lastSong == 2) {
+          data->lastSong = (nextSong ? 1 : 3);
+          sound_playSong(&self->owner->space->game->systems.sound, (nextSong ? "01" : "03"));
+          data->nextSongTime = 60.0f * (nextSong ? 2.15f : 2.25f);
+        }
+        else {
+          data->lastSong = (nextSong ? 2 : 1);
+          sound_playSong(&self->owner->space->game->systems.sound, (nextSong ? "02" : "01"));
+          data->nextSongTime = 60.0f * (nextSong ? 2.15f : 1.5f);
+        }
+      }
+    }
 
     // MANAGE INPUT
     if (input->keyboard.keys[KEY_LEFT] == ISTATE_DOWN) {

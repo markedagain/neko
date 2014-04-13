@@ -53,8 +53,8 @@ void startGame(GAME *game) {
   (game_getSpace(game, "bg"))->active = true;
   (game_getSpace(game, "mg"))->active = true;
   (game_getSpace(game, "fg"))->active = true;
-  //sound_stopSong(&game->systems.sound);
-  sound_playSong(&game->systems.sound, "02");
+  sound_stopSong(&game->systems.sound);
+  //sound_playSong(&game->systems.sound, "02");
   sound_playAmbient(&game->systems.sound, "cityloop", "classloop");
 
   if (game->config.tutorial)
