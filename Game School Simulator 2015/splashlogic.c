@@ -22,7 +22,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SPLASHLOGIC *data = (CDATA_SPLASHLOGIC *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   ENTITY *bg = space_getEntity(self->owner->space, "splash_bg");
   INPUT_CONTAINER *input = &self->owner->space->game->input;
 
@@ -30,7 +29,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   if(input->keyboard.keys[KEY_O] == ISTATE_DOWN && input->keyboard.keys[KEY_H] == ISTATE_DOWN)
       data->ohSound = true;
 
-  data->timer -= (float)updateEvent->dt;
+  data->timer -= (float)self->owner->space->game->systems.time.dt;
   if (bg && data->fadeBackground) {
     CDATA_SPRITE *bgSprite = (CDATA_SPRITE *)entity_getComponentData(bg, COMP_SPRITE);
     bgSprite->color.a -= 0.01f;

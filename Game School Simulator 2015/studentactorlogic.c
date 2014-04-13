@@ -111,7 +111,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
       entity_destroy(text);
   }
 
-  data->lifeTimer += (float)updateEvent->dt;
+  data->lifeTimer += (float)self->owner->space->game->systems.time.dt;
 
   if (!data->setSprite) {
     VEC3 position = { 0 };
@@ -159,7 +159,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     data->lifetime = 10000.0f;
   }
 
-  comp_studentActorLogic_updateState(self, event);
+  comp_studentActorLogic_updateState(self);
 }
 
 void comp_studentActorLogic_flipSprite(COMPONENT *self) {
@@ -207,14 +207,13 @@ void comp_studentActorLogic_initialize(COMPONENT *self, void *event) {
 
 }
 
-void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
+void comp_studentActorLogic_updateState(COMPONENT *self) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   switch (data->outerState) {
 
   // fading in
   case OS_FADEIN:
-    data->stateTimer += (float)updateEvent->dt;
+    data->stateTimer += (float)self->owner->space->game->systems.time.dt;
     {
     COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
     multiSprite_setAlpha(multiSprite, data->stateTimer / FADE_TIME);
@@ -239,7 +238,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
 
     // on update
     case IS_UPDATE:
-      data->stateTimer += (float)updateEvent->dt;
+      data->stateTimer += (float)self->owner->space->game->systems.time.dt;
       if (data->stateTimer > data->stateTime)
         data->innerState = IS_EXIT;
       break;
@@ -269,7 +268,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
 
     // on update
     case IS_UPDATE:
-      data->stateTimer += (float)updateEvent->dt;
+      data->stateTimer += (float)self->owner->space->game->systems.time.dt;
       {
         CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
         trans->translation.x += data->velocity;
@@ -311,7 +310,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
 
     // on update
     case IS_UPDATE:
-      data->stateTimer += (float)updateEvent->dt;
+      data->stateTimer += (float)self->owner->space->game->systems.time.dt;
       {
         CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
         trans->translation.x += data->velocity;
@@ -389,7 +388,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self, void *event) {
     case IS_UPDATE:
       {
         COMPONENT *multiSprite = (COMPONENT *)entity_getComponent(self->owner, COMP_MULTISPRITE);
-        data->stateTimer += (float)updateEvent->dt;
+        data->stateTimer += (float)self->owner->space->game->systems.time.dt;
         if (data->stateTimer > FADE_TIME)
           data->innerState = IS_EXIT;
         multiSprite_setAlpha(multiSprite, 1 - data->stateTimer / FADE_TIME);

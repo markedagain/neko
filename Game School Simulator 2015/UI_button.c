@@ -47,13 +47,12 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   ENTITY *player = space_getEntity(ui, "player");
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *managementData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
   char buffer[80];
 
-  al_update(&data->actions, updateEvent->dt);
+  al_update(&data->actions, self->owner->space->game->systems.time.dt);
 
   if(mbox->entered) {
     if (data->text) {

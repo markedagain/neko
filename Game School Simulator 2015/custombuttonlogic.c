@@ -16,9 +16,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 void comp_customButtonLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
 
-  al_update(&data->actions, updateEvent->dt);
+  al_update(&data->actions, self->owner->space->game->systems.time.dt);
 
   if (mbox->entered)
     if (data->onEntered)
