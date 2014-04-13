@@ -218,6 +218,9 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[inspectData->posY][inspectData->posX], COMP_ROOMLOGIC);
 
+  if(comData->level >= 3)
+    return;
+
   switch (comData->type) {
     case ROOMTYPE_LOBBY:
       break;
@@ -432,40 +435,40 @@ int comp_roomLogic_getRoomUpgradeCost(ROOM_TYPE type) {
       return 0;
 
     case ROOMTYPE_CLASS:
-      return 5000;
+      return 75000;
 
     case ROOMTYPE_LIBRARY:
-      return 10000;
+      return 100000;
 
     case ROOMTYPE_TEAMSPACE:
-      return 30000;
+      return 200000;
 
     case ROOMTYPE_CAFETERIA:
-      return 5000;
+      return 200000;
 
     case ROOMTYPE_STORE:
-      return 5000;
+      return 100000;
     
     case ROOMTYPE_OFFICES:
-      return 5000;
+      return 75000;
 
     case ROOMTYPE_AUDITORIUM:
-      return 5000;
+      return 0;
 
     case ROOMTYPE_TUTORING:
-      return 5000;
+      return 50000;
 
     case ROOMTYPE_IT:
-      return 5000;
+      return 100000;
 
     case ROOMTYPE_RECREATION:
-      return 5000;
+      return 100000;
 
     case ROOMTYPE_FIGURE:
-      return 5000;
+      return 100000;
 
     case ROOMTYPE_POTTERY:
-      return 5000;
+      return 1000000;
 
     default:
       return 0;
