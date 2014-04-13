@@ -230,8 +230,6 @@ bool game_loop(GAME *game) {
     }
     else
       input_unlockMouse(&game->input);
-    if (game->input.keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED)
-      return false;
     sound_update(&game->systems.sound);
     stopwatch_stopAt(&game->systems.time.logicStopwatch, &game->systems.time.stopwatch.start);
     game->systems.time.dt = stopwatch_delta(&game->systems.time.logicStopwatch);

@@ -17,6 +17,8 @@
 #include "timemanager.h"
 #include "tutorial.h"
 #include "UI_button.h"
+#include "pausescreen.h"
+#include "pausescreenlogic.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -159,11 +161,12 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       mg->systems.camera.transform.rotation += 0.2f;
       fg->systems.camera.transform.rotation += 0.2f;
     }
-    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
-      if (self->owner->space->game->systems.time.scale)
-        self->owner->space->game->systems.time.scale = 0;
-      else
-        self->owner->space->game->systems.time.scale = 1.0;
+    if (input->keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED) {
+      SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
+      if (!space_getEntity(tutorial, "pauseScreen")) {
+        CDATA_PAUSESCREEN *pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(space_addEntity(tutorial, arch_pauseScreen, "pauseScreen"), COMP_PAUSESCREENLOGIC);
+        pauseData->lastMode = data->currentMode;
+      }
     }
 
     if (input->keyboard.keys[KEY_F2] == ISTATE_PRESSED) {

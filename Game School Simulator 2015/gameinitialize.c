@@ -58,10 +58,7 @@ void createSpaces(GAME *game) {
   game_addSpace(game, "mg");
   game_addSpace(game, "fg");
   game_addSpace(game, "ui");
-  
-  if (game->config.tutorial)
-    game_addSpace(game, "tutorial");
-
+  game_addSpace(game, "tutorial");
   game_addSpace(game, "menu");
   game_addSpace(game, "splash");
   game_addSpace(game, "cursor");

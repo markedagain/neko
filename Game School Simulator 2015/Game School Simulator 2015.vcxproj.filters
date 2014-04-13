@@ -185,6 +185,12 @@
     <ClCompile Include="creditsscreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
+    <ClCompile Include="pausescreenlogic.c">
+      <Filter>Components\UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="pausescreen.c">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -385,6 +391,12 @@
       <Filter>Components\UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="creditsscreen.h">
+      <Filter>Archetypes\ui_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="pausescreenlogic.h">
+      <Filter>Components\UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="pausescreen.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
   </ItemGroup>

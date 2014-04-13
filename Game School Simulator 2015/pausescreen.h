@@ -7,6 +7,7 @@
 #include "hash.h"
 
 #define ARCH_PAUSESCREEN HASH("ARCH_PAUSESCREEN")
+
 void arch_pauseScreen(ENTITY *entity);
 
 #endif
