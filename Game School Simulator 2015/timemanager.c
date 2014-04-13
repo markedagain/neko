@@ -170,11 +170,11 @@ void comp_timeManager_pause(COMPONENT *ptr) {
 
   if(comData->paused) {
     comData->paused = FALSE;
-    sprite->source = "ui/play";
+    sprite->source = "ui/pause";
   }
   else {
     comData->paused = TRUE;
-    sprite->source = "ui/pause";
+    sprite->source = "ui/play";
   }
 }
 
