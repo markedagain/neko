@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: namescreen.h
+
+Project Name: Game School Simulator 2015
+
+Author: Tai Der Hui
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __ARCH_NAMESCREEN__
 #define __ARCH_NAMESCREEN__

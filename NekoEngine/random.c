@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: random.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include <time.h>
 #include <stdlib.h>

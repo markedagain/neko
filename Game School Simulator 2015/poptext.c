@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: poptext.c
+
+Project Name: Game School Simulator 2015
+
+Author: Adam Rezich
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "poptext.h"
 #include "transform.h"

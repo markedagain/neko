@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: hash.h
+
+Project Name: Game School Simulator 2015
+
+Author: Adam Rezich
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __HASH_H__
 #define __HASH_H__
