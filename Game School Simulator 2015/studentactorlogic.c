@@ -26,16 +26,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define FADE_TIME 1.0f
 #define INDIVIDUAL_ROOM_SIZE 80.0f
 #define ROOM_X_OFFSET -25.0f
+#define ANIMATION_TIME 0.3f
 
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   VEC3 pos = { 0 };
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
-  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
+  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC);
 
   if (mbox->entered) {
     ENTITY *created;
@@ -129,6 +129,8 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     body = genericSprite_create(self->owner->space, &position, NULL, data->body);
     hair = genericSprite_create(self->owner->space, &position, NULL, data->hair);
 
+    data->legsPointer = legs;
+
     // setting the student actor's multisprite
     multiSprite_addSprite(multiSprite, legs);
     multiSprite_addSprite(multiSprite, head);
@@ -137,6 +139,28 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     multiSprite_addSprite(multiSprite, hair);
 
     data->setSprite = true;
+  }
+
+  if (data->outerState == OS_LEFT || data->outerState == OS_RIGHT || data->outerState == OS_WALKTODOOR) {
+    data->animationTimer += (float)self->owner->space->game->systems.time.dt;
+    if (data->animationTimer > ANIMATION_TIME) {
+      switch (data->currentFrame) {
+        // standing
+        case 0:
+          __studentActorLogic_setLegs(self, AF_WALK1);
+          data->currentFrame = 1;
+          break;
+        case 1:
+          __studentActorLogic_setLegs(self, AF_WALK2);
+          data->currentFrame = 2;
+          break;
+        case 2:
+          __studentActorLogic_setLegs(self, AF_WALK1);
+          data->currentFrame = 1;
+          break;
+        }
+      data->animationTimer = 0;
+    }
   }
 
   if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
@@ -232,8 +256,10 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
     case IS_ENTER:
       data->velocity = 0;
       data->stateTimer = 0;
-      data->stateTime = (STUDENT_STATE)randomIntRange(5, 10) / 10.0f;
+      data->stateTime = (STUDENT_STATE)randomIntRange(10, 20) / 10.0f;
       data->innerState = IS_UPDATE;
+      __studentActorLogic_setLegs(self, AF_IDLE);
+      
       break;
 
     // on update
@@ -264,6 +290,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       data->stateTime = randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
       data->innerState = IS_UPDATE;
+      __studentActorLogic_setLegs(self, AF_WALK1);
       break;
 
     // on update
@@ -306,6 +333,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       data->stateTime = data->roomSize / INDIVIDUAL_ROOM_SIZE * randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
       data->innerState = IS_UPDATE;
+      __studentActorLogic_setLegs(self, AF_WALK1);
       break;
 
     // on update
@@ -347,6 +375,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
         // set velocity based on position relative to door, and flip sprite
         data->velocity = trans->translation.x > data->origin ? -0.5f : 0.5f;
         comp_studentActorLogic_flipSprite(self);
+        __studentActorLogic_setLegs(self, AF_WALK1);
         data->innerState = IS_UPDATE;
       }
       break; 
@@ -378,6 +407,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       data->stateTimer = 0;
       data->innerState = IS_UPDATE;
       data->lifetime = 10000.0f;
+      __studentActorLogic_setLegs(self, AF_IDLE);
       {
         CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
         mbox->active = false;
@@ -421,4 +451,23 @@ void comp_studentActorLogic_createPopText(COMPONENT *self, char *text) {
   VEC4 color = { 0, 0, 0, 1.0f };
   ENTITY *popText = popText_create(self->owner->space, &position, "individualText", "fonts/gothic/12", text, &color, POPTYPE_STAY, 4.0f);
   entity_attach(popText, self->owner);
+}
+
+void __studentActorLogic_setLegs(COMPONENT *self, ANIMATION_FRAME frame) {
+  CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(data->legsPointer, COMP_SPRITE);
+  switch (frame) {
+  case AF_IDLE:
+    sprite->source = data->legs;
+    data->currentFrame = 0;
+    break;
+  case AF_WALK1:
+    sprite->source = data->walk1;
+    data->currentFrame = 1;
+    break;
+  case AF_WALK2:
+    sprite->source = data->walk2;
+    data->currentFrame = 2;
+    break;
+  }
 }
