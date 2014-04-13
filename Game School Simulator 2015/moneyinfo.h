@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: moneyinfo.h
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __ARCH_MONEYINFO__
 #define __ARCH_MONEYINFO__

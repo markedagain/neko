@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: UI_logic.h
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __COMP_UI_LOGIC__
 #define __COMP_UI_LOGIC__

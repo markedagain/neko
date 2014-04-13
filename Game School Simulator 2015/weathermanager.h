@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: weathermanager.h
+
+Project Name: Game School Simulator 2015
+
+Author: Eduardo Gorinstein
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #ifndef __COMP_WEATHERMANAGER__
 #define __COMP_WEATHERMANAGER__
