@@ -234,6 +234,7 @@ bool game_loop(GAME *game) {
   deltaTime = stopwatch_delta(&game->systems.time.stopwatch);
   if (deltaTime >= game->systems.time.frameRate) {
     game->systems.time.elapsed += deltaTime;
+    game->systems.time.dtFrame = deltaTime;
     stopwatch_lap(&game->systems.time.stopwatch);
     if (AESysGetWindowHandle() == GetActiveWindow()) {
       input_update(&game->input, NULL);

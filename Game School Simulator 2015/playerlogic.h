@@ -39,6 +39,8 @@ typedef struct {
   bool lobbyBuilt;
   bool lobbyClicked;
   bool classroomBuilt;
+  int lastSong;
+  float nextSongTime;
 } CDATA_PLAYERLOGIC;
 
 void comp_playerLogic_initialize(COMPONENT *self, void *event);

@@ -57,6 +57,7 @@ typedef struct game_t {
       unsigned short currentFramesPerSecond;
       double frameRate;
       double dt;
+      double dtFrame;
       double elapsed;
       double scale;
     } time;

@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "splashlogic.h"
 #include "sound.h"
 #include "generictext.h"
+#include "input.h"
 #include "gameinitialize.h"
 
 #define DIGIPEN_TIME 3.0
@@ -23,6 +24,11 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   ENTITY *bg = space_getEntity(self->owner->space, "splash_bg");
+  INPUT_CONTAINER *input = &self->owner->space->game->input;
+
+  // OH easter egg
+  if(input->keyboard.keys[KEY_O] == ISTATE_DOWN && input->keyboard.keys[KEY_H] == ISTATE_DOWN)
+      data->ohSound = true;
 
   data->timer -= (float)updateEvent->dt;
   if (bg && data->fadeBackground) {
@@ -32,7 +38,10 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
       sprite->source = "splash";
       data->secondLogo = true;
       data->timer = (float)NEKOMEANSCAT_TIME;
-      sound_playSound(&self->owner->space->game->systems.sound, "logo");
+      if(!data->ohSound)
+        sound_playSound(&self->owner->space->game->systems.sound, "logo");
+      else
+        sound_playSound(&self->owner->space->game->systems.sound, "logo_oh");
     }
     if (bgSprite->color.a <= 0.0f) {
       data->fadeBackground = false;
@@ -43,9 +52,6 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
     if (data->timer <= 0.0f) {
       sprite->color.a -= 0.05f;
       if (sprite->color.a <= 0) {
-        //////////////////////////////////////////
-        // ENGINE PROOF ONLY; REMOVE LATER PLOX //
-        //////////////////////////////////////////
 
         VEC3 position = { 0.0f , 0.0f, 0.0f };
         //VEC4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -54,7 +60,7 @@ void comp_splashLogic_logicUpdate(COMPONENT *self, void *event) {
         //vec3_set(&position, 0.0f, 180.0f - 4.0f - 28.0f, 0.0f);
         //genericText_create(game_getSpace(self->owner->space->game, "ui"), &position, "subtitle", "fonts/gothic/16", "Alpha presentation", &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
         //simSpace->systems.time.scale = 0.0166666666666667f;
-        sound_playSong(&self->owner->space->game->systems.sound, "01");
+        sound_playSongLooped(&self->owner->space->game->systems.sound, "01_loop");
 
         //////////////////////////////////////////
         sprite->color.a = 0;
@@ -90,6 +96,7 @@ void comp_splashLogic(COMPONENT *self) {
   CDATA_SPLASHLOGIC data = { 0 };
   data.secondLogo = false;
   data.fadeBackground = false;
+  data.ohSound = false;
   data.timer = (float)DIGIPEN_TIME;
   COMPONENT_INIT(self, COMP_SPLASHLOGIC, data);
   component_depend(self, COMP_TRANSFORM);

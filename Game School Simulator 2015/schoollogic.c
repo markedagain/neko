@@ -30,6 +30,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "newsfeedlogic.h"
 #include "studentmanagerlogic.h"
 #include "tutorial.h"
+#include "playerlogic.h"
+#include "sound.h"
 
 
 void comp_schoolLogic_initialize(COMPONENT *self, void *event) {
@@ -552,6 +554,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     case ROOMTYPE_LOBBY:
       if(comData->rooms.coord[1][7] == NULL) {
         sprite->source = "rooms/lobby1";
+
         comData->roomFlag[ROOMTYPE_CLASS] = 1;
       }
       else if(comData->rooms.coord[0][7] == NULL)

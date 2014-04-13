@@ -24,14 +24,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "studentmanagerlogic.h"
 #define MALE_HEAD_COUNT 5
 #define MALE_FACE_COUNT 5
-#define MALE_HAIR_COUNT 10
+#define MALE_HAIR_COUNT 14
 #define MALE_BODY_COUNT 5
 #define MALE_LEGS_COUNT 5
 
 #define FEMALE_HEAD_COUNT 5
 #define FEMALE_FACE_COUNT 5
 #define FEMALE_HAIR_COUNT 11
-#define FEMALE_BODY_COUNT 5
+#define FEMALE_BODY_COUNT 6
 #define FEMALE_LEGS_COUNT 5
 
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {

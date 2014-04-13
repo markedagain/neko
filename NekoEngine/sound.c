@@ -21,7 +21,7 @@ void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   system->channels.music = NULL;
   system->volume.master = 0.85f;
   system->volume.sound = 1.0f;
-  system->volume.music = 0.65f;
+  system->volume.music = 0.85f;
   system->volume.ambient = 1.0f;
   system->volume.ambient1 = 0.0f;
   system->volume.ambient2 = 0.0f;
@@ -68,6 +68,16 @@ void sound_playSound(SOUNDSYSTEM *system, char *sound) {
 }
 
 void sound_playSong(SOUNDSYSTEM *system, char *song) {
+  SOUND *snd = (SOUND *)dict_get(system->sounds, song);
+  if (system->channels.music != NULL)
+    sound_stopSong(system);
+  FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->channels.music);
+  FMOD_Channel_SetVolume(system->channels.music, system->volume.music * system->volume.master);
+  FMOD_Channel_SetMode(system->channels.music, FMOD_LOOP_OFF);
+  FMOD_Channel_SetLoopCount(system->channels.music, 0);
+}
+
+void sound_playSongLooped(SOUNDSYSTEM *system, char *song) {
   SOUND *snd = (SOUND *)dict_get(system->sounds, song);
   if (system->channels.music != NULL)
     sound_stopSong(system);
