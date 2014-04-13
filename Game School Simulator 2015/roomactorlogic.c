@@ -43,12 +43,15 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if (mbox->left.pressed && !comData->triggered) {
     
-    if (inspectData->studentActive)
+    if (inspectData->studentActive) {
+      inspectData->clear = true;
       inspectData->studentActive = false;
-    
+    }
+
     inspectData->posActive = true;
     inspectData->posX = comData->posX;
     inspectData->posY = comData->posY;
+    inspectData->triggered = true;
     comData->triggered = true;
     inspectData->active = true;
   }
@@ -64,15 +67,16 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
     && inspectData->posY == comData->posY && !comData->triggered) {
     comData->triggered = true;
     inspectData->active = false;
+    inspectData->clear = true;
   }
 
   else if (!mbox->left.pressed)
     comData->triggered = false;
-  
+  /*
   if(inspectData->active && comData->triggered == false) {
     UI_button_updateUpgradeButton(uiSpace);
   }
-
+  */
   // CHANGE SPRITE TO EXTERIOR IF ZOOMED OUT
   if(fg->systems.camera.transform.scale.x <= 0.65f && comData->zoomedOut == FALSE) {
     switch (comData->type) {

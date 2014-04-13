@@ -21,11 +21,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 typedef struct cdata_inspectionScreen_t {
   bool active;
-  bool posActive;
-  bool studentActive;
   bool triggered;
 
   // STUDENT INSPECTION
+  bool studentActive;
   char nameBuffer[30];
   char GPA[16];
   char expectedGraduationYear[30];
@@ -50,10 +49,13 @@ typedef struct cdata_inspectionScreen_t {
   ENTITY *roomType;
   ENTITY *bonuses;
   ENTITY *upkeep;
-  ENTITY *upgradeButton;
   ENTITY *level;
   int posX;
   int posY;
+  int currUpkeep;
+  bool posActive;
+  bool upgradeButton;
+  bool clear;
   } CDATA_INSPECTIONSCREEN;
 
 void room_inspection_clear(COMPONENT *self);
