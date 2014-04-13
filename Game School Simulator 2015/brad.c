@@ -21,5 +21,5 @@ void arch_brad(ENTITY *entity) {
 
   entity_connect(entity, comp_transform);
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-  sprite->source = "ui/brad";
+  sprite->source = "brad";
 }

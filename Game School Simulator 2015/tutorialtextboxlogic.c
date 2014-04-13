@@ -30,7 +30,7 @@ void comp_tutorialTextBoxLogic(COMPONENT *self) {
 
 void comp_tutorialTextBoxLogic_initialize(COMPONENT *self, void *event) {
   CDATA_TUTORIALTEXT *data = (CDATA_TUTORIALTEXT *)self->data;
-  VEC3 pos = { 0, 0, 0 };
+  VEC3 pos = { 0, -10.0f, 0 };
   VEC2 dimensions = { 500.0f, 125.0f};
   VEC4 color = { 0, 0, 0, 1.0f };
 
