@@ -50,6 +50,7 @@ typedef struct{
   ENTITY *ent1;
   ENTITY *ent2;
   ENTITY *ent3;
+  ENTITY *hoverText;
   BUTTON_TYPE type;
   ALIST actions;
   float startY;

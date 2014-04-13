@@ -39,14 +39,26 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
   ENTITY *schoolData = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
+  CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(self->owner, COMP_MANAGEMENT);
+
 
   if (mbox->entered) {
+    if (!managementData->hoverText) {
+      VEC3 position;
+      vec3_set(&position, -242, 151, 0);
+      managementData->hoverText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Management!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    } 
     sound_playSound(&self->owner->space->game->systems.sound, "hover");
     sprite->color.a = 0.8f;
   }
 
   if (mbox->exited) {
+    if (managementData->hoverText) {
+      entity_destroy(managementData->hoverText);
+      managementData->hoverText = NULL;
+    }
     sprite->color.a = 1.0f;
+
   }
 
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {

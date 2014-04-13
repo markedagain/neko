@@ -17,6 +17,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "hash.h"
 #include "generictext.h"
 
+typedef struct{
+  ENTITY *hoverText;
+} CDATA_BUTTONFUNCTIONS;
+
 void newGame_onEntered(COMPONENT *self);
 void newGame_onPressed(COMPONENT *self);
 void newGame_onExit(COMPONENT *self);

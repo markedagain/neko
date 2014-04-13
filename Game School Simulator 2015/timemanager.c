@@ -152,12 +152,12 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
     // NEW YEAR
     if(comData->monthCounter >= 12) {
-      char message[80];
+      //char message[80];
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
       comData->monthCounter = 0;
-      sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
-      comp_newsfeedlogic_push(self, message);
+      //sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
+      //comp_newsfeedlogic_push(self, message);
     }
   }
 
@@ -170,11 +170,11 @@ void comp_timeManager_pause(COMPONENT *ptr) {
 
   if(comData->paused) {
     comData->paused = FALSE;
-    sprite->source = "ui/play";
+    sprite->source = "ui/pause";
   }
   else {
     comData->paused = TRUE;
-    sprite->source = "ui/pause";
+    sprite->source = "ui/play";
   }
 }
 

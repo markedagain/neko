@@ -106,7 +106,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // Add min GPA multiplier
   comData->incomingStudents = (int)(comData->incomingStudents * (((4.2f - comData->minGpa) / 4.0f)));
     // Add min Tuition multiplier
-  comData->incomingStudents += (int)(maxIncomingStudents * ((10000.0f - comData->tuition) / 40000.0f));
+  comData->incomingStudents += (int)(maxIncomingStudents * (-comData->tuition / 30000.0f));
     // Make sure incoming students does not go over
   if(comData->incomingStudents > maxIncomingStudents)
     comData->incomingStudents = maxIncomingStudents;
@@ -134,6 +134,8 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
     comData->money += studentData->tuition / 6;
     studentPtr = studentPtr->next;
+    // Make $ pop text
+
   }
 
   //Lose money
@@ -271,7 +273,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   }
   // Print how many students droped
   if(dropCount) {
-    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount);
+    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount, dropCount);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -311,7 +313,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   // Print graduation message
   if(comData->expectedGraduates > 0) {
-    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->expectedGraduates);
+    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->newGraduates, comData->graduationRep);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -716,7 +718,7 @@ void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   strcpy(data.schoolName, "");
   data.money = 350000;
-  data.tuition = 10000;
+  data.tuition = 6500;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;
