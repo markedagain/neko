@@ -229,7 +229,7 @@ void comp_menuScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   if (pressStart) {
     multiSprite_setAlpha(entity_getComponent(pressStart, COMP_MULTISPRITE), sinf(self->owner->space->game->systems.time.elapsed * 2.0f));
   }
-  al_update(&data->actions, updateEvent->dt);
+  al_update(&data->actions, self->owner->space->game->systems.time.dt);
 }
 
 void comp_menuScreenLogic(COMPONENT *self) {

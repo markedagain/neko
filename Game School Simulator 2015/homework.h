@@ -3,7 +3,7 @@ Filename: homework.h
 
 Project Name: Game School Simulator 2015
 
-Author: Tai Der Hui
+Author: Eduardo Gorinstein
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 

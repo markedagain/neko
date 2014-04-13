@@ -34,5 +34,6 @@ typedef struct cdata_actorLogic_t {
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_roomActorLogic(COMPONENT *self);
 void comp_roomActorLogic_initialize(COMPONENT *self, void *event);
+void comp_roomActorLogic_destroy(COMPONENT *self, void *event);
 
 #endif

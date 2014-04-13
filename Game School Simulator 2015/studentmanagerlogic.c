@@ -28,13 +28,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define DISPLAY_FRACTION 10
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
 
   if (data->displayCurrent >= data->displayTotal)
     return;
 
-  data->timer += (float)updateEvent->dt;
+  data->timer += (float)self->owner->space->game->systems.time.dt;
   if(data->timer > SPAWN_TIMER) {
     studentManager_spawnStudent(self);
     data->timer = 0.0f;

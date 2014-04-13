@@ -35,11 +35,10 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
   CDATA_ACTORLOGIC *comData = (CDATA_ACTORLOGIC *)self->data;
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
   CDATA_SCHOOLLOGIC *schoolLogic = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
 
-  al_update(&comData->actions, updateEvent->dt);
+  al_update(&comData->actions, self->owner->space->game->systems.time.dt);
 
   if (mbox->left.pressed && !comData->triggered) {
     
@@ -185,8 +184,9 @@ void comp_roomActorLogic(COMPONENT *self) {
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_ROOMACTORLOGIC, data);
   component_depend(self, COMP_MOUSEBOX);
-  self->events.frameUpdate = comp_roomActorLogic_logicUpdate;
+  self->events.logicUpdate = comp_roomActorLogic_logicUpdate;
   self->events.initialize = comp_roomActorLogic_initialize;
+  self->events.destroy = comp_roomActorLogic_destroy;
 }
 
 static void landing_update(ACTION *action, double dt) {
@@ -228,4 +228,10 @@ void comp_roomActorLogic_initialize(COMPONENT *self, void *event) {
   CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
 
   al_pushBack(&data->actions, action_create(self, landing_update, NULL, landing_onEnd, false, 0.6f));
+}
+
+void comp_roomActorLogic_destroy(COMPONENT *self, void *event) {
+  CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
+
+  al_destroy(&data->actions);
 }

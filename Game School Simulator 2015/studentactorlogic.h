@@ -22,7 +22,7 @@ void comp_studentActorLogic(COMPONENT *self);
 void comp_studentActorLogic_initialize(COMPONENT *self, void *event);
 void comp_studentActorLogic_flipSprite(COMPONENT *self);
 void comp_studentActorLogic_createPopText(COMPONENT *self, char *text);
-void comp_studentActorLogic_updateState(COMPONENT *self, void *event);
+void comp_studentActorLogic_updateState(COMPONENT *self);
 void comp_studentActorLogic_flipText(ENTITY *text);
 
 typedef enum {

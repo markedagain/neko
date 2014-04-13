@@ -48,7 +48,6 @@ void comp_newsfeedlogic_initialize(COMPONENT *self, void *event) {
 void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event) {
   int i;
   CDATA_NEWSFEEDLOGIC *comData = (CDATA_NEWSFEEDLOGIC *)self->data;
-  EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
 
   if(mbox->over) {
@@ -60,7 +59,7 @@ void comp_newsfeedlogic_logicUpdate(COMPONENT *self, void *event) {
     comData->delayTime = 0;
   }
 
-  comData->delayTime += updateEvent->dt;
+  comData->delayTime += self->owner->space->game->systems.time.dt;
 
   if(comData->delayTime > 3.0f) {
     // FADE OUT

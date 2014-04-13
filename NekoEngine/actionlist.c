@@ -14,7 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <stdlib.h>
 #include "actionlist.h"
 
-#define FINISH_FRACTION 0.95f
+#define EPSILON 0.01f
 
 void al_init(ALIST *actionList) {
   actionList->duration = 0;
@@ -52,7 +52,7 @@ void al_update(ALIST *actionList, double deltaTime) {
     action->elapsed += (float)deltaTime;
     if (action->update)
       (*(action->update))(action, deltaTime);
-    if (action->elapsed >= FINISH_FRACTION * action->duration)
+    if (action->elapsed + EPSILON >= action->duration)
       action->isFinished = true;
 
     if (action->isFinished) {
