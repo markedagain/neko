@@ -126,8 +126,13 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   if(fg->systems.camera.transform.scale.x > 0.65f && comData->zoomedOut == TRUE) {
      switch (comData->type) {
     case ROOMTYPE_LOBBY:
+      if(comData->posY == 2)
         sprite->source = "rooms/lobby1";
-        break;
+      else if(comData->posY == 1)
+        sprite->source = "rooms/lobby2";
+      else if(comData->posY == 0)
+        sprite->source = "rooms/lobby3";
+      break;
     case ROOMTYPE_CLASS:
       sprite->source = "rooms/class";
       break;
