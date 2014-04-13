@@ -196,7 +196,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
             break;
 
           case BUTTON_ROOM_UPGRADE:
-            sprintf(buffer, "$5,000");
+            sprintf(buffer, "$%i", comp_roomLogic_getRoomUpgradeCost(data->type));
             genericText_setText(data->text, buffer);
             break;
 

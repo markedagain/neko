@@ -26,13 +26,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define MALE_FACE_COUNT 5
 #define MALE_HAIR_COUNT 14
 #define MALE_BODY_COUNT 5
-#define MALE_LEGS_COUNT 5
 
 #define FEMALE_HEAD_COUNT 5
 #define FEMALE_FACE_COUNT 5
 #define FEMALE_HAIR_COUNT 11
 #define FEMALE_BODY_COUNT 6
-#define FEMALE_LEGS_COUNT 5
 
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -46,14 +44,18 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     generate_student(self);
   comData->counter++;
   
+  ////////////////////////////
   // Graduate
+  ////////////////////////////
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
-    int repIncrease = (int)(5 * (comData->gpa / 4.0f));
+    int repIncrease = (int)(4 * (comData->gpa / 4.0f));
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentManager = space_getEntity(fg, "studentManager");
     COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
+    schoolLogic->graduationRep += repIncrease;
+    ++schoolLogic->newGraduates;
     comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
@@ -118,7 +120,7 @@ void generate_student(COMPONENT *self) {
     data->face = randomIntRange(1, MALE_FACE_COUNT);
     data->hair = randomIntRange(1, MALE_HAIR_COUNT);
     data->body = randomIntRange(1, MALE_BODY_COUNT);
-    data->legs = randomIntRange(1, MALE_LEGS_COUNT);
+    data->legs = 1;
   }
   else {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
@@ -131,7 +133,7 @@ void generate_student(COMPONENT *self) {
     data->face = randomIntRange(1, FEMALE_FACE_COUNT);
     data->hair = randomIntRange(1, FEMALE_HAIR_COUNT);
     data->body = randomIntRange(1, FEMALE_BODY_COUNT);
-    data->legs = randomIntRange(1, FEMALE_LEGS_COUNT);
+    data->legs = 1;
   }
 
   data->techSkill = randomIntRange(lowValue, highValue);

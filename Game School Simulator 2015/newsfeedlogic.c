@@ -19,8 +19,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 char *pushStrings[STRINGS_LAST] = {
   "Welcome to: %s!",
   "%s/%i - %i students have enrolled!",
-  "%s/%i - %i students have dropped out!",
-  "%s/%i - %i students have graduated!",
+  "%s/%i - %i students have dropped out! -%i rep!",
+  "%s/%i - %i students have graduated! +%i rep!",
   "%s/%i - Semester %i has started!",
   "%s/%i - Its %i, happy new year!"
 };

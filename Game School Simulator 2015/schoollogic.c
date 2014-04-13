@@ -72,6 +72,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     comData->currMoney = comData->money;
     // update build buttons
     UI_button_updateBuildButtons(uiSpace);
+    //UI_button_updateUpgradeButton(uiSpace);
   }
 
   // Display Rep on screen
@@ -89,10 +90,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Student Pop on screen
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -30, 176, 0);
+    vec3_set(&position, -40, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
-    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   }
     // Update
   sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
@@ -105,13 +106,20 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // Add min GPA multiplier
   comData->incomingStudents = (int)(comData->incomingStudents * (((4.2f - comData->minGpa) / 4.0f)));
     // Add min Tuition multiplier
-  comData->incomingStudents += (int)(maxIncomingStudents * ((10000.0f - comData->tuition) / 40000.0f));
+  comData->incomingStudents += (int)(maxIncomingStudents * (-comData->tuition / 30000.0f));
     // Make sure incoming students does not go over
   if(comData->incomingStudents > maxIncomingStudents)
     comData->incomingStudents = maxIncomingStudents;
 }
 
 // Called by timemanager.c
+////////////////////////////////////////////////////////////////////////
+//
+//
+//  UPDATE MONTH
+//
+//
+////////////////////////////////////////////////////////////////////////
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
   int totalUpkeep;
@@ -169,6 +177,13 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 }
 
 // Called by timemanager.c
+////////////////////////////////////////////////////////////////////////
+//
+//
+//  UPDATE SEMESTER
+//
+//
+////////////////////////////////////////////////////////////////////////
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
@@ -256,7 +271,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   }
   // Print how many students droped
   if(dropCount) {
-    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount);
+    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount, dropCount);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -296,7 +311,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   // Print graduation message
   if(comData->expectedGraduates > 0) {
-    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->expectedGraduates);
+    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->newGraduates, comData->graduationRep);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -620,6 +635,10 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       sprite->source = "rooms/library";
       break;
   }
+
+
+  // Increase Rep
+  comData->reputation += 5;
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
@@ -697,7 +716,7 @@ void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   strcpy(data.schoolName, "");
   data.money = 350000;
-  data.tuition = 10000;
+  data.tuition = 6500;
   data.minIncomingGpa = 2.0f;
   data.minGpa = 1.8f;
   data.studentCapacity = 0;

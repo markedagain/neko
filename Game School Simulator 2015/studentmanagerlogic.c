@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "multisprite.h"
 #include "genericsprite.h"
 #include "poptext.h"
+#include "mousebox.h"
 
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 1.0f
@@ -136,6 +137,7 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
   actorData->studentPtr = studentPtr;
 
+  // set male sprites
   if (studentData->gender == GEN_MALE) {
     sprintf(spriteName, "student/male/legs/%.2d", studentData->legs);
     strcpy(actorData->legs, spriteName);
@@ -151,7 +153,12 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
     sprintf(spriteName, "student/male/hair/%.2d", studentData->hair);
     strcpy(actorData->hair, spriteName);
+
+    strcpy(actorData->walk1, "student/male/legs/pass");
+    strcpy(actorData->walk2, "student/male/legs/contact");
   }
+
+  // set female sprites
   else {
     sprintf(spriteName, "student/female/legs/%.2d", studentData->legs);
     strcpy(actorData->legs, spriteName);
@@ -167,6 +174,9 @@ void studentManager_setStudent(ENTITY *studentActor, const VEC3 *room, const VEC
 
     sprintf(spriteName, "student/female/hair/%.2d", studentData->hair);
     strcpy(actorData->hair, spriteName);
+
+    strcpy(actorData->walk1, "student/female/legs/pass");
+    strcpy(actorData->walk2, "student/female/legs/contact");
   }
 
   actorData->ID = ID;
@@ -266,6 +276,7 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
     ENTITY *studentActor = ((COMPLETE_STUDENT *)graduateNode->data)->studentActor;
     CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
     CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+    CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(studentActor, COMP_MOUSEBOX);
     ENTITY *popText;
     char buffer[30];
 
@@ -273,6 +284,7 @@ void comp_studentManagerLogic_removeGraduate(COMPONENT *studentManagerLogic, ENT
     popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
     entity_attach(popText, studentActor);
 
+    mbox->active = false;
     actorData->outerState = OS_FADEOUT;
     actorData->innerState = IS_ENTER;
     actorData->stateTimer = 0;
@@ -290,6 +302,7 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
     ENTITY *studentActor = ((COMPLETE_STUDENT *)dropoutNode->data)->studentActor;
     CDATA_STUDENTACTOR *actorData = (CDATA_STUDENTACTOR *)entity_getComponentData(studentActor, COMP_STUDENTACTORLOGIC);
     CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)studentManagerLogic->data;
+    CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(studentActor, COMP_MOUSEBOX);
     ENTITY *popText;
     char buffer[30];
 
@@ -297,6 +310,7 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
     popText = popText_create(studentManagerLogic->owner->space, &position, "graduateText", "fonts/gothic/12", buffer, &color, POPTYPE_STAY, 4.0f);
     entity_attach(popText, studentActor);
 
+    mbox->active = false;
     actorData->outerState = OS_FADEOUT;
     actorData->innerState = IS_ENTER;
     actorData->stateTimer = 0;

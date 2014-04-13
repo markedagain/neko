@@ -39,11 +39,6 @@ typedef struct soundSystem_t {
     float ambient1;
     float ambient2;
   } volume;
-  /*
-  0 - title (non-loop)
-  1 - funky (non-loop)
-  2 - lame (non-loop)
-  */
 } SOUNDSYSTEM;
 
 NEKO_API void sound_initialize(SOUNDSYSTEM *system, DICT *sounds);

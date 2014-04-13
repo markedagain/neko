@@ -26,18 +26,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define LOSE_CONDITION -100000
 
 char *month[12] = {
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
   "June",
   "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec"
 };
 
 char *semester[2] = {
@@ -152,12 +152,12 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
     // NEW YEAR
     if(comData->monthCounter >= 12) {
-      char message[80];
+      //char message[80];
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
       comData->monthCounter = 0;
-      sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
-      comp_newsfeedlogic_push(self, message);
+      //sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
+      //comp_newsfeedlogic_push(self, message);
     }
   }
 

@@ -160,7 +160,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
   }
 
 
-  else if (data->currentMode == GM_PLAY) {
+  else if (data->currentMode == GM_PLAY && self->owner->space->game->systems.time.scale != 0) {
 
     if (data->lastSong != 0) {
       data->nextSongTime -= (float)self->owner->space->game->systems.time.dtFrame;
@@ -174,12 +174,12 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
         else if (data->lastSong == 2) {
           data->lastSong = (nextSong ? 1 : 3);
           sound_playSong(&self->owner->space->game->systems.sound, (nextSong ? "01" : "03"));
-          data->nextSongTime = 60.0f * (nextSong ? 2.5f : 2.25f);
+          data->nextSongTime = 60.0f * (nextSong ? 3.0f : 2.25f);
         }
         else {
           data->lastSong = (nextSong ? 2 : 1);
           sound_playSong(&self->owner->space->game->systems.sound, (nextSong ? "02" : "01"));
-          data->nextSongTime = 60.0f * (nextSong ? 2.5f : 1.5f);
+          data->nextSongTime = 60.0f * (nextSong ? 3.0f : 1.5f);
         }
       }
     }
