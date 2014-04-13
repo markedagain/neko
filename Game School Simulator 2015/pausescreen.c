@@ -15,4 +15,5 @@ void arch_pauseScreen(ENTITY *entity) {
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
 
   sprite->source = "ui/pauseBackground";
+  sprite->color.a = 0.65f;
 }

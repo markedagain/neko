@@ -210,6 +210,13 @@ void comp_managementRemove(COMPONENT *self) {
 
 void comp_management(COMPONENT *self) {
   CDATA_MANAGEMENT data = { 0 };
+  strcpy(data.studentPopBuffer, "0");
+  strcpy(data.reputationBuffer, "0");
+  strcpy(data.graduateBuffer, "0");
+  strcpy(data.dropoutBuffer, "0");
+  strcpy(data.costsBuffer, "$0");
+  strcpy(data.incomeBuffer, "$0");
+  strcpy(data.studentIncBuffer, "0");
   data.triggered = false;
   COMPONENT_INIT(self, COMP_MANAGEMENT, data);
   component_depend(self, COMP_MOUSEBOX);
