@@ -28,7 +28,7 @@ typedef struct soundSystem_t {
   //FMOD_CHANNEL *channels.music;
   struct {
     FMOD_CHANNEL *music;
-    FMOD_CHANNEL *ambient;
+    FMOD_CHANNEL *ambient1;
     FMOD_CHANNEL *ambient2;
   } channels;
   struct {
@@ -36,6 +36,7 @@ typedef struct soundSystem_t {
     float music;
     float sound;
     float ambient;
+    float ambient1;
     float ambient2;
   } volume;
 } SOUNDSYSTEM;
@@ -53,7 +54,7 @@ NEKO_API void sound_destroy(SOUNDSYSTEM *system);
 NEKO_API void sound_setVolume_master(SOUNDSYSTEM *system, float volume);
 NEKO_API void sound_setVolume_sound(SOUNDSYSTEM *system, float volume);
 NEKO_API void sound_setVolume_music(SOUNDSYSTEM *system, float volume);
-NEKO_API void sound_setVolume_ambient(SOUNDSYSTEM *system, float volume, float volume2);
+NEKO_API void sound_setVolume_ambient(SOUNDSYSTEM *system, float volume, float volume1, float volume2);
 
 NEKO_API void sound_update(SOUNDSYSTEM *system);
 
