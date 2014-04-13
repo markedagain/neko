@@ -29,9 +29,9 @@ void credits_onExit(COMPONENT *self);
 void fullScreen_onEntered(COMPONENT *self);
 void fullScreen_onPressed(COMPONENT *self);
 void fullScreen_onExit(COMPONENT *self);
-void newsFeed_onEntered(COMPONENT *self);
-void newsFeed_onPressed(COMPONENT *self);
-void newsFeed_onExit(COMPONENT *self);
+void tutorial_onEntered(COMPONENT *self);
+void tutorial_onPressed(COMPONENT *self);
+void tutorial_onExit(COMPONENT *self);
 void exit_onEntered(COMPONENT *self);
 void exit_onPressed(COMPONENT *self);
 void exit_onExit(COMPONENT *self);
@@ -50,5 +50,6 @@ void decreaseTuition_onExit(COMPONENT *self);
 void pause_onEntered(COMPONENT *self);
 void pause_onPressed(COMPONENT *self);
 void pause_onExit(COMPONENT *self);
+void empty_onPressed(COMPONENT *self);
 
 #endif

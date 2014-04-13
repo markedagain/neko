@@ -224,7 +224,7 @@ void startNewGame(GAME *game) {
 
   // Create an empty mousebox to stop click through
   vec3_set(&position, 0, 0, 0);
-  ent1 = createCustomButton(NULL, NULL, NULL, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
+  ent1 = createCustomButton(NULL, NULL, empty_onPressed, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
   sprite = entity_getComponentData(ent1, COMP_SPRITE);
   sprite->visible = false;
 }
