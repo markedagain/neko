@@ -22,7 +22,8 @@ void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   system->volume.master = 0.85f;
   system->volume.sound = 1.0f;
   system->volume.music = 0.65f;
-  system->volume.ambient = 0.0f;
+  system->volume.ambient = 1.0f;
+  system->volume.ambient1 = 0.0f;
   system->volume.ambient2 = 0.0f;
   result = FMOD_System_Create(&system->system);
   result = FMOD_System_GetDriverCaps(system->system, 0, &caps, 0, &speakerMode);
@@ -79,14 +80,14 @@ void sound_playSong(SOUNDSYSTEM *system, char *song) {
 void sound_playAmbient(SOUNDSYSTEM *system, char *ambient, char *ambient2) {
   if (ambient != NULL) {
     SOUND *snd = (SOUND *)dict_get(system->sounds, ambient);
-    if (system->channels.ambient != NULL) {
-      FMOD_Channel_Stop(system->channels.ambient);
-      system->channels.ambient = NULL;
+    if (system->channels.ambient1 != NULL) {
+      FMOD_Channel_Stop(system->channels.ambient1);
+      system->channels.ambient1 = NULL;
     }
-    FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->channels.ambient);
-    FMOD_Channel_SetVolume(system->channels.ambient, system->volume.ambient * system->volume.master);
-    FMOD_Channel_SetMode(system->channels.ambient, FMOD_LOOP_NORMAL);
-    FMOD_Channel_SetLoopCount(system->channels.ambient, -1);
+    FMOD_System_PlaySound(system->system, FMOD_CHANNEL_FREE, snd->data, false, &system->channels.ambient1);
+    FMOD_Channel_SetVolume(system->channels.ambient1, system->volume.ambient * system->volume.master);
+    FMOD_Channel_SetMode(system->channels.ambient1, FMOD_LOOP_NORMAL);
+    FMOD_Channel_SetLoopCount(system->channels.ambient1, -1);
   }
   if (ambient2 != NULL) {
     SOUND *snd = (SOUND *)dict_get(system->sounds, ambient2);
@@ -128,11 +129,12 @@ void sound_setVolume_music(SOUNDSYSTEM *system, float volume) {
   if (system->channels.music != NULL)
     FMOD_Channel_SetVolume(system->channels.music, system->volume.music * system->volume.master);
 }
-void sound_setVolume_ambient(SOUNDSYSTEM *system, float volume, float volume2) {
+void sound_setVolume_ambient(SOUNDSYSTEM *system, float volume, float volume1, float volume2) {
   system->volume.ambient = volume;
+  system->volume.ambient1 = volume1;
   system->volume.ambient2 = volume2;
-  if (system->channels.ambient != NULL)
-    FMOD_Channel_SetVolume(system->channels.ambient, system->volume.ambient * system->volume.master);
+  if (system->channels.ambient1 != NULL)
+    FMOD_Channel_SetVolume(system->channels.ambient1, system->volume.ambient1 * system->volume.ambient * system->volume.master);
   if (system->channels.ambient2 != NULL)
-    FMOD_Channel_SetVolume(system->channels.ambient2, system->volume.ambient2 * system->volume.master);
+    FMOD_Channel_SetVolume(system->channels.ambient2, system->volume.ambient2 * system->volume.ambient * system->volume.master);
 }

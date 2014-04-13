@@ -86,7 +86,7 @@ void zoom(COMPONENT *self, float zoom) {
   newZoom = (float)max((float)min(newZoom, 1.0f), 0.5f);
   zoomScale = (newZoom - 0.5f) * 2;
   schoolScale = min((schoolData->currentStudents / (float)STUDENT_VOLUME_MAX), 1.0f);
-  sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f - zoomScale * 0.65f, zoomScale * schoolScale * 2.0f);
+  sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f, 1.0f - zoomScale * 0.65f, zoomScale * schoolScale);
     
   bg->systems.camera.transform.scale.x = newZoom;
   bg->systems.camera.transform.scale.y = newZoom;
