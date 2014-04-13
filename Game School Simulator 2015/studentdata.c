@@ -56,6 +56,8 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
+    schoolLogic->graduationRep += repIncrease;
+    ++schoolLogic->newGraduates;
     comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
