@@ -55,13 +55,13 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     // major
     switch (studentData->major) {
     case M_TECH:
-      strcpy(inspectData->major, "Programming");
+      strcpy(inspectData->major, "Programmer");
       break;
     case M_ART:
-      strcpy(inspectData->major, "Art");
+      strcpy(inspectData->major, "Artist");
       break;
     case M_DESIGN:
-      strcpy(inspectData->major, "Design");
+      strcpy(inspectData->major, "Designer");
       break;
     }
 
