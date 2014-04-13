@@ -286,12 +286,8 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   // Start tutorial 6 if first semester
   if(timeData->currentSemester == 0) {
     SPACE *uiSpace = (SPACE *)game_getSpace(self->owner->space->game, "ui");
-    CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(uiSpace, "player"), COMP_PLAYERLOGIC);
     if (self->owner->space->game->config.tutorial)
       createSixthTutorial(uiSpace);
-    sound_playSong(&self->owner->space->game->systems.sound, "02");
-    playerData->lastSong = 2;
-    playerData->nextSongTime = 60.0f * 1.5f;
   }
 
   comData->semTech = 0;
@@ -558,6 +554,7 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
     case ROOMTYPE_LOBBY:
       if(comData->rooms.coord[1][7] == NULL) {
         sprite->source = "rooms/lobby1";
+
         comData->roomFlag[ROOMTYPE_CLASS] = 1;
       }
       else if(comData->rooms.coord[0][7] == NULL)
