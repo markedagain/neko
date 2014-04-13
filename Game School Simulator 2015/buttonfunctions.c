@@ -416,6 +416,7 @@ void pause_onPressed(COMPONENT *self) {
   if (!space_getEntity(tutorial, "pauseScreen")) {
     CDATA_PAUSESCREEN *pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(space_addEntity(tutorial, arch_pauseScreen, "pauseScreen"), COMP_PAUSESCREENLOGIC);
     pauseData->lastMode = playerData->currentMode;
+    pause_onExit(self);
   }
 }
 
