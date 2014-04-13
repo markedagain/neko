@@ -24,6 +24,7 @@ typedef struct {
   float timer;
   bool fadeBackground;
   bool secondLogo;
+  bool ohSound;
 } CDATA_SPLASHLOGIC;
 
 void comp_splashLogic_logicUpdate(COMPONENT *, void *);
