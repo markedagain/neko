@@ -49,6 +49,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
+  if(mbox->left.pressed)
+    sound_playSound(&self->owner->space->game->systems.sound, "oh");
+
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
