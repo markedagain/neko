@@ -72,6 +72,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     comData->currMoney = comData->money;
     // update build buttons
     UI_button_updateBuildButtons(uiSpace);
+    //UI_button_updateUpgradeButton(uiSpace);
   }
 
   // Display Rep on screen
@@ -89,10 +90,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Student Pop on screen
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -30, 176, 0);
+    vec3_set(&position, -40, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
-    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   }
     // Update
   sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
@@ -112,6 +113,13 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
 }
 
 // Called by timemanager.c
+////////////////////////////////////////////////////////////////////////
+//
+//
+//  UPDATE MONTH
+//
+//
+////////////////////////////////////////////////////////////////////////
 void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   int i = 0;
   int totalUpkeep;
@@ -169,6 +177,13 @@ void comp_schoolLogic_updateDataMonth(COMPONENT *self, CDATA_SCHOOLLOGIC *comDat
 }
 
 // Called by timemanager.c
+////////////////////////////////////////////////////////////////////////
+//
+//
+//  UPDATE SEMESTER
+//
+//
+////////////////////////////////////////////////////////////////////////
 void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   ENTITY *newStudent;
   LIST_NODE *studentPtr;
@@ -620,6 +635,10 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
       sprite->source = "rooms/library";
       break;
   }
+
+
+  // Increase Rep
+  comData->reputation += 5;
 }
 
 int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
