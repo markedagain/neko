@@ -46,9 +46,8 @@ void comp_weatherManager_logicUpdate(COMPONENT *self, void *event) {
 
 void comp_weatherManager(COMPONENT *self) {
   CDATA_WEATHERMANAGER data = {0};
-  data.maxClouds = 100;
+  data.maxClouds = 50;
 
   COMPONENT_INIT(self, COMP_WEATHERMANGER, data);
   self->events.logicUpdate = comp_weatherManager_logicUpdate;
-  //self->events.initialize = comp_weatherManager_initialize;
 }
