@@ -1,3 +1,14 @@
+/******************************************************************************
+Filename: roomactorlogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Tai Der Hui
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 #include "roomactorlogic.h"
 #include "mousebox.h"
 #include "roomlogic.h"

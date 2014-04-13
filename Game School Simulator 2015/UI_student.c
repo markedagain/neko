@@ -1,4 +1,14 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: UI_student.c
+
+Project Name: Game School Simulator 2015
+
+Author: Samuel Valdez
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
+
 
 #include "UI_student.h"
 #include "UI_studentLogic.h"
