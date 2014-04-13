@@ -10,11 +10,11 @@
 #define COMP_PAUSESCREENLOGIC HASH("COMP_PAUSESCREENLOGIC")
 
 typedef struct {
+  bool textCreated;
   GMODE lastMode;
 } CDATA_PAUSESCREEN;
 
 void comp_pauseScreenLogic_frameUpdate(COMPONENT *self, void *event);
 void comp_pauseScreenLogic(COMPONENT *self);
-void comp_pauseScreenLogic_initialize(COMPONENT *self, void *event);
 
 #endif
