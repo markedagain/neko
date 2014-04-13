@@ -113,6 +113,7 @@ ENTITY *tutorial_createTextBox(SPACE *ui) {
   VEC2 dimensions = { 640.0f, 360.0f };
   VEC3 position = { 0 };
   SPACE *tutorial = game_getSpace(ui->game, "tutorial");
+  // background button
   ENTITY *created = createCustomButton(NULL, NULL, tutorialBackground_onPressed, NULL, NULL,
                            tutorial, &position, "textboxbackground",
                            640.0f, 360.0f,

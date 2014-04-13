@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "generictext.h"
 #include "genericsprite.h"
 #include "colors.h"
+#include "brad.h"
 
 void comp_tutorialTextBoxLogic_logicUpdate(COMPONENT *self, void *event) {
 }
@@ -32,9 +33,13 @@ void comp_tutorialTextBoxLogic_initialize(COMPONENT *self, void *event) {
   VEC3 pos = { 0, 0, 0 };
   VEC2 dimensions = { 500.0f, 125.0f};
   VEC4 color = { 0, 0, 0, 1.0f };
-  ENTITY *whiteBox = genericSprite_createBlank(self->owner->space, &pos, &dimensions, &colors[C_WHITE_DARK], "textBoxBackground");
+
+  // box sprite
+  ENTITY *whiteBox = space_addEntityAtPosition(self->owner->space, arch_brad, "textboxbackground", &pos);
   entity_attach(whiteBox, self->owner);
   vec3_set(&pos, -150.0f, 40.0f, 0);
+
+  // text
   data->text = genericText_create(self->owner->space, &pos, "textboxtext", "fonts/gothic/12", "", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   entity_attach(data->text, self->owner);
   comp_tutorialTextBoxLogic_pushText(self->owner, "");
