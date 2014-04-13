@@ -181,7 +181,7 @@ void comp_roomActorLogic(COMPONENT *self) {
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_ROOMACTORLOGIC, data);
   component_depend(self, COMP_MOUSEBOX);
-  self->events.logicUpdate = comp_roomActorLogic_logicUpdate;
+  self->events.frameUpdate = comp_roomActorLogic_logicUpdate;
   self->events.initialize = comp_roomActorLogic_initialize;
 }
 
