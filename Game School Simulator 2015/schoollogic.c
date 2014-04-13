@@ -75,7 +75,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Rep on screen
     // Create if first time
   if (!comData->reputationUI) {
-    vec3_set(&position, -110, 176, 0);
+    vec3_set(&position, -120, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "Rep: %i", comData->reputation);
     comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
@@ -87,7 +87,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   // Display Student Pop on screen
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -20, 176, 0);
+    vec3_set(&position, -30, 176, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
     comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
@@ -214,11 +214,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     studentData->designIncrease = 0;
     studentData->artIncrease = 0;
 
-    if(studentData->gpa > 4.0)
-    {
-      printf("hi");
-    }
-
     // Life
     studentData->lifeModifier = randomIntRange(lowValue, highValue);
     studentData->motivation += studentData->lifeModifier;
@@ -263,7 +258,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
     comp_newsfeedlogic_push(self, message);
   }
 
-  //Add students
+  // Enroll students
   if(comData->incomingStudents > 0) {
     int newCount = 0;
     for(i = 0; i < comData->incomingStudents; i++)
@@ -279,6 +274,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       studentData->motivation = randomIntRange((int)(comData->minGpa * 25), 100);
       ++newCount;
     }
+    // Print how many students enrolled
     sprintf(message, pushStrings[STRINGS_ENROLL], month[timeData->monthCounter], timeData->currentYear, newCount);
     comp_newsfeedlogic_push(self, message);
 
@@ -304,6 +300,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   comData->expectedGraduates = 0;
 
+  // Calculate expected graduates for the following semester
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData((ENTITY *)studentPtr->data, COMP_STUDENTDATA);
@@ -312,10 +309,6 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       ++(comData->numGraduates);
     }
   }
-}
-
-void comp_schoolLogic_updateDataYear(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
-  
 }
 
 void comp_schoolLogic_findBuildSpots(COMPONENT *ptr, ROOM_TYPE roomType, int roomSize, LIST *legalSlots) {
