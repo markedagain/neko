@@ -23,6 +23,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "inspectionscreenlogic.h"
 #include "UI_button.h"
 #include "random.h"
+#include "roomlogic.h"
+#include "playerlogic.h"
 
 void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *uiSpace = game_getSpace(self->owner->space->game, "ui");
@@ -179,8 +181,17 @@ static void landing_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
   CDATA_ACTORLOGIC *data = (CDATA_ACTORLOGIC *)self->data;
+  SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+  CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData((ENTITY *)space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+  CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
 
   trans->translation.y = data->startY + action_getEase(action, EASING_QUAD_IN) * (data->targetY - data->startY);
+
+  if(data->type == ROOMTYPE_LOBBY && sprite->source == "rooms/lobby1") {
+    sound_playSong(&self->owner->space->game->systems.sound, "02");
+    playerData->lastSong = 2;
+    playerData->nextSongTime = 60.0f * 1.5f;
+  }
 }
 
 static void landing_onEnd(ACTION *action) {

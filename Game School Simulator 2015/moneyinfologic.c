@@ -35,6 +35,7 @@ void comp_moneyInfoLogic_initialize(COMPONENT *self, void *event) {
   mbox->manual = true;
   set_box(box, 230, 180, 360, 150);
 
+  // Creates the text for the first time
   comData->incomeText = genericText_create(uiSpace, &pos, "incomeText", "fonts/gothic/12", textBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
   vec3_set(&pos, 220, 92, 0);
   color = colors[C_RED_LIGHT];
