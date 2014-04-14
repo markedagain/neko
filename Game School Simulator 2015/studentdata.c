@@ -24,8 +24,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "studentmanagerlogic.h"
 #define MALE_HEAD_COUNT 5
 #define MALE_FACE_COUNT 5
-#define MALE_HAIR_COUNT 14
-#define MALE_BODY_COUNT 5
+#define MALE_HAIR_COUNT 15
+#define MALE_BODY_COUNT 6
 
 #define FEMALE_HEAD_COUNT 5
 #define FEMALE_FACE_COUNT 5
