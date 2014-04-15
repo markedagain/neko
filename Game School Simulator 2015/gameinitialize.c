@@ -204,7 +204,7 @@ void startNewGame(GAME *game) {
   vec3_set(&position, -209, 166, 0);
   ent1 = space_addEntityAtPosition(uiSpace, arch_uibuild, "pauseButton", &position);
   ((CDATA_UI_BUTTON *)entity_getComponentData(ent1, COMP_UI_BUTTON))->type = BUTTON_PAUSE;
-  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/play";
+  ((CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE))->source = "ui/pause";
 
   // Speed Button
   vec3_set(&position, -180, 166, 0);
