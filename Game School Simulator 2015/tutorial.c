@@ -138,6 +138,7 @@ void createFirstTutorial(SPACE *ui) {
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
+  sound_playSound(&ui->game->systems.sound, "dudebro");
 }
 
 void createFirstTutorialPartTwo(SPACE *ui) {

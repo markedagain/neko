@@ -22,7 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "playerlogic.h"
 #include "management.h"
 
-#define WIN_CONDITION 200
+#define WIN_CONDITION 500
 #define LOSE_CONDITION -100000
 
 char *month[12] = {

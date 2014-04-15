@@ -29,6 +29,6 @@ void arch_cloud(ENTITY *entity) {
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
   entity_connect(entity, comp_cloudLogic);
   sprite->source = "backgrounds/cloud1";
-  scaleMult = randomFloatRange(0.3f, 1.2f);
+  scaleMult = randomFloatRange(0.6f, 1.2f);
   vec3_set(&trans->scale, scaleMult, scaleMult, 0);
 }
