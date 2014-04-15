@@ -48,10 +48,27 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   // Graduate
   ////////////////////////////
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
-    int repIncrease = (int)(4 * (comData->gpa / 4.0f));
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
     ENTITY *studentManager = space_getEntity(fg, "studentManager");
     COMPONENT *studentManagerLogic = entity_getComponent(studentManager, COMP_STUDENTMANAGERLOGIC);
+    int repIncrease = 0;
+
+    if(comData->major == M_TECH) {
+      repIncrease = (int)(comData->techSkill/100 * (comData->gpa / 2.0f));
+      if(repIncrease < 1)
+        repIncrease = 1;
+    }
+    else if(comData->major == M_DESIGN) {
+      repIncrease = (int)(comData->designSkill/100 * (comData->gpa / 2.0f));
+      if(repIncrease < 1)
+        repIncrease = 1;
+    }
+    else {
+      repIncrease = (int)(comData->artSkill/100 * (comData->gpa / 2.0f));
+      if(repIncrease < 1)
+        repIncrease = 1;
+    }
+
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
     schoolLogic->graduationRep += repIncrease;
