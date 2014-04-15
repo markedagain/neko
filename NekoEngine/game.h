@@ -75,6 +75,7 @@ typedef struct game_t {
   bool resized;
   bool fullscreen;
   INPUT_CONTAINER input;
+  void (*resetFunction)(struct game_t *);
   unsigned char destroying;
 } GAME;
 

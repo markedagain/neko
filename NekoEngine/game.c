@@ -59,6 +59,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
+  game->resetFunction = NULL;
   game->destroying = 0;
   game->resized = false;
   game->fullscreen = false;
@@ -198,6 +199,11 @@ void game_start(GAME *game) {
   stopwatch_startAt(&game->systems.time.logicStopwatch, &game->systems.time.stopwatch.start);
 
   while(gameRunning) {
+    if (game->resetFunction) {
+      game_cleanup(game);
+      game->resetFunction(game);
+      game->resetFunction = NULL;
+    }
     gameRunning = game_loop(game);
   }
 
