@@ -200,6 +200,13 @@ void game_start(GAME *game) {
 
   while(gameRunning) {
     if (game->resetFunction) {
+      LIST_NODE *node;
+      node = game->spaces->first;
+      while (node) {
+        SPACE *space = (SPACE *)node->data;
+        space_destroy(space);
+        node = node->next;
+      }
       game_cleanup(game);
       game->resetFunction(game);
       game->resetFunction = NULL;
