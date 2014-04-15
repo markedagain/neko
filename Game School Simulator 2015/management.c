@@ -46,7 +46,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     if (!managementData->hoverText) {
       VEC3 position;
       vec3_set(&position, -242, 151, 0);
-      managementData->hoverText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Management!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+      managementData->hoverText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Management", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
     } 
     sound_playSound(&self->owner->space->game->systems.sound, "hover");
     sprite->color.a = 0.8f;
