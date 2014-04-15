@@ -54,7 +54,7 @@ void student_inspection_clear(COMPONENT *self) {
   genericText_setText(comData->studentGPA, " ");
   genericText_setText(comData->studentGraduation, " ");
   genericText_setText(comData->studentMotivation, " ");
-  genericText_setText(comData->studentQuote, " ");
+  genericText_setText(comData->studentTrait, " ");
   comData->clear = false;
 }
 
@@ -107,7 +107,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         genericText_setText(comData->studentGPA, comData->GPA);
         genericText_setText(comData->studentGraduation, comData->expectedGraduationYear);
         genericText_setText(comData->studentMotivation, comData->motivation);
-        genericText_setText(comData->studentQuote, comData->quote);
+        genericText_setText(comData->studentTrait, comData->trait);
         comData->triggered = false;
       }
     }
