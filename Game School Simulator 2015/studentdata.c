@@ -72,7 +72,7 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
     schoolLogic->graduationRep += repIncrease;
-    ++schoolLogic->newGraduates;
+    schoolLogic->newGraduates++;
     comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
