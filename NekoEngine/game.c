@@ -210,6 +210,7 @@ void game_start(GAME *game) {
       game_cleanup(game);
       game->resetFunction(game);
       game->resetFunction = NULL;
+      game->systems.time.scale = 1.0;
     }
     gameRunning = game_loop(game);
   }
