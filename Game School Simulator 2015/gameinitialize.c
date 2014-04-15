@@ -219,13 +219,13 @@ void startNewGame(GAME *game) {
   setInspectText(game);
 
   // Create Student Pop Sprite
-  vec3_set(&position, -60, 168, 0);
+  vec3_set(&position, -60, 166, 0);
   genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
 
   // Create an empty mousebox to stop click through
   vec3_set(&position, 0, 0, 0);
   ent1 = createCustomButton(NULL, NULL, empty_onPressed, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-  sprite = entity_getComponentData(ent1, COMP_SPRITE);
+  sprite = (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE);
   sprite->visible = false;
 }
 

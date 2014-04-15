@@ -114,7 +114,7 @@ void comp_pauseScreenLogic_makeMenu(COMPONENT *self) {
 
   if (!space_getEntity(self->owner->space, "menuScreen")) {
     // create main menu button
-    vec3_set(&pos, 15, 71, 0);
+    vec3_set(&pos, 15, 70.4f, 0);
     created = space_addEntityAtPosition(tutorial, arch_uibuild, "options", &pos);
     buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(created, COMP_UI_BUTTON);
     buttonData->type = BUTTON_MAIN_MENU;
