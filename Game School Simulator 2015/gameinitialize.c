@@ -263,3 +263,10 @@ void setInspectText(GAME *game) {
   vec3_set(&position, -215, 110, 0);
   inspectData->bonuses = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_RIGHT, TEXTALIGN_TOP);
 }
+
+void makeAllNewGame(GAME *game) {
+  sound_stopSong(&game->systems.sound);
+  createSpaces(game);
+  initializeEssentialSpaces(game);
+  startNewGame(game);
+}

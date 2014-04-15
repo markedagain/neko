@@ -32,6 +32,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "sound.h"
 #include "random.h"
 
+#include "gameinitialize.h"
+
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
 #define STUDENT_VOLUME_MAX 100
@@ -309,6 +311,11 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     //if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
     //  comp_schoolLogic_listAlumni(schoolLogic, schoolData);
     //}
+
+    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
+      self->owner->space->game->resetFunction = makeAllNewGame;
+    }
+
   }
 }
 

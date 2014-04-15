@@ -36,6 +36,69 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #define BUILDENDPOS 100.0f
 
+// all the pause menu stuff goes here
+void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
+  CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+
+  switch(data->type) {
+  case BUTTON_MASTER_VOL_UP:
+    self->owner->space->game->systems.sound.volume.master += 0.1f;
+    if (self->owner->space->game->systems.sound.volume.master > 1.0f)
+      self->owner->space->game->systems.sound.volume.master = 1.0f;
+    break;
+
+  case BUTTON_MASTER_VOL_DOWN:
+    self->owner->space->game->systems.sound.volume.master -= 0.1f;
+    if (self->owner->space->game->systems.sound.volume.master < 0)
+      self->owner->space->game->systems.sound.volume.master = 0;
+    break;
+
+  case BUTTON_MUSIC_VOL_UP:
+    self->owner->space->game->systems.sound.volume.music += 0.1f;
+    if (self->owner->space->game->systems.sound.volume.music > 1.0f)
+      self->owner->space->game->systems.sound.volume.music = 1.0f;
+    break;
+
+  case BUTTON_MUSIC_VOL_DOWN:
+    self->owner->space->game->systems.sound.volume.music -= 0.1f;
+    if (self->owner->space->game->systems.sound.volume.music < 0)
+      self->owner->space->game->systems.sound.volume.music = 0;
+    break;
+
+  case BUTTON_SOUND_VOL_UP:
+    self->owner->space->game->systems.sound.volume.sound += 0.1f;
+    if (self->owner->space->game->systems.sound.volume.sound > 1.0f)
+      self->owner->space->game->systems.sound.volume.sound = 1.0f;
+    break;
+
+  case BUTTON_SOUND_VOL_DOWN:
+    self->owner->space->game->systems.sound.volume.sound -= 0.1f;
+    if (self->owner->space->game->systems.sound.volume.sound < 0)
+      self->owner->space->game->systems.sound.volume.sound = 0;
+    break;
+
+  case BUTTON_SOUND_AMBIENT_UP:
+    self->owner->space->game->systems.sound.volume.ambient += 0.1f;
+    if (self->owner->space->game->systems.sound.volume.ambient > 1.0f)
+      self->owner->space->game->systems.sound.volume.ambient = 1.0f;
+    break;
+
+  case BUTTON_SOUND_AMBIENT_DOWN:
+    self->owner->space->game->systems.sound.volume.ambient -= 0.1f;
+    if (self->owner->space->game->systems.sound.volume.ambient < 0)
+      self->owner->space->game->systems.sound.volume.ambient = 0;
+    break;
+
+  case BUTTON_MAIN_MENU:
+
+  case BUTTON_QUIT:
+    self->owner->space->game->destroying = true;
+    break;
+  }
+
+}
+
+
 void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);

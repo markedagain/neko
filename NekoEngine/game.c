@@ -59,6 +59,7 @@ GAME *game_create(HINSTANCE instanceH, int show) {
   dataContainer_init(&game->data);
   game->destroyingEntities = list_create();
   game->destroyingSpaces = list_create();
+  game->resetFunction = NULL;
   game->destroying = 0;
   game->resized = false;
   game->fullscreen = false;
@@ -198,6 +199,19 @@ void game_start(GAME *game) {
   stopwatch_startAt(&game->systems.time.logicStopwatch, &game->systems.time.stopwatch.start);
 
   while(gameRunning) {
+    if (game->resetFunction) {
+      LIST_NODE *node;
+      node = game->spaces->first;
+      while (node) {
+        SPACE *space = (SPACE *)node->data;
+        space_destroy(space);
+        node = node->next;
+      }
+      game_cleanup(game);
+      game->resetFunction(game);
+      game->resetFunction = NULL;
+      game->systems.time.scale = 1.0;
+    }
     gameRunning = game_loop(game);
   }
 
