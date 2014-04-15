@@ -181,6 +181,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
   SPACE *simSpace = game_getSpace(self->owner->space->game, "sim");
   ENTITY *gameManager = space_getEntity(simSpace, "gameManager");
+  CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(self->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
 
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
   char buffer[80];
@@ -426,7 +427,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         case BUTTON_BUILD: {
           if (!data->hoverText) {
             vec3_set(&position, -271, 151, 0);
-            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Build!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Build", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
           }
           else
             genericText_setText(data->hoverText, "Build!");
@@ -436,7 +437,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         case BUTTON_SPEED: {
           if (!data->hoverText) {
             vec3_set(&position, -180, 151, 0);
-            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Change Speed!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Change Speed", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
           }
           else
             genericText_setText(data->hoverText, "Change Speed!");
@@ -444,12 +445,18 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         }
 
         case BUTTON_PAUSE: {
-          if (!data->hoverText) {
+          if (!data->hoverText) {      
             vec3_set(&position, -209, 151, 0);
-            data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Pause!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+            if (!timeData->paused)
+              data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Pause", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+            else
+              data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Play", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
           }
           else
-            genericText_setText(data->hoverText, "Pause!");
+            if (!timeData->paused)
+              genericText_setText(data->hoverText, "Pause");
+            else
+              genericText_setText(data->hoverText, "Play");
           break;
        }
       }
@@ -577,6 +584,11 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 
       case BUTTON_PAUSE:
         comp_timeManager_pause(self);
+        if (data->hoverText)
+          if (!timeData->paused)
+            genericText_setText(data->hoverText, "Pause"); 
+          else
+            genericText_setText(data->hoverText, "Play");
         break;
 
       case BUTTON_SPEED:
