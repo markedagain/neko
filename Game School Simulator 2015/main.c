@@ -32,7 +32,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   createSpaces(game);
   initializeEssentialSpaces(game);
   startNewGame(game);
-  // create the main menu
   game_start(game);
 
   return 1;
