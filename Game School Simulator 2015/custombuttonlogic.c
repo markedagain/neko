@@ -13,27 +13,51 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "custombuttonlogic.h"
 #include "mousebox.h"
 
+void comp_customButtonLogic_frameUpdate(COMPONENT *self, void *event) {
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+  CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
+  if (data->frameUpdate) {
+    if (mbox->entered)
+      if (data->onEntered)
+        data->onEntered(self);
+
+    if (mbox->over)
+      if (data->onOver)
+        data->onOver(self);
+  
+    if (mbox->exited)
+      if (data->onExit)
+        data->onExit(self);
+
+    if (mbox->left.pressed)
+      if (data->onPressed)
+        data->onPressed(self);
+  }
+}
+
 void comp_customButtonLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   CDATA_CUSTOMBUTTON *data = (CDATA_CUSTOMBUTTON *)self->data;
 
   al_update(&data->actions, self->owner->space->game->systems.time.dt);
 
-  if (mbox->entered)
-    if (data->onEntered)
-      data->onEntered(self);
+  if (!data->frameUpdate) {
+    if (mbox->entered)
+      if (data->onEntered)
+        data->onEntered(self);
 
-  if (mbox->over)
-    if (data->onOver)
-      data->onOver(self);
+    if (mbox->over)
+      if (data->onOver)
+        data->onOver(self);
   
-  if (mbox->exited)
-    if (data->onExit)
-      data->onExit(self);
+    if (mbox->exited)
+      if (data->onExit)
+        data->onExit(self);
 
-  if (mbox->left.pressed)
-    if (data->onPressed)
-      data->onPressed(self);
+    if (mbox->left.pressed)
+      if (data->onPressed)
+        data->onPressed(self);
+  }
 }
 
 void comp_customButtonLogic(COMPONENT *self) {
@@ -41,6 +65,7 @@ void comp_customButtonLogic(COMPONENT *self) {
   al_init(&data.actions);
   COMPONENT_INIT(self, COMP_CUSTOMBUTTONLOGIC, data);
   self->events.logicUpdate = comp_customButtonLogic_logicUpdate;
+  self->events.frameUpdate = comp_customButtonLogic_frameUpdate;
   self->events.destroy = comp_customButtonLogic_destroy;
 }
 

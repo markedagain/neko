@@ -24,6 +24,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pausescreen.h"
 #include "creditsscreenlogic.h"
 #include "management.h"
+#include "menuscreen.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
@@ -73,7 +74,6 @@ void options_onPressed(COMPONENT *self) {
   SPACE *menu = game_getSpace(self->owner->space->game, "menu");
   VEC2 dimensions = { 400.0f, 200.0f };
   VEC3 position = { 0 };
-  ENTITY *created;
   
   if (space_getEntity(menu, "options")) {
     LIST *optionsList = list_create();
@@ -85,78 +85,10 @@ void options_onPressed(COMPONENT *self) {
       node = node->next;
     }
     list_destroy(optionsList);
+    entity_destroy(space_getEntity(menu, "pauseScreen"));
   }
   else {
-    // create a box
-    genericSprite_createBlank(menu, &position, &dimensions, &colors[C_NAVY_LIGHT], "options");
-
-    // create the fullscreen word
-    vec3_set(&position, -120.0f, 50.0f, 0);
-    created = genericSprite_create(menu, &position, "options", "options/fullscreen");
-
-    // create the true false button
-    // if currently full screen
-    if (self->owner->space->game->config.screen.full) {
-      vec3_set(&position, 50.0f, 50.0f, 0);
-      createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
-                             self->owner->space, &position, "options",
-                             1.0f, 1.0f,
-                             true, "options/on", "options/off", NULL,
-                             false, NULL, NULL, 
-                             NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-    }
-
-    // if currently not full screen
-    else {
-      CDATA_CUSTOMBUTTON *data;
-      CDATA_SPRITE *spriteData; 
-      vec3_set(&position, 50.0f, 50.0f, 0);
-      created = createCustomButton(fullScreen_onEntered, NULL, fullScreen_onPressed, fullScreen_onExit, NULL,
-                             self->owner->space, &position, "options",
-                             1.0f, 1.0f,
-                             true, "options/on", "options/off", NULL,
-                             false, NULL, NULL, 
-                             NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-      data = (CDATA_CUSTOMBUTTON *)entity_getComponentData(created, COMP_CUSTOMBUTTONLOGIC);
-      data->sprite.altSprite = true;
-      spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
-      spriteData->source = data->sprite.altSource;
-    }
-
-
-    // create the newsfeed word
-    vec3_set(&position, -120.0f, -50.0f, 0);
-    created = genericSprite_create(menu, &position, "options", "options/newsfeed");
-
-    // if tutorial is currently switched on
-    if (self->owner->space->game->config.tutorial) {
-      // create the true false button
-      vec3_set(&position, 50.0f, -50.0f, 0);
-      createCustomButton(tutorial_onEntered, NULL, tutorial_onPressed, tutorial_onExit, NULL,
-                             self->owner->space, &position, "options",
-                             1.0f, 1.0f,
-                             true, "options/on", "options/off", NULL,
-                             false, NULL, NULL, 
-                             NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-    }
-
-    // if tutorial isn't currently switched on
-    else {
-      CDATA_CUSTOMBUTTON *data;
-      CDATA_SPRITE *spriteData;
-      // create the true false button
-      vec3_set(&position, 50.0f, -50.0f, 0);
-      created = createCustomButton(tutorial_onEntered, NULL, tutorial_onPressed, tutorial_onExit, NULL,
-                             self->owner->space, &position, "options",
-                             1.0f, 1.0f,
-                             true, "options/on", "options/off", NULL,
-                             false, NULL, NULL, 
-                             NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-      data = (CDATA_CUSTOMBUTTON *)entity_getComponentData(created, COMP_CUSTOMBUTTONLOGIC);
-      data->sprite.altSprite = true;
-      spriteData = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
-      spriteData->source = data->sprite.altSource;
-    }
+    space_addEntity(self->owner->space, arch_pauseScreen, "pauseScreen");
   }
 }
 
@@ -272,7 +204,7 @@ void fullScreen_onExit(COMPONENT *self) {
   sprite->color.a = 1.0f;
 }
 
-/**** ON/OFF newsfeed ****/
+/**** ON/OFF tutorial ****/
 void tutorial_onEntered(COMPONENT *self) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   
@@ -461,7 +393,7 @@ void pause_onPressed(COMPONENT *self) {
   SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
   if (!space_getEntity(tutorial, "pauseScreen")) {
     CDATA_PAUSESCREEN *pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(space_addEntity(tutorial, arch_pauseScreen, "pauseScreen"), COMP_PAUSESCREENLOGIC);
-    pauseData->lastMode = playerData->currentMode;
+    playerData->lastMode = playerData->currentMode;
     pause_onExit(self);
   }
 }

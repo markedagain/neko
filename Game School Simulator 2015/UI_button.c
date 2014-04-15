@@ -33,67 +33,135 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "namescreen.h"
 #include "tutorial.h"
 #include "colors.h"
+#include "pausescreenlogic.h"
 
 #define BUILDENDPOS 100.0f
+#define VOLUME_STEP 0.05f
 
 // all the pause menu stuff goes here
 void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+  ENTITY *pauseScreen = space_getEntity(self->owner->space, "pauseScreen");
+  CDATA_PAUSESCREEN *pauseData;
+  if (pauseScreen)
+    pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(pauseScreen, COMP_PAUSESCREENLOGIC);
 
-  switch(data->type) {
+  switch (data->type) {
   case BUTTON_MASTER_VOL_UP:
-    self->owner->space->game->systems.sound.volume.master += 0.1f;
-    if (self->owner->space->game->systems.sound.volume.master > 1.0f)
-      self->owner->space->game->systems.sound.volume.master = 1.0f;
-    break;
-
   case BUTTON_MASTER_VOL_DOWN:
-    self->owner->space->game->systems.sound.volume.master -= 0.1f;
-    if (self->owner->space->game->systems.sound.volume.master < 0)
-      self->owner->space->game->systems.sound.volume.master = 0;
-    break;
-
   case BUTTON_MUSIC_VOL_UP:
-    self->owner->space->game->systems.sound.volume.music += 0.1f;
-    if (self->owner->space->game->systems.sound.volume.music > 1.0f)
-      self->owner->space->game->systems.sound.volume.music = 1.0f;
-    break;
-
   case BUTTON_MUSIC_VOL_DOWN:
-    self->owner->space->game->systems.sound.volume.music -= 0.1f;
-    if (self->owner->space->game->systems.sound.volume.music < 0)
-      self->owner->space->game->systems.sound.volume.music = 0;
-    break;
-
   case BUTTON_SOUND_VOL_UP:
-    self->owner->space->game->systems.sound.volume.sound += 0.1f;
-    if (self->owner->space->game->systems.sound.volume.sound > 1.0f)
-      self->owner->space->game->systems.sound.volume.sound = 1.0f;
-    break;
-
   case BUTTON_SOUND_VOL_DOWN:
-    self->owner->space->game->systems.sound.volume.sound -= 0.1f;
-    if (self->owner->space->game->systems.sound.volume.sound < 0)
-      self->owner->space->game->systems.sound.volume.sound = 0;
-    break;
-
-  case BUTTON_SOUND_AMBIENT_UP:
-    self->owner->space->game->systems.sound.volume.ambient += 0.1f;
-    if (self->owner->space->game->systems.sound.volume.ambient > 1.0f)
-      self->owner->space->game->systems.sound.volume.ambient = 1.0f;
-    break;
-
-  case BUTTON_SOUND_AMBIENT_DOWN:
-    self->owner->space->game->systems.sound.volume.ambient -= 0.1f;
-    if (self->owner->space->game->systems.sound.volume.ambient < 0)
-      self->owner->space->game->systems.sound.volume.ambient = 0;
-    break;
-
+  case BUTTON_AMBIENT_VOL_UP:
+  case BUTTON_AMBIENT_VOL_DOWN:
   case BUTTON_MAIN_MENU:
+  case BUTTON_CLOSE_OPTIONS:
+    if (mbox->entered) {
+      CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+      sound_playSound(&self->owner->space->game->systems.sound, "hover");
+      sprite->color.a = 0.8f;
+    }
+    else if (mbox->exited) {
+      CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
+      sprite->color.a = 1.0f;
+    }
+  }
 
-  case BUTTON_QUIT:
-    self->owner->space->game->destroying = true;
-    break;
+
+
+  if (mbox->left.pressed) {
+    switch(data->type) {
+    case BUTTON_MASTER_VOL_UP:
+      sound_setVolume_master(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.master + VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.master > 1.0f)
+        sound_setVolume_master(&self->owner->space->game->systems.sound, 1.0f);
+      sprintf(pauseData->masterBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.master * 100)));
+      genericText_setText(pauseData->masterText, pauseData->masterBuffer);
+      break;
+
+    case BUTTON_MASTER_VOL_DOWN:
+      sound_setVolume_master(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.master - VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.master < 0)
+        sound_setVolume_master(&self->owner->space->game->systems.sound, 0);
+      sprintf(pauseData->masterBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.master * 100)));
+      genericText_setText(pauseData->masterText, pauseData->masterBuffer);
+      break;
+
+    case BUTTON_MUSIC_VOL_UP:
+      sound_setVolume_music(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.music + VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.music > 1.0f)
+        sound_setVolume_music(&self->owner->space->game->systems.sound, 1.0f);
+      sprintf(pauseData->musicBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.music * 100)));
+      genericText_setText(pauseData->musicText, pauseData->musicBuffer);
+      break;
+
+    case BUTTON_MUSIC_VOL_DOWN:
+      sound_setVolume_music(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.music - VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.music < 0)
+        sound_setVolume_music(&self->owner->space->game->systems.sound, 0);
+      sprintf(pauseData->musicBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.music * 100)));
+      genericText_setText(pauseData->musicText, pauseData->musicBuffer);
+      break;
+
+    case BUTTON_SOUND_VOL_UP:
+      sound_setVolume_sound(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.sound + VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.sound > 1.0f)
+        sound_setVolume_sound(&self->owner->space->game->systems.sound, 1.0f);
+      sprintf(pauseData->soundBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.sound * 100)));
+      genericText_setText(pauseData->soundText, pauseData->soundBuffer);
+      break;
+
+    case BUTTON_SOUND_VOL_DOWN:
+      sound_setVolume_sound(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.sound - VOLUME_STEP);
+      if (self->owner->space->game->systems.sound.volume.sound < 0)
+        sound_setVolume_sound(&self->owner->space->game->systems.sound, 0);
+      sprintf(pauseData->soundBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.sound * 100)));
+      genericText_setText(pauseData->soundText, pauseData->soundBuffer);
+      break;
+
+    case BUTTON_AMBIENT_VOL_UP:
+      sound_setVolume_ambient(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.ambient + VOLUME_STEP,
+        self->owner->space->game->systems.sound.volume.ambient1, self->owner->space->game->systems.sound.volume.ambient2);
+      if (self->owner->space->game->systems.sound.volume.ambient > 1.0f)
+        sound_setVolume_ambient(&self->owner->space->game->systems.sound, 1.0f, self->owner->space->game->systems.sound.volume.ambient1, self->owner->space->game->systems.sound.volume.ambient2);
+      sprintf(pauseData->ambientBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.ambient * 100)));
+      genericText_setText(pauseData->ambientText, pauseData->ambientBuffer);
+      break;
+
+    case BUTTON_AMBIENT_VOL_DOWN:
+      sound_setVolume_ambient(&self->owner->space->game->systems.sound, self->owner->space->game->systems.sound.volume.ambient - VOLUME_STEP,
+        self->owner->space->game->systems.sound.volume.ambient1, self->owner->space->game->systems.sound.volume.ambient2);
+      if (self->owner->space->game->systems.sound.volume.ambient < 0)
+        sound_setVolume_ambient(&self->owner->space->game->systems.sound, 0, self->owner->space->game->systems.sound.volume.ambient1, self->owner->space->game->systems.sound.volume.ambient2);
+      sprintf(pauseData->ambientBuffer, "%d%%", (int)(ceil(self->owner->space->game->systems.sound.volume.ambient * 100)));
+      genericText_setText(pauseData->ambientText, pauseData->ambientBuffer);
+      break;
+
+    case BUTTON_MAIN_MENU:
+      self->owner->space->game->resetFunction = makeAllNewGame;
+      break;
+
+    case BUTTON_CLOSE_OPTIONS:
+      {
+        LIST *optionsList = list_create();
+        LIST_NODE *node;
+        SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+        CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+        entity_destroy(space_getEntity(self->owner->space, "pauseScreen"));
+        space_getAllEntities(self->owner->space, "options", optionsList);
+        node = optionsList->first;
+        playerData->currentMode = playerData->lastMode;
+        self->owner->space->game->systems.time.scale = 1;
+        while (node) {
+          entity_destroy((ENTITY *)node->data);
+          node = node->next;
+        }
+        list_destroy(optionsList);
+        
+      }
+    }
   }
 
 }
@@ -608,6 +676,7 @@ void comp_UI_button(COMPONENT *self) {
   COMPONENT_INIT(self, COMP_UI_BUTTON, data);
   component_depend(self, COMP_MOUSEBOX);
   self->events.logicUpdate = comp_UI_buttonUpdate;
+  self->events.frameUpdate = comp_UI_buttonFrameUpdate;
   self->events.destroy = comp_UI_destroy;
 }
 

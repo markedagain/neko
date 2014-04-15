@@ -35,11 +35,13 @@ typedef struct {
   ENTITY *text;
   ENTITY *hoverText;
   ALIST actions;
+  bool frameUpdate;
 } CDATA_CUSTOMBUTTON;
 
 void comp_customButtonLogic_logicUpdate(COMPONENT *self, void *event);
 void comp_customButtonLogic(COMPONENT *self);
 void comp_customButtonLogic_destroy(COMPONENT *self, void *event);
 void comp_customButtonLogic_initialize(COMPONENT *self, void *event);
+void comp_customButtonLogic_frameUpdate(COMPONENT *self, void *event);
 
 #endif

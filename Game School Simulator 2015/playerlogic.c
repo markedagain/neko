@@ -209,8 +209,8 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     if (input->keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED) {
       SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
       if (!space_getEntity(tutorial, "pauseScreen")) {
-        CDATA_PAUSESCREEN *pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(space_addEntity(tutorial, arch_pauseScreen, "pauseScreen"), COMP_PAUSESCREENLOGIC);
-        pauseData->lastMode = data->currentMode;
+        space_addEntity(tutorial, arch_pauseScreen, "pauseScreen");
+        data->lastMode = data->currentMode;
       }
     }
 
