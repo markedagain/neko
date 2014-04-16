@@ -20,9 +20,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 void tutorial_disableUIButtons(SPACE *ui) {
   ENTITY *buildButton = space_getEntity(ui, "build_button");
-  ENTITY *pauseButton = space_getEntity(ui, "pause_button");
-  ENTITY *slowButton = space_getEntity(ui, "slow_button");
-  ENTITY *fastButton = space_getEntity(ui, "fast_button");
+  ENTITY *pauseButton = space_getEntity(ui, "pauseButton");
+  ENTITY *fastButton = space_getEntity(ui, "speedButton");
   ENTITY *manageButton = space_getEntity(ui, "manage_button");
 
   // disable build button
@@ -30,16 +29,12 @@ void tutorial_disableUIButtons(SPACE *ui) {
   mbox->active = false;
 
   // disable pause button
-  /*mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
-  mbox->active = false;
-
-  // disable slow button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(slowButton, COMP_MOUSEBOX);
+  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
   mbox->active = false;
 
   // disable fast button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
-  mbox->active = false;*/
+  mbox->active = false;
 
   // disable manage button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
@@ -48,9 +43,8 @@ void tutorial_disableUIButtons(SPACE *ui) {
 
 void tutorial_enableUIButtons(SPACE *ui) {
   ENTITY *buildButton = space_getEntity(ui, "build_button");
-  ENTITY *pauseButton = space_getEntity(ui, "pause_button");
-  ENTITY *slowButton = space_getEntity(ui, "slow_button");
-  ENTITY *fastButton = space_getEntity(ui, "fast_button");
+  ENTITY *pauseButton = space_getEntity(ui, "pauseButton");
+  ENTITY *fastButton = space_getEntity(ui, "speedButton");
   ENTITY *manageButton = space_getEntity(ui, "manage_button");
 
   // enable build button
@@ -58,16 +52,12 @@ void tutorial_enableUIButtons(SPACE *ui) {
   mbox->active = true;
 
   // enable pause button
-  //mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
-  //mbox->active = true;
-
-  // enable slow button
-  //mbox = (CDATA_MOUSEBOX *)entity_getComponentData(slowButton, COMP_MOUSEBOX);
-  //mbox->active = true;
+  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
+  mbox->active = true;
 
   // enable fast button
-  // mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
-  //mbox->active = true;
+  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
+  mbox->active = true;
 
   // enable manage button
   mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
