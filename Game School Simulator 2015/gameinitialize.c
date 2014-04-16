@@ -127,7 +127,7 @@ void createMainMenu(GAME *game) {
   
   genericSprite_create(menu, &position, "logo", "logo");
   
-  position.y = -180.0f;
+  position.y = -176.0f;
   copyright = genericText_create(menu, &position, "copyright", "fonts/gothic/12", "Copyright (C) 2014 DigiPen (USA) Corporation. All rights reserved.", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_BOTTOM);
   multiSprite_setAlpha(entity_getComponent(copyright, COMP_MULTISPRITE), 0.0f);
   
