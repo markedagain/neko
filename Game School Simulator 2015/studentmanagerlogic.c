@@ -20,6 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "genericsprite.h"
 #include "poptext.h"
 #include "mousebox.h"
+#include "timemanager.h"
 
 #define GROUND_HEIGHT 24
 #define SPAWN_TIMER 1.0f
@@ -30,6 +31,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 void comp_studentManagerLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
+  SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(sim, "gameManager");
+  CDATA_TIMEMANAGER *timeData;
+
+  if (gameManager) {
+    timeData = (CDATA_TIMEMANAGER*)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    if (timeData->paused)
+      return;
+  }
 
   if (data->displayCurrent >= data->displayTotal)
     return;

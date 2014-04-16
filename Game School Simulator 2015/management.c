@@ -83,9 +83,16 @@ void comp_managementDisplay(COMPONENT *self) {
   ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
   CDATA_MOUSEBOX *newsFeedBox = (CDATA_MOUSEBOX *)entity_getComponentData(newsFeed, COMP_MOUSEBOX);
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+  ENTITY *management = space_getEntity(self->owner->space, "managementButton");
 
   if (mbox->active == false)
     return;
+
+  if (management) {
+    comp_managementRemove(self);
+    return;
+  }
+
 
   if (self->owner->space->game->config.tutorial) {
     if (!data->alreadyActivated) {

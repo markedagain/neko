@@ -27,7 +27,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define INDIVIDUAL_ROOM_SIZE 80.0f
 #define ROOM_X_OFFSET -25.0f
 #define ANIMATION_TIME 0.3f
-
+#define VOICE_OH 3
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
@@ -36,8 +36,12 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC);
+  SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+  ENTITY *gameManager = space_getEntity(sim, "gameManager");
+  CDATA_TIMEMANAGER *timeData;
 
   if (mbox->entered && data->studentPtr) {
+  // if hover, make a text with name
     ENTITY *created;
     VEC3 position = { 0, 30.0f, 0 };
     VEC4 color = { 0, 0, 0, 1.0f };
@@ -49,10 +53,25 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
-  if(mbox->left.pressed && randomIntRange(0, 3) == 0)
-    sound_playSound(&self->owner->space->game->systems.sound, "oh");
+  if(mbox->left.pressed) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    int rand = randomIntRange(0, VOICE_OH);
+    if (studentData->gender == GEN_MALE) {
+      if (rand == 0)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_1");
+      if (rand == 1)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_2");
+      else
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_3");
+    }
+    else {      
+      if (rand == 0)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_1");
+      else
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_2");
+    }
 
-
+  }
 
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
@@ -99,6 +118,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     data->triggered = true;
   }
   
+  // activate the student inspection screen
   else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
     inspectData->clear = true;
     inspectData->studentActive = false;
@@ -111,10 +131,9 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     ENTITY *text = entity_getChild(self->owner, "nameText");
     if (text)
       entity_destroy(text);
-  }
+  } 
 
-  data->lifeTimer += (float)self->owner->space->game->systems.time.dt;
-
+  // set the sprite of the student once
   if (!data->setSprite) {
     VEC3 position = { 0 };
     COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
@@ -143,6 +162,37 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     data->setSprite = true;
   }
 
+  // if zoomed out, disappear
+  if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    comp_mouseBox_setInactive(mbox);
+    multiSprite_setVisible(multiSprite, false);
+    data->zoomedOut = true;
+  }
+
+  // if zoom back in, reappear
+  if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
+    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
+    mbox->active = true;
+    multiSprite_setVisible(multiSprite, true);
+    data->zoomedOut = false;
+  }
+
+  // if time is up, make the student walk to the door
+  if (data->lifeTimer > data->lifetime) {
+    data->outerState = OS_WALKTODOOR;
+    data->innerState = IS_ENTER;
+    data->lifetime = 10000.0f;
+  }
+
+  // if sim is currently paused, stop the student from walking around
+  if (gameManager) {
+    timeData = (CDATA_TIMEMANAGER*)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    if (timeData->paused)
+      return;
+  }
+
+  // logic for animating the legs
   if (data->outerState == OS_LEFT || data->outerState == OS_RIGHT || data->outerState == OS_WALKTODOOR) {
     data->animationTimer += (float)self->owner->space->game->systems.time.dt;
     if (data->animationTimer > ANIMATION_TIME) {
@@ -165,27 +215,12 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     }
   }
 
-  if(self->owner->space->systems.camera.transform.scale.x <= 0.65f && data->zoomedOut == false) {
-    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
-    comp_mouseBox_setInactive(mbox);
-    multiSprite_setVisible(multiSprite, false);
-    data->zoomedOut = true;
-  }
-
-  if(self->owner->space->systems.camera.transform.scale.x > 0.65f && data->zoomedOut == true) {
-    COMPONENT *multiSprite = entity_getComponent(self->owner, COMP_MULTISPRITE);
-    mbox->active = true;
-    multiSprite_setVisible(multiSprite, true);
-    data->zoomedOut = false;
-  }
-
-  if (data->lifeTimer > data->lifetime) {
-    data->outerState = OS_WALKTODOOR;
-    data->innerState = IS_ENTER;
-    data->lifetime = 10000.0f;
-  }
-
+  // add time to the life timer
+  data->lifeTimer += (float)self->owner->space->game->systems.time.dt;
+  
+  // update the student's state
   comp_studentActorLogic_updateState(self);
+
 }
 
 void comp_studentActorLogic_flipSprite(COMPONENT *self) {
