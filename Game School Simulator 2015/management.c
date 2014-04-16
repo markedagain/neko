@@ -63,13 +63,6 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
 
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     comp_managementDisplay(self);
-
-    if (self->owner->space->game->config.tutorial) {
-      if (!data->alreadyActivated) {
-        createFifthTutorial(uiSpace);
-        data->alreadyActivated = true;
-      }
-    }
   }
 
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
@@ -89,13 +82,29 @@ void comp_managementDisplay(COMPONENT *self) {
   VEC4 color = colors[C_WHITE_LIGHT];
   ENTITY *newsFeed = space_getEntity(uiSpace, "newsFeed");
   CDATA_MOUSEBOX *newsFeedBox = (CDATA_MOUSEBOX *)entity_getComponentData(newsFeed, COMP_MOUSEBOX);
-   
+  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
+
+  if (mbox->active == false)
+    return;
+
+  if (self->owner->space->game->config.tutorial) {
+    if (!data->alreadyActivated) {
+      createFifthTutorial(uiSpace);
+      data->alreadyActivated = true;
+    }
+  }
+
   newsFeedBox->active = false;
 
   data->triggered = true;
   
   vec3_set(&position, 0, 0, 0);
 
+  // create main sprite shadow
+  vec3_set(&position, 4, -4, 0);
+  genericSprite_create(self->owner->space, &position, "managementButton", "ui/management_shadow");
+
+  vec3_set(&position, 0, 0, 0);
   data->manageWindow = space_addEntityAtPosition(uiSpace, arch_manageScreen, "manage_screen", &position);
 
   // School Name

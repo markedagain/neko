@@ -122,7 +122,6 @@ void comp_sprite_draw(COMPONENT *self, void *event) {
   else
     AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
   AEGfxSetTransparency(comData->color.a);
-  //AEGfxTextureSet(texture->data, (float)comData->size.x * sprite->u, (float)comData->size.y * sprite->v);
   spriteWidth = comData->manual.enabled ? comData->manual.width : (float)sprite->width;
   spriteHeight = comData->manual.enabled ? comData->manual.height : (float)sprite->height;
   u = comData->manual.enabled ? comData->manual.u : sprite->u;

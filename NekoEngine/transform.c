@@ -40,8 +40,7 @@ void comp_transform_frameUpdate(COMPONENT *self, void *event) {
     comData->world.scale.y = parentTransform->world.scale.y * comData->scale.y;
     comData->world.scale.z = parentTransform->world.scale.z * comData->scale.z;
     comData->world.rotation = angle_normalize(parentTransform->world.rotation + comData->rotation);
-    // TODO: Use 2x2 matrix math to transform the translation based on parent's rotation and scale
-    // currently does not work with un-uniform scaling
+
     childTranslation = comData->translation;
     matrix3_identity(&parentMatrix);
     scale.x = parentTransform->world.scale.x;
