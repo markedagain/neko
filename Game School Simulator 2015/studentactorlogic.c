@@ -27,7 +27,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define INDIVIDUAL_ROOM_SIZE 80.0f
 #define ROOM_X_OFFSET -25.0f
 #define ANIMATION_TIME 0.3f
-
+#define VOICE_OH 3
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
@@ -53,10 +53,25 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
-  if(mbox->left.pressed && randomIntRange(0, 3) == 0)
-    sound_playSound(&self->owner->space->game->systems.sound, "oh");
+  if(mbox->left.pressed) {
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    int rand = randomIntRange(0, VOICE_OH);
+    if (studentData->gender == GEN_MALE) {
+      if (rand == 0)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_1");
+      if (rand == 1)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_2");
+      else
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_3");
+    }
+    else {      
+      if (rand == 0)
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_1");
+      else
+        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_2");
+    }
 
-
+  }
 
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
