@@ -61,7 +61,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     if (!comData->timeUI) {
       VEC3 position;
       VEC4 color;
-      vec3_set(&position, 220, 176, 0);
+      vec3_set(&position, 220, 175, 0);
       vec4_set(&color, 1, 1, 1, 1 );
       sprintf(buffer, "%s %i, %s", month[comData->monthCounter], comData->currentYear, semester[comData->semesterCounter - 1]);
       comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
@@ -74,7 +74,7 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
     if (!comData->timeUI) {
       VEC3 position;
       VEC4 color;
-      vec3_set(&position, 220, 176, 0);
+      vec3_set(&position, 220, 175, 0);
       vec4_set(&color, 1, 1, 1, 1 );
       sprintf(buffer, "July 1989, Fall");
       comData->timeUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);

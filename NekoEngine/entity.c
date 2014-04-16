@@ -63,8 +63,6 @@ void *entity_connect(ENTITY *entity, void(*componentFunction)(COMPONENT *)) {
   component->data = NULL;
   componentFunction(component);
 
-  /* TODO: dependency check */
-
   vector_append(&entity->components, component);
   return component->data;
 }
@@ -109,33 +107,16 @@ void entity_invokeEvent(ENTITY *entity, EVENT_TYPE event, void *data) {
 }
 
 void entity_destroy(ENTITY *entity) {
-  //unsigned int childrenCount;
-  //unsigned int i;
   if (entity->destroying)
     return;
   entity->destroying = 1;
   list_insert_end(entity->space->game->destroyingEntities, entity);
-  /*childrenCount = vector_size(&entity->children);
-  for (i = 0; i < childrenCount; ++i) {
-    ENTITY *child;
-    child = (ENTITY *)vector_get(&entity->children, i);
-    if (child->destroying)
-      continue;
-    entity_detach(child, entity);
-    child->destroying = 1;
-    if (entity->space != NULL)
-      list_insert_end(entity->space->game->destroyingEntities, child);
-  }*/
   while (vector_size(&entity->children) > 0) {
     ENTITY *child;
     child = (ENTITY *)vector_get(&entity->children, 0);
     if (child->destroying)
       continue;
-    //entity_detach(child, entity);
-    //child->destroying = 1;
     entity_destroy(child);
-    /*if (entity->space != NULL)
-      list_insert_end(entity->space->game->destroyingEntities, child);*/
   }
   if (entity->parent != NULL)
     entity_detach(entity, entity->parent);

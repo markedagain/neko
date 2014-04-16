@@ -256,6 +256,14 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
             genericText_setText(data->text, buffer);
             break;
 
+          case BUTTON_ROOM_UPGRADE:
+            {
+            CDATA_INSPECTIONSCREEN *inspectData = entity_getComponentData(space_getEntity(self->owner->space, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC);
+            sprintf(buffer, "$%i", comp_roomLogic_getRoomUpgradeCost(inspectData->type));
+            genericText_setText(data->text, buffer);
+            }
+            break;
+
           default:
             sprintf(buffer, "");
             genericText_setText(data->text, buffer);
@@ -479,12 +487,6 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_BUILD:
       {
         comp_UI_button_enterBuildMode(self);
-        if (self->owner->space->game->config.tutorial) {
-          if (!data->firstBuildClick) {
-            createFirstTutorialPartTwo(self->owner->space);
-            data->firstBuildClick = true;
-          }
-        }
         break;
       }
 
@@ -893,6 +895,7 @@ void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *posi
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  buttonData->text = text;
   entity_attach(text, newButton);
   buttonData->type = type;
 }
@@ -946,32 +949,18 @@ void UI_button_updateBuildButtons(SPACE *ui) {
   list_destroy(buildButtons);
 }
 
-void UI_button_updateUpgradeButton(SPACE *ui) {
-  /*SPACE *sim = game_getSpace(ui->game, "sim");
-  ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
-  CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(space_getEntity(ui, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC); 
-  CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
-  CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[inspectData->posY][inspectData->posX], COMP_ROOMLOGIC);
-
-  if(schoolData->money < comp_roomLogic_getRoomUpgradeCost(roomData->type)) {
-    CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_MOUSEBOX);
-    CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_SPRITE);
-    buttonBox->active = false;
-    buttonSprite->color.r = 0.4f;
-    buttonSprite->color.g = 0.4f;
-    buttonSprite->color.b = 0.4f;
-  }
-  else {
-    CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(space_getEntity(ui, "upgradeButton"), COMP_MOUSEBOX);
-    buttonBox->active = true;
-  }*/
-}
-
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   comp_UI_button_panDown(buildButton);
   sound_playSound(&buildButton->owner->space->game->systems.sound, "confirm");
+
+  if (buildButton->owner->space->game->config.tutorial) {
+    if (!data->firstBuildClick) {
+      createFirstTutorialPartTwo(buildButton->owner->space);
+      data->firstBuildClick = true;
+    }
+  }
 
   // CREATE LOBBY BUTTON
   vec3_set(&position, -261, -116, 0);
@@ -1037,6 +1026,11 @@ void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
 
 void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+  SPACE *tutorial = game_getSpace(buildButton->owner->space->game, "tutorial");
+  ENTITY *textBox = space_getEntity(tutorial, "textBox");
+
+  if (textBox)
+    return;
 
   if (data->type == BUTTON_CANCEL) {
     comp_UI_button_cancelBuildMode(buildButton);

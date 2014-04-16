@@ -1,4 +1,13 @@
-/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+/******************************************************************************
+Filename: pausescreenlogic.c
+
+Project Name: Game School Simulator 2015
+
+Author: Tai Der Hui
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
 
 #include "pausescreenlogic.h"
 #include "custombutton.h"
@@ -40,6 +49,10 @@ void comp_pauseScreenLogic_makeMenu(COMPONENT *self) {
   CDATA_PAUSESCREEN *data = (CDATA_PAUSESCREEN *)self->data;
   VEC4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
   CDATA_CUSTOMBUTTON *customButtonData;
+
+  // create main sprite shadow
+  vec3_set(&pos, 4, -4, 0);
+  genericSprite_create(tutorial, &pos, "options", "ui/management_shadow");
 
   // create main sprite
   vec3_set(&pos, 0, 0, 0);

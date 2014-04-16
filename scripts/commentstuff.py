@@ -1,5 +1,16 @@
-# Written by Tai Der Hui, 2014
-# Looks at every file in current directory and adds a file header
+###############################################################################
+
+# Filename: commentstuff.py
+
+# Project Name: Game School Simulator 2015
+
+# Author: Tai Der Hui
+
+# Purpose: Adds the file header to all .c and .h files in a folder
+
+# All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+###############################################################################
 
 import os, sys
 

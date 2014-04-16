@@ -28,9 +28,4 @@ unsigned int hash_string(const char *string) {
   hash += (hash << 15);
   return hash;
 
-  /*
-  for (hash = 0; *string != '\0'; ++string)
-    hash = *string + 31 * hash;
-  return hash;
-  */
 }
