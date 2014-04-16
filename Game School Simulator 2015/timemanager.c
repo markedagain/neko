@@ -104,10 +104,15 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
       if (schoolData->reputation > WIN_CONDITION && !comData->gameEnded) {
         VEC2 dimensions = { 400.0f, 200.0f };
         VEC3 position;
-        
+
+        // create main sprite shadow
+        vec3_set(&position, 4, -4, 0);
+        genericSprite_create(ui, &position, "options", "ui/management_shadow");
+
+        // create main sprite
         vec3_set(&position, 0, 0, 0);
-        genericSprite_createBlank(uiSpace, &position, &dimensions, &colors[C_NAVY_LIGHT], "winScreen");
-        genericText_create(uiSpace, &position, "winScreen", "fonts/gothic/28", "You won!\nPress enter to keep playing!", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+        genericSprite_create(ui, &position, "options", "ui/victory");
+
         comp_timeManager_pause(self);
         playerData->currentMode = GM_WIN;
         comData->gameEnded = true;
