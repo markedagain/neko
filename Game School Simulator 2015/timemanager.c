@@ -152,12 +152,9 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
     // NEW YEAR
     if(comData->monthCounter >= 12) {
-      //char message[80];
       comData->previousYear = comData->currentYear;
       comData->currentYear++;
       comData->monthCounter = 0;
-      //sprintf(message, pushStrings[STRINGS_YEAR], month[comData->monthCounter], comData->currentYear, comData->currentYear);
-      //comp_newsfeedlogic_push(self, message);
     }
   }
 
@@ -168,11 +165,12 @@ void comp_timeManager_pause(COMPONENT *ptr) {
   CDATA_TIMEMANAGER *comData = (CDATA_TIMEMANAGER *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_TIMEMANAGER);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "ui"), "pauseButton"), COMP_SPRITE);
 
+  // Play
   if(comData->paused) {
     comData->paused = FALSE;
     sprite->source = "ui/pause";
   }
-  else {
+  else { // Pause
     comData->paused = TRUE;
     sprite->source = "ui/play";
   }
@@ -204,6 +202,7 @@ void comp_timeManager_changeSpeed(COMPONENT *ptr) {
   }
 }
 
+// Initialize values
 void comp_timeManager(COMPONENT *self) {
   CDATA_TIMEMANAGER data = { 0 };
   data.secondsPerMonth = 6;

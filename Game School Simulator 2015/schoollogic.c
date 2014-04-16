@@ -513,10 +513,12 @@ void comp_schoolLogic_findRooms(COMPONENT *comp, LIST *roomList) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(comp->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
   int i, j;
 
+  // Loop through all the slots
   for (i = 0; i < 3; ++i) {
     for (j = 0; j < 15; ++j) {
       if (j == 7)
         continue;
+      // If a room exists, add to list
       if (comData->rooms.coord[i][j] != NULL) {
         VEC3 *room = (VEC3 *)malloc(sizeof(VEC3));
         CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(comData->rooms.coord[i][j], COMP_ROOMLOGIC);
@@ -580,6 +582,8 @@ void comp_schoolLogic_constructRoom(COMPONENT *ptr, ROOM_TYPE roomType, int room
   actorCompData->posY = floorToUse;
   actorCompData->startY = spawnPoint.y;
   actorCompData->targetY = middle.y;
+
+  // Set sprite
   sprite = (CDATA_SPRITE *)entity_getComponentData(newRoomActor, COMP_SPRITE);
   switch (roomType) {
     case ROOMTYPE_LOBBY:
@@ -668,14 +672,13 @@ int comp_schoolLogic_getRoomSize(ROOM_TYPE type) {
   return 1;
 }
 
-
+// Prints out all the currently constructed rooms
 void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *roomNode;
     if(comData->roomList->first != NULL) {
       roomNode = comData->roomList->first;
       do {
         ENTITY *room = (ENTITY *)roomNode->data;
-        printf("1) ");
         printf(room->name);
         printf("\n");
         roomNode = roomNode->next;
@@ -683,6 +686,7 @@ void comp_schoolLogic_listRooms(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
     }
 }
 
+// Prints out all the currently enrolled students
 void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *studentNode;
     if(comData->students->first != NULL) {
@@ -699,6 +703,7 @@ void comp_schoolLogic_listStudents(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) 
     }
 }
 
+// Prints out all the currently past alumni
 void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
   LIST_NODE *alumniNode;
     if(comData->students->first != NULL) {
@@ -714,6 +719,7 @@ void comp_schoolLogic_listAlumni(COMPONENT *self, CDATA_SCHOOLLOGIC *comData) {
     }
 }
 
+// Adds one million $
 void comp_schoolLogic_millionaire(COMPONENT *ptr) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(game_getSpace(ptr->owner->space->game, "sim"), "gameManager"), COMP_SCHOOLLOGIC);
 
@@ -728,6 +734,7 @@ void comp_schoolLogic_destroy(COMPONENT *self, void *event) {
   list_destroy(comData->alumni);
 }
 
+// Initialize values
 void comp_schoolLogic(COMPONENT *self) {
   CDATA_SCHOOLLOGIC data = { 0 };
   strcpy(data.schoolName, "");
