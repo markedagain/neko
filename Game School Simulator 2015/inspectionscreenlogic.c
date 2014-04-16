@@ -181,12 +181,27 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
           sprintf(comData->roomTypeBuffer, "Pottery Room (?)", NULL);
           break;
        }  
-
-      vec3_set(&position, -265, 0, 0);
-      UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &colors[C_WHITE_DARK], "Upgrade!");
+      
       genericText_setText(comData->roomType, comData->roomTypeBuffer);
       comData->upgradeButton = true;
-      comData->type = roomData->type;
+      comData->type = roomData->type;  
+      if (comData->type != ROOMTYPE_LOBBY && roomData->level < 3) {
+        vec3_set(&position, -265, 0, 0);
+        UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &colors[C_WHITE_DARK], "Upgrade!");
+      }
+      else {
+        if (comData->upgradeButton) {
+          LIST_NODE *node;
+          LIST *buttons = list_create(); 
+          space_getAllEntities(self->owner->space, "upgradeButton", buttons);
+          node = buttons->first;
+          while (node) {
+            entity_destroy((ENTITY *)node->data);
+            node = node->next;
+          }
+          list_destroy(buttons);         
+        }
+      }
       comData->triggered = false;
       }
     }
