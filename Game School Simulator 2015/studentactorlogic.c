@@ -59,7 +59,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     if (studentData->gender == GEN_MALE) {
       if (rand == 0)
         sound_playSound(&self->owner->space->game->systems.sound, "oh_m_1");
-      if (rand == 1)
+      else if (rand == 1)
         sound_playSound(&self->owner->space->game->systems.sound, "oh_m_2");
       else
         sound_playSound(&self->owner->space->game->systems.sound, "oh_m_3");
