@@ -37,7 +37,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
   CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC);
 
-  if (mbox->entered) {
+  if (mbox->entered && data->studentPtr) {
     ENTITY *created;
     VEC3 position = { 0, 30.0f, 0 };
     VEC4 color = { 0, 0, 0, 1.0f };
@@ -56,49 +56,47 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
-    if (data->studentPtr) {
-      CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
-      SPACE *sim = game_getSpace(self->owner->space->game, "sim");
-      ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
-      CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+    ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
+    CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
 
-      if (inspectData->posActive) {
-        inspectData->clear = true;
-        inspectData->posActive = false;
-      }
-      // name
-      sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
-
-      // major
-      switch (studentData->major) {
-      case M_TECH:
-        strcpy(inspectData->major, "Programmer");
-        break;
-      case M_ART:
-        strcpy(inspectData->major, "Artist");
-        break;
-      case M_DESIGN:
-        strcpy(inspectData->major, "Designer");
-        break;
-      }
-
-      // quote
-      sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
-
-      // gpa
-      sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
-
-      // motivation
-      sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
-
-      // expected graduation
-      sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
-    
-      inspectData->active = true;
-      inspectData->studentActive = true;
-      inspectData->triggered = true;
-      data->triggered = true;
+    if (inspectData->posActive) {
+      inspectData->clear = true;
+      inspectData->posActive = false;
     }
+    // name
+    sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
+
+    // major
+    switch (studentData->major) {
+    case M_TECH:
+      strcpy(inspectData->major, "Programmer");
+      break;
+    case M_ART:
+      strcpy(inspectData->major, "Artist");
+      break;
+    case M_DESIGN:
+      strcpy(inspectData->major, "Designer");
+      break;
+    }
+
+    // quote
+    sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
+
+    // gpa
+    sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
+
+    // motivation
+    sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
+
+    // expected graduation
+    sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
+    
+    inspectData->active = true;
+    inspectData->studentActive = true;
+    inspectData->triggered = true;
+    data->triggered = true;
   }
   
   else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
