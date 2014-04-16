@@ -219,7 +219,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       schoolData->reputation += 5;
     }
 
-    if (input->keyboard.keys[KEY_4] == ISTATE_PRESSED) {
+    if (input->keyboard.keys[KEY_4] == ISTATE_DOWN && input->keyboard.keys[KEY_SHIFT] == ISTATE_DOWN && input->keyboard.keys[KEY_CONTROL] == ISTATE_DOWN) {
       comp_schoolLogic_millionaire(self);
     }
     
@@ -293,7 +293,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
     // M - Brings up management screen
     if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-
+      
     }
 
     //Change Tuition
