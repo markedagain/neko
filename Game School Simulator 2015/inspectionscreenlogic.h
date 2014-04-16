@@ -30,13 +30,13 @@ typedef struct cdata_inspectionScreen_t {
   char expectedGraduationYear[30];
   char major[16];
   char motivation[16];
-  char quote[128];
+  char trait[128];
   ENTITY *studentName;
   ENTITY *studentMajor;
   ENTITY *studentGPA;
   ENTITY *studentGraduation;
   ENTITY *studentMotivation;
-  ENTITY *studentQuote;
+  ENTITY *studentTrait;
 
   // ROOM INSPECTION
   ROOM_TYPE type;

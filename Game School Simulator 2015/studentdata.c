@@ -72,7 +72,7 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
     schoolLogic->currentStudents--;
     schoolLogic->reputation += repIncrease;
     schoolLogic->graduationRep += repIncrease;
-    ++schoolLogic->newGraduates;
+    schoolLogic->newGraduates++;
     comp_studentManagerLogic_removeGraduate(studentManagerLogic, self->owner);
     list_remove(schoolLogic->students, comData->listNodePtr);
     comData->listNodePtr = list_insert_end(schoolLogic->alumni, self->owner);
@@ -117,12 +117,13 @@ void generate_student(COMPONENT *self) {
   GAME *owner = self->owner->space->game;
   TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
   unsigned int totalNames = vector_size(&namefile->lines);
-  unsigned int totalQuotes;
+  unsigned int totalTraits;
   char *lastname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
   char *firstname;
-  namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "misc/quotes");
-  totalQuotes = vector_size(&namefile->lines);
-  data->quote = (char *)vector_get(&namefile->lines, randomIntRange(0, totalQuotes - 1));
+  namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "misc/traits");
+  totalTraits = vector_size(&namefile->lines);
+  data->trait1 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
+  data->trait2 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
 
   data->name.last = lastname;
 

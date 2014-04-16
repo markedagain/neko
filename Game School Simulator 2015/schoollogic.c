@@ -56,8 +56,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     ++comData->counter;
   }
 
-
+  /////////////////////////
   // Display $$$ on screen
+  /////////////////////////
+    // Create if first time
   if (comData->currMoney != comData->money) {   
     // Create text if first time
     if (!comData->moneyUI) {
@@ -70,12 +72,22 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     sprintf(comData->buffer, "$%li", comData->money);
     genericText_setText(comData->moneyUI, comData->buffer);
     comData->currMoney = comData->money;
+    if(comData->money < 0) {
+      vec4_set(&color, 1, 0, 0, 1 );
+      spriteText_outline(comData->moneyUI, true, &color);
+    }
+    else {
+      vec4_set(&color, 1, 1, 1, 1 );
+      spriteText_outline(comData->moneyUI, false, &color);
+    }
     // update build buttons
     UI_button_updateBuildButtons(uiSpace);
     //UI_button_updateUpgradeButton(uiSpace);
   }
 
+  /////////////////////////
   // Display Rep on screen
+  /////////////////////////
     // Create if first time
   if (!comData->reputationUI) {
     vec3_set(&position, -120, 176, 0);
@@ -87,7 +99,9 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   sprintf(comData->buffer, "Rep: %i", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
 
+  /////////////////////////
   // Display Student Pop on screen
+  /////////////////////////
     // Create if first time
   if (!comData->studentUI) {
     vec3_set(&position, -40, 176, 0);

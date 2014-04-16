@@ -1,4 +1,13 @@
-﻿/* All content (C) 2013-2014 DigiPen (USA) Corporation, all rights reserved. */
+﻿/******************************************************************************
+Filename: Program.cs
+
+Project Name: Game School Simulator 2015
+
+Author: Adam Rezich
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+
+******************************************************************************/
 
 using System;
 using System.Collections.Generic;

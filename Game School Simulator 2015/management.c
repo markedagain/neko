@@ -46,7 +46,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     if (!managementData->hoverText) {
       VEC3 position;
       vec3_set(&position, -242, 151, 0);
-      managementData->hoverText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Management!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+      managementData->hoverText = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", "Management", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
     } 
     sound_playSound(&self->owner->space->game->systems.sound, "hover");
     sprite->color.a = 0.8f;
@@ -120,8 +120,12 @@ void comp_managementDisplay(COMPONENT *self) {
   data->tuition = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/16", data->tuitionBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Costs/Upkeep
-  vec3_set(&position, 100, -65, 0);
-  data->currCosts = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->costsBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  vec3_set(&position, 72, -64, 0);
+  data->currCosts = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->costsBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
+
+  // Expected Income
+  vec3_set(&position, 72, -36, 0);
+  data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->incomeBuffer, &color, TEXTALIGN_LEFT, TEXTALIGN_MIDDLE);
   
   // Student Population
   vec3_set(&position, -70, -31, 0);
@@ -132,12 +136,8 @@ void comp_managementDisplay(COMPONENT *self) {
   data->studentInc = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/12", data->studentIncBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Reputation
-  vec3_set(&position, 100, 20, 0);
+  vec3_set(&position, 112, 20, 0);
   data->rep = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->reputationBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
-
-  // Expected Income
-  vec3_set(&position, 100, -40, 0);
-  data->income = genericText_create(self->owner->space, &position, NULL, "fonts/gothic/20bold", data->incomeBuffer, &color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
   
   // Graduates
   vec3_set(&position, -70, -59, 0);

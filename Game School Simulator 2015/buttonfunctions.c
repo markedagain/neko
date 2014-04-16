@@ -384,7 +384,7 @@ void pause_onEntered(COMPONENT *self) {
   if (!data->hoverText) {
     VEC3 position;
     vec3_set(&position, -301, 151, 0);
-    data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Menu!", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    data->hoverText = genericText_create(ui, &position, NULL, "fonts/gothic/12", "Menu", &colors[C_NAVY_DARK], TEXTALIGN_CENTER, TEXTALIGN_TOP);
   }
 }
 

@@ -218,13 +218,13 @@ void startNewGame(GAME *game) {
   setInspectText(game);
 
   // Create Student Pop Sprite
-  vec3_set(&position, -60, 168, 0);
+  vec3_set(&position, -60, 166, 0);
   genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
 
   // Create an empty mousebox to stop click through
   vec3_set(&position, 0, 0, 0);
   ent1 = createCustomButton(NULL, NULL, empty_onPressed, NULL, NULL, uiSpace, &position, "emptyBox", 1, 1, true, "ui/pauseBackground", NULL, &color, false, NULL, NULL, NULL, TEXTALIGN_CENTER, TEXTALIGN_CENTER);
-  sprite = entity_getComponentData(ent1, COMP_SPRITE);
+  sprite = (CDATA_SPRITE *)entity_getComponentData(ent1, COMP_SPRITE);
   sprite->visible = false;
 }
 
@@ -248,7 +248,7 @@ void setInspectText(GAME *game) {
   vec3_set(&position, -315, 50, 0);
   inspectData->studentGraduation = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
   vec3_set(&position, -315, 30, 0);
-  inspectData->studentQuote = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  inspectData->studentTrait = genericText_create(uiSpace, &position, NULL, "fonts/gothic/12", " ", &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
   
   // Room Inspection Text
   vec3_set(&position, -315, 150, 0);

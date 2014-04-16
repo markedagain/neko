@@ -38,15 +38,17 @@ void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   {}
 
   // if enter, store the string
-  else if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
-    SPACE *sim = game_getSpace(self->owner->space->game, "sim");
-    CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
+  else if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED ) {
+    if(data->name[0] != 0) {
+      SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+      CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
   
-    strcpy(schoolData->schoolName, data->name);
-    schoolData->counter = 1;
-    space_destroy(self->owner->space);
-    startGame(self->owner->space->game);
-    //(game_getSpace(self->owner->space->game, "ui"))->active = true;
+      strcpy(schoolData->schoolName, data->name);
+      schoolData->counter = 1;
+      space_destroy(self->owner->space);
+      startGame(self->owner->space->game);
+      //(game_getSpace(self->owner->space->game, "ui"))->active = true;
+    }
   }
 
 
@@ -102,5 +104,5 @@ void comp_nameScreenLogic_initialize(COMPONENT *self, void *event) {
   data->displayText = genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 
   vec3_set(&position, 0, 20.0f, 0);
-  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Enter the name of your school:", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Type the name of your school:", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 }
