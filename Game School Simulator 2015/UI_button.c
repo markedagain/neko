@@ -1026,6 +1026,11 @@ void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
 
 void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
+  SPACE *tutorial = game_getSpace(buildButton->owner->space->game, "tutorial");
+  ENTITY *textBox = space_getEntity(tutorial, "textBox");
+
+  if (textBox)
+    return;
 
   if (data->type == BUTTON_CANCEL) {
     comp_UI_button_cancelBuildMode(buildButton);
