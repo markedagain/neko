@@ -52,49 +52,53 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   if(mbox->left.pressed && randomIntRange(0, 3) == 0)
     sound_playSound(&self->owner->space->game->systems.sound, "oh");
 
+
+
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
-    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
-    SPACE *sim = game_getSpace(self->owner->space->game, "sim");
-    ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
-    CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    if (data->studentPtr) {
+      CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+      SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+      ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
+      CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
 
-    if (inspectData->posActive) {
-      inspectData->clear = true;
-      inspectData->posActive = false;
-    }
-    // name
-    sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
+      if (inspectData->posActive) {
+        inspectData->clear = true;
+        inspectData->posActive = false;
+      }
+      // name
+      sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
 
-    // major
-    switch (studentData->major) {
-    case M_TECH:
-      strcpy(inspectData->major, "Programmer");
-      break;
-    case M_ART:
-      strcpy(inspectData->major, "Artist");
-      break;
-    case M_DESIGN:
-      strcpy(inspectData->major, "Designer");
-      break;
-    }
+      // major
+      switch (studentData->major) {
+      case M_TECH:
+        strcpy(inspectData->major, "Programmer");
+        break;
+      case M_ART:
+        strcpy(inspectData->major, "Artist");
+        break;
+      case M_DESIGN:
+        strcpy(inspectData->major, "Designer");
+        break;
+      }
 
-    // quote
-    sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
+      // quote
+      sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
 
-    // gpa
-    sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
+      // gpa
+      sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
 
-    // motivation
-    sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
+      // motivation
+      sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
 
-    // expected graduation
-    sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
+      // expected graduation
+      sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
     
-    inspectData->active = true;
-    inspectData->studentActive = true;
-    inspectData->triggered = true;
-    data->triggered = true;
+      inspectData->active = true;
+      inspectData->studentActive = true;
+      inspectData->triggered = true;
+      data->triggered = true;
+    }
   }
   
   else if (mbox->left.pressed && !data->triggered && inspectData->studentActive) {
