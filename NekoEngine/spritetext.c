@@ -138,8 +138,7 @@ void comp_spriteText_setText(COMPONENT *self, char *text) {
         offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] - 1.0f) / 2.0f;
       if (data->alignment.x == TEXTALIGN_RIGHT)
         offset.x = -(float)fontSize.x * ((float)lineLengths[curLine] + 0.5f);
-      //if (data->alignment.y == TEXTALIGN_TOP)
-        offset.y -= (float)fontSize.y;
+      offset.y -= (float)fontSize.y;
     }
     sprTrans->translation.x = offset.x;
     sprTrans->translation.y = offset.y;

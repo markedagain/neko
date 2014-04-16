@@ -250,9 +250,6 @@ void pak_getFileList(PAK_FILE *pak, VECTOR *v) {
   PAK_SECTION *files;
   int count, i;
   files = pak_loadAllFiles(pak, &count);
-  /*for (i = 0; i < count; ++i) {
-    printf(">>>%s\n", files[i].name);
-  }*/
   for (i = 0; i < count; ++i) {
     char *name;
     size_t size;

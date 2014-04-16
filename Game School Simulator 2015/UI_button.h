@@ -86,7 +86,6 @@ void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *posi
 void comp_UI_destroy(COMPONENT *self, void *event);
 void UI_button_updateBuildButtons(SPACE *ui);
 void comp_ui_button_hoverPop(COMPONENT *self);
-void UI_button_updateUpgradeButton(SPACE *ui);
 void comp_UI_button_cancelBuildMode(COMPONENT *buildButton);
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton);
 void comp_UI_button_toggleBuildMode(COMPONENT *buildButton);

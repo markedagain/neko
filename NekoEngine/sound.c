@@ -28,7 +28,6 @@ void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   result = FMOD_System_Create(&system->system);
   result = FMOD_System_GetDriverCaps(system->system, 0, &caps, 0, &speakerMode);
   result = FMOD_System_SetSpeakerMode(system->system, speakerMode);
-  //result = FMOD_System_SetDSPBufferSize(system->system, 512, 10);
   result = FMOD_System_GetDriverInfo(system->system, 0, name, 256, 0);
   if (strstr(name, "SigmaTel")) {
     result = FMOD_System_SetSoftwareFormat(system->system, 48000, FMOD_SOUND_FORMAT_PCMFLOAT, 0, 0, FMOD_DSP_RESAMPLER_LINEAR);
