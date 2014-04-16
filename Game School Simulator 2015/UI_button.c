@@ -256,6 +256,14 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
             genericText_setText(data->text, buffer);
             break;
 
+          case BUTTON_ROOM_UPGRADE:
+            {
+            CDATA_INSPECTIONSCREEN *inspectData = entity_getComponentData(space_getEntity(self->owner->space, "inspection_screen"), COMP_INSPECTIONSCREENLOGIC);
+            sprintf(buffer, "$%i", comp_roomLogic_getRoomUpgradeCost(inspectData->type));
+            genericText_setText(data->text, buffer);
+            }
+            break;
+
           default:
             sprintf(buffer, "");
             genericText_setText(data->text, buffer);
@@ -887,6 +895,7 @@ void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *posi
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
   text = genericText_create(self->owner->space, &textPos, NULL, "fonts/gothic/12", name, color, TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  buttonData->text = text;
   entity_attach(text, newButton);
   buttonData->type = type;
 }
