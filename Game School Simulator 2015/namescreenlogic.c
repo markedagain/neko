@@ -20,7 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "gameinitialize.h"
 #include "menuscreenlogic.h"
 
-#define MAX_NAME 30
+#define MAX_NAME 40
 
 void comp_nameScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   INPUT_CONTAINER *input = &self->owner->space->game->input;
