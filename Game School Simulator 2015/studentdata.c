@@ -124,6 +124,7 @@ void generate_student(COMPONENT *self) {
   totalTraits = vector_size(&namefile->lines);
   data->trait1 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
   data->trait2 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
+  data->trait3 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
 
   data->name.last = lastname;
 
