@@ -208,6 +208,7 @@ void game_start(GAME *game) {
         node = node->next;
       }
       game_cleanup(game);
+      sound_setVolume_ambient(&game->systems.sound, game->systems.sound.volume.ambient, 0.0f, 0.0f);
       game->resetFunction(game);
       game->resetFunction = NULL;
       game->systems.time.scale = 1.0;

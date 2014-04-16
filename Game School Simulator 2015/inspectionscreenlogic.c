@@ -108,6 +108,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         genericText_setText(comData->studentGraduation, comData->expectedGraduationYear);
         genericText_setText(comData->studentMotivation, comData->motivation);
         genericText_setText(comData->studentTrait, comData->trait);
+        //genericText_setText(comData->studentTrait, "BUTTS");
         comData->triggered = false;
       }
     }
