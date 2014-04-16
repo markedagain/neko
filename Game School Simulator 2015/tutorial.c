@@ -132,27 +132,50 @@ void tutorialBackground_onPressed(COMPONENT *self) {
 
 void createFirstTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "What up Bro, they told me you would be coming!\nI am Brad Bromayor, \nyour one and only advisor as you build your new game school!\n\nClick anywhere to continue.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Oh yeah, you're totally building a game school!\n\nWe got approved for the loan, \nand got this gorgeous piece of land!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Let's kick things off by buying a Lobby.\n\nClick the Build Button to continue.\n(or press the Space button)");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "What up bro? I heard you'd be coming!\n"
+                                              "I'm Brad Bromayor, here to help you out on your journey\n"
+                                              "to make the best game school in the world!\n"
+                                              "                             (CLICK ANYWHERE TO CONTINUE)");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "I already talked to the dudes at the bank; your loan got\n"
+                                              "approved and we got this totally rad plot of land!\n"
+                                              "Let's get started!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "First things first! You need a lobby to build your school\n"
+                                              "around. Let's build one!\n"
+                                              "Click the Build button (the hammer icon at the top of\n"
+                                              "the screen) or press SPACEBAR to open the Build Menu!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
-  sound_playSound(&ui->game->systems.sound, "dudebro");
+  //sound_playSound(&ui->game->systems.sound, "dudebro");
 }
 
 void createFirstTutorialPartTwo(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Nice, Bro!\n\nHere you can see the rooms you are able to create!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "The highlighted buttons indicate which rooms\nyou can create right now!\n\nLet's build a lobby, shall we?");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "Nice, bro!\n"
+                                              "This is where you can see all the rooms you can build!\n");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "The rooms that you have unlocked AND have enough money\n"
+                                              "for are highlighted, like the Lobby is now.");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "So hey, let's build a Lobby! Click on the Lobby button\n"
+                                              "to start making the game school of your dreams!");
   comp_tutorialTextBoxLogic_nextText(textBox);
 }
 
 
 void createSecondTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Great! Whenever you try to build a new room you\nwill see the available build locations on screen.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "All you have to do is to click on the one you want to build at.\nClick on the available slot to continue.");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "Rad!\n"
+                                              "Whenever you go to build a new room, the different\n"
+                                              "possible build locations will be shown on the screen.");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "All you gotta do is pick one and click one, and the room\n"
+                                              "will be built there immediately!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -160,8 +183,15 @@ void createSecondTutorial(SPACE *ui) {
 
 void createThirdTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "I feel like we are forgeting something...\nRight! Students!! This is a game school after all!\nThat means we need a classroom.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Let's open up that Build menu again,\nand a get a classroom in!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "Right on!\n"
+                                              "Lobbies are pretty chill, but I feel like our game\n"
+                                              "school is missing something still...");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Oh, right, students! Game schools are nothing without\n"
+                                              "their students! And students need classrooms so they\n"
+                                              "can, like, go to class and stuff!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Open up the Build menu again, and build a Classroom\n"
+                                              "wherever you want!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -170,8 +200,14 @@ void createThirdTutorial(SPACE *ui) {
 void createFourthTutorial(SPACE *ui) {
   CDATA_MOUSEBOX *manageBox = (CDATA_MOUSEBOX *)entity_getComponentData((ENTITY *)space_getEntity(ui, "manage_button"), COMP_MOUSEBOX);
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "This looks great!\n\nWell, I think it's about time we let our\nfirst students in, don't you?");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Let's check the current status of incoming students!\n\nClick the Management Screen Button above, man.");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "Dude, this is like, a real school now!\n"
+                                              "Well, almost. Now we gotta wait for some students to\n"
+                                              "enroll.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "To check on how your school is doing, including stuff\n"
+                                              "like the number of incoming students, you need to check\n"
+                                              "the Management screen. Click the pencil button above, or\n"
+                                              "press M on your keyboard!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_disableUIButtons(ui);
   tutorial_disableBuildButtons(ui);
