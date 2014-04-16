@@ -29,8 +29,8 @@ typedef struct cdata_inspectionScreen_t {
   char GPA[16];
   char expectedGraduationYear[30];
   char major[16];
-  char motivation[16];
-  char trait[128];
+  char motivation[18];
+  char trait[80];
   ENTITY *studentName;
   ENTITY *studentMajor;
   ENTITY *studentGPA;

@@ -66,6 +66,9 @@ Insane
 Average
 Awkward
 Alive
+Has Sisters
+Only Child
+Strange
 Helpful
 Wicked
 Clear
@@ -86,3 +89,43 @@ Young
 Proud
 Fresh
 Dangerous
+Hip
+Hipster
+Cool
+Hyper Nerd
+Stinky
+Funky
+Groovy
+Studious
+Shy
+Strong
+Icy
+Ambidextrous
+Satirical
+Dramatic
+Prodigy
+Good at Jenga
+Dark
+Cooks Well
+Clumsy
+Stylish
+Trendy
+Famous
+Hungry
+Poor
+Glutton
+Heroic
+Unclear
+Phat
+Baller
+Dsyleixc
+Somebody
+Nobody
+???
+Ill
+Solid
+Liquid
+Bro
+Loves K-Pop
+Loves Rap
+Loves Country

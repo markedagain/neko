@@ -39,6 +39,7 @@ typedef struct cdata_studentData_t {
   MAJOR major;
   char *trait1;
   char *trait2;
+  char *trait3;
   int techSkill;
   int artSkill;
   int designSkill;

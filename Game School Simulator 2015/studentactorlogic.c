@@ -80,7 +80,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     }
 
     // quote
-    sprintf(inspectData->trait, "Traits:\n%s\n%s", studentData->trait1, studentData->trait2);
+    sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
 
     // gpa
     sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
