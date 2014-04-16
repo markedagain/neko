@@ -21,7 +21,7 @@ void sound_initialize(SOUNDSYSTEM *system, DICT *sounds) {
   system->channels.music = NULL;
   system->volume.master = 0.85f;
   system->volume.sound = 1.0f;
-  system->volume.music = 0.0f;
+  system->volume.music = 0.85f;
   system->volume.ambient = 1.0f;
   system->volume.ambient1 = 0.0f;
   system->volume.ambient2 = 0.0f;
