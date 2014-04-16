@@ -90,13 +90,13 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   /////////////////////////
     // Create if first time
   if (!comData->reputationUI) {
-    vec3_set(&position, -120, 176, 0);
+    vec3_set(&position, -68, 175, 0);
     vec4_set(&color, 1, 1, 1, 1 );
-    sprintf(comData->buffer, "Rep: %i", comData->reputation);
-    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_CENTER, TEXTALIGN_TOP);
+    sprintf(comData->buffer, "%i Rep", comData->reputation);
+    comData->reputationUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_RIGHT, TEXTALIGN_TOP);
   }
     // Update
-  sprintf(comData->buffer, "Rep: %i", comData->reputation);
+  sprintf(comData->buffer, "%i Rep", comData->reputation);
   genericText_setText(comData->reputationUI, comData->buffer);
 
   /////////////////////////
@@ -104,7 +104,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   /////////////////////////
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -40, 176, 0);
+    vec3_set(&position, -48, 175, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
     comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
