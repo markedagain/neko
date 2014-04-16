@@ -49,7 +49,7 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
     comp_studentActorLogic_flipText(created);
   }
 
-  if(mbox->left.pressed)
+  if(mbox->left.pressed && randomIntRange(0, 3) == 0)
     sound_playSound(&self->owner->space->game->systems.sound, "oh");
 
   // name, major, 3 stats, gpa, motivation, expected graduation year

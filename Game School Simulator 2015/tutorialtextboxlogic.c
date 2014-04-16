@@ -37,10 +37,11 @@ void comp_tutorialTextBoxLogic_initialize(COMPONENT *self, void *event) {
   // box sprite
   ENTITY *whiteBox = space_addEntityAtPosition(self->owner->space, arch_brad, "textboxbackground", &pos);
   entity_attach(whiteBox, self->owner);
-  vec3_set(&pos, -150.0f, 40.0f, 0);
+  vec3_set(&pos, -228.0f, 47.0f, 0);
 
   // text
-  data->text = genericText_create(self->owner->space, &pos, "textboxtext", "fonts/gothic/12", "", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
+  color = colors[C_WHITE_LIGHT];
+  data->text = genericText_create(self->owner->space, &pos, "textboxtext", "fonts/gothic/16", "", &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
   entity_attach(data->text, self->owner);
   comp_tutorialTextBoxLogic_pushText(self->owner, "");
   data->currentText = data->textList->first;
