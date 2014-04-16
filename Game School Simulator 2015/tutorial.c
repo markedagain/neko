@@ -216,10 +216,19 @@ void createFourthTutorial(SPACE *ui) {
 
 void createFifthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Here, you can manage various attributes of your school!\n\nRequired GPA and Tuition affect the number of incoming students.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "One thing to remember, and this is IMPORTANT!\n\nIf you drop below $100,000 in debt, you will go bankrupt!\nDont let that happen!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nWelp, that's all I've got for now.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Let's wait for our incoming students to arrive!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "This is where you can check on your school and see what's\n"
+                                              "going on beneath the surface.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "You can also change the minimum GPA required for\n"
+                                              "acceptance, as well as the semesterly tuition rate.\n"
+                                              "Adjusting these will affect the number of students that\n"
+                                              "enroll each semester, but also will affect your income!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "You gotta remember though, and this is IMPORTANT:\n"
+                                              "You can take losses here and there, but if you ever fall\n"
+                                              "below $-100,000, it's game over, man! Even I won't be\n"
+                                              "able to keep the banks off your back!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Well, that's all I've got for now. Let's sit back and\n"
+                                              "wait for our first batch of students to enroll!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
@@ -227,14 +236,38 @@ void createFifthTutorial(SPACE *ui) {
 
 void createSixthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Your first students have arrived!\n\nThis means your reputation can start to change.\nWhen students drop out, your reputation goes down.\nBut when your students graduate your rep goes up!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "When students drop out, your reputation goes down.\nBut when your students graduate, your rep goes up!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Your students gain stats while studying at your school.\nYou can get details on students by\nclicking their avatar on the screen.");
-  comp_tutorialTextBoxLogic_pushText(textBox, "The higher their main stat is, the more repuation\nyou get when they graduate!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by\nbuilding rooms that provide motivation boosts!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "The amount their stats increase is\nalso determined by their motivation.\nSo keep that motivation high!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Hey this is IMPORTANT!\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Well, that's all I have for you.\n\nI know you'll do great whatever you decide to do.\n\nGood Luck, and Have Fun!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "Dude! Your first students have finally arrived!\n"
+                                              "This means, you're, like, a real school now and stuff,\n"
+                                              "so you have a reputation to maintain!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "When students GRADUATE, your reputation will go up, but\n"
+                                              "when students DROP OUT, your reputation will go down!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Each student at your school has stats that increase as\n"
+                                              "they study and learn. If you add better rooms to your\n"
+                                              "school, or improve the existing ones, their stats will\n"
+                                              "increase faster!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "The higher a graduate's main stat is, the more repuation\n"
+                                              "you'll gain. Real game developers want to hire skilled\n"
+                                              "employees, not bad ones!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Students also have a Motivation stat. If a student's\n"
+                                              "Motivation drops below 0%, they will drop out!\n"
+                                              "Not cool, bro!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "You can prevent this by building rooms that increase\n"
+                                              "Motivation. More motivation will also lead to students\n"
+                                              "doing better in school in general, so yeah, Motivation\n"
+                                              "is pretty important.");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "I know I'm kinda goin' on a rant right now, but just one\n"
+                                              "more thing, I promise! This one's important!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "The best game school in the nation apparently has\n"
+                                              "500 REPUTATION. Got that? 500! That's a lot!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "If you can beat that, your game school will truly be the\n"
+                                              "the greatest!");
+  /////////////////////////////////////////////                                                         ////
+  comp_tutorialTextBoxLogic_pushText(textBox, "That's all I got for now, bro, but I know you got it from\n"
+                                              "here. Good luck, and have fun!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
