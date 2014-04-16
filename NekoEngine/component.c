@@ -35,7 +35,6 @@ void component_depend(COMPONENT *component, unsigned int dependId) {
       return;
     }
   }
-  /* THROW ERROR */
 }
 
 void component_doEvent(COMPONENT *component, EVENT_TYPE event, void *data) {

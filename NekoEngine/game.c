@@ -233,8 +233,6 @@ bool game_loop(GAME *game) {
     SetCursor(NULL);
     ShowCursor(FALSE);
   }
-  /*else
-    ShowCursor(TRUE);*/
   game->systems.time.elapsedFrames++;
   stopwatch_stop(&game->systems.time.secondsStopwatch);
   if (stopwatch_delta(&game->systems.time.secondsStopwatch) >= 1) {
@@ -242,8 +240,6 @@ bool game_loop(GAME *game) {
     game->systems.time.elapsedFrames = 0;
     stopwatch_start(&game->systems.time.secondsStopwatch);
   }
-  /*if (AESysGetWindowHandle() != GetActiveWindow())
-    printf("AAAAA\n");*/
 
   deltaTime = stopwatch_delta(&game->systems.time.stopwatch);
   if (deltaTime >= game->systems.time.frameRate) {
@@ -276,8 +272,6 @@ bool game_loop(GAME *game) {
 
 void game_destroy(GAME *game) {
   LIST_NODE *node;
-  //int i;
-  // TODO
 
   node = game->spaces->first;
   while (node) {
@@ -386,18 +380,13 @@ void __game_resize(GAME *game) {
   GetClientRect(AESysGetWindowHandle(), &clientRect);
   game->window.width = windowRect.right - windowRect.left;
   game->window.height = windowRect.bottom - windowRect.top;
-  //game->innerWindow.width = clientRect.right - clientRect.left;
-  //game->innerWindow.height = clientRect.bottom - clientRect.top;
 
   if (game->initialized)
-    AEGfxExit(); // TODO: Replace with better?
+    AEGfxExit();
   AEGfxInit(game->innerWindow.width, game->innerWindow.height);
 }
 
 LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-  //HDC dc; // device context
-  //PAINTSTRUCT ps;
-  //RECT rect;
   int i;
   
   switch (msg) {
@@ -443,11 +432,6 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     __game->input.keyboard.ascii[i] = (char)wparam;
     break;
 
-  /*case WM_PAINT:
-    dc = BeginPaint(hwnd, &ps);
-    EndPaint(hwnd, &ps);
-    break;*/
-
   case WM_DESTROY:
     __game->destroying = true;
     PostQuitMessage(0);
@@ -458,12 +442,10 @@ LRESULT CALLBACK __game_processWindow(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     break;
 
   case WM_MOVE:
-    //InvalidateRect(hwnd, NULL, FALSE);
     break;
 
   case WM_SIZE:
     if (__game != NULL)
-      //__game_resize(__game);
       __game->resized = true;
     break;
 

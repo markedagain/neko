@@ -31,7 +31,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pausescreenlogic.h"
 #include "sound.h"
 #include "random.h"
-
+#include "management.h"
 #include "gameinitialize.h"
 
 #define GROUND_HEIGHT 24
@@ -155,9 +155,10 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
   }
 
+  // lose state
   else if (data->currentMode == GM_LOSE) {
     if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
-      self->owner->space->game->destroying = true;
+      self->owner->space->game->resetFunction = makeAllNewGame;
     }
   }
 
@@ -198,13 +199,6 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
     }
     if (input->keyboard.keys[KEY_DOWN] == ISTATE_DOWN) {
       zoom(self, -0.01f);
-      /*CDATA_PLAYERLOGIC *data = (CDATA_PLAYERLOGIC *)self->data;
-      SPACE *bg = game_getSpace(self->owner->space->game, "bg");
-      SPACE *mg = game_getSpace(self->owner->space->game, "mg");
-      SPACE *fg = game_getSpace(self->owner->space->game, "fg");
-      bg->systems.camera.transform.rotation += 0.2f;
-      mg->systems.camera.transform.rotation += 0.2f;
-      fg->systems.camera.transform.rotation += 0.2f;*/
     }
     if (input->keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED) {
       SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
@@ -227,33 +221,6 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(self->owner->space, "build_button"), COMP_UI_BUTTON);
       comp_UI_button_toggleBuildMode(buildButton);
     }
-
-    /************ tutorial stuff ***********/
-    //if (input->keyboard.keys[KEY_6] == ISTATE_PRESSED) {
-    //  tutorial_disableUIButtons(self->owner->space);
-    //}
-    //if (input->keyboard.keys[KEY_7] == ISTATE_PRESSED) {
-    //  tutorial_enableUIButtons(self->owner->space);
-    //}
-    /*if (input->keyboard.keys[KEY_8] == ISTATE_PRESSED) {
-      tutorial_disableBuildButtons(self->owner->space);
-    }
-    if (input->keyboard.keys[KEY_9] == ISTATE_PRESSED) {
-      tutorial_enableBuildButtons(self->owner->space);
-    }
-    if (input->keyboard.keys[KEY_1] == ISTATE_PRESSED) {
-      tutorial_createTextBox(self->owner->space);
-    }*/
-
-    /*if (input->keyboard.keys[KEY_Q] == ISTATE_PRESSED) {
-      game_resize(self->owner->space->game, 1280, 720);
-    }*/
-
-    /*if (input->mouse.wheel.direction == -1)
-      zoom(self, -0.1f);
-    if (input->mouse.wheel.direction == 1)
-      zoom(self, 0.1f);*/
-
 
     if(!data->yPan) {
       if (input->mouse.wheel.delta != 0) {
@@ -293,29 +260,10 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
     // M - Brings up management screen
     if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-
+      ENTITY *manageButton = space_getEntity(self->owner->space, "manage_button");
+      COMPONENT *management = entity_getComponent(manageButton, COMP_MANAGEMENT);
+      comp_managementDisplay(management);
     }
-
-    //Change Tuition
-    /*if(input->keyboard.keys[KEY_LEFTBRACKET] == ISTATE_PRESSED)
-      schoolData->tuition -= 1000;
-    if(input->keyboard.keys[KEY_RIGHTBRACKET] == ISTATE_PRESSED)
-      schoolData->tuition += 1000;*/
-
-    // List all enrolled students
-    //if(input->keyboard.keys[KEY_COMMA] == ISTATE_PRESSED) {
-    //  comp_schoolLogic_listStudents(schoolLogic, schoolData);
-    //}
-
-    // List all alumni
-    //if(input->keyboard.keys[KEY_M] == ISTATE_PRESSED) {
-    //  comp_schoolLogic_listAlumni(schoolLogic, schoolData);
-    //}
-
-    if (input->keyboard.keys[KEY_TILDE] == ISTATE_PRESSED) {
-      self->owner->space->game->resetFunction = makeAllNewGame;
-    }
-
   }
 }
 

@@ -32,6 +32,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR commandLi
   createSpaces(game);
   initializeEssentialSpaces(game);
   startNewGame(game);
+
   game_start(game);
 
   return 1;

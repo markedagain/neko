@@ -31,7 +31,6 @@ NEKO_API void dict_init(DICT *dictionary);
 NEKO_API void dict_init_size(DICT *dictionary, size_t size);
 NEKO_API void dict_set(DICT *dictionary, const char *key, void *value);
 NEKO_API void *dict_get(DICT *dictionary, const char *key);
-NEKO_API void dict_remove(DICT *dictionary, const char *key);
 NEKO_API void dict_free(DICT *dictionary);
 
 NEKO_API void dict_destroy(DICT *dict);

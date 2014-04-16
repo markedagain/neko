@@ -1,2 +1,0 @@
-vectormath.c
-vectormath.h
