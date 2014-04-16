@@ -33,24 +33,28 @@ void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
     VEC3 pos = { 0 };
     POINT mousePos;
     VEC4 col = { 0.0f, 0.0f, 0.0f, 1.0f };
-    COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
     space_mouseToWorld(self->owner->space, &input->mouse.position, &mousePos);
     pos.x = (float)mousePos.x;
     pos.y = (float)mousePos.y;
     //popText_create(self->owner->space, &pos, NULL, "fonts/gothic/12", "oh", &col, POPTYPE_DEFAULT, 1.0f);
     //sound_playSound(&self->owner->space->game->systems.sound, "oh");
     
-    if (inspectData->active == true) {
-      inspectData->clear = true;
-      inspectData->active = false;
-    }
 
     if (managementData->manageWindow)
       comp_managementRemove(self);
 
+  }
+
+  if (mbox->right.pressed) {
+    COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(ui, "build_button"), COMP_UI_BUTTON);
     comp_UI_button_cancelBuildMode(buildButton);
 
+    if (inspectData->active == true) {
+      inspectData->clear = true;
+      inspectData->active = false;
+    }
   }
+
 
   if (mbox->left.down) {
     ENTITY *player = space_getEntity(game_getSpace(self->owner->space->game, "ui"), "player");
