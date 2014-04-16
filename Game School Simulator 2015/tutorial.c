@@ -180,7 +180,8 @@ void createFourthTutorial(SPACE *ui) {
 
 void createFifthTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
-  comp_tutorialTextBoxLogic_pushText(textBox, "Here, you can manage various attributes of your school!\n\nRequired GPA and Tuition affect the\nnumber of incoming students.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Here, you can manage various attributes of your school!\n\nRequired GPA and Tuition affect the number of incoming students.");
+  comp_tutorialTextBoxLogic_pushText(textBox, "One thing to remember, and this is IMPORTANT!\n\nIf you drop below $100,000 in debt, you will go bankrupt!\nDont let that happen!");
   comp_tutorialTextBoxLogic_pushText(textBox, "You can also see your current budget and various stats.\n\nWelp, that's all I've got for now.");
   comp_tutorialTextBoxLogic_pushText(textBox, "Let's wait for our incoming students to arrive!");
   comp_tutorialTextBoxLogic_nextText(textBox);
@@ -196,8 +197,8 @@ void createSixthTutorial(SPACE *ui) {
   comp_tutorialTextBoxLogic_pushText(textBox, "The higher their main stat is, the more repuation\nyou get when they graduate!");
   comp_tutorialTextBoxLogic_pushText(textBox, "If a students motivation drops below 0% they will drop out!\n\nYou can stop that from happening by\nbuilding rooms that provide motivation boosts!");
   comp_tutorialTextBoxLogic_pushText(textBox, "The amount their stats increase is\nalso determined by their motivation.\nSo keep that motivation high!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "Well, that's all I have for you.\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!");
-  comp_tutorialTextBoxLogic_pushText(textBox, "I know you'll do great whatever you decide to do.\n\nGood Luck, and Have Fun!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Hey this is IMPORTANT!\n\nFrom what I have heard,\nthe best game school in the nation has 500 reputation!\nIf you can beat that, you will have the best game school ever!");
+  comp_tutorialTextBoxLogic_pushText(textBox, "Well, that's all I have for you.\n\nI know you'll do great whatever you decide to do.\n\nGood Luck, and Have Fun!");
   comp_tutorialTextBoxLogic_nextText(textBox);
   tutorial_enableUIButtons(ui);
   tutorial_enableBuildButtons(ui);
