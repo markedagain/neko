@@ -23,7 +23,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define MAX_ROOMS_PER_FLOOR 16
 
 typedef struct cdata_schoolLogic_t {
-  char schoolName[30];
+  char schoolName[45];
   long int money;
   int tuition;
   float minIncomingGpa;

@@ -815,7 +815,6 @@ void __UI_button_cancelBuildMode(COMPONENT *self) {
   CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(player, COMP_PLAYERLOGIC);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
 
-
   // destroying all room buttons
   space_getAllEntities(self->owner->space, "buildButton", buttons);
   node = buttons->first;

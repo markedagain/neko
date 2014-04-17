@@ -27,7 +27,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define INDIVIDUAL_ROOM_SIZE 80.0f
 #define ROOM_X_OFFSET -25.0f
 #define ANIMATION_TIME 0.3f
-#define VOICE_OH 3
 void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   CDATA_STUDENTACTOR *data = (CDATA_STUDENTACTOR *)self->data;
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self->owner, COMP_TRANSFORM);
@@ -40,8 +39,8 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
   ENTITY *gameManager = space_getEntity(sim, "gameManager");
   CDATA_TIMEMANAGER *timeData;
 
+  if (mbox->entered && data->studentPtr) {
   // if hover, make a text with name
-  if (mbox->entered) {
     ENTITY *created;
     VEC3 position = { 0, 30.0f, 0 };
     VEC4 color = { 0, 0, 0, 1.0f };
@@ -55,69 +54,52 @@ void comp_studentActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   if(mbox->left.pressed) {
     CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
-    int rand = randomIntRange(0, VOICE_OH);
-    if (studentData->gender == GEN_MALE) {
-      if (rand == 0)
-        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_1");
-      if (rand == 1)
-        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_2");
-      else
-        sound_playSound(&self->owner->space->game->systems.sound, "oh_m_3");
-    }
-    else {      
-      if (rand == 0)
-        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_1");
-      else
-        sound_playSound(&self->owner->space->game->systems.sound, "oh_f_2");
-    }
-
+    sound_playSound(&self->owner->space->game->systems.sound, studentData->sound);
   }
 
   // name, major, 3 stats, gpa, motivation, expected graduation year
   if (mbox->left.pressed && !data->triggered) {
-    if (data->studentPtr) {
-      CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
-      SPACE *sim = game_getSpace(self->owner->space->game, "sim");
-      ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
-      CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
+    CDATA_STUDENTDATA *studentData = (CDATA_STUDENTDATA *)entity_getComponentData(data->studentPtr, COMP_STUDENTDATA);
+    SPACE *sim = game_getSpace(self->owner->space->game, "sim");
+    ENTITY *gameManager = (ENTITY *)space_getEntity(sim, "gameManager");
+    CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *)entity_getComponentData(gameManager, COMP_TIMEMANAGER);
 
-      if (inspectData->posActive) {
-        inspectData->clear = true;
-        inspectData->posActive = false;
-      }
-      // name
-      sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
-
-      // major
-      switch (studentData->major) {
-      case M_TECH:
-        strcpy(inspectData->major, "Programmer");
-        break;
-      case M_ART:
-        strcpy(inspectData->major, "Artist");
-        break;
-      case M_DESIGN:
-        strcpy(inspectData->major, "Designer");
-        break;
-      }
-
-      // quote
-      sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
-
-      // gpa
-      sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
-
-      // motivation
-      sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
-
-      // expected graduation
-      sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
-    
-      inspectData->active = true;
-      inspectData->studentActive = true;
-      inspectData->triggered = true;
-      data->triggered = true;
+    if (inspectData->posActive) {
+      inspectData->clear = true;
+      inspectData->posActive = false;
     }
+    // name
+    sprintf(inspectData->nameBuffer, "%s\n%s", studentData->name.first, studentData->name.last);
+
+    // major
+    switch (studentData->major) {
+    case M_TECH:
+      strcpy(inspectData->major, "Programmer");
+      break;
+    case M_ART:
+      strcpy(inspectData->major, "Artist");
+      break;
+    case M_DESIGN:
+      strcpy(inspectData->major, "Designer");
+      break;
+    }
+
+    // quote
+    sprintf(inspectData->trait, "Traits:\n%s\n%s\n%s", studentData->trait1, studentData->trait2, studentData->trait3);
+
+    // gpa
+    sprintf(inspectData->GPA, "GPA: %.2f", studentData->gpa);
+
+    // motivation
+    sprintf(inspectData->motivation, "Motivation: %.2d%%", studentData->motivation);
+
+    // expected graduation
+    sprintf(inspectData->expectedGraduationYear, "Graduation: %d", studentData->yearStarted + 4);
+    
+    inspectData->active = true;
+    inspectData->studentActive = true;
+    inspectData->triggered = true;
+    data->triggered = true;
   }
   
   // activate the student inspection screen
@@ -295,7 +277,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
     case IS_ENTER:
       data->velocity = 0;
       data->stateTimer = 0;
-      data->stateTime = (STUDENT_STATE)randomIntRange(10, 20) / 10.0f;
+      data->stateTime = (STUDENT_STATE)randomIntRange(15, 30) / 10.0f;
       data->innerState = IS_UPDATE;
       __studentActorLogic_setLegs(self, AF_IDLE);
       
@@ -310,7 +292,6 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on exit
     case IS_EXIT:
-      //comp_studentActorLogic_createPopText(self, "hello moto");
       data->outerState = (STUDENT_STATE)randomIntRange(0, 1);
       data->innerState = IS_ENTER;
       break;
@@ -324,7 +305,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on enter
     case IS_ENTER:
-      data->velocity = -0.5f;
+      data->velocity = -randomIntRange(25, 75) / 100.0f;
       data->stateTimer = 0;
       data->stateTime = randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
@@ -353,7 +334,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       break;
 
     case IS_EXIT:
-      data->outerState = randomIntRange(1, 2);
+      data->outerState = (STUDENT_STATE)randomIntRange(1, 2);
       data->innerState = IS_ENTER;
       break;
 
@@ -367,7 +348,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on enter
     case IS_ENTER:
-      data->velocity = 0.5f;
+      data->velocity = randomIntRange(25, 75) / 100.0f;
       data->stateTimer = 0;
       data->stateTime = data->roomSize / INDIVIDUAL_ROOM_SIZE * randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
@@ -396,7 +377,9 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       break;
 
     case IS_EXIT:
-      data->outerState = randomIntRange(0, 1);
+      data->outerState = (STUDENT_STATE)randomIntRange(1, 2);
+      if (data->outerState == OS_RIGHT)
+        data->outerState = OS_LEFT;
       data->innerState = IS_ENTER;
       break;
 

@@ -26,7 +26,9 @@ void comp_pauseScreenLogic_frameUpdate(COMPONENT *self, void *event) {
   CDATA_PAUSESCREEN *data = (CDATA_PAUSESCREEN *)self->data;
 
   if (!data->textCreated) {
-    self->owner->space->game->systems.time.scale = 0;
+    SPACE *menu = game_getSpace(self->owner->space->game, "menu");
+    if (!menu)
+      self->owner->space->game->systems.time.scale = 0;
 
     comp_pauseScreenLogic_makeMenu(self);
     data->textCreated = true;

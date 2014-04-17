@@ -1,0 +1,50 @@
+Samuel Valdez, Product Manager
+
+Main Contributions:
+UI implementation
+UI Design
+
+Lines of Code:
+
+Personal Notes:
+
+Files:
+=======
+GSS2015
+=======
+gameinitialize.c
+gameinitialize.h
+inspectionscreen.c
+inspectionscreen.h
+inspectionscreenlogic.c
+inspectionscreenlogic.h
+management.c
+management.h
+managescreen.c
+managescreen.h
+managescreenlogic.c
+managescreenlogic.h
+student.c
+student.h
+studentdata.c
+studentdata.h
+UI_base.c
+UI_base.h
+UI_build.c
+UI_build.h
+UI_button.c
+UI_button.h
+UI_logic.c
+UI_logic.h
+UI_manage.c
+UI_manage.h
+UI_student.c
+UI_student.h
+UI_studentLogic.c
+UI_studentLogic.h
+
+======
+Engine
+======
+random.c
+random.h

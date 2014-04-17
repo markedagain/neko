@@ -32,6 +32,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define FEMALE_HAIR_COUNT 11
 #define FEMALE_BODY_COUNT 6
 
+#define MALE_VOICE_OH 4
+#define FEMALE_VOICE_OH 4
+
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
   CDATA_STUDENTDATA *comData = (CDATA_STUDENTDATA *)self->data;
@@ -165,6 +168,30 @@ void generate_student(COMPONENT *self) {
     data->major = M_ART;
   else if(data->designSkill >= data->techSkill && data->designSkill >= data->artSkill)
     data->major = M_DESIGN;
+
+  if (data->gender == GEN_MALE) {
+    int rand = randomIntRange(1, MALE_VOICE_OH);
+    if (rand == 1)
+      data->sound = "oh_m_1";
+    else if (rand == 2)
+      data->sound = "oh_m_2";
+    else if (rand == 3)
+      data->sound = "oh_m_3";
+    else
+      data->sound = "oh_m_4";
+  }
+  
+  else {      
+    int rand = randomIntRange(1, FEMALE_VOICE_OH);
+    if (rand == 1)
+      data->sound = "oh_f_1";
+    else if (rand == 2) 
+      data->sound = "oh_f_2";
+    else if (rand == 3)
+      data->sound = "oh_f_3";
+    else
+      data->sound = "oh_f_4";
+  }
 
   data->motivation = randomIntRange(25, 100);
   data->yearStarted = timeData->currentYear;

@@ -1,0 +1,47 @@
+Eduardo Gorinstein, Lead Designer
+
+Main Contributions:
+Simulation
+Gameplay Programming
+
+Lines of Code:
+
+Personal Notes:
+I enjoyed working with the team and the game came out great!
+
+Files:
+=======
+GSS2015
+=======
+cloud.c
+cloud.h
+cloudlogic.c
+cloudlogic.h
+gamemanager.c
+gamemanager.h
+moneyinfo.c
+moneyinfo.h
+moneyinfologic.c
+moneyinfologic.h
+newsfeed.c
+newsfeed.h
+newsfeedlogic.c
+newsfeedlogic.h
+player.c
+player.h
+playerlogic.c
+playerlogic.h
+room.c
+room.h
+roomlogic.c
+roomlogic.h
+schoollogic.c
+schoollogic.h
+studentscreen.c
+studentscreen.h
+studentscreenlogic.c
+studentscreenlogic.h
+timemanager.c
+timemanager.h
+weathermanager.c
+weathermanager.h

@@ -20,7 +20,7 @@ void arch_pauseScreen(ENTITY *entity) {
   entity_connect(entity, comp_transform);
   entity_connect(entity, comp_pauseScreenLogic);
   sprite = (CDATA_SPRITE *)entity_connect(entity, comp_sprite);
-
+  entity_connect(entity, comp_mouseBox);
   sprite->source = "ui/pauseBackground";
   sprite->color.a = 0.65f;
 }

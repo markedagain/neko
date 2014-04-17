@@ -25,6 +25,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "creditsscreenlogic.h"
 #include "management.h"
 #include "menuscreen.h"
+#include "tutorial.h"
 
 /********** New Game **********/
 void newGame_onEntered(COMPONENT *self) {
@@ -225,6 +226,7 @@ void tutorial_onPressed(COMPONENT *self) {
     data->sprite.altSprite = true;
     self->owner->space->game->config.tutorial = 0;
     game_configSave(self->owner->space->game);
+    tutorial_enableUIButtons(ui);
   }
 
   // press to on
@@ -233,7 +235,7 @@ void tutorial_onPressed(COMPONENT *self) {
     spriteData->source = data->sprite.source;
     data->sprite.altSprite = false;
     self->owner->space->game->config.tutorial = 1;
-    game_configSave(self->owner->space->game);
+    game_configSave(self->owner->space->game);    
   }
 }
 

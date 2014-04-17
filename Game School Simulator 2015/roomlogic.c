@@ -218,7 +218,7 @@ void comp_roomLogic_upgradeRoom(COMPONENT *self) {
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[inspectData->posY][inspectData->posX], COMP_ROOMLOGIC);
 
-  if(comData->level >= 3)
+  if(comData->level >= 3 || schoolData->money < comp_roomLogic_getRoomUpgradeCost(comData->type))
     return;
 
   switch (comData->type) {

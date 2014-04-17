@@ -17,6 +17,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "brad.h"
 
 void comp_tutorialTextBoxLogic_logicUpdate(COMPONENT *self, void *event) {
+  INPUT_CONTAINER *input = &self->owner->space->game->input;
+  if (input->keyboard.anyKey)
+    comp_tutorialTextBoxLogic_nextText(self->owner);
 }
 
 void comp_tutorialTextBoxLogic(COMPONENT *self) {

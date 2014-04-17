@@ -124,6 +124,10 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
     // Make sure incoming students does not go over
   if(comData->incomingStudents > maxIncomingStudents)
     comData->incomingStudents = maxIncomingStudents;
+
+  // Make sure its not negative
+  if(comData->incomingStudents < 0)
+    comData->incomingStudents = 0;
 }
 
 // Called by timemanager.c

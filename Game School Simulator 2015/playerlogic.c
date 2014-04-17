@@ -33,6 +33,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "random.h"
 #include "management.h"
 #include "gameinitialize.h"
+#include "inspectionscreenlogic.h"
 
 #define GROUND_HEIGHT 24
 #define BUILDENDPOS 136.0f
@@ -157,7 +158,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   // lose state
   else if (data->currentMode == GM_LOSE) {
-    if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
+    if (input->keyboard.anyKey == ISTATE_PRESSED) {
       self->owner->space->game->resetFunction = makeAllNewGame;
     }
   }
@@ -201,10 +202,54 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
       zoom(self, -0.01f);
     }
     if (input->keyboard.keys[KEY_ESCAPE] == ISTATE_PRESSED) {
+      ENTITY *pauseScreen;
+      ENTITY *inspectionScreen = space_getEntity(self->owner->space, "inspection_screen");
+      CDATA_INSPECTIONSCREEN *inspectData = (CDATA_INSPECTIONSCREEN *)entity_getComponentData(inspectionScreen, COMP_INSPECTIONSCREENLOGIC); 
+      COMPONENT *buildButton = (COMPONENT *)entity_getComponent(space_getEntity(self->owner->space, "build_button"), COMP_UI_BUTTON);
+      CDATA_UI_BUTTON *buttonData = entity_getComponentData(space_getEntity(self->owner->space, "build_button"), COMP_UI_BUTTON);
+      CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(space_getEntity(self->owner->space, "manage_button"), COMP_MANAGEMENT);
       SPACE *tutorial = game_getSpace(self->owner->space->game, "tutorial");
-      if (!space_getEntity(tutorial, "pauseScreen")) {
+      pauseScreen = space_getEntity(tutorial, "pauseScreen");
+      
+      // if no menus are up, open the pause menu
+      if (!inspectData->active && buttonData->type == BUTTON_BUILD && !managementData->manageWindow && !pauseScreen) {
         space_addEntity(tutorial, arch_pauseScreen, "pauseScreen");
         data->lastMode = data->currentMode;
+      }
+
+      // if the pause menu is up, only cancel that
+      else if (pauseScreen) {
+        LIST *optionsList = list_create();
+        LIST_NODE *node;
+        SPACE *ui = game_getSpace(self->owner->space->game, "ui");
+        CDATA_PLAYERLOGIC *playerData = (CDATA_PLAYERLOGIC *)entity_getComponentData(space_getEntity(ui, "player"), COMP_PLAYERLOGIC);
+        entity_destroy(space_getEntity(self->owner->space, "pauseScreen"));
+        space_getAllEntities(self->owner->space, "options", optionsList);
+        node = optionsList->first;
+        playerData->currentMode = playerData->lastMode;
+        self->owner->space->game->systems.time.scale = 1;
+        while (node) {
+          entity_destroy((ENTITY *)node->data);
+          node = node->next;
+        }
+        list_destroy(optionsList);
+      }
+
+
+      // if any of the menus are up, cancel them all
+      else {
+        // cancel inspection screen
+        if (inspectData->active == true) {
+          inspectData->clear = true;
+          inspectData->active = false;
+        }
+        
+        // cancel manage window
+        if (managementData->manageWindow)
+          comp_managementRemove(self);
+
+        // cancel build mode
+        comp_UI_button_cancelBuildMode(buildButton);
       }
     }
 
