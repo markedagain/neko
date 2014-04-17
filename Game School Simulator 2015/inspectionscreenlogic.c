@@ -24,20 +24,21 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "studentactorlogic.h"
 #include "colors.h"
 
+// Clears room inspection elements when called
 void room_inspection_clear(COMPONENT *self) {
   CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
-    if (comData->upgradeButton) {
-      LIST_NODE *node;
-      LIST *buttons = list_create(); 
-    
-      space_getAllEntities(self->owner->space, "upgradeButton", buttons);
-      node = buttons->first;
-      while (node) {
-        entity_destroy((ENTITY *)node->data);
-        node = node->next;
-      }
-      list_destroy(buttons);
+  if (comData->upgradeButton) {
+    LIST_NODE *node;
+    LIST *buttons = list_create(); 
+  
+    space_getAllEntities(self->owner->space, "upgradeButton", buttons);
+    node = buttons->first;
+    while (node) {
+      entity_destroy((ENTITY *)node->data);
+      node = node->next;
     }
+    list_destroy(buttons);
+  }
   comData->upgradeButton = false;
   genericText_setText(comData->bonusText, " ");
   genericText_setText(comData->roomType, " ");
@@ -47,6 +48,7 @@ void room_inspection_clear(COMPONENT *self) {
   comData->clear = false;
 }
 
+// Clears student inspection elements when called
 void student_inspection_clear(COMPONENT *self) { 
   CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
   genericText_setText(comData->studentName, " ");
@@ -77,59 +79,66 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     sprite->visible = false;
     }
 
-  // STUDENT INSPECTION
+  // ---------STUDENT INSPECTION--------- //
+  
+  // clear if not active
   if (!comData->studentActive) {
     if (comData->clear)
       student_inspection_clear(self);
   }
 
+  // when active, set room inspection to inactive
   else if (comData->studentActive) {
     comData->clear = true;  
     comData->posActive = false;
 
+
+    // when the inspection screen itself is active, show information
     if (comData->active == true) {
       VEC3 position = { 0, 0, 0 };
       VEC4 color = { 0 };
       sprite->visible = true;
     
+      // set text to corresponding student values
       if (comData->triggered) {
         genericText_setText(comData->studentMajor, comData->major);
         if (!comData->studentName) {
-        //entity_destroy(comData->studentName);
-        //comData->studentName = NULL;
           vec3_set(&position, -315, 150, 0);
           comData->studentName = genericText_create(ui, &position, NULL, "fonts/gothic/16", comData->nameBuffer, &colors[C_WHITE_LIGHT], TEXTALIGN_LEFT, TEXTALIGN_TOP);
         }
         else
           genericText_setText(comData->studentName, comData->nameBuffer);
-        
-        
+
         genericText_setText(comData->studentGPA, comData->GPA);
         genericText_setText(comData->studentGraduation, comData->expectedGraduationYear);
         genericText_setText(comData->studentMotivation, comData->motivation);
         genericText_setText(comData->studentTrait, comData->trait);
-        //genericText_setText(comData->studentTrait, "BUTTS");
         comData->triggered = false;
       }
     }
   }
-  // ROOM INSPECTION
-  // Check if posX and posY are set.
+
+  // ---------STUDENT INSPECTION--------- //
+
+  // Check if posX and posY are set.  Clear if inactive.
   if (!comData->posActive) {
     if (comData->clear)
      room_inspection_clear(self);
   }
 
+  // If active, clear any student inspection elements
   else if (comData->posActive) {
     CDATA_ROOMLOGIC *roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[comData->posY][comData->posX], COMP_ROOMLOGIC);
     comData->clear = true;
     comData->studentActive = false;
 
+    // when the inspection screen itself is active, show information
     if (comData->active == true) {
       VEC3 position = { 0, 0, 0 };
       VEC4 color = { 0 };
       sprite->visible = true;
 
+      // set text to corresponding student values
       if (comData->triggered) {
         roomData = (CDATA_ROOMLOGIC *)entity_getComponentData(schoolData->rooms.coord[comData->posY][comData->posX], COMP_ROOMLOGIC);
         sprintf(comData->bonusBuffer, "+%i\n+%i\n+%i\n\n+%i\n+%i", roomData->techBonus, roomData->designBonus, roomData->artBonus, roomData->repBonus, roomData->motivationBonus);
@@ -140,6 +149,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
         genericText_setText(comData->level, comData->levelBuffer);
         genericText_setText(comData->bonusText, "Tech:\nDesign:\nArt:\n\nReputation:\nMotivation:\n\nUpkeep:");
 
+        // check what the type of room is, and if it's a different room.
         switch (roomData->type) {
         case (ROOMTYPE_LOBBY): 
           sprintf(comData->roomTypeBuffer, "Lobby", NULL);
@@ -185,6 +195,8 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
       genericText_setText(comData->roomType, comData->roomTypeBuffer);
       comData->upgradeButton = true;
       comData->type = roomData->type;  
+      
+      // create upgrade button if room is upgradeable.
       if (comData->type != ROOMTYPE_LOBBY && roomData->level < 3) {
         vec3_set(&position, -265, 0, 0);
         UI_button_createUpgradeButton(self, BUTTON_ROOM_UPGRADE, &position, &colors[C_WHITE_DARK], "Upgrade!");
@@ -207,6 +219,7 @@ void comp_inspectionScreenLogic_logicUpdate(COMPONENT *self, void *event) {
     }
   }
 }
+
 void comp_inspectionScreenLogic_initialize(COMPONENT *self, void *event) {
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self->owner, COMP_SPRITE);
   CDATA_INSPECTIONSCREEN *comData = (CDATA_INSPECTIONSCREEN *)self->data;
