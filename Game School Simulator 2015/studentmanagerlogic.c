@@ -336,7 +336,7 @@ void comp_studentManagerLogic_updateDisplayFraction(COMPONENT *self) {
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
 
   if (numToDisplay == 0)
-    data->displayTotal = 0;
+    data->displayTotal = 1;
 
   else
     data->displayTotal = numToDisplay;
