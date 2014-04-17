@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <stdio.h>
 #include <string.h>
 #include <Windows.h>
+#include <shlobj.h>
 #include "game.h"
 #include "linkedlist.h"
 #include "space.h"
@@ -335,10 +336,10 @@ void game_resize(GAME *game, unsigned int width, unsigned int height, bool fulls
 
 void game_configLoad(GAME *game) {
   VECTOR lines;
-  char filename[128] = { 0 };
+  CHAR filename[MAX_PATH];
+  HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, filename);
   vector_init(&lines);
-  file_getCurrentDirectory(filename);
-  strcat(filename, "\\user.config");
+  strcat(filename, "\\GSS2015.config");
   file_readText(&lines, filename);
   if (!vector_size(&lines)) {
     game_configDefaults(game);
@@ -353,10 +354,11 @@ void game_configLoad(GAME *game) {
   vector_destroy(&lines);
 }
 void game_configSave(GAME *game) {
-  char filename[128] = { 0 };
+  CHAR filename[MAX_PATH];
+  HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, filename);
   FILE *fp;
-  file_getCurrentDirectory(filename);
-  strcat(filename, "\\user.config");
+  
+  strcat(filename, "\\GSS2015.config");
   fp = fopen(filename, "wb");
   if (fp) {
     fprintf(fp, "%i\n", (int)game->config.screen.width);
