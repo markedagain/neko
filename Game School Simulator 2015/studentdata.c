@@ -32,7 +32,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define FEMALE_HAIR_COUNT 11
 #define FEMALE_BODY_COUNT 6
 
-#define VOICE_OH 3
+#define MALE_VOICE_OH 4
+#define FEMALE_VOICE_OH 4
 
 void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   EDATA_UPDATE *updateEvent = (EDATA_UPDATE *)event;
@@ -116,7 +117,6 @@ void generate_student(COMPONENT *self) {
   int gender = randomIntRange(1, 2);
   int lowValue = 0;
   int highValue = 20;
-  int rand = randomIntRange(0, VOICE_OH);
   GAME *owner = self->owner->space->game;
   TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
   unsigned int totalNames = vector_size(&namefile->lines);
@@ -170,19 +170,28 @@ void generate_student(COMPONENT *self) {
     data->major = M_DESIGN;
 
   if (data->gender == GEN_MALE) {
-      if (rand == 0)
-        data->sound = "oh_m_1";
-      else if (rand == 1)
-        data->sound = "oh_m_2";
-      else
-        data->sound = "oh_m_3";
-    }
-    else {      
-      if (rand == 0)
-        data->sound = "oh_f_1";
-      else
-        data->sound = "oh_f_2";
-    }
+    int rand = randomIntRange(1, MALE_VOICE_OH);
+    if (rand == 1)
+      data->sound = "oh_m_1";
+    else if (rand == 2)
+      data->sound = "oh_m_2";
+    else if (rand == 3)
+      data->sound = "oh_m_3";
+    else
+      data->sound = "oh_m_4";
+  }
+  
+  else {      
+    int rand = randomIntRange(1, FEMALE_VOICE_OH);
+    if (rand == 1)
+      data->sound = "oh_f_1";
+    else if (rand == 2) 
+      data->sound = "oh_f_2";
+    else if (rand == 3)
+      data->sound = "oh_f_3";
+    else
+      data->sound = "oh_f_4";
+  }
 
   data->motivation = randomIntRange(25, 100);
   data->yearStarted = timeData->currentYear;

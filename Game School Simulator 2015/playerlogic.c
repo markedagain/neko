@@ -158,7 +158,7 @@ void comp_playerLogic_frameUpdate(COMPONENT *self, void *event) {
 
   // lose state
   else if (data->currentMode == GM_LOSE) {
-    if (input->keyboard.keys[KEY_ENTER] == ISTATE_PRESSED) {
+    if (input->keyboard.anyKey == ISTATE_PRESSED) {
       self->owner->space->game->resetFunction = makeAllNewGame;
     }
   }

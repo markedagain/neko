@@ -71,11 +71,7 @@ void comp_roomActorLogic_logicUpdate(COMPONENT *self, void *event) {
 
   else if (!mbox->left.pressed)
     comData->triggered = false;
-  /*
-  if(inspectData->active && comData->triggered == false) {
-    UI_button_updateUpgradeButton(uiSpace);
-  }
-  */
+
   // CHANGE SPRITE TO EXTERIOR IF ZOOMED OUT
   if(fg->systems.camera.transform.scale.x <= 0.65f && comData->zoomedOut == FALSE) {
     switch (comData->type) {

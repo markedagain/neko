@@ -21,7 +21,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "UI_button.h"
 
 void comp_backgroundLogic_frameUpdate(COMPONENT *self, void *event) {
-  //CDATA_BACKGROUNDLOGIC *comData = (CDATA_BACKGROUNDLOGIC *)self->data;
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   ENTITY *inspectionScreen = space_getEntity(ui, "inspection_screen");
