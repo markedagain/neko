@@ -293,7 +293,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
     case IS_ENTER:
       data->velocity = 0;
       data->stateTimer = 0;
-      data->stateTime = (STUDENT_STATE)randomIntRange(10, 20) / 10.0f;
+      data->stateTime = (STUDENT_STATE)randomIntRange(15, 30) / 10.0f;
       data->innerState = IS_UPDATE;
       __studentActorLogic_setLegs(self, AF_IDLE);
       
@@ -308,7 +308,6 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on exit
     case IS_EXIT:
-      //comp_studentActorLogic_createPopText(self, "hello moto");
       data->outerState = (STUDENT_STATE)randomIntRange(0, 1);
       data->innerState = IS_ENTER;
       break;
@@ -322,7 +321,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on enter
     case IS_ENTER:
-      data->velocity = -0.5f;
+      data->velocity = -randomIntRange(25, 75) / 100.0f;
       data->stateTimer = 0;
       data->stateTime = randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
@@ -351,7 +350,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       break;
 
     case IS_EXIT:
-      data->outerState = randomIntRange(1, 2);
+      data->outerState = (STUDENT_STATE)randomIntRange(1, 2);
       data->innerState = IS_ENTER;
       break;
 
@@ -365,7 +364,7 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
 
     // on enter
     case IS_ENTER:
-      data->velocity = 0.5f;
+      data->velocity = randomIntRange(25, 75) / 100.0f;
       data->stateTimer = 0;
       data->stateTime = data->roomSize / INDIVIDUAL_ROOM_SIZE * randomIntRange(5, 10) / 10.0f;
       comp_studentActorLogic_flipSprite(self);
@@ -394,7 +393,9 @@ void comp_studentActorLogic_updateState(COMPONENT *self) {
       break;
 
     case IS_EXIT:
-      data->outerState = randomIntRange(0, 1);
+      data->outerState = (STUDENT_STATE)randomIntRange(1, 2);
+      if (data->outerState == OS_RIGHT)
+        data->outerState = OS_LEFT;
       data->innerState = IS_ENTER;
       break;
 

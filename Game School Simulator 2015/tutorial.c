@@ -47,21 +47,24 @@ void tutorial_enableUIButtons(SPACE *ui) {
   ENTITY *fastButton = space_getEntity(ui, "speedButton");
   ENTITY *manageButton = space_getEntity(ui, "manage_button");
 
-  // enable build button
-  CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(buildButton, COMP_MOUSEBOX);
-  mbox->active = true;
+  // if there even is a build button
+  if (buildButton) {
+    // enable build button
+    CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(buildButton, COMP_MOUSEBOX);
+    mbox->active = true;
 
-  // enable pause button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
-  mbox->active = true;
+    // enable pause button
+    mbox = (CDATA_MOUSEBOX *)entity_getComponentData(pauseButton, COMP_MOUSEBOX);
+    mbox->active = true;
 
-  // enable fast button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
-  mbox->active = true;
+    // enable fast button
+    mbox = (CDATA_MOUSEBOX *)entity_getComponentData(fastButton, COMP_MOUSEBOX);
+    mbox->active = true;
 
-  // enable manage button
-  mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
-  mbox->active = true;
+    // enable manage button
+    mbox = (CDATA_MOUSEBOX *)entity_getComponentData(manageButton, COMP_MOUSEBOX);
+    mbox->active = true;
+  }
 }
 
 void tutorial_disableBuildButtons(SPACE *ui) {

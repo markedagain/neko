@@ -23,9 +23,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "timemanager.h"
 
 #define GROUND_HEIGHT 24
-#define SPAWN_TIMER 1.0f
+#define SPAWN_TIMER 0.3f
 #define MAX_STUDENTS 1000
-#define STUDENT_LIFE 4.0f
+#define STUDENT_LIFE 6.0f
 #define ROOM_X_OFFSET -25.0f
 #define DISPLAY_FRACTION 10
 
@@ -332,7 +332,7 @@ void comp_studentManagerLogic_removeDropout(COMPONENT *studentManagerLogic, ENTI
 void comp_studentManagerLogic_updateDisplayFraction(COMPONENT *self) {
   SPACE *sim = game_getSpace(self->owner->space->game, "sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
-  int numToDisplay = schoolData->currentStudents / DISPLAY_FRACTION * schoolData->slotsUsed;
+  int numToDisplay = schoolData->currentStudents / DISPLAY_FRACTION * schoolData->slotsUsed / 2;
   CDATA_STUDENTMANAGER *data = (CDATA_STUDENTMANAGER *)self->data;
 
   if (numToDisplay == 0)
