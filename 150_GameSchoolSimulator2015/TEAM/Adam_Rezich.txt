@@ -1,0 +1,95 @@
+Adam Rezich, Technical Director
+
+Main Contributions:
+Engine Architecture
+Data Pipeline
+UI Design
+
+Lines of Code:
+
+Personal Notes:
+Making a complex game architecture in C is very difficult.
+
+Files:
+=======
+GSS2015
+=======
+background.c
+background.h
+backgroundlogic.c
+backgroundlogic.h
+blackbar.c
+blackbar.h
+blackbarlogic.c
+blackbarlogic.h
+colors.c
+colors.h
+cursor.c
+cursor.h
+cursorlogic.c
+cursorlogic.h
+main.c
+menuscreenlogic.c
+menuscreenlogic.h
+poptext.c
+poptext.h
+poptextlogic.c
+poptextlogic.h
+splash.c
+splash.h
+splashlogic.c
+splashlogic.h
+
+======
+Engine
+======
+actionlist.c
+actionlist.h
+component.c
+component.h
+data.c
+data.h
+dictionary.c
+dictionary.h
+easing.c
+easing.h
+entity.c
+entity.h
+event.c
+event.h
+game.c
+game.h
+genericsprite.c
+genericsprite.h
+generictext.c
+generictext.h
+hash.c
+hash.h
+input.c
+input.h
+linkedlist.c
+linkedlist.h
+multisprite.c
+multisprite.h
+neko.c
+neko.h
+pak.c
+pak.h
+sound.c
+sound.h
+soundemitter.c
+soundemitter.h
+space.c
+space.h
+sprite.c
+sprite.h
+spritetext.c
+spritetext.h
+stopwatch.c
+stopwatch.h
+transform.c
+transform.h
+util.c
+util.h
+vector.c
+vector.h
