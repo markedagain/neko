@@ -6,6 +6,7 @@ Data Pipeline
 UI Design
 
 Lines of Code:
+3620
 
 Personal Notes:
 Making a complex game architecture in C is very difficult.

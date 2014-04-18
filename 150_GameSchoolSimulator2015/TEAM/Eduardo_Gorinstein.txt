@@ -5,6 +5,7 @@ Simulation
 Gameplay Programming
 
 Lines of Code:
+1731
 
 Personal Notes:
 I enjoyed working with the team and the game came out great!
@@ -37,10 +38,6 @@ roomlogic.c
 roomlogic.h
 schoollogic.c
 schoollogic.h
-studentscreen.c
-studentscreen.h
-studentscreenlogic.c
-studentscreenlogic.h
 timemanager.c
 timemanager.h
 weathermanager.c

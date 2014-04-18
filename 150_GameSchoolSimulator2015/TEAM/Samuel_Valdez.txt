@@ -5,6 +5,7 @@ UI implementation
 UI Design
 
 Lines of Code:
+1761
 
 Personal Notes: The team worked well together and I like our end result.  10/10 would team up again.
 
@@ -12,6 +13,8 @@ Files:
 =======
 GSS2015
 =======
+brad.c
+brad.h
 gameinitialize.c
 gameinitialize.h
 inspectionscreen.c
@@ -28,20 +31,12 @@ student.c
 student.h
 studentdata.c
 studentdata.h
-UI_base.c
-UI_base.h
 UI_build.c
 UI_build.h
 UI_button.c
 UI_button.h
-UI_logic.c
-UI_logic.h
 UI_manage.c
 UI_manage.h
-UI_student.c
-UI_student.h
-UI_studentLogic.c
-UI_studentLogic.h
 
 ======
 Engine
