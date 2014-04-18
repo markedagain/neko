@@ -41,7 +41,7 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
   CDATA_SCHOOLLOGIC *comData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(schoolData, COMP_SCHOOLLOGIC);
   CDATA_MANAGEMENT *managementData = (CDATA_MANAGEMENT *)entity_getComponentData(self->owner, COMP_MANAGEMENT);
 
-
+  // When button is hovered over, display "Management" text
   if (mbox->entered) {
     if (!managementData->hoverText) {
       VEC3 position;
@@ -52,22 +52,26 @@ void comp_managementUpdate(COMPONENT *self, void *event) {
     sprite->color.a = 0.8f;
   }
 
+  // Clear text when mouse exits the button region.
   if (mbox->exited) {
     if (managementData->hoverText) {
       entity_destroy(managementData->hoverText);
       managementData->hoverText = NULL;
     }
     sprite->color.a = 1.0f;
-
   }
 
+  // Display Management screen when clicked...
   if (mbox->left.pressed && data->gpa == NULL && !data->triggered) {
     comp_managementDisplay(self);
   }
 
+  // ... and hide it when clicked again.
   else if (mbox->left.pressed && data->gpa && !data->triggered) {
     comp_managementRemove(self);
   }
+  
+  // Frame reset for clicking
   else if (!mbox->left.pressed)
     data->triggered = false;
   }

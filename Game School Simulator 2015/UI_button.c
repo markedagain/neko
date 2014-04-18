@@ -44,6 +44,8 @@ void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
   CDATA_MOUSEBOX *mbox = (CDATA_MOUSEBOX *)entity_getComponentData(self->owner, COMP_MOUSEBOX);
   ENTITY *pauseScreen = space_getEntity(self->owner->space, "pauseScreen");
   CDATA_PAUSESCREEN *pauseData;
+  
+  // Creates pause screen.
   if (pauseScreen)
     pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(pauseScreen, COMP_PAUSESCREENLOGIC);
 
@@ -975,7 +977,7 @@ void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
  
   // CREATE TEAMSPACE BUTTON
   vec3_set(&position, 51, -116, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &colors[C_WHITE_LIGHT], "Teammspace");
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &colors[C_WHITE_LIGHT], "Teamspace");
 
   // CREATE OFFICES BUTTON
   vec3_set(&position, 155, -116, 0);

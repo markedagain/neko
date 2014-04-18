@@ -7,7 +7,7 @@ Gameplay Programming
 Lines of Code:
 2294
 
-Personal Notes:
+Personal Notes: It was a very meaningful experience making a game in C! Very informative and learnt a lot from the team and this project. 0/10 would not use C again though.
 
 Files:
 =======

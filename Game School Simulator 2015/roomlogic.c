@@ -26,10 +26,6 @@ void comp_roomLogic_frameUpdate(COMPONENT *self, void *event) {
   comData->frameCounter++;
 }
 
-void comp_roomLogic_logicUpdate(COMPONENT *self, void *event) {
-  
-}
-
 void comp_roomLogic_createRoom(COMPONENT *self) {
   CDATA_ROOMLOGIC *comData = (CDATA_ROOMLOGIC *)self->data;
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_SCHOOLLOGIC);
@@ -379,7 +375,6 @@ void comp_roomLogic(COMPONENT *self) {
   data.frameCounter = 0;
 
   COMPONENT_INIT(self, COMP_ROOMLOGIC, data);
-  self->events.logicUpdate = comp_roomLogic_logicUpdate;
   self->events.frameUpdate = comp_roomLogic_frameUpdate;
 }
 
