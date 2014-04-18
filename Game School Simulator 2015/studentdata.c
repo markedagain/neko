@@ -48,7 +48,7 @@ void comp_studentData_logicUpdate(COMPONENT *self, void *event) {
   comData->counter++;
   
   ////////////////////////////
-  // Graduate
+  // Graduation
   ////////////////////////////
   if(comData->semesterStarted == timeData->currentSemester - 8 && !comData->graduated) {
     SPACE *fg = game_getSpace(self->owner->space->game, "fg");
@@ -111,6 +111,9 @@ void comp_studentData(COMPONENT *self) {
   self->events.initialize = comp_studentData_initialize;
 }
 
+  ////////////////////////////
+  // Student Generation
+  ////////////////////////////
 void generate_student(COMPONENT *self) {
   CDATA_TIMEMANAGER *timeData = (CDATA_TIMEMANAGER *) entity_getComponentData((ENTITY *)space_getEntity(self->owner->space, "gameManager"), COMP_TIMEMANAGER);
   CDATA_STUDENTDATA *data = (CDATA_STUDENTDATA *)self->data;
@@ -121,8 +124,12 @@ void generate_student(COMPONENT *self) {
   TEXTFILE *namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "names/last");
   unsigned int totalNames = vector_size(&namefile->lines);
   unsigned int totalTraits;
+  
+  // Fetch txt file of last names and select one
   char *lastname = (char *)vector_get(&namefile->lines, randomIntRange(0, totalNames - 1));
   char *firstname;
+ 
+  // Fetch txt file of traits and select/set three
   namefile = (TEXTFILE *)dict_get(&self->owner->space->game->data.textfiles, "misc/traits");
   totalTraits = vector_size(&namefile->lines);
   data->trait1 = (char *)vector_get(&namefile->lines, randomIntRange(0, totalTraits - 1));
@@ -131,6 +138,7 @@ void generate_student(COMPONENT *self) {
 
   data->name.last = lastname;
 
+  // If student is male, select male first name/features
   if(gender == 1) {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_male");
     totalNames = vector_size(&namefile->lines);
@@ -144,6 +152,7 @@ void generate_student(COMPONENT *self) {
     data->body = randomIntRange(1, MALE_BODY_COUNT);
     data->legs = 1;
   }
+  // If female, select female first name/features
   else {
     namefile = (TEXTFILE *) dict_get(&self->owner->space->game->data.textfiles, "names/first_female");
     totalNames = vector_size(&namefile->lines);
@@ -158,10 +167,12 @@ void generate_student(COMPONENT *self) {
     data->legs = 1;
   }
 
+  // Set Stats
   data->techSkill = randomIntRange(lowValue, highValue);
   data->artSkill = randomIntRange(lowValue, highValue);
   data->designSkill = randomIntRange(lowValue, highValue);
 
+  // Set Major
   if(data->techSkill >= data->artSkill && data->techSkill >= data->designSkill)
     data->major = M_TECH;
   else if(data->artSkill >= data->designSkill && data->artSkill >= data->techSkill)
@@ -169,6 +180,7 @@ void generate_student(COMPONENT *self) {
   else if(data->designSkill >= data->techSkill && data->designSkill >= data->artSkill)
     data->major = M_DESIGN;
 
+  // Set voice if male
   if (data->gender == GEN_MALE) {
     int rand = randomIntRange(1, MALE_VOICE_OH);
     if (rand == 1)
@@ -180,7 +192,7 @@ void generate_student(COMPONENT *self) {
     else
       data->sound = "oh_m_4";
   }
-  
+  // Set voice if female
   else {      
     int rand = randomIntRange(1, FEMALE_VOICE_OH);
     if (rand == 1)
@@ -193,6 +205,7 @@ void generate_student(COMPONENT *self) {
       data->sound = "oh_f_4";
   }
 
+  // Set any other values
   data->motivation = randomIntRange(25, 100);
   data->yearStarted = timeData->currentYear;
   data->semesterStarted = timeData->currentSemester;

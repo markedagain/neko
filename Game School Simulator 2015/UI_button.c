@@ -977,7 +977,7 @@ void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
  
   // CREATE TEAMSPACE BUTTON
   vec3_set(&position, 51, -116, 0);
-  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &colors[C_WHITE_LIGHT], "Teammspace");
+  UI_button_createRoomButton(buildButton, BUTTON_BUILDTEAMSPACE, &position, &colors[C_WHITE_LIGHT], "Teamspace");
 
   // CREATE OFFICES BUTTON
   vec3_set(&position, 155, -116, 0);
