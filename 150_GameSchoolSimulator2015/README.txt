@@ -13,6 +13,7 @@ Members:
 =========================
 Installation Instructions
 =========================
+Run the included setup.exe file in the installation folder. Follow the on-screen installation instructions until the process is complete
 
 ===========
 How to Play
@@ -28,7 +29,7 @@ Get good students to graduate to gain 'rep'. If a student's motivation reaches 0
 or his GPA falls too low, he will drop out, causing you to lose a student and also
 lose some 'rep'.
 
-Once you gain a certain amount of 'rep', you win!
+Once you gain a 500 'rep', you win! If you drop below $100,000 though, you'll be too far in debt to recover!
 
 ========
 Controls

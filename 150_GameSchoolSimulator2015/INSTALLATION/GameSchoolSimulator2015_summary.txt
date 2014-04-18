@@ -3,7 +3,7 @@ Game School Simulator 2015 (Simulation)
 Game School Simulator 2015 is a 2D simulation game where players take the role of headmaster of a brand new game school. Players will be able to create the game school of their dreams using over 10 different rooms across three floors! Manage your budget and upgrade rooms to make the very best game school!
 
 Members:
-  Adam Rezich (adam.rezich)
-  Eduardo Gorinstein (eduardo.gorinstein)
-  Samuel Valdez (samuel.v)
-  Tai Der Hui (tai.derhui)
+  Adam Rezich - Technical Director, Engine Architecture
+  Eduardo Gorinstein - Lead Designer, Simulation and Gameplay Programming
+  Samuel Valdez - Product Manager, User Interface
+  Tai Der Hui - Producer, Gameplay Programming
