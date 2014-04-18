@@ -369,6 +369,7 @@
     <ClInclude Include="brad.h">
       <Filter>Archetypes\ui_elements</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\txt\names\first_female.txt">
@@ -380,5 +381,11 @@
     <Text Include="data\txt\names\last.txt">
       <Filter>Data Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game School Simulator 2015.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\GSS2015.ico" />
   </ItemGroup>
 </Project>
