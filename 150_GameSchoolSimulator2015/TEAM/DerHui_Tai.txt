@@ -5,6 +5,7 @@ Graphics Programming
 Gameplay Programming
 
 Lines of Code:
+2294
 
 Personal Notes:
 
@@ -34,6 +35,10 @@ namescreen.c
 namescreen.h
 namescreenlogic.c
 namescreenlogic.h
+pausescreen.c
+pausescreen.h
+pausescreenlogic.c
+pausescreenlogic.h
 roomactor.c
 roomactor.h
 roomactorlogic.c
@@ -50,6 +55,8 @@ tutorial.c
 tutorial.h
 tutorialtextbox.c
 tutorialtextbox.h
+tutorialtextboxlogic.c
+tutorialtextboxlogic.h
 tutorialtextboxlogic.c
 tutorialtextboxlogic.h
 
