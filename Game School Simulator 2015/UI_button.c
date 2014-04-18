@@ -611,7 +611,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 }
 
 
-// 
+// action to pan the camera down when entering build mode
 static void panDown_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -622,6 +622,7 @@ static void panDown_update(ACTION *action, double dt) {
   playerLogic_setCamVerticalPos(playerLogic, data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * (BUILDENDPOS - data->startY ));
 }
 
+// action to zoom to the right amount when entering build mode
 static void zoomOut_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -632,6 +633,7 @@ static void zoomOut_update(ACTION *action, double dt) {
   playerLogic_setZoom(playerLogic, data->startZoom + action_getEase(action, EASING_CIRCULAR_OUT) * (0.75f - data->startZoom));
 }
 
+// entire function that pans the camera down
 void comp_UI_button_panDown(COMPONENT *self) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
@@ -651,7 +653,7 @@ void comp_UI_button_panDown(COMPONENT *self) {
   al_pushBack(&data->actions, (ACTION *)action_create(self, zoomOut_update, NULL, NULL, true, 0.4f));
 }
 
-
+// action to pan the camera up when exiting build mode
 static void panUp_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
@@ -665,7 +667,6 @@ static void panUp_update(ACTION *action, double dt) {
   playerLogic_setCamVerticalPos(playerLogic, data->startY + action_getEase(action, EASING_CIRCULAR_OUT) * (origin - data->startY));
 }
 
-
 static void panUp_onEnd(ACTION *action) {
   COMPONENT *self = (COMPONENT *)(action->data);
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
@@ -675,6 +676,7 @@ static void panUp_onEnd(ACTION *action) {
   playerData->yPan = false;
 }
 
+// entire function to pan up the camera when exiting build mode
 void comp_UI_button_panUp(COMPONENT *self) {
   SPACE *ui = game_getSpace(self->owner->space->game, "ui");
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
@@ -706,7 +708,7 @@ void comp_UI_destroy(COMPONENT *self, void *event) {
   al_destroy(&data->actions);
 }
 
-
+// creates the ghost rooms on the screen when a room is chosen
 void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   LIST *buildSpaces = list_create();
   int roomSize = comp_schoolLogic_getRoomSize(toBuild);
@@ -717,11 +719,15 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   CDATA_SCHOOLLOGIC *schoolLogic = (CDATA_SCHOOLLOGIC *)entity_getComponentData(gameManager, COMP_SCHOOLLOGIC);
   float squareSize = 80.0f;
 
+  // destroy any existing ghost rooms
   UI_button_destroyGhostRooms(self);
+
+  // find the available slots
   comp_schoolLogic_findBuildSpots(self, toBuild, roomSize, buildSpaces);
   pNode = buildSpaces->first;
   sound_playSound(&self->owner->space->game->systems.sound, "confirm");
 
+  // run through the list of available slots and create a ghost room at each slot
   while (pNode) {
     ENTITY *created;
     LIST_NODE *next;
@@ -736,6 +742,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
     middle.y = top - squareSize / 2.0f;
     middle.z = 0;
       
+    // get the center of the room based on the room size
     switch (roomSize) {
     case (1):
       middle.x = left + squareSize / 2.0f;
@@ -748,6 +755,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
       break;
     }
 
+    // add the ghost room and change the sprite based on what type it is
     created = space_addEntityAtPosition(mg, arch_ghostRoom, "ghostRoom", &middle);
     gData = (CDATA_GHOSTROOMLOGIC *)entity_getComponentData(created, COMP_GHOSTROOMLOGIC);
     sprite = (CDATA_SPRITE *)entity_getComponentData(created, COMP_SPRITE);
@@ -811,6 +819,7 @@ void UI_button_createGhostRooms(COMPONENT *self, ROOM_TYPE toBuild) {
   UI_button_deleteList(buildSpaces);
 }
 
+// function to cancel build mode, only to be used within this component
 void __UI_button_cancelBuildMode(COMPONENT *self) {
   LIST_NODE *node;
   LIST *buttons = list_create();
@@ -829,6 +838,7 @@ void __UI_button_cancelBuildMode(COMPONENT *self) {
   list_destroy(buttons);
 }
 
+// destroys all ghost rooms
 void UI_button_destroyGhostRooms(COMPONENT *self) {
   LIST *ghostrooms = list_create();
   SPACE *mg = game_getSpace(self->owner->space->game, "mg");
@@ -844,6 +854,7 @@ void UI_button_destroyGhostRooms(COMPONENT *self) {
   list_destroy(ghostrooms);
 }
 
+// helper function to delete a list and free all the data
 void UI_button_deleteList(LIST *buildSpaces) {
   LIST_NODE *pNode = buildSpaces->first;
   while (pNode) {
@@ -853,6 +864,7 @@ void UI_button_deleteList(LIST *buildSpaces) {
   list_destroy(buildSpaces);
 }
 
+// helper function that creates a build room button based on the type that is passed in
 void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
   ENTITY *newButton = 0;
   CDATA_UI_BUTTON *buttonData;
@@ -861,6 +873,7 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
   CDATA_SPRITE *sprite;
 
+  // adds the new button and creates text for it
   newButton = space_addEntityAtPosition(self->owner->space, arch_uibuild, "buildButton", position);
   buttonData = (CDATA_UI_BUTTON *)entity_getComponentData(newButton, COMP_UI_BUTTON);
   vec3_set(&textPos, 0.0f, 0.0f, 0.0f);
@@ -869,10 +882,12 @@ void UI_button_createRoomButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *positio
   buttonData->type = type;
   sprite = (CDATA_SPRITE *)entity_getComponentData(newButton, COMP_SPRITE);
 
+  // update the build buttons and make sure the locked ones are locked
   UI_button_updateBuildButtons(self->owner->space);
 
 }
 
+// creates the button to open the management screen
 void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
   ENTITY *newButton = 0;
   CDATA_UI_BUTTON *buttonData;
@@ -887,6 +902,7 @@ void UI_button_createManagementButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *p
   buttonData->type = type;
 }
 
+// creates a button to upgrade a room
 void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *position, VEC4 *color, char *name) {
   ENTITY *newButton = 0;
   CDATA_UI_BUTTON *buttonData;
@@ -905,6 +921,7 @@ void UI_button_createUpgradeButton(COMPONENT *self, BUTTON_TYPE type, VEC3 *posi
   buttonData->type = type;
 }
 
+// runs through all the individual room buttons and updates them
 void UI_button_updateBuildButtons(SPACE *ui) {
   SPACE *sim = game_getSpace(ui->game, "sim");
   CDATA_SCHOOLLOGIC *schoolData = (CDATA_SCHOOLLOGIC *)entity_getComponentData(space_getEntity(sim, "gameManager"), COMP_SCHOOLLOGIC);
@@ -916,6 +933,7 @@ void UI_button_updateBuildButtons(SPACE *ui) {
   space_getAllEntities(ui, "buildButton", buildButtons);
   node = buildButtons->first;
 
+  // run through the list of buttons
   while (node) {
     buttonData = (CDATA_UI_BUTTON *)entity_getComponentData((ENTITY *)node->data, COMP_UI_BUTTON);
     // if still locked
@@ -939,6 +957,7 @@ void UI_button_updateBuildButtons(SPACE *ui) {
       buttonSprite->color.b = 0.5f;
     }
     
+    // if buildable
     else {
       CDATA_MOUSEBOX *buttonBox = (CDATA_MOUSEBOX *)entity_getComponentData(node->data, COMP_MOUSEBOX);
       CDATA_SPRITE *buttonSprite = (CDATA_SPRITE *)entity_getComponentData((ENTITY *)node->data, COMP_SPRITE);
@@ -954,6 +973,7 @@ void UI_button_updateBuildButtons(SPACE *ui) {
   list_destroy(buildButtons);
 }
 
+// function to enter build mode
 void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   VEC3 position;
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
@@ -1018,6 +1038,7 @@ void comp_UI_button_enterBuildMode(COMPONENT *buildButton) {
   data->type = BUTTON_CANCEL;
 }
 
+// function to cancel build mode. this can be called outside of this component
 void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   if (data->type == BUTTON_CANCEL) {
@@ -1029,6 +1050,7 @@ void comp_UI_button_cancelBuildMode(COMPONENT *buildButton) {
   }
 }
 
+// function to toggle build mode
 void comp_UI_button_toggleBuildMode(COMPONENT *buildButton) {
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)buildButton->data;
   SPACE *tutorial = game_getSpace(buildButton->owner->space->game, "tutorial");
