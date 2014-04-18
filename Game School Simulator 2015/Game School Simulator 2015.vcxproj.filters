@@ -173,12 +173,6 @@
     <ClCompile Include="pausescreen.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
-    <ClCompile Include="homework.c">
-      <Filter>Archetypes</Filter>
-    </ClCompile>
-    <ClCompile Include="homeworklogic.c">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="brad.c">
       <Filter>Archetypes\ui_elements</Filter>
     </ClCompile>
@@ -371,12 +365,6 @@
     </ClInclude>
     <ClInclude Include="pausescreen.h">
       <Filter>Archetypes\ui_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="homework.h">
-      <Filter>Archetypes</Filter>
-    </ClInclude>
-    <ClInclude Include="homeworklogic.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="brad.h">
       <Filter>Archetypes\ui_elements</Filter>

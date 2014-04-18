@@ -49,6 +49,7 @@ void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
   if (pauseScreen)
     pauseData = (CDATA_PAUSESCREEN *)entity_getComponentData(pauseScreen, COMP_PAUSESCREENLOGIC);
 
+  // Plays sounds upon hover and changes color.
   switch (data->type) {
   case BUTTON_MASTER_VOL_UP:
   case BUTTON_MASTER_VOL_DOWN:
@@ -72,7 +73,7 @@ void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
   }
 
 
-
+  // Cases for each different button click.
   if (mbox->left.pressed) {
     switch(data->type) {
     case BUTTON_MASTER_VOL_UP:
@@ -145,6 +146,7 @@ void comp_UI_buttonFrameUpdate(COMPONENT *self, void *event) {
       self->owner->space->game->resetFunction = makeAllNewGame;
       break;
 
+    // Clears pause menu and buttons when Close button is clicked.
     case BUTTON_CLOSE_OPTIONS:
       {
         LIST *optionsList = list_create();
@@ -193,7 +195,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
   if(mbox->entered) {
     if (data->text) {
 
-      // if it's not unlocked, make it say locked
+      // Room Hover switches.  If not unlocked, say it is locked.
       if (!data->unlocked) {
         switch(data->type){
           
@@ -273,7 +275,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
         }
       }
 
-      // if it is unlocked, display price
+      // If it is unlocked, display price instead.
       else {
         switch(data->type){
 
@@ -350,7 +352,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       }
     }
   }
-
+  // Default displays for build buttons when not hovered over.
   if (mbox->exited) {
     if (data->text) {
       switch(data->type){
@@ -427,6 +429,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     }
   }
 
+  // Actions for the buttons are hovered over.  Displays hover text and plays sound.
   if (data->clickable) {
     if (mbox->entered) {
       sound_playSound(&self->owner->space->game->systems.sound, "hover");
@@ -480,23 +483,23 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
     }
 
 
-    // if clicked on
+    // If buttons are clicked on, execute different things based on type.
     if (mbox->left.pressed) {
-      // execute different things based on button type
       switch (data->type) {
 
-      // build button
+      // Build button
       case BUTTON_BUILD:
       {
         comp_UI_button_enterBuildMode(self);
         break;
       }
 
-      // cancel button 
+      // Cancel button 
       case BUTTON_CANCEL:
         comp_UI_button_cancelBuildMode(self);
         break;
-
+      
+      // Build-Room Buttons and etc.
       case BUTTON_BUILDLOBBY:
         UI_button_createGhostRooms(self, ROOMTYPE_LOBBY);
 
@@ -556,6 +559,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
       case BUTTON_DEFAULT:
         break;
 
+      // Management Buttons
       case BUTTON_GPA_INCREMENT:
         if (schoolData->minGpa >= (float)4.0)
           schoolData->minGpa = (float)4.0;
@@ -607,7 +611,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
 }
 
 
-// this is derping out the FIRST time build mode is activated for some weird reason
+// 
 static void panDown_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
   CDATA_UI_BUTTON *data = (CDATA_UI_BUTTON *)self->data;
