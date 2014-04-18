@@ -54,5 +54,24 @@ Press CTRL + SHIFT + 4 to get a bunch of money
 =======
 Credits
 =======
+President: Claude Comair
+Instructor: Jason Tartaglia
+
+Lead Artist: Patrick-Michael Casey
+Lead Sound Designer: Spencer Mauro
+
+Playtesters:
+  - Garrett Huxatable
+  - Rebecca Lepore
+  - Spencer Mauro
+  - Joshua Louderback
+  - Steven Gallwas
+  - And all other playtesters who helped make our game better!
+
+Student "Oh" voice recordings:
+Cheong Ming Wei
+Hannah Tan
+Joyc Leong
+Ng Wan Qing
+
 Audio engine : FMOD Sound System by Firelight Technologies
-- playtesters
