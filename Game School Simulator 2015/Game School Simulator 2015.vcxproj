@@ -279,6 +279,7 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <ClInclude Include="pausescreenlogic.h" />
     <ClInclude Include="poptext.h" />
     <ClInclude Include="poptextlogic.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="roomactor.h" />
     <ClInclude Include="roomactorlogic.h" />
     <ClInclude Include="mousebox.h" />
@@ -313,6 +314,12 @@ xcopy /y "$(ProjectDir)data\*.mp3" "$(OutDir)data\" /e</Command>
     <Text Include="data\txt\names\first_female.txt" />
     <Text Include="data\txt\names\first_male.txt" />
     <Text Include="data\txt\names\last.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game School Simulator 2015.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\GSS2015.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
