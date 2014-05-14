@@ -57,6 +57,7 @@ NEKO_API PAK_ERROR pak_insert(PAK_FILE *, char *, char *);
 NEKO_API PAK_ERROR pak_insert_data(PAK_FILE *pak, char *nameInPak, char *data, size_t dataSize);
 NEKO_API PAK_ERROR pak_extract(PAK_FILE *, char *);
 NEKO_API PAK_FILE *pak_open(char *);
+NEKO_API PAK_FILE *pak_open2(char *);
 NEKO_API PAK_ERROR pak_close(PAK_FILE *);
 PAK_SECTION *pak_getSection(PAK_FILE *, const char *);
 NEKO_API void *pak_load(PAK_FILE *, const char *, size_t *);

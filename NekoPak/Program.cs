@@ -26,7 +26,7 @@ namespace NekoPak {
     static extern int pak_create([MarshalAs(UnmanagedType.LPStr)] string filename);
 
     [DllImport("neko.dll")]
-    static extern IntPtr pak_open([MarshalAs(UnmanagedType.LPStr)] string filename);
+    static extern IntPtr pak_open2([MarshalAs(UnmanagedType.LPStr)] string filename);
 
     [DllImport("neko.dll")]
     static extern int pak_insert(IntPtr pak, [MarshalAs(UnmanagedType.LPStr)] string filename, [MarshalAs(UnmanagedType.LPStr)] string nameInPak);
@@ -140,7 +140,7 @@ namespace NekoPak {
       if (File.Exists(path))
         File.Delete(path);
       pak_create(pakFilename);
-      IntPtr pak = pak_open(Path.GetFullPath(args[1]));
+      IntPtr pak = pak_open2(Path.GetFullPath(args[1]));
       Console.WriteLine("Pak'n files into " + pakFilename + "...");
       foreach (string file in files) {
         string storeName = file.Substring(file.IndexOf(path) + path.Length).Replace('\\', '/');

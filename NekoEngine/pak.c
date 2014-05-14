@@ -69,6 +69,25 @@ PAK_FILE *pak_open(char *filename) {
   return pak;
 }
 
+PAK_FILE *pak_open2(char *filename) {
+  PAK_FILE *pak;
+  FILE *fp;
+
+  //fp = fopen(filename, "rb+");
+  fopen_s(&fp, filename, "rb+");
+  if (!fp)
+    return (PAK_FILE *)pak_error(NULL, PAKERROR_OPEN);
+
+  pak = (PAK_FILE *)malloc(sizeof(PAK_FILE));
+  if (!pak)
+    return (PAK_FILE *)pak_error(fp, PAKERROR_MALLOC);
+  pak->handle = fp;
+  if (!fread_s(&pak->header, sizeof(PAK_HEADER), sizeof(PAK_HEADER), 1, pak->handle))
+    return (PAK_FILE *)pak_error(fp, PAKERROR_READ);
+
+  return pak;
+}
+
 PAK_ERROR pak_close(PAK_FILE *pak) {
   fclose(pak->handle);
   free(pak);
