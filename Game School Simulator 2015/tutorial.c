@@ -125,6 +125,7 @@ void tutorialBackground_onPressed(COMPONENT *self) {
 
 void createFirstTutorial(SPACE *ui) {
   ENTITY *textBox = tutorial_createTextBox(ui);
+  comp_tutorialTextBoxLogic_pushText(textBox, "");
   /////////////////////////////////////////////                                                         ////
   comp_tutorialTextBoxLogic_pushText(textBox, "What up bro? I heard you'd be coming!\n"
                                               "I'm Brad Bromayor, here to help you out on your journey\n"
