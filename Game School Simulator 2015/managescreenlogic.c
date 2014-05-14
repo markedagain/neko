@@ -77,7 +77,7 @@ void comp_manageScreenLogic_logicUpdate(COMPONENT *self, void *event) {
   // Minimum GPA
   if (comData->minGpa != managementData->currMinGpa) {
     managementData->currMinGpa = comData->minGpa;
-    sprintf(managementData->gpaBuffer, "%g", comData->minGpa);
+    sprintf(managementData->gpaBuffer, "%.1f", comData->minGpa);
     genericText_setText(managementData->gpa, managementData->gpaBuffer);
   }
 
