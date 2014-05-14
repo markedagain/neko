@@ -451,7 +451,7 @@ bool file_getAllByExtension(VECTOR *fileList, const char *directory, const char 
 
 void data_loadAll(DATACONTAINER *dataContainer, SOUNDSYSTEM *soundSystem) {
   VECTOR files;
-  PAK_FILE* pak;
+  PAK_FILE* pak = NULL;
   char pakDir[MAX_PATH];
   size_t i;
   char subdir[MAX_PATH];
