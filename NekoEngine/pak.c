@@ -54,7 +54,8 @@ PAK_FILE *pak_open(char *filename) {
   PAK_FILE *pak;
   FILE *fp;
 
-  fp = fopen(filename, "rb+");
+  //fp = fopen(filename, "rb+");
+  fopen_s(&fp, filename, "rb");
   if (!fp)
     return (PAK_FILE *)pak_error(NULL, PAKERROR_OPEN);
 
@@ -62,8 +63,7 @@ PAK_FILE *pak_open(char *filename) {
   if (!pak)
     return (PAK_FILE *)pak_error(fp, PAKERROR_MALLOC);
   pak->handle = fp;
-
-  if (!fread(&pak->header, sizeof(PAK_HEADER), 1, pak->handle))
+  if (!fread_s(&pak->header, sizeof(PAK_HEADER), sizeof(PAK_HEADER), 1, pak->handle))
     return (PAK_FILE *)pak_error(fp, PAKERROR_READ);
 
   return pak;
@@ -197,7 +197,8 @@ PAK_SECTION *pak_loadAllFiles(PAK_FILE *pak, int *count) {
   *count = pak->header.size / 64;
   files = (PAK_SECTION *)malloc(sizeof(PAK_SECTION) * *count);
   fseek(pak->handle, pak->header.offset, SEEK_SET);
-  fread(files, sizeof(PAK_SECTION), *count, pak->handle);
+  //fread(files, sizeof(PAK_SECTION), *count, pak->handle);
+  fread_s(files, sizeof(PAK_SECTION) * *count, sizeof(PAK_SECTION), *count, pak->handle);
   return files;
 }
 
