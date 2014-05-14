@@ -106,11 +106,11 @@ void comp_timeManager_logicUpdate(COMPONENT *self, void *event) {
 
         // create main sprite shadow
         vec3_set(&position, 4, -4, 0);
-        genericSprite_create(ui, &position, "options", "ui/management_shadow");
+        genericSprite_create(ui, &position, "winScreen", "ui/management_shadow");
 
         // create main sprite
         vec3_set(&position, 0, 0, 0);
-        genericSprite_create(ui, &position, "options", "ui/victory");
+        genericSprite_create(ui, &position, "winScreen", "ui/victory");
 
         comp_timeManager_pause(self);
         playerData->currentMode = GM_WIN;
