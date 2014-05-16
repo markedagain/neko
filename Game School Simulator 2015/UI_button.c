@@ -201,7 +201,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
           
         
           case BUTTON_BUILDLOBBY:
-            sprintf(buffer, "Allows\nconstruction!\nLocked");
+            sprintf(buffer, "Allows\nconstruction\nLocked");
             genericText_setText(data->text, buffer);
             break;
 
@@ -226,7 +226,7 @@ void comp_UI_buttonUpdate(COMPONENT *self, void *event) {
             break;
 
           case BUTTON_BUILDSTORE:
-            sprintf(buffer, "Generates income!\nLocked");
+            sprintf(buffer, "Generates income\nLocked");
             genericText_setText(data->text, buffer);
             break;
 

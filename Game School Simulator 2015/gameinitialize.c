@@ -216,7 +216,7 @@ void startNewGame(GAME *game) {
   setInspectText(game);
 
   // Create Student Pop Sprite
-  vec3_set(&position, -60, 166, 0);
+  vec3_set(&position, -51, 166, 0);
   genericSprite_create(uiSpace, &position, "studentsSprite", "ui/students");
 
   // Create an empty mousebox to stop click through

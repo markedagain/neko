@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "poptextlogic.h"
 #include "transform.h"
 #include "multisprite.h"
+#include "random.h"
 
 static void rise_update(ACTION *action, double dt) {
   COMPONENT *self = (COMPONENT *)(action->data);
@@ -68,6 +69,7 @@ void comp_popTextLogic_logicUpdate(COMPONENT *self, void *event) {
     case POPTYPE_GROW:
       break;
     }
+    al_pushFront(&data->actions, action_create(NULL, NULL, NULL, NULL, true, randomFloatRange(0.0f, 0.5f)));
     al_pushBack(&data->actions, action_create(self, fade_update, NULL, destroySelf_onEnd, true, 0.5f * data->duration));
   }
 

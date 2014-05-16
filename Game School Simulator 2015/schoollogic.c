@@ -104,7 +104,7 @@ void comp_schoolLogic_logicUpdate(COMPONENT *self, void *event) {
   /////////////////////////
     // Create if first time
   if (!comData->studentUI) {
-    vec3_set(&position, -48, 175, 0);
+    vec3_set(&position, -38, 175, 0);
     vec4_set(&color, 1, 1, 1, 1 );
     sprintf(comData->buffer, "%i/%i", comData->currentStudents, comData->studentCapacity);
     comData->studentUI = genericText_create(uiSpace, &position, NULL, "fonts/gothic/20", comData->buffer, &color, TEXTALIGN_LEFT, TEXTALIGN_TOP);
@@ -214,6 +214,13 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   int lowValue = -50;
   int highValue = 50;
 
+  int tempMonth = timeData->monthCounter; // HACK BECAUSE EDUARDO'S CODE IS BROKEN LOLOLOL
+  int tempYear = timeData->currentYear;
+  if (tempMonth > 11) {
+    tempMonth -= 12;
+    ++tempYear;
+  }
+
   // LOOP THROUGH STUDENTS (update stats)
   studentPtr = comData->students->first;
   for(i = 0; i < comData->students->count; i++) {
@@ -291,7 +298,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
   }
   // Print how many students droped
   if(dropCount) {
-    sprintf(message, pushStrings[STRINGS_DROP], month[timeData->monthCounter], timeData->currentYear, dropCount, dropCount);
+    sprintf(message, pushStrings[STRINGS_DROP], month[tempMonth], tempYear, dropCount, dropCount);
     comp_newsfeedlogic_push(self, message);
   }
 
@@ -312,7 +319,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
       ++newCount;
     }
     // Print how many students enrolled
-    sprintf(message, pushStrings[STRINGS_ENROLL], month[timeData->monthCounter], timeData->currentYear, newCount);
+    sprintf(message, pushStrings[STRINGS_ENROLL], month[tempMonth], tempYear, newCount);
     comp_newsfeedlogic_push(self, message);
 
     comData->incomingStudents = 0;
@@ -331,7 +338,7 @@ void comp_schoolLogic_updateDataSemester(COMPONENT *self, CDATA_SCHOOLLOGIC *com
 
   // Print graduation message
   if(comData->expectedGraduates > 0) {
-    sprintf(message, pushStrings[STRINGS_GRAD], month[timeData->monthCounter], timeData->currentYear, comData->newGraduates, comData->graduationRep);
+    sprintf(message, pushStrings[STRINGS_GRAD], month[tempMonth], tempYear, comData->newGraduates, comData->graduationRep);
     comp_newsfeedlogic_push(self, message);
   }
 

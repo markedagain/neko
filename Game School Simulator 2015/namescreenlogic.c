@@ -104,5 +104,5 @@ void comp_nameScreenLogic_initialize(COMPONENT *self, void *event) {
   data->displayText = genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "", &colors[C_WHITE_LIGHT], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 
   vec3_set(&position, 0, 20.0f, 0);
-  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Type the name of your school:", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
+  genericText_create(self->owner->space, &position, "inputNameText", "fonts/gothic/12", "Type the name of your school and press ENTER:", &colors[C_WHITE_DARK], TEXTALIGN_CENTER, TEXTALIGN_MIDDLE);
 }

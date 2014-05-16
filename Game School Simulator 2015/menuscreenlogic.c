@@ -87,7 +87,7 @@ static void moveNewGameButton_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, -76.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -64.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -63.0f);
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
@@ -139,7 +139,7 @@ static void moveCreditsButton_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -22.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -26.0f);
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
@@ -165,7 +165,7 @@ static void moveQuitButton_update(ACTION *action, double dt) {
   CDATA_TRANSFORM *trans = (CDATA_TRANSFORM *)entity_getComponentData(self, COMP_TRANSFORM);
   CDATA_SPRITE *sprite = (CDATA_SPRITE *)entity_getComponentData(self, COMP_SPRITE);
   trans->translation.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 212.0f);
-  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -118.0f);
+  trans->translation.y = action_ease(action, EASING_QUAD_OUT, 0.0f, -121.0f);
   trans->scale.x = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   trans->scale.y = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);
   sprite->color.a = action_ease(action, EASING_QUAD_OUT, 0.0f, 1.0f);

@@ -39,7 +39,6 @@ Docile
 Spicy
 Sweet
 Delicious
-Salty
 Hardy
 Lonely
 Brave
@@ -115,15 +114,12 @@ Poor
 Glutton
 Heroic
 Unclear
-Phat
 Baller
 Dsyleixc
 Somebody
 Nobody
 ???
 Ill
-Solid
-Liquid
 Bro
 Loves K-Pop
 Loves Rap
